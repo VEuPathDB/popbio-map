@@ -269,7 +269,8 @@ function loadSolr(clear, zoomLevel) {
 
 // var url = "http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
 // var url = "http://vb-dev.bio.ic.ac.uk:9090/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
-var url = "asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
+    // bundle_name is here to only select samples and avoid displaying duplicate entries
+    var url = "asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
 	
 	console.log(url);
 	
