@@ -9,50 +9,43 @@
 
     <!-- Le styles -->
     <!-- <link href="../lib/bootstrap/css/bootstrap.css" rel="stylesheet"> -->
-	<style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-      
-     #map {
-      	background-color: #292929;
-      }
-	</style>
+    <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+
+        #map {
+            background-color: #292929;
+        }
+    </style>
     <!-- <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap-responsive.css" > -->
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="./css/dvf.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="./css/example.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="./css/ui.css" type="text/css" media="screen" />
-	<!-- <link rel="stylesheet" href="../lib/Leaflet-MiniMap/dist/Control.MiniMap.min.css" type="text/css" media="screen" /> -->
-	<link rel="stylesheet" href="./css/MarkerCluster.Default.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/dvf.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/example.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/ui.css" type="text/css" media="screen"/>
+    <!-- <link rel="stylesheet" href="../lib/Leaflet-MiniMap/dist/Control.MiniMap.min.css" type="text/css" media="screen" /> -->
+    <link rel="stylesheet" href="./css/MarkerCluster.Default.css" type="text/css" media="screen"/>
 
-	<script language="javascript">
-			var map;
-			var assetLayerGroup;
-			var smallClusters = [];
+    <script language="javascript">
+        var map;
+        var assetLayerGroup;
+        var smallClusters = [];
 
-	</script>
+    </script>
 
 </head>
 
 <body onLoad="initMap()">
 
-<!-- 
-    <div class="container-fluid">
-    	<div class="row-fluid">
-			<div id="map"></div>
-		</div>
-	</div> -->
-	<div id="map" style="width:100%; top:0; bottom:0;"></div>
-	
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="./js/bootstrap/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-	<script type="text/javascript" src="./js/leaflet-dvf.min.js"></script>
-	<script type="text/javascript" src="./js/PruneCluster.js"></script>
-	<script type="text/javascript" src="./js/spin.js"></script>
-	<script type="text/javascript" src="./js/leaflet.spin.js"></script>
-	<!-- <script type="text/javascript" src="../lib/Leaflet-MiniMap/dist/Control.MiniMap.min.js"></script> -->
-	<script type="text/javascript" src="./js/geohashes_mean.js"></script>
+<div id="map" style="width:100%; top:0; bottom:0;"></div>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script type="text/javascript" src="./js/leaflet-dvf.min.js"></script>
+<script type="text/javascript" src="./js/PruneCluster.js"></script>
+<script type="text/javascript" src="./js/spin.js"></script>
+<script type="text/javascript" src="./js/leaflet.spin.js"></script>
+<script type="text/javascript" src="./js/geohashes_mean.js"></script>
 </body>
 </html>
