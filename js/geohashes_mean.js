@@ -16,16 +16,6 @@ function initMap() {
         id: 'examples.map-i875mjb7'
     }).addTo(map);
 
-    // var osm2 = new L.TileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-    // minZoom: 0,
-    // maxZoom: 8,
-    // noWrap: 1,
-    // attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-    // '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    // 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    // id: 'examples.map-i875mjb7'});
-    // var miniMap = new L.Control.MiniMap(osm2).addTo(map);
-
     map.spin(true);
     loadSolr(0, map.getZoom());
     map.spin(false);
