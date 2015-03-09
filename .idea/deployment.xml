@@ -5,7 +5,7 @@
       <paths name="vb-dev">
         <serverdata>
           <mappings>
-            <mapping deploy="/popbio/map/htdocs" local="$PROJECT_DIR$" web="geohashes_mean.html" />
+            <mapping deploy="/popbio/map/htdocs" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
