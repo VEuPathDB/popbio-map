@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Deleted geohashes_mean.js">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/geohashes_mean.html" afterPath="$PROJECT_DIR$/geohashes_mean.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.js" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Switched to google maps tile layer&#10;Code optimization">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/google.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -28,25 +27,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="geohashes_mean.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.384615" vertical-offset="1334" max-vertical-offset="2023">
-              <caret line="102" column="16" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.46745563" vertical-offset="715" max-vertical-offset="2023">
+              <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="google.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js/google.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6697936" vertical-offset="0" max-vertical-offset="3485">
-              <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -84,8 +71,8 @@
         <option value="$PROJECT_DIR$/js/PruneCluster.js" />
         <option value="$PROJECT_DIR$/js/geohashes_mean.js" />
         <option value="$PROJECT_DIR$/js/Google.js" />
-        <option value="$PROJECT_DIR$/geohashes_mean.html" />
         <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
+        <option value="$PROJECT_DIR$/geohashes_mean.html" />
       </list>
     </option>
   </component>
@@ -242,8 +229,10 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="LayoutCode.rearrangeEntriesJavaScript 1.5" value="false" />
   </component>
-  <component name="RunManager" selected="JavaScript Debug.geohashes_mean.html local">
+  <component name="RunManager" selected="JavaScript Debug.geohashes_mean.html on vb-dev">
     <configuration default="false" name="geohashes_mean.html on vb-dev" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" uri="http://vb-dev.bio.ic.ac.uk:9779/geohashes_mean.html">
+      <RunnerSettings RunnerId="JavascriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
     </configuration>
     <configuration default="false" name="geohashes_mean.html local" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" uri="http://localhost:63342/popbio_map/geohashes_mean.html">
@@ -295,8 +284,8 @@
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.geohashes_mean.html local" />
-        <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.geohashes_mean.html on vb-dev" />
+        <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.geohashes_mean.html on vb-dev" />
+        <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.geohashes_mean.html local" />
       </list>
     </recent_temporary>
   </component>
@@ -371,7 +360,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426079689883</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Switched to google maps tile layer&#10;Code optimization">
+      <created>1426095182742</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1426095182742</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -446,7 +441,8 @@
     <MESSAGE value="Created a new library (vb-popbio-maps.js) and started moving code in there." />
     <MESSAGE value="Fixes to comply with JSHint&#10;Moved main_init() to the html page. No need for geohashes_mean.js anymore" />
     <MESSAGE value="Deleted geohashes_mean.js" />
-    <option name="LAST_COMMIT_MESSAGE" value="Deleted geohashes_mean.js" />
+    <MESSAGE value="Switched to google maps tile layer&#10;Code optimization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Switched to google maps tile layer&#10;Code optimization" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -908,16 +904,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.384615" vertical-offset="1334" max-vertical-offset="2023">
-          <caret line="102" column="16" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="16" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/PruneCluster.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2576923" vertical-offset="580" max-vertical-offset="14399">
@@ -944,6 +930,16 @@
           <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46745563" vertical-offset="715" max-vertical-offset="2023">
+          <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
