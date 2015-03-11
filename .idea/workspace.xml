@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/Ioannis.xml" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\geohashes_mean.js" afterPath="" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Deleted geohashes_mean.js">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/geohashes_mean.html" afterPath="$PROJECT_DIR$/geohashes_mean.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -29,13 +28,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="geohashes_mean.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="geohashes_mean.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7648766" vertical-offset="204" max-vertical-offset="1428">
-              <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+            <state vertical-scroll-proportion="-15.384615" vertical-offset="1334" max-vertical-offset="2023">
+              <caret line="102" column="16" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="16" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="google.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/google.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6697936" vertical-offset="0" max-vertical-offset="3485">
+              <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -44,19 +55,13 @@
       <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7327">
-              <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PruneCluster.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/PruneCluster.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="580" max-vertical-offset="14399">
-              <caret line="42" column="12" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2812" max-vertical-offset="4862">
+              <caret line="388" column="29" selection-start-line="388" selection-start-column="29" selection-end-line="388" selection-end-column="29" />
+              <folding>
+                <element signature="e#3574#5329#0" expanded="false" />
+                <element signature="e#8401#10268#0" expanded="false" />
+                <element signature="n#!!block;n#buildBbox#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -78,8 +83,9 @@
         <option value="$PROJECT_DIR$/js/sdf.js" />
         <option value="$PROJECT_DIR$/js/PruneCluster.js" />
         <option value="$PROJECT_DIR$/js/geohashes_mean.js" />
-        <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
+        <option value="$PROJECT_DIR$/js/Google.js" />
         <option value="$PROJECT_DIR$/geohashes_mean.html" />
+        <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
       </list>
     </option>
   </component>
@@ -206,7 +212,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="options.lastSelected" value="Errors" />
+    <property name="options.lastSelected" value="editing.templates" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -359,7 +365,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426079610791</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Deleted geohashes_mean.js">
+      <created>1426079689882</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1426079689883</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -370,7 +382,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328877" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39839572" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2433155" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -433,11 +445,12 @@
     <MESSAGE value="Code cleaning" />
     <MESSAGE value="Created a new library (vb-popbio-maps.js) and started moving code in there." />
     <MESSAGE value="Fixes to comply with JSHint&#10;Moved main_init() to the html page. No need for geohashes_mean.js anymore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixes to comply with JSHint&#10;Moved main_init() to the html page. No need for geohashes_mean.js anymore" />
+    <MESSAGE value="Deleted geohashes_mean.js" />
+    <option name="LAST_COMMIT_MESSAGE" value="Deleted geohashes_mean.js" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -456,7 +469,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7038">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#3574#5329#0" expanded="false" />
+            <element signature="e#8401#10268#0" expanded="false" />
+            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -719,6 +736,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.1681736" vertical-offset="229" max-vertical-offset="782">
           <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -890,9 +908,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.384615" vertical-offset="1334" max-vertical-offset="2023">
+          <caret line="102" column="16" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="16" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/PruneCluster.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="580" max-vertical-offset="14399">
+        <state vertical-scroll-proportion="0.2576923" vertical-offset="580" max-vertical-offset="14399">
           <caret line="42" column="12" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
           <folding />
         </state>
@@ -900,18 +928,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7327">
-          <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2812" max-vertical-offset="4862">
+          <caret line="388" column="29" selection-start-line="388" selection-start-column="29" selection-end-line="388" selection-end-column="29" />
+          <folding>
+            <element signature="e#3574#5329#0" expanded="false" />
+            <element signature="e#8401#10268#0" expanded="false" />
+            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
+    <entry file="file://$PROJECT_DIR$/js/google.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7648766" vertical-offset="204" max-vertical-offset="1428">
-          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.6697936" vertical-offset="0" max-vertical-offset="3485">
+          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>

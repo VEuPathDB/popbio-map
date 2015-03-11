@@ -9,73 +9,26 @@ function loadSolr(parameters) {
     "use strict";
     var clear = parameters.clear;
     var zoomLevel = parameters.zoomLevel;
-    var bounds = map.getBounds();
-
-    // fix endless bounds of leaflet to comply with SOLR limits
-    var south = bounds.getSouth();
-    if (south < -90) {
-        south = -90;
-    }
-    var north = bounds.getNorth();
-    if (north > 90) {
-        north = 90;
-    }
-    var west = bounds.getWest();
-    if (west < -180) {
-        west = -180;
-    }
-    var east = bounds.getEast();
-    if (east > 180) {
-        east = 180;
-    }
-
     // detect the zoom level and request the appropriate facets
-    var geoLevel;
-
-    switch (zoomLevel) {
-        case 1:
-        case 2:
-            geoLevel = "geohash_1";
-            break;
-        case 3:
-        case 4:
-        case 5:
-            geoLevel = "geohash_2";
-            break;
-        case 6:
-        case 7:
-            geoLevel = "geohash_3";
-            break;
-        case 8:
-        case 9:
-            geoLevel = "geohash_4";
-            break;
-        case 10:
-        case 11:
-            geoLevel = "geohash_5";
-            break;
-        default:
-            geoLevel = "geohash_6";
-            break;
-
-    }
+    var geoLevel = geohashLevel(zoomLevel,"geohash");
 
     //we are too deep in, just download the landmarks instead
-    if (zoomLevel > 11) {
 
+    if (zoomLevel > 11) {
         loadSmall(1, zoomLevel);
+
         return;
 
     }
 
     // get the visible world to filter the records based on what the user is currently viewing
-    var SolrBBox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
+    var bounds = map.getBounds();
+    var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
 
     var terms = [];
 
     // this function processes the JSON file requested by jquery
     var buildMap = function (result) {
-
         // using the facet.stats we return statistics for lat and lng for each geohash
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
@@ -105,7 +58,7 @@ function loadSolr(parameters) {
             case 6:
             case 7:
                 docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_3;
-                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.result.geohash_3;
+                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_3;
                 break;
             case 8:
             case 9:
@@ -245,39 +198,20 @@ function loadSolr(parameters) {
     // bundle_name is here to only select samples and avoid displaying duplicate entries
     var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
 
-    console.log(url);
+    //console.log(url);
 
     // inform the user that data is loading
     map.spin(true);
-    $.getJSON(url, buildMap);
+    $.getJSON(url, buildMap).fail(function () {
+        console.log("Ahhh");
+        return;
+    });
 
 
 }
 
 function loadSmall(mode, zoomLevel, SolrBBox) {
     "use strict";
-    var bounds;
-    bounds = map.getBounds();
-
-    // fix endless bounds of leaflet to comply with SOLR limits
-    var south = bounds.getSouth();
-    if (south < -90) {
-        south = -90;
-    }
-    var north = bounds.getNorth();
-    if (north > 90) {
-        north = 90;
-    }
-    var west = bounds.getWest();
-    if (west < -180) {
-        west = -180;
-    }
-    var east = bounds.getEast();
-    if (east > 180) {
-        east = 180;
-    }
-
-
     var pruneCluster = new PruneClusterForLeaflet();
 
     pruneCluster.BuildLeafletCluster = function (cluster, position) {
@@ -336,39 +270,12 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
 
 
     // detect the zoom level and request the appropriate facets
-    var geoLevel;
-
-
-    switch (zoomLevel) {
-        case 1:
-        case 2:
-            geoLevel = "geohash_1";
-            break;
-        case 3:
-        case 4:
-        case 5:
-            geoLevel = "geohash_2";
-            break;
-        case 6:
-        case 7:
-            geoLevel = "geohash_3";
-            break;
-        case 8:
-        case 9:
-            geoLevel = "geohash_4";
-            break;
-        case 10:
-        case 11:
-            geoLevel = "geohash_5";
-            break;
-        default:
-            geoLevel = "geohash_6";
-            break;
-
-    }
+    var geoLevel = geohashLevel(zoomLevel, "geohash");
 
     // get the visible world to filter the records based on what the user is currently viewing
-    SolrBBox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
+    var bounds = map.getBounds();
+    var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
+
     var geoQuery;
 
     if (mode === 0) {
@@ -415,7 +322,7 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
     // var url = "http://vb-dev.bio.ic.ac.uk:9090/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
     var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
 
-    console.log(url);
+    //console.log(url);
 
     // inform the user that data is loading
     map.spin(true);
@@ -423,3 +330,92 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
 
 }
 
+function buildBbox(bounds){
+    /*
+     function buildBbox
+     date: 11/03/2015
+     purpose: a function that generates a SOLR compatible bounding box
+     inputs: a LatLngBounds object
+     outputs: a SOLR compatible bbox. If the input is not a valid LatLngBounds object it will return a generic bbox that
+     covers the whole earth.
+     */
+
+    "use strict";
+    var solrBbox;
+
+    if (bounds.getEast()) {
+        //console.log("bounds IS an object");
+        // fix endless bounds of leaflet to comply with SOLR limits
+        var south = bounds.getSouth();
+        if (south < -90) {
+            south = -90;
+        }
+        var north = bounds.getNorth();
+        if (north > 90) {
+            north = 90;
+        }
+        var west = bounds.getWest();
+        if (west < -180) {
+            west = -180;
+        }
+        if (west > 180) {
+            west = 180;
+        }
+        var east = bounds.getEast();
+        if (east > 180) {
+            east = 180;
+        }
+        if (east < -180) {
+            east = -180;
+        }
+        solrBbox = "[" + south + "," + west + " TO " + north + "," + east + "]";
+    } else {
+        console.log("bounds is not an object");
+        solrBbox = "[-90,-180 TO 90, 180]"; // a generic Bbox
+    }
+    return(solrBbox);
+}
+
+function geohashLevel(zoomLevel, type) {
+    /*
+     function geohashLevel
+     date: 11/03/2015
+     purpose: return the proper geohash lever to use
+     inputs: zoomLevel (integer), type (string)
+     outputs:
+     */
+    var geoLevel;
+
+    if (type === "geohash") {
+        switch (zoomLevel) {
+            case 1:
+            case 2:
+                geoLevel = "geohash_1";
+                break;
+            case 3:
+            case 4:
+            case 5:
+                geoLevel = "geohash_2";
+                break;
+            case 6:
+            case 7:
+                geoLevel = "geohash_3";
+                break;
+            case 8:
+            case 9:
+                geoLevel = "geohash_4";
+                break;
+            case 10:
+            case 11:
+                geoLevel = "geohash_5";
+                break;
+            default:
+                geoLevel = "geohash_6";
+                break;
+
+        }
+    } else {
+        // does nothing for now
+    }
+    return (geoLevel);
+}
