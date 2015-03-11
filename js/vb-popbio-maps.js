@@ -416,6 +416,7 @@ function geohashLevel(zoomLevel, type) {
         }
     } else {
         // does nothing for now
+        //TODO: Automatically construct the proper facet statistics object based on zoomLevel
     }
     return (geoLevel);
 }

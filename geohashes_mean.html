@@ -34,16 +34,16 @@
 <div id="map" style="width:100%; top:0; bottom:0;"></div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="./js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script type="text/javascript" src="./js/leaflet-dvf.min.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
-<script type="text/javascript" src="js/google.js"></script>
+<script type="text/javascript" src="./js/google.js"></script>
 <script type="text/javascript" src="./js/PruneCluster.js"></script>
 <script type="text/javascript" src="./js/spin.js"></script>
 <script type="text/javascript" src="./js/leaflet.spin.js"></script>
 <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
 <script language="JavaScript">
+    //TODO: Sync JS here with the one in vb_geohashes_mean.html
     var map;
     var assetLayerGroup;
     var smallClusters = [];
@@ -53,8 +53,8 @@
     var ggl = new L.Google("HYBRID",{
         minZoom: 2,
         maxZoom: 15,
-//        noWrap: true,
-//        continuousWorld: 0,
+        noWrap: 1,
+        continuousWorld: 0,
         detectRetina: 0
     });
 
