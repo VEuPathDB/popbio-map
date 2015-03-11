@@ -17,13 +17,13 @@ function initMap() {
     }).addTo(map);
 
     map.spin(true);
-    loadSolr(0, map.getZoom());
+    loadSolr({clear: 0, zoomLevel: map.getZoom()});
     map.spin(false);
 
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
-        loadSolr(1, map.getZoom());
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
         // map.spin(false);
         // console.log(map.getZoom());
 

@@ -13,7 +13,7 @@
         }
 
         #map {
-            background-color: #292929;
+            background-color: rgb(41, 41, 41);
         }
     </style>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
@@ -23,15 +23,13 @@
     <link rel="stylesheet" href="./css/MarkerCluster.Default.css" type="text/css" media="screen"/>
 
     <script language="javascript">
-        var map;
-        var assetLayerGroup;
-        var smallClusters = [];
+
 
     </script>
 
 </head>
 
-<body onLoad="initMap()">
+<body>
 
 <div id="map" style="width:100%; top:0; bottom:0;"></div>
 
@@ -43,6 +41,40 @@
 <script type="text/javascript" src="./js/spin.js"></script>
 <script type="text/javascript" src="./js/leaflet.spin.js"></script>
 <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
-<script type="text/javascript" src="./js/geohashes_mean.js"></script>
+<!--<script type="text/javascript" src="./js/geohashes_mean.js"></script>-->
+<script language="JavaScript">
+    var map;
+    var assetLayerGroup;
+    var smallClusters = [];
+
+    // create a map in the "map" div, set the view to a given place and zoom
+    map = L.map('map').setView([18, 0.0], 3);
+    assetLayerGroup = new L.LayerGroup();
+    assetLayerGroup.addTo(map);
+
+    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+        minZoom: 2,
+        maxZoom: 13,
+        noWrap: 1,
+        detectRetina: 0,
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        id: 'examples.map-i875mjb7'
+    }).addTo(map);
+
+    map.spin(true);
+    loadSolr({clear: 0, zoomLevel: map.getZoom()});
+    map.spin(false);
+
+
+    // detect when user changes zoom or pans around the map
+    map.on("moveend", function () {
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+        // map.spin(false);
+        // console.log(map.getZoom());
+
+    });
+</script>
 </body>
 </html>

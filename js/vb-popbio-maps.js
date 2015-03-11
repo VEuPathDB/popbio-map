@@ -5,18 +5,29 @@
  * library as possible.
  */
 
-function loadSolr(clear, zoomLevel) {
+function loadSolr(parameters) {
+    "use strict";
+    var clear = parameters.clear;
+    var zoomLevel = parameters.zoomLevel;
     var bounds = map.getBounds();
 
     // fix endless bounds of leaflet to comply with SOLR limits
     var south = bounds.getSouth();
-    if (south < -90) south = -90;
+    if (south < -90) {
+        south = -90;
+    }
     var north = bounds.getNorth();
-    if (north > 90) north = 90;
+    if (north > 90) {
+        north = 90;
+    }
     var west = bounds.getWest();
-    if (west < -180) west = -180;
+    if (west < -180) {
+        west = -180;
+    }
     var east = bounds.getEast();
-    if (east > 180) east = 180;
+    if (east > 180) {
+        east = 180;
+    }
 
     // detect the zoom level and request the appropriate facets
     var geoLevel;
@@ -58,7 +69,7 @@ function loadSolr(clear, zoomLevel) {
     }
 
     // get the visible world to filter the records based on what the user is currently viewing
-    SolrBBox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
+    var SolrBBox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
 
     var terms = [];
 
@@ -70,7 +81,7 @@ function loadSolr(clear, zoomLevel) {
         // landmarks in each geohash
 
         // detect empty results set
-        if (result.response.numFound == 0) {
+        if (result.response.numFound === 0) {
             map.spin(false);
             return;
         }
@@ -94,7 +105,7 @@ function loadSolr(clear, zoomLevel) {
             case 6:
             case 7:
                 docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_3;
-                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_3;
+                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.result.geohash_3;
                 break;
             case 8:
             case 9:
@@ -121,63 +132,62 @@ function loadSolr(clear, zoomLevel) {
         smallClusters = [];
 
         for (var key in docLat) {
-            //noinspection JSUnfilteredForInLoop
-            var count = docLat[key].count;
-            if (count < 2) {
-                smallClusters.push(key);
-                continue;
-            }
+            if (docLat.hasOwnProperty(key)) {
+                var count = docLat[key].count;
+                if (count < 2) {
+                    smallClusters.push(key);
+                    continue;
+                }
 
-            if (zoomLevel == 5 && count < 11) {
-                smallClusters.push(key);
-                continue;
-            }
-            if (zoomLevel == 6 && count < 26) {
-                smallClusters.push(key);
-                continue;
-            }
-            if (zoomLevel == 7 && count < 41) {
-                smallClusters.push(key);
-                continue;
-            }
-            if (zoomLevel == 8 && count < 61) {
-                smallClusters.push(key);
-                continue;
-            }
-            if (zoomLevel == 9 && count < 81) {
-                smallClusters.push(key);
-                continue;
-            }
-            if (zoomLevel > 9 && count < 101) {
-                smallClusters.push(key);
-                continue;
-            }
+                if (zoomLevel === 5 && count < 11) {
+                    smallClusters.push(key);
+                    continue;
+                }
+                if (zoomLevel === 6 && count < 26) {
+                    smallClusters.push(key);
+                    continue;
+                }
+                if (zoomLevel === 7 && count < 41) {
+                    smallClusters.push(key);
+                    continue;
+                }
+                if (zoomLevel === 8 && count < 61) {
+                    smallClusters.push(key);
+                    continue;
+                }
+                if (zoomLevel === 9 && count < 81) {
+                    smallClusters.push(key);
+                    continue;
+                }
+                if (zoomLevel > 9 && count < 101) {
+                    smallClusters.push(key);
+                    continue;
+                }
 
-            // add to small clusters geocaches with all landmarks from the same location
-            if (docLat[key].min == docLat[key].max && docLng[key].min == docLng[key].max) {
-                smallClusters.push(key);
-                continue;
+                // add to small clusters geohashes with all landmarks from the same location
+                if (docLat[key].min === docLat[key].max && docLng[key].min === docLng[key].max) {
+                    smallClusters.push(key);
+                    continue;
+                }
+                // process the JSON returned from SOLR to make it compatible with leaflet-dvf
+                var arr = {};
+                arr.term = key;
+                arr.count = docLat[key].count;
+                arr.latLng = [docLat[key].mean, docLng[key].mean];
+                arr.bounds = [[docLat[key].min, docLng[key].min], [docLat[key].max, docLng[key].max]];
+                terms.push(arr);
             }
-            // process the JSON returned from SOLR to make it compatible with leaflet-dvf
-            var arr = {};
-            arr['term'] = key;
-            arr['count'] = docLat[key].count;
-            arr['latLng'] = [docLat[key].mean, docLng[key].mean];
-            arr['bounds'] = [[docLat[key].min, docLng[key].min], [docLat[key].max, docLng[key].max]];
-            terms.push(arr);
         }
 
         var convertedJson = {};
-        convertedJson['terms'] = terms;
-
-        var sizeFunction = new L.LinearFunction([1, 28], [50000, 48]);
+        convertedJson.terms = terms;
 
         var options = {
-            recordsField: 'terms',
-            latitudeField: 'latLng.0',
-            longitudeField: 'latLng.1',
+            recordsField: "terms",
+            latitudeField: "latLng.0",
+            longitudeField: "latLng.1",
             displayOptions: {
-                'count': {
+                "count": {
                     title: function (value) {
                         return value;
                     }
@@ -187,23 +197,21 @@ function loadSolr(clear, zoomLevel) {
                 fill: false,
                 stroke: false,
                 weight: 0,
-                color: '#80FF00',
+                color: "#80FF00",
                 dropShadow: false
 
             },
-            setIcon: function (record, options) {
+            setIcon: function (record) {
                 var size = 40;
-                var icon = new L.DivIcon({
-                    html: '<div><span>' + record.count + '</span></div>',
+                return new L.DivIcon({
+                    html: "<div><span>" + record.count + "</span></div>",
                     iconSize: new L.Point(size, size),
-                    className: 'marker-cluster marker-cluster-large'
+                    className: "marker-cluster marker-cluster-large"
                 });
-
-                return icon;
             },
             onEachRecord: function (layer, record) {
 
-                layer.on('click', function () {
+                layer.on("click", function () {
                     map.fitBounds(record.bounds);
                 });
             }
@@ -235,7 +243,7 @@ function loadSolr(clear, zoomLevel) {
 // var url = "http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
 // var url = "http://vb-dev.bio.ic.ac.uk:9090/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
     // bundle_name is here to only select samples and avoid displaying duplicate entries
-    var url = "http://vb-dev.bio.ic.ac.uk:9090/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
 
     console.log(url);
 
@@ -247,18 +255,27 @@ function loadSolr(clear, zoomLevel) {
 }
 
 function loadSmall(mode, zoomLevel, SolrBBox) {
-
-    var bounds = map.getBounds();
+    "use strict";
+    var bounds;
+    bounds = map.getBounds();
 
     // fix endless bounds of leaflet to comply with SOLR limits
     var south = bounds.getSouth();
-    if (south < -90) south = -90;
+    if (south < -90) {
+        south = -90;
+    }
     var north = bounds.getNorth();
-    if (north > 90) north = 90;
+    if (north > 90) {
+        north = 90;
+    }
     var west = bounds.getWest();
-    if (west < -180) west = -180;
+    if (west < -180) {
+        west = -180;
+    }
     var east = bounds.getEast();
-    if (east > 180) east = 180;
+    if (east > 180) {
+        east = 180;
+    }
 
 
     var pruneCluster = new PruneClusterForLeaflet();
@@ -269,8 +286,8 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
         });
 
 
-        m.on('click', function () {
-            // Compute the  cluster bounds (it's slow : O(n))
+        m.on("click", function () {
+            // Compute the  cluster bounds (it"s slow : O(n))
             var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
             var b = pruneCluster.Cluster.ComputeBounds(markersArea);
 
@@ -282,10 +299,10 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
                 var zoomLevelBefore = pruneCluster._map.getZoom();
                 var zoomLevelAfter = pruneCluster._map.getBoundsZoom(bounds, false, new L.Point(20, 20, null));
 
-                // If the zoom level doesn't change
+                // If the zoom level doesn"t change
                 if (zoomLevelAfter === zoomLevelBefore) {
                     // Send an event for the LeafletSpiderfier
-                    pruneCluster._map.fire('overlappingmarkers', {
+                    pruneCluster._map.fire("overlappingmarkers", {
                         cluster: pruneCluster,
                         markers: markersArea,
                         center: m.getLatLng(),
@@ -299,14 +316,14 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
                 }
             }
         });
-        m.on('mouseout', function () {
+        m.on("mouseout", function () {
             //do mouseout stuff here
         });
 
-        m.on('mouseover', function (e) {
+        m.on("mouseover", function (e) {
 
             // var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
-            // pruneCluster._map.fire('overlappingmarkers', {
+            // pruneCluster._map.fire("overlappingmarkers", {
             // cluster: pruneCluster,
             // markers: markersArea,
             // center: m.getLatLng(),
@@ -351,14 +368,14 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
     }
 
     // get the visible world to filter the records based on what the user is currently viewing
-    var SolrBBox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
+    SolrBBox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
     var geoQuery;
 
-    if (mode == 0) {
+    if (mode === 0) {
         geoQuery = "(";
 
         for (var i = 0; i < smallClusters.length; i++) {
-            if (i == smallClusters.length - 1) {
+            if (i === smallClusters.length - 1) {
                 geoQuery += smallClusters[i];
                 break;
             }
@@ -376,17 +393,17 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
 
         var doc = result.response.docs;
 
-        for (var key in doc) {
-            // console.log(doc[key].geo_coords);
+        for (var key in doc) if (doc.hasOwnProperty(key)) { 
             var coords = doc[key].geo_coords.split(",");
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
             pruneCluster.RegisterMarker(marker);
         }
+
         pruneCluster.Cluster.Size = 20;
         pruneCluster.ProcessView();
 
         if (mode) {
-            assetLayerGroup.clearLayers()
+            assetLayerGroup.clearLayers();
         }
         assetLayerGroup.addLayer(pruneCluster);
         //inform the user loading is done
@@ -396,7 +413,7 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
 
     // var url = "http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
     // var url = "http://vb-dev.bio.ic.ac.uk:9090/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
-    var url = "http://vb-dev.bio.ic.ac.uk:9090/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
 
     console.log(url);
 
