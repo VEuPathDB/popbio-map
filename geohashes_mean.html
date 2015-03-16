@@ -64,25 +64,12 @@
 //            noWrap: true,
 //            continuousWorld: 0,
             detectRetina: 0
-        })
+    });
     map.addLayer(ggl2);
     assetLayerGroup = new L.LayerGroup();
     assetLayerGroup.addTo(map);
     map.addControl(new L.Control.Layers( {'Google Hybrid':ggl, 'Google Terrain':ggl2}, {}));
 
-
-/*
-    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-        minZoom: 2,
-        maxZoom: 13,
-        noWrap: 1,
-        detectRetina: 0,
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        id: 'examples.map-i875mjb7'
-    }).addTo(map);
-*/
     var lastValidCenter = map.getCenter();
     map.spin(true);
     loadSolr({clear: 0, zoomLevel: map.getZoom()});

@@ -212,7 +212,7 @@ function loadSolr(parameters) {
 
 function loadSmall(mode, zoomLevel, SolrBBox) {
     "use strict";
-    var pruneCluster = new PruneClusterForLeaflet();
+    var pruneCluster = new PruneClusterForLeaflet(40);
 
     pruneCluster.BuildLeafletCluster = function (cluster, position) {
         var m = new L.Marker(position, {
@@ -306,8 +306,8 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
             pruneCluster.RegisterMarker(marker);
         }
 
-        pruneCluster.Cluster.Size = 20;
-        pruneCluster.ProcessView();
+        //pruneCluster.Cluster.Size = 20;
+        //pruneCluster.ProcessView();
 
         if (mode) {
             assetLayerGroup.clearLayers();

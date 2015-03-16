@@ -128,8 +128,8 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script type="text/javascript" src="./js/leaflet-dvf.min.js"></script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
-<script type="text/javascript" src="js/google.js"></script>
+<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>-->
+<!--<script type="text/javascript" src="js/google.js"></script>-->
 <script type="text/javascript" src="./js/PruneCluster.js"></script>
 <script type="text/javascript" src="./js/spin.js"></script>
 <script type="text/javascript" src="./js/leaflet.spin.js"></script>
@@ -142,52 +142,52 @@
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map').setView([18, 0.0], 3);
 
-    //FixMe: Google layers not respecting the noWrap option
-    var ggl = new L.Google("HYBRID", {
+    var mp1 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: 15,
+        subdomains: ["otile1", "otile2", "otile3", "otile4"],
         noWrap: 1,
-        continuousWorld: 0,
-        detectRetina: 0
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
+        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="http://mapbox.com">Mapbox</a>'
     });
 
-    var ggl2 = new L.Google("TERRAIN", {
+    var mp2 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: 15,
-//            noWrap: true,
-//            continuousWorld: 0,
-        detectRetina: 0
-    })
-    map.addLayer(ggl2);
+        subdomains: ["otile1", "otile2", "otile3", "otile4"],
+        noWrap: 1,
+        attribution: 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+    });
+
+    var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        minZoom: 2,
+        maxZoom: 15,
+//        subdomains: ["otile1", "otile2", "otile3", "otile4"],
+        noWrap: 1,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
+        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+    });
+
+    map.addLayer(mp1);
     assetLayerGroup = new L.LayerGroup();
     assetLayerGroup.addTo(map);
-    map.addControl(new L.Control.Layers({'Google Hybrid': ggl, 'Google Terrain': ggl2}, {}));
+    map.addControl(new L.Control.Layers({
+        "MapQuest-OSM": mp1,
+        'OpenStreetMap': mp3,
+        'MapQuest Open Aerial': mp2
+    }, {}));
 
 
-    var lastValidCenter = map.getCenter();
-
-    //FixMe: Fix spinner displaying both the popbio and VB spinner
     map.spin(true);
     loadSolr({clear: 0, zoomLevel: map.getZoom()});
     map.spin(false);
 
     // detect when user changes zoom or pans around the map
-    //TODO: Decide how to handle out of bounds panning
     map.on("moveend", function () {
-        var bounds = map.getBounds();
-        var east = bounds.getEast();
-        var west = bounds.getWest();
-        var north = bounds.getNorth();
-        var south = bounds.getSouth();
-        if (west < -300 || east > 300 || south < -90 || north > 90) {
-            map.panTo(lastValidCenter);
-        } else {
-            lastValidCenter = map.getCenter();
-            console.log("North: " + north + ", South: " + south);
-            loadSolr({clear: 1, zoomLevel: map.getZoom()});
-        }
-        // map.spin(false);
-        // console.log(map.getZoom());
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+        console.log("My zoom level is " + map.getZoom());
     });
 
 </script>
