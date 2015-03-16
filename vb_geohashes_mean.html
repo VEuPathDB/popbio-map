@@ -133,6 +133,7 @@
 <script type="text/javascript" src="./js/PruneCluster.js"></script>
 <script type="text/javascript" src="./js/spin.js"></script>
 <script type="text/javascript" src="./js/leaflet.spin.js"></script>
+<script type="text/javascript" src="./js/Icon.Canvas.js"></script>
 <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
 <script language="JavaScript">
     var map;
@@ -155,6 +156,7 @@
     var mp2 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: 15,
+        maxNativeZoom: 11,
         subdomains: ["otile1", "otile2", "otile3", "otile4"],
         noWrap: 1,
         attribution: 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
@@ -163,7 +165,6 @@
     var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: 15,
-//        subdomains: ["otile1", "otile2", "otile3", "otile4"],
         noWrap: 1,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -187,7 +188,7 @@
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
-        console.log("My zoom level is " + map.getZoom());
+//        console.log("My zoom level is " + map.getZoom());
     });
 
 </script>

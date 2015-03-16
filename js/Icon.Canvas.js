@@ -1,0 +1,77 @@
+L.Icon.Canvas = L.Icon.extend({
+    options: {
+        iconSize: new L.Point(20, 20), // Have to be supplied
+        /*
+         iconAnchor: (Point)
+         popupAnchor: (Point)
+         */
+        className: 'leaflet-canvas-icon',
+        population: 0,
+        stats: [],
+        colors: ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e']
+    },
+
+    createIcon: function () {
+        var e = document.createElement('canvas');
+        this._setIconStyles(e, 'icon');
+        var s = this.options.iconSize;
+        var pop = this.options.population;
+        e.width = s.x;
+        e.height = s.y;
+        this.draw(e.getContext('2d'), s.x, s.y);
+        return e;
+    },
+
+    createShadow: function () {
+        return null;
+    },
+
+    draw: function (canvas, width, height) {
+
+        var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
+        var lol = 0;
+        var pi2 = Math.PI * 2;
+
+        var start = 0;
+        var i = 0;
+        for (var key in this.options.stats) if (this.options.stats.hasOwnProperty(key)) {
+
+            var size = this.options.stats[key] / this.options.population;
+            //console.log(key + "-" + this.options.stats[key]);
+
+            if (size > 0) {
+                canvas.beginPath();
+                canvas.moveTo(iconSize2, iconSize2);
+                canvas.fillStyle = this.options.colors[i];
+                var from = start + 0.14,
+                    to = start + size * pi2;
+
+                if (to < from) {
+                    from = start;
+                }
+                canvas.arc(iconSize2, iconSize2, iconSize2, from, to);
+
+                start = start + size * pi2;
+                canvas.lineTo(iconSize2, iconSize2);
+                canvas.fill();
+                canvas.closePath();
+            }
+
+            ++i;
+
+        }
+
+        canvas.beginPath();
+        canvas.fillStyle = 'white';
+        canvas.arc(iconSize2, iconSize2, iconSize3, 0, Math.PI * 2);
+        canvas.fill();
+        canvas.closePath();
+
+        canvas.fillStyle = '#555';
+        canvas.textAlign = 'center';
+        canvas.textBaseline = 'middle';
+        canvas.font = 'bold 12px sans-serif';
+
+        canvas.fillText(this.options.population, iconSize2, iconSize2, iconSize);
+    }
+});

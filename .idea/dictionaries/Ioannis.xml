@@ -4,6 +4,7 @@
       <w>coords</w>
       <w>geohash</w>
       <w>geohashes</w>
+      <w>subdomains</w>
     </words>
   </dictionary>
 </component>

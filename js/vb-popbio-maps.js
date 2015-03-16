@@ -41,6 +41,8 @@ function loadSolr(parameters) {
 
         var docLat;
         var docLng;
+        var docSpc;
+        var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
 
         // process the correct geohashed based on the zoomlevel
         switch (zoomLevel) {
@@ -48,31 +50,37 @@ function loadSolr(parameters) {
             case 2:
                 docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_1;
                 docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_1;
+                docSpc = result.facet_counts.facet_pivot["geohash_1,species_category"];
                 break;
             case 3:
             case 4:
             case 5:
                 docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_2;
                 docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_2;
+                docSpc = result.facet_counts.facet_pivot["geohash_2,species_category"];
                 break;
             case 6:
             case 7:
                 docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_3;
                 docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_3;
+                docSpc = result.facet_counts.facet_pivot["geohash_3,species_category"];
                 break;
             case 8:
             case 9:
                 docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_4;
                 docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_4;
+                docSpc = result.facet_counts.facet_pivot["geohash_4,species_category"];
                 break;
             case 10:
             case 11:
                 docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_5;
                 docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_5;
+                docSpc = result.facet_counts.facet_pivot["geohash_5,species_category"];
                 break;
             default:
                 docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_6;
                 docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_6;
+                docSpc = result.facet_counts.facet_pivot["geohash_6,species_category"];
                 break;
 
         }
@@ -83,6 +91,22 @@ function loadSolr(parameters) {
         // The following values seem to work well. Most of the latency is due to SOLR taking a long
         // time to return the landmarks of several geohashes.
         smallClusters = [];
+
+        var populations = [];
+        var statistics = [];
+
+        docSpc.forEach(function (element, index, array) {
+            populations[element.value] = element.count;
+            //console.log(element.value + ":");
+
+            var elStats = [];
+            element.pivot.forEach(function (innElement) {
+                elStats[innElement.value] = innElement.count;
+            });
+            statistics[element.value] = elStats;
+
+
+        });
 
         for (var key in docLat) {
             if (docLat.hasOwnProperty(key)) {
@@ -128,6 +152,10 @@ function loadSolr(parameters) {
                 arr.count = docLat[key].count;
                 arr.latLng = [docLat[key].mean, docLng[key].mean];
                 arr.bounds = [[docLat[key].min, docLng[key].min], [docLat[key].max, docLng[key].max]];
+                arr.population = populations[key];
+                arr.stats = statistics[key];
+                arr.colors = colors;
+                //console.log('see:' + arr.stats);
                 terms.push(arr);
             }
         }
@@ -154,16 +182,26 @@ function loadSolr(parameters) {
                 dropShadow: false
 
             },
+            //setIcon: function (record) {
+            //    var size = 40;
+            //    return new L.DivIcon({
+            //        html: "<div><span>" + record.count + "</span></div>",
+            //        iconSize: new L.Point(size, size),
+            //        className: "marker-cluster marker-cluster-large"
+            //    });
+            //},
             setIcon: function (record) {
                 var size = 40;
-                return new L.DivIcon({
-                    html: "<div><span>" + record.count + "</span></div>",
+                return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
-                    className: "marker-cluster marker-cluster-large"
+                    className: "prunecluster leaflet-markercluster-icon lamogio",
+                    population: record.population,
+                    stats: record.stats
                 });
             },
             onEachRecord: function (layer, record) {
-
+                //console.log("taki"+ record.population);
+                //record.stats.push(100);
                 layer.on("click", function () {
                     map.fitBounds(record.bounds);
                 });
@@ -193,12 +231,9 @@ function loadSolr(parameters) {
     };
 
 
-// var url = "http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
-// var url = "http://vb-dev.bio.ic.ac.uk:9090/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
-    // bundle_name is here to only select samples and avoid displaying duplicate entries
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
 
-    //console.log(url);
+    console.log(url);
 
     // inform the user that data is loading
     map.spin(true);
@@ -213,6 +248,86 @@ function loadSolr(parameters) {
 function loadSmall(mode, zoomLevel, SolrBBox) {
     "use strict";
     var pruneCluster = new PruneClusterForLeaflet(40);
+
+    pruneCluster.BuildLeafletClusterIcon = function (cluster) {
+        var e = new L.Icon.MarkerCluster();
+
+        e.stats = cluster.stats;
+        e.population = cluster.population;
+        return e;
+    };
+
+    var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
+    var pi2 = Math.PI * 2;
+
+    L.Icon.MarkerCluster = L.Icon.extend({
+        options: {
+            iconSize: new L.Point(40, 40),
+            className: 'prunecluster leaflet-markercluster-icon'
+        },
+
+        createIcon: function () {
+            // based on L.Icon.Canvas from shramov/leaflet-plugins (BSD licence)
+            var e = document.createElement('canvas');
+            this._setIconStyles(e, 'icon');
+            var s = this.options.iconSize;
+            e.width = s.x;
+            e.height = s.y;
+            this.draw(e.getContext('2d'), s.x, s.y);
+            return e;
+        },
+
+        createShadow: function () {
+            return null;
+        },
+
+        draw: function (canvas, width, height) {
+            var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 3;
+            var lol = 0;
+
+            var start = 0;
+            var i = 8;
+            for (var key in this.stats) if (this.stats.hasOwnProperty(key)) {
+
+                var size = this.stats[key] / this.population;
+                //console.log(key + ":" + this.stats[key]);
+
+                if (size > 0) {
+                    canvas.beginPath();
+                    canvas.moveTo(iconSize2, iconSize2);
+                    canvas.fillStyle = colors[i];
+                    var from = start + 0.14,
+                        to = start + size * pi2;
+
+                    if (to < from) {
+                        from = start;
+                    }
+                    canvas.arc(iconSize2, iconSize2, iconSize2, from, to);
+
+                    start = start + size * pi2;
+                    canvas.lineTo(iconSize2, iconSize2);
+                    canvas.fill();
+                    canvas.closePath();
+                }
+
+                --i;
+
+            }
+
+            canvas.beginPath();
+            canvas.fillStyle = 'white';
+            canvas.arc(iconSize2, iconSize2, iconSize3, 0, Math.PI * 2);
+            canvas.fill();
+            canvas.closePath();
+
+            canvas.fillStyle = '#555';
+            canvas.textAlign = 'center';
+            canvas.textBaseline = 'middle';
+            canvas.font = 'bold 12px sans-serif';
+
+            canvas.fillText(this.population, iconSize2, iconSize2, iconSize);
+        }
+    });
 
     pruneCluster.BuildLeafletCluster = function (cluster, position) {
         var m = new L.Marker(position, {
@@ -243,7 +358,6 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
                         marker: m
                     });
 
-                    // pruneCluster._map.setView(position, zoomLevelAfter);
                 }
                 else {
                     pruneCluster._map.fitBounds(bounds);
@@ -256,13 +370,6 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
 
         m.on("mouseover", function (e) {
 
-            // var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
-            // pruneCluster._map.fire("overlappingmarkers", {
-            // cluster: pruneCluster,
-            // markers: markersArea,
-            // center: m.getLatLng(),
-            // marker: m
-            // });
 
         });
         return m;
@@ -303,11 +410,12 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
         for (var key in doc) if (doc.hasOwnProperty(key)) { 
             var coords = doc[key].geo_coords.split(",");
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
+            if (doc[key].hasOwnProperty("species_category")) {
+                marker.category = doc[key].species_category[0];
+                //console.log(doc[key].species_category[0]);
+            }
             pruneCluster.RegisterMarker(marker);
         }
-
-        //pruneCluster.Cluster.Size = 20;
-        //pruneCluster.ProcessView();
 
         if (mode) {
             assetLayerGroup.clearLayers();
@@ -318,9 +426,7 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
     };
 
 
-    // var url = "http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
-    // var url = "http://vb-dev.bio.ic.ac.uk:9090/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords,species_category&wt=json&indent=false&json.nl=map&json.wrf=?&callback=?";
 
     //console.log(url);
 
@@ -370,7 +476,7 @@ function buildBbox(bounds){
         }
         solrBbox = "[" + south + "," + west + " TO " + north + "," + east + "]";
     } else {
-        console.log("bounds is not an object");
+        //console.log("bounds is not an object");
         solrBbox = "[-90,-180 TO 90, 180]"; // a generic Bbox
     }
     return(solrBbox);

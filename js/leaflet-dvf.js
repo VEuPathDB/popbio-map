@@ -4085,7 +4085,7 @@ L.radialBarMarker = function (centerLatLng, options) {
 /*
  * Class for drawing a pie chart marker on the map
  */
-L.PieChartMarker = L.ChartMarker.extend({
+L.ChartMarker = L.ChartMarker.extend({
 	initialize: function (centerLatLng, options) {
 		L.Util.setOptions(this, options);
 		
