@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="./css/dvf.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/example.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/ui.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/nv.d3.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/MarkerCluster.Default.css" type="text/css" media="screen"/>
 
     <style>
@@ -53,13 +54,13 @@
             font: 14px/16px Arial, Helvetica, sans-serif;
             background: white;
             background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
             border-radius: 5px;
         }
 
         .info h4 {
             margin: 0 0 5px;
-            color: #777;
+            /*color: #777;*/
         }
 
         .legend {
@@ -75,6 +76,8 @@
             margin-right: 8px;
             opacity: 0.7;
         }
+
+
     </style>
 </head>
 
@@ -160,6 +163,8 @@
 <script type="text/javascript" src="./js/spin.js"></script>
 <script type="text/javascript" src="./js/leaflet.spin.js"></script>
 <script type="text/javascript" src="./js/Icon.Canvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/d3pie.min.js"></script>
 <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
 <script language="JavaScript">
     var map;
@@ -201,17 +206,18 @@
     map.addLayer(mp1);
     assetLayerGroup = new L.LayerGroup();
     assetLayerGroup.addTo(map);
-    map.addControl(new L.Control.Layers({
+    var layerCtl = new L.Control.Layers({
         "MapQuest-OSM": mp1,
         'OpenStreetMap': mp3,
         'MapQuest Open Aerial': mp2
-    }, {}));
-
+    });
+    layerCtl.setPosition('topleft');
+    layerCtl.addTo(map);
 
     map.spin(true);
 
     // fetch a list of all species with geodata and build a color palette for them
-
+    //TODO: Move this to the library
     var genPalette = function (result) {
 
         var doc = result.facet_counts.facet_fields.species_category;
@@ -221,14 +227,14 @@
         }
 
         palette = buildPalette(items, 20, 1);
-        var legend = L.control({position: 'bottomright'});
+        var legend = L.control({position: 'bottomleft'});
 
         legend.onAdd = function (map) {
 
             var div = L.DomUtil.create('div', 'info legend');
 
             for (var obj in palette) {
-                console.log(obj + '-' + palette[obj]);
+//                console.log(obj + '-' + palette[obj]);
                 div.innerHTML +=
                         '<i style="background:' + palette[obj] + '"></i> ' +
                         (obj ? '<em>' + obj + '</em><br>' : '+');
@@ -242,27 +248,116 @@
     var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.field=species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
     $.getJSON(url, genPalette);
 
-    // now let's make a legend for the species on the map
-    //    var legend = L.Control({position: 'bottomleft'});
-    //
-    //    legend.onAdd = function (map) {
-    //        var div = L.DomUtil.create('div', 'info legend');
-    //
-    //        for (var obj in palette) {
-    //            div.innerHTML +=
-    //                    '<i style="background:' + palette[obj] + '"></i> ' +
-    //                    (obj ? obj + '<br>' : '+');
-    //        }
-    //
-    //        return div;
-    //    }
-    //
-    //    legend.addTo(map);
+    //TODO: Also bound this to local cluster markers
+    //TODO: Move this to the library
+    //FIXME: Fix issue when the info div pops underneath the mouse cursor
+    //FIXME: Fix border and title (add an extra div at the top) of the info div
+    // now let's make an info div
+    var info = L.control({position: 'bottomright'});
 
-    // get color depending on population density value
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+
+        this._div.innerHTML = '<div id="pieChart"></div>';
 
 
+        this.update();
+        return this._div;
+    };
 
+    // method that we will use to update the control based on feature properties passed
+    info.update = function (population, stats) {
+        if (stats) {
+
+//                pie.updateProp("size.canvasWidth", 100)
+            pie.updateProp("header.title.text", "Marker Properties")
+            pie.updateProp("data.content", stats);
+            $("#pieChart").height(400);
+            $("#pieChart").width(600);
+        } else {
+            if (pie) {
+//                pie.destroy();
+                pie.updateProp("header.title.text", "Hover over a marker")
+            }
+            $("#pieChart").height(20);
+            $("#pieChart").width(200);
+//            this._div.innerHTML = "Hover over a marker";
+        }
+    };
+
+    info.addTo(map);
+
+    var pie = new d3pie("pieChart", {
+        "header": {
+            "title": {
+                "text": "Hover over a marker",
+                "fontSize": 16,
+//                "font": "courier"
+            },
+            "subtitle": {
+                "text": "specimen counts grouped per species",
+                "color": "#999999",
+                "fontSize": 12,
+//                "font": "courier"
+            },
+            "titleSubtitlePadding": 10
+        },
+        "size": {
+            "canvasHeight": 400,
+            "canvasWidth": 600
+        },
+        "data": {
+            "sortOrder": "value-desc"
+        },
+        "labels": {
+            "outer": {
+                "format": "label-value1",
+                "hideWhenLessThanPercentage": 1,
+                "pieDistance": 13
+            },
+            "inner": {
+                "format": "none"
+            },
+            "mainLabel": {
+                "fontSize": 11
+            },
+            "percentage": {
+                "color": "#999999",
+                "fontSize": 11,
+                "decimalPlaces": 0
+            },
+            "value": {
+                "color": "#c3ba25",
+                "fontSize": 11
+            },
+            "lines": {
+                "enabled": true
+            }
+        },
+        "tooltips": {
+            "enabled": false,
+            "type": "placeholder",
+            "string": "{label}: {value}, {percentage}%"
+        },
+        "effects": {
+            "load": {
+                "speed": 400
+            },
+            "pullOutSegmentOnClick": {
+                "effect": "linear",
+                "speed": 200,
+                "size": 8
+            }
+        },
+        "misc": {
+            "colors": {
+                "segmentStroke": "#000000"
+            }
+        }
+    });
+
+    $("#pieChart").height(30);
+    $("#pieChart").width(200);
 
     loadSolr({clear: 0, zoomLevel: map.getZoom()});
     map.spin(false);

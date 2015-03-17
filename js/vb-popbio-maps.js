@@ -94,23 +94,33 @@ function loadSolr(parameters) {
 
         var populations = []; // keep the total marker count for each geohash
         var statistics = []; // keep the species count for each geohash
+        var fullStatistics = []; // keep the species count for each geohash
 
         // go over the facet pivots and save the population and statistics
         docSpc.forEach(function (element, index, array) {
             populations[element.value] = element.count;
             var elStats = [];
+            var fullElStats = [];
             var i = 1;
             element.pivot.forEach(function (innElement) {
+                var key = innElement.value,
+                    count = innElement.count;
                 if (i < 8) {
-                    elStats[innElement.value] = innElement.count;
+                    elStats[key] = count;
                 } else {
-                    elStats.others += innElement.count;
+                    elStats.others += count;
                 }
 
+                fullElStats.push({
+                    label: key,
+                    value: count
+                });
+                //fullElStats[innElement.value] = innElement.count;
                 ++i;
 
             });
             statistics[element.value] = elStats;
+            fullStatistics[element.value] = fullElStats;
         });
 
         for (var key in docLat) {
@@ -159,6 +169,7 @@ function loadSolr(parameters) {
                 arr.bounds = [[docLat[key].min, docLng[key].min], [docLat[key].max, docLng[key].max]];
                 arr.population = populations[key];
                 arr.stats = statistics[key];
+                arr.fullstats = fullStatistics[key];
                 arr.colors = colors;
                 //console.log('see:' + arr.stats);
                 terms.push(arr);
@@ -210,6 +221,12 @@ function loadSolr(parameters) {
                 layer.on("click", function () {
                     map.fitBounds(record.bounds);
                 });
+                layer.on("mouseover", function () {
+                    info.update(record.population, record.fullstats)
+                });
+                layer.on("mouseout", function () {
+                    info.update()
+                });
             }
 
         };
@@ -238,7 +255,7 @@ function loadSolr(parameters) {
 
     var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
 
-    console.log(url);
+    //console.log(url);
 
     // inform the user that data is loading
     map.spin(true);
@@ -606,3 +623,11 @@ function buildPalette(items, nmColors, paletteType) {
 
     return newPalette;
 }
+
+function highlightFeature(layer, record) {
+    //var layer = e.target;
+
+    info.update(record);
+}
+
+
