@@ -47,6 +47,34 @@
             height: 95%;
 
         }
+
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        .legend {
+            text-align: left;
+            line-height: 18px;
+            color: #555;
+        }
+
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
     </style>
 </head>
 
@@ -128,8 +156,6 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script type="text/javascript" src="./js/leaflet-dvf.min.js"></script>
-<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>-->
-<!--<script type="text/javascript" src="js/google.js"></script>-->
 <script type="text/javascript" src="./js/PruneCluster.js"></script>
 <script type="text/javascript" src="./js/spin.js"></script>
 <script type="text/javascript" src="./js/leaflet.spin.js"></script>
@@ -139,6 +165,7 @@
     var map;
     var assetLayerGroup;
     var smallClusters = [];
+    var palette;
 
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map').setView([18, 0.0], 3);
@@ -182,6 +209,61 @@
 
 
     map.spin(true);
+
+    // fetch a list of all species with geodata and build a color palette for them
+
+    var genPalette = function (result) {
+
+        var doc = result.facet_counts.facet_fields.species_category;
+        var items = [];
+        for (var key in doc) if (doc.hasOwnProperty(key)) {
+            items.push(key);
+        }
+
+        palette = buildPalette(items, 20, 1);
+        var legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function (map) {
+
+            var div = L.DomUtil.create('div', 'info legend');
+
+            for (var obj in palette) {
+                console.log(obj + '-' + palette[obj]);
+                div.innerHTML +=
+                        '<i style="background:' + palette[obj] + '"></i> ' +
+                        (obj ? '<em>' + obj + '</em><br>' : '+');
+            }
+            return div;
+        };
+
+        legend.addTo(map);
+    };
+
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.field=species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
+    $.getJSON(url, genPalette);
+
+    // now let's make a legend for the species on the map
+    //    var legend = L.Control({position: 'bottomleft'});
+    //
+    //    legend.onAdd = function (map) {
+    //        var div = L.DomUtil.create('div', 'info legend');
+    //
+    //        for (var obj in palette) {
+    //            div.innerHTML +=
+    //                    '<i style="background:' + palette[obj] + '"></i> ' +
+    //                    (obj ? obj + '<br>' : '+');
+    //        }
+    //
+    //        return div;
+    //    }
+    //
+    //    legend.addTo(map);
+
+    // get color depending on population density value
+
+
+
+
     loadSolr({clear: 0, zoomLevel: map.getZoom()});
     map.spin(false);
 

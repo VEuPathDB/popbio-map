@@ -42,7 +42,13 @@ L.Icon.Canvas = L.Icon.extend({
             if (size > 0) {
                 canvas.beginPath();
                 canvas.moveTo(iconSize2, iconSize2);
-                canvas.fillStyle = this.options.colors[i];
+                if (palette.hasOwnProperty(key)) {
+                    //console.log(key + '=' + palette[key])
+                    canvas.fillStyle = palette[key];
+                } else {
+                    canvas.fillStyle = palette["others"];
+                    //console.log(key + '*' + palette["others"]);
+                }
                 var from = start + 0.14,
                     to = start + size * pi2;
 

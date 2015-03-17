@@ -92,20 +92,25 @@ function loadSolr(parameters) {
         // time to return the landmarks of several geohashes.
         smallClusters = [];
 
-        var populations = [];
-        var statistics = [];
+        var populations = []; // keep the total marker count for each geohash
+        var statistics = []; // keep the species count for each geohash
 
+        // go over the facet pivots and save the population and statistics
         docSpc.forEach(function (element, index, array) {
             populations[element.value] = element.count;
-            //console.log(element.value + ":");
-
             var elStats = [];
+            var i = 1;
             element.pivot.forEach(function (innElement) {
-                elStats[innElement.value] = innElement.count;
+                if (i < 8) {
+                    elStats[innElement.value] = innElement.count;
+                } else {
+                    elStats.others += innElement.count;
+                }
+
+                ++i;
+
             });
             statistics[element.value] = elStats;
-
-
         });
 
         for (var key in docLat) {
@@ -282,7 +287,7 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
         },
 
         draw: function (canvas, width, height) {
-            var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 3;
+            var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
             var lol = 0;
 
             var start = 0;
@@ -295,7 +300,13 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
                 if (size > 0) {
                     canvas.beginPath();
                     canvas.moveTo(iconSize2, iconSize2);
-                    canvas.fillStyle = colors[i];
+                    if (palette.hasOwnProperty(key)) {
+                        //console.log(key + '=' + palette[key])
+                        canvas.fillStyle = palette[key];
+                    } else {
+                        canvas.fillStyle = palette["others"];
+                        //console.log(key + '*' + palette["others"]);
+                    }
                     var from = start + 0.14,
                         to = start + size * pi2;
 
@@ -525,4 +536,73 @@ function geohashLevel(zoomLevel, type) {
         //TODO: Automatically construct the proper facet statistics object based on zoomLevel
     }
     return (geoLevel);
+}
+
+
+function buildPalette(items, nmColors, paletteType) {
+    /*
+     function buildPalette
+     date: 17/03/2015
+     purpose:
+     inputs: {items} a list of items to be associated with colors, {mColors} the number of colors in the palette
+     {paletteType} 1 for Kelly's 2 for boytons
+     outputs: an associative array with items names as the keys and color as the values
+     */
+    "use strict";
+
+    var newPalette = [];
+
+    var kelly_colors_hex = [
+        "#FFB300", // Vivid Yellow
+        "#803E75", // Strong Purple
+        "#FF6800", // Vivid Orange
+        "#A6BDD7", // Very Light Blue
+        "#C10020", // Vivid Red
+        "#CEA262", // Grayish Yellow
+        "#817066", // Medium Gray
+
+        // The following don't work well for people with defective color vision
+        "#007D34", // Vivid Green
+        "#F6768E", // Strong Purplish Pink
+        "#00538A", // Strong Blue
+        "#FF7A5C", // Strong Yellowish Pink
+        "#53377A", // Strong Violet
+        "#FF8E00", // Vivid Orange Yellow
+        "#B32851", // Strong Purplish Red
+        "#F4C800", // Vivid Greenish Yellow
+        "#7F180D", // Strong Reddish Brown
+        "#93AA00", // Vivid Yellowish Green
+        "#593315", // Deep Yellowish Brown
+        "#F13A13", // Vivid Reddish Orange
+        "#232C16" // Dark Olive Green
+    ];
+
+    var boytons_colors_hex = [
+        //"#000000", // Black
+        "#575757", // Dark Gray
+        "#A0A0A0", // Light Gray
+        "#FFFFFF", // White
+        "#2A4BD7", // Blue
+        "#1D6914", // Green
+        "#814A19", // Brown
+        "#8126C0", // Purple
+        "#9DAFFF", // Light Purple
+        "#81C57A", // Light Green
+        "#E9DEBB", // Cream
+        "#AD2323", // Red
+        "#29D0D0", // Teal
+        "#FFEE33", // Yellow
+        "#FF9233", // Orange
+        "#FFCDF3", // Pink
+    ];
+
+    for (var i = 0; i < nmColors; i++) {
+        var item = items[i];
+        newPalette[item] = kelly_colors_hex[i];
+        //console.log(item + ": " + palette[item]);
+    }
+
+    newPalette["others"] = "#000000";
+
+    return newPalette;
 }
