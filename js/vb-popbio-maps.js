@@ -112,8 +112,11 @@ function loadSolr(parameters) {
                 }
 
                 fullElStats.push({
-                    label: key,
-                    value: count
+                    label: key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
+                        .replace(/sensu lato/, "sl")
+                        .replace(/chromosomal form/, "cf"),
+                    value: count,
+                    color: palette[key]
                 });
                 //fullElStats[innElement.value] = innElement.count;
                 ++i;
@@ -198,14 +201,7 @@ function loadSolr(parameters) {
                 dropShadow: false
 
             },
-            //setIcon: function (record) {
-            //    var size = 40;
-            //    return new L.DivIcon({
-            //        html: "<div><span>" + record.count + "</span></div>",
-            //        iconSize: new L.Point(size, size),
-            //        className: "marker-cluster marker-cluster-large"
-            //    });
-            //},
+
             setIcon: function (record) {
                 var size = 40;
                 return new L.Icon.Canvas({
@@ -222,10 +218,10 @@ function loadSolr(parameters) {
                     map.fitBounds(record.bounds);
                 });
                 layer.on("mouseover", function () {
-                    info.update(record.population, record.fullstats)
+                    updatePieChart(record.population, record.fullstats)
                 });
                 layer.on("mouseout", function () {
-                    info.update()
+                    updatePieChart()
                 });
             }
 
@@ -280,7 +276,6 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
     };
 
     var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
-    var pi2 = Math.PI * 2;
 
     L.Icon.MarkerCluster = L.Icon.extend({
         options: {
@@ -304,10 +299,13 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
         },
 
         draw: function (canvas, width, height) {
+            var pi2 = Math.PI * 2,
+                pi15 = Math.PI * 1.5;
+
+            var start = pi15;
             var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
             var lol = 0;
 
-            var start = 0;
             var i = 8;
             for (var key in this.stats) if (this.stats.hasOwnProperty(key)) {
 
@@ -555,7 +553,6 @@ function geohashLevel(zoomLevel, type) {
     return (geoLevel);
 }
 
-
 function buildPalette(items, nmColors, paletteType) {
     /*
      function buildPalette
@@ -627,45 +624,6 @@ function buildPalette(items, nmColors, paletteType) {
     return newPalette;
 }
 
-function highlightFeature(layer, record) {
-    //var layer = e.target;
-
-    info.update(record);
-}
-
-
-//.ArraySort(array)
-/* Sort an array
- */
-function ArraySort(array, sortFunc) {
-    var tmp = [];
-    var aSorted = [];
-    var oSorted = {};
-
-    for (var k in array) {
-        if (array.hasOwnProperty(k))
-            tmp.push({key: k, value: array[k]});
-    }
-
-    tmp.sort(function (o1, o2) {
-        return sortFunc(o1.value, o2.value);
-    });
-
-    if (Object.prototype.toString.call(array) === '[object Array]') {
-        $.each(tmp, function (index, value) {
-            aSorted.push(value.value);
-        });
-        return aSorted;
-    }
-
-    if (Object.prototype.toString.call(array) === '[object Object]') {
-        $.each(tmp, function (index, value) {
-            oSorted[value.key] = value.value;
-        });
-        return oSorted;
-    }
-};
-
 function sortMapByValue(map) {
     var tupleArray = [];
     for (var key in map) tupleArray.push([key, map[key]]);
@@ -674,3 +632,15 @@ function sortMapByValue(map) {
     });
     return tupleArray;
 }
+
+function updatePieChart(population, stats) {
+    if (stats) {
+
+        pie.updateProp("header.title.text", population);
+        pie.updateProp("data.content", stats);
+
+    } else {
+
+
+    }
+};

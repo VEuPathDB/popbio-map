@@ -30,14 +30,15 @@ L.Icon.Canvas = L.Icon.extend({
 
         var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
         var lol = 0;
-        var pi2 = Math.PI * 2;
+        var pi2 = Math.PI * 2,
+            pi15 = Math.PI * 1.5;
 
-        var start = 0;
+        var start = pi15;
         var i = 0;
         for (var key in this.options.stats) if (this.options.stats.hasOwnProperty(key)) {
 
             var size = this.options.stats[key] / this.options.population;
-            console.log(key + "-" + this.options.stats[key]);
+            //console.log(key + "-" + this.options.stats[key]);
 
             if (size > 0) {
                 canvas.beginPath();
@@ -49,6 +50,7 @@ L.Icon.Canvas = L.Icon.extend({
                     canvas.fillStyle = palette["others"];
                     //console.log(key + '*' + palette["others"]);
                 }
+                //var from = start,
                 var from = start + 0.14,
                     to = start + size * pi2;
 

@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" type="text/css" media="all"
           href="https://www.vectorbase.org/minified/932ff214ba8bca9fb5f0fcd87690f3d1.css"/>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/dvf.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/example.css" type="text/css" media="screen"/>
@@ -20,6 +21,7 @@
     <link rel="stylesheet" href="./css/MarkerCluster.Default.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/Control.FullScreen.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/L.Control.ZoomMin.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/leaflet-sidebar.min.css" type="text/css" media="screen"/>
 
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -31,6 +33,7 @@
     <script type="text/javascript" src="./js/Icon.Canvas.js"></script>
     <script type="text/javascript" src="./js/Control.FullScreen.min.js"></script>
     <script type="text/javascript" src="./js/L.Control.ZoomMin.js"></script>
+    <script type="text/javascript" src="./js/leaflet-sidebar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/d3pie.min.js"></script>
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
@@ -65,6 +68,10 @@
 
         }
 
+        .sidebar {
+            top: 123px;
+            bottom: 50px;
+        }
         .info {
             padding: 6px 8px;
             /*font: 14px/16px Arial, Helvetica, sans-serif;*/
@@ -149,7 +156,32 @@
 
     </div>
 
-    <div id="map"></div>
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <ul class="sidebar-tabs" role="tablist">
+            <li><a href="#tablegend" role="tab"><i class="fa fa-bars"></i></a></li>
+            <li><a href="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
+            <li><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>
+            <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content active">
+            <div class="sidebar-pane" id="tablegend">
+
+                <div id="legend" class="info legend"></div>
+
+            </div>
+            <div class="sidebar-pane" id="graphs"><h1>Hover over a marker</h1>
+
+                <div id="pieChart"></div>
+            </div>
+            <div class="sidebar-pane" id="messages"><h1>Messages</h1></div>
+            <div class="sidebar-pane" id="settings"><h1>Settings</h1></div>
+        </div>
+    </div>
+
+    <div id="map" class="sidebar-map"></div>
 
 
     <div id="footer">
@@ -187,6 +219,8 @@
     });
 
     map.addControl(new L.Control.ZoomMin());
+    var sidebar = L.control.sidebar('sidebar').addTo(map);
+
 
     var mp1 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png", {
         minZoom: 2,
@@ -273,28 +307,13 @@
         }
 
         var sortedItems = sortMapByValue(items);
-//        items.sort(function(a,b){return b-a});
-        for (var obj in sortedItems) {
-            console.log('*' + obj + ':' + sortedItems[obj][1]);
-
-        }
         palette = buildPalette(sortedItems, 20, 1);
-        var legend = L.control({position: 'bottomleft'});
 
-        legend.onAdd = function (map) {
-
-            var div = L.DomUtil.create('div', 'info legend');
-
-            for (var obj in palette) {
-//                console.log(obj + '-' + palette[obj]);
-                div.innerHTML +=
-                        '<i style="background:' + palette[obj] + '"></i> ' +
-                        (obj ? '<em>' + obj + '</em><br>' : '+');
-            }
-            return div;
-        };
-
-        legend.addTo(map);
+        var inHtml = "<h1>Legend</h1>";
+        for (var obj in palette) {
+            inHtml += '<i style="background:' + palette[obj] + '"></i> ' + (obj ? '<em>' + obj + '</em><br>' : '+');
+            $("#legend").html(inHtml);
+        }
     };
 
     //    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.field=species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
@@ -303,60 +322,34 @@
 
     //TODO: Also bound this to local cluster markers
     //TODO: Move this to the library
-    //FIXME: Fix issue when the info div pops underneath the mouse cursor
-    //FIXME: Fix border and title (add an extra div at the top) of the info div
-    // now let's make an info div
-    var info = L.control({position: 'bottomright'});
-
-    info.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-
-        this._div.innerHTML = '<div id="pieChart" style="pointer-events: none;"></div>';
-
-
-        this.update();
-        return this._div;
-    };
-
-    // method that we will use to update the control based on feature properties passed
-    info.update = function (population, stats) {
-        if (stats) {
-
-            pie.updateProp("header.title.text", "Marker Properties");
-            pie.updateProp("data.content", stats);
-            $("#pieChart").height(400)
-                    .width(600);
-        } else {
-            if (pie) {
-//                pie.destroy();
-                pie.updateProp("header.title.text", "Hover over a marker")
-            }
-            $("#pieChart").height(0)
-                    .width(0);
-//            this._div.innerHTML = "Hover over a marker";
-        }
-    };
-
-    info.addTo(map);
 
     var pie = new d3pie("pieChart", {
         "header": {
             "title": {
-                "text": "Hover over a marker",
-                "fontSize": 16
-//                "font": "courier"
+                "text": " ",
+                "fontSize": 20,
+                "font": "arial"
             },
             "subtitle": {
-                "text": "specimen counts grouped per species",
+                "text": "specimens",
                 "color": "#999999",
-                "fontSize": 12
-//                "font": "courier"
+                "fontSize": 14,
+                "font": "arial"
             },
+            "location": "pie-center",
             "titleSubtitlePadding": 10
+        },
+        "footer": {
+            "color": "#999999",
+            "fontSize": 10,
+            "font": "arial",
+            "location": "bottom-left"
         },
         "size": {
             "canvasHeight": 400,
-            "canvasWidth": 600
+            "canvasWidth": 380,
+            "pieInnerRadius": "75%",
+            "pieOuterRadius": "50%"
         },
         "data": {
             "sortOrder": "value-desc"
@@ -364,14 +357,14 @@
         "labels": {
             "outer": {
                 "format": "label-value1",
-                "hideWhenLessThanPercentage": 1,
-                "pieDistance": 13
+                "pieDistance": 11
             },
             "inner": {
                 "format": "none"
             },
             "mainLabel": {
-                "fontSize": 11
+                "font": "arial",
+                "fontSize": 12
             },
             "percentage": {
                 "color": "#999999",
@@ -379,37 +372,37 @@
                 "decimalPlaces": 0
             },
             "value": {
-                "color": "#c3ba25",
-                "fontSize": 11
+                "color": "#438fcc",
+                "font": "arial",
+                "fontSize": 12
             },
             "lines": {
-                "enabled": true
+                "enabled": true,
+                "color": "#777777"
             }
         },
         "tooltips": {
-            "enabled": false,
+            "enabled": true,
             "type": "placeholder",
             "string": "{label}: {value}, {percentage}%"
         },
         "effects": {
             "load": {
-                "speed": 400
+                "speed": 600
             },
             "pullOutSegmentOnClick": {
                 "effect": "linear",
-                "speed": 200,
+                "speed": 400,
                 "size": 8
             }
         },
         "misc": {
             "colors": {
-                "segmentStroke": "#000000"
+                "segmentStroke": "#FFFFFF"
             }
         }
     });
 
-    $("#pieChart").height(0)
-            .width(0);
 
     loadSolr({clear: 0, zoomLevel: map.getZoom()});
     map.spin(false);
