@@ -233,13 +233,52 @@
     //TODO: Move this to the library
     var genPalette = function (result) {
 
-        var doc = result.facet_counts.facet_fields.species_category;
+        var doc = result.facet_counts.facet_pivot["geohash_2,species_category"];
         var items = [];
-        for (var key in doc) if (doc.hasOwnProperty(key)) {
-            items.push(key);
+        for (var obj in doc) if (doc.hasOwnProperty(obj)) {
+            var count = doc[obj].count;
+//            console.log(count);
+
+            var pivot = doc[obj].pivot;
+            for (var pivotElm in pivot) if (pivot.hasOwnProperty(pivotElm)) {
+                var ratio = pivot[pivotElm].count / count;
+                var species = pivot[pivotElm].value;
+                var index = parseInt(pivotElm);
+                var points;
+                switch (index) {
+                    case 1:
+                        points = 7 * ratio;
+                        break;
+                    case 2:
+                        points = 3 * ratio;
+                        break;
+                    case 3:
+                        points = 1 * ratio;
+                        break;
+                    default:
+                        points = 0;
+                        break
+
+                }
+
+                if (items.hasOwnProperty(species)) {
+                    items[species] += points;
+
+                } else {
+
+                    items[species] = points;
+
+                }
+            }
         }
 
-        palette = buildPalette(items, 20, 1);
+        var sortedItems = sortMapByValue(items);
+//        items.sort(function(a,b){return b-a});
+        for (var obj in sortedItems) {
+            console.log('*' + obj + ':' + sortedItems[obj][1]);
+
+        }
+        palette = buildPalette(sortedItems, 20, 1);
         var legend = L.control({position: 'bottomleft'});
 
         legend.onAdd = function (map) {
@@ -258,7 +297,8 @@
         legend.addTo(map);
     };
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.field=species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
+    //    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.field=species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample%20AND%20has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.pivot=geohash_2,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
     $.getJSON(url, genPalette);
 
     //TODO: Also bound this to local cluster markers

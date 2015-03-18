@@ -616,7 +616,8 @@ function buildPalette(items, nmColors, paletteType) {
     ];
 
     for (var i = 0; i < nmColors; i++) {
-        var item = items[i];
+        var item = items[i][0];
+        //var item = items.shift();
         newPalette[item] = kelly_colors_hex[i];
         //console.log(item + ": " + palette[item]);
     }
@@ -633,3 +634,43 @@ function highlightFeature(layer, record) {
 }
 
 
+//.ArraySort(array)
+/* Sort an array
+ */
+function ArraySort(array, sortFunc) {
+    var tmp = [];
+    var aSorted = [];
+    var oSorted = {};
+
+    for (var k in array) {
+        if (array.hasOwnProperty(k))
+            tmp.push({key: k, value: array[k]});
+    }
+
+    tmp.sort(function (o1, o2) {
+        return sortFunc(o1.value, o2.value);
+    });
+
+    if (Object.prototype.toString.call(array) === '[object Array]') {
+        $.each(tmp, function (index, value) {
+            aSorted.push(value.value);
+        });
+        return aSorted;
+    }
+
+    if (Object.prototype.toString.call(array) === '[object Object]') {
+        $.each(tmp, function (index, value) {
+            oSorted[value.key] = value.value;
+        });
+        return oSorted;
+    }
+};
+
+function sortMapByValue(map) {
+    var tupleArray = [];
+    for (var key in map) tupleArray.push([key, map[key]]);
+    tupleArray.sort(function (a, b) {
+        return b[1] - a[1]
+    });
+    return tupleArray;
+}

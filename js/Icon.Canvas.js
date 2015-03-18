@@ -37,7 +37,7 @@ L.Icon.Canvas = L.Icon.extend({
         for (var key in this.options.stats) if (this.options.stats.hasOwnProperty(key)) {
 
             var size = this.options.stats[key] / this.options.population;
-            //console.log(key + "-" + this.options.stats[key]);
+            console.log(key + "-" + this.options.stats[key]);
 
             if (size > 0) {
                 canvas.beginPath();
