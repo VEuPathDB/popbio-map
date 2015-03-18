@@ -569,6 +569,7 @@ function buildPalette(items, nmColors, paletteType) {
 
     var newPalette = [];
 
+    // from http://stackoverflow.com/questions/470690/how-to-automatically-generate-n-distinct-colors
     var kelly_colors_hex = [
         "#FFB300", // Vivid Yellow
         "#803E75", // Strong Purple
@@ -594,6 +595,7 @@ function buildPalette(items, nmColors, paletteType) {
         "#232C16" // Dark Olive Green
     ];
 
+    // from http://alumni.media.mit.edu/~wad/color/palette.html
     var boytons_colors_hex = [
         //"#000000", // Black
         "#575757", // Dark Gray

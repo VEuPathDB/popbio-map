@@ -18,6 +18,20 @@
     <link rel="stylesheet" href="./css/ui.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/nv.d3.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/MarkerCluster.Default.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/Control.FullScreen.css" type="text/css" media="screen"/>
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script type="text/javascript" src="./js/leaflet-dvf.min.js"></script>
+    <script type="text/javascript" src="./js/PruneCluster.js"></script>
+    <script type="text/javascript" src="./js/spin.js"></script>
+    <script type="text/javascript" src="./js/leaflet.spin.js"></script>
+    <script type="text/javascript" src="./js/Icon.Canvas.js"></script>
+    <script type="text/javascript" src="./js/Control.FullScreen.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/d3pie.min.js"></script>
+    <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
 
     <style>
         BODY {
@@ -51,7 +65,7 @@
 
         .info {
             padding: 6px 8px;
-            font: 14px/16px Arial, Helvetica, sans-serif;
+            /*font: 14px/16px Arial, Helvetica, sans-serif;*/
             background: white;
             background: rgba(255, 255, 255, 0.95);
             /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
@@ -156,16 +170,6 @@
 <!--<style>.tb_button {padding:1px;cursor:pointer;border-right: 1px solid #8b8b8b;border-left: 1px solid #FFF;border-bottom: 1px solid #fff;}.tb_button.hover {borer:2px outset #def; background-color: #f8f8f8 !important;}.ws_toolbar {z-index:100000} .ws_toolbar .ws_tb_btn {cursor:pointer;border:1px solid #555;padding:3px}   .tb_highlight{background-color:yellow} .tb_hide {visibility:hidden} .ws_toolbar img {padding:2px;margin:0px}</style>-->
 
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-<script type="text/javascript" src="./js/leaflet-dvf.min.js"></script>
-<script type="text/javascript" src="./js/PruneCluster.js"></script>
-<script type="text/javascript" src="./js/spin.js"></script>
-<script type="text/javascript" src="./js/leaflet.spin.js"></script>
-<script type="text/javascript" src="./js/Icon.Canvas.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="./js/d3pie.min.js"></script>
-<script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
 <script language="JavaScript">
     var map;
     var assetLayerGroup;
@@ -173,7 +177,11 @@
     var palette;
 
     // create a map in the "map" div, set the view to a given place and zoom
-    map = L.map('map').setView([18, 0.0], 3);
+    map = L.map('map', {
+        center: [18, 0.0],
+        zoom: 3,
+        fullscreenControl: true
+    });
 
     var mp1 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png", {
         minZoom: 2,
@@ -258,7 +266,7 @@
     info.onAdd = function (map) {
         this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
 
-        this._div.innerHTML = '<div id="pieChart"></div>';
+        this._div.innerHTML = '<div id="pieChart" style="pointer-events: none;"></div>';
 
 
         this.update();
@@ -269,18 +277,17 @@
     info.update = function (population, stats) {
         if (stats) {
 
-//                pie.updateProp("size.canvasWidth", 100)
-            pie.updateProp("header.title.text", "Marker Properties")
+            pie.updateProp("header.title.text", "Marker Properties");
             pie.updateProp("data.content", stats);
-            $("#pieChart").height(400);
-            $("#pieChart").width(600);
+            $("#pieChart").height(400)
+                    .width(600);
         } else {
             if (pie) {
 //                pie.destroy();
                 pie.updateProp("header.title.text", "Hover over a marker")
             }
-            $("#pieChart").height(20);
-            $("#pieChart").width(200);
+            $("#pieChart").height(0)
+                    .width(0);
 //            this._div.innerHTML = "Hover over a marker";
         }
     };
@@ -356,8 +363,8 @@
         }
     });
 
-    $("#pieChart").height(30);
-    $("#pieChart").width(200);
+    $("#pieChart").height(0)
+            .width(0);
 
     loadSolr({clear: 0, zoomLevel: map.getZoom()});
     map.spin(false);
