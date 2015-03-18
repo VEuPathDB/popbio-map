@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="./css/nv.d3.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/MarkerCluster.Default.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/Control.FullScreen.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/L.Control.ZoomMin.css" type="text/css" media="screen"/>
 
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -29,6 +30,7 @@
     <script type="text/javascript" src="./js/leaflet.spin.js"></script>
     <script type="text/javascript" src="./js/Icon.Canvas.js"></script>
     <script type="text/javascript" src="./js/Control.FullScreen.min.js"></script>
+    <script type="text/javascript" src="./js/L.Control.ZoomMin.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/d3pie.min.js"></script>
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
@@ -180,8 +182,11 @@
     map = L.map('map', {
         center: [18, 0.0],
         zoom: 3,
-        fullscreenControl: true
+        fullscreenControl: true,
+        zoomControl: false
     });
+
+    map.addControl(new L.Control.ZoomMin());
 
     var mp1 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png", {
         minZoom: 2,
@@ -298,13 +303,13 @@
         "header": {
             "title": {
                 "text": "Hover over a marker",
-                "fontSize": 16,
+                "fontSize": 16
 //                "font": "courier"
             },
             "subtitle": {
                 "text": "specimen counts grouped per species",
                 "color": "#999999",
-                "fontSize": 12,
+                "fontSize": 12
 //                "font": "courier"
             },
             "titleSubtitlePadding": 10
