@@ -651,7 +651,6 @@ function sortHashByValue(hash) {
 function updatePieChart(population, stats) {
     if (stats) {
 
-        //FixMe: Hovering over the pie segments after window resize
         var height = 500;
         var width = $("#graphs").width();
         //console.log(width);
