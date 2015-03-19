@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Hooked pie charts to local cluster markers&#10;* Fixed various issues with pie charts">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/vb_geohashes_mean.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -41,8 +39,8 @@
       <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4437086" vertical-offset="8299" max-vertical-offset="9622">
-              <caret line="653" column="0" selection-start-line="653" selection-start-column="0" selection-end-line="653" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.81898457" vertical-offset="8299" max-vertical-offset="9622">
+              <caret line="663" column="33" selection-start-line="663" selection-start-column="33" selection-end-line="663" selection-end-column="33" />
               <folding>
                 <element signature="n#!!block;n#buildBbox#0" expanded="false" />
                 <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
@@ -464,7 +462,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426787264159</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="* Hooked pie charts to local cluster markers&#10;* Fixed various issues with pie charts">
+      <created>1426788144654</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1426788144654</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1004,8 +1008,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4437086" vertical-offset="8299" max-vertical-offset="9622">
-          <caret line="653" column="0" selection-start-line="653" selection-start-column="0" selection-end-line="653" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.81898457" vertical-offset="8299" max-vertical-offset="9622">
+          <caret line="663" column="33" selection-start-line="663" selection-start-column="33" selection-end-line="663" selection-end-column="33" />
           <folding>
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
