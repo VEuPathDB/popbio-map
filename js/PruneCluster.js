@@ -51,7 +51,8 @@ var PruneCluster;
         __extends(Cluster, _super);
         function Cluster(marker) {
             _super.call(this);
-            this.stats = [0, 0, 0, 0, 0, 0, 0, 0];
+            this.stats = [];
+            //this.stats = [0, 0, 0, 0, 0, 0, 0, 0];
             this.data = {};
             if (!marker) {
                 this.hashCode = 1;
@@ -106,7 +107,8 @@ var PruneCluster;
             this.lastMarker = undefined;
             this.population = 0;
             this.totalWeight = 0;
-            this.stats = [0, 0, 0, 0, 0, 0, 0, 0];
+            //this.stats = [0, 0, 0, 0, 0, 0, 0, 0];
+            this.stats = [];
             if (Cluster.ENABLE_MARKERS_LIST) {
                 this._clusterMarkers = [];
             }

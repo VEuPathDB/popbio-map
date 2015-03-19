@@ -112,11 +112,11 @@ function loadSolr(parameters) {
                 }
 
                 fullElStats.push({
-                    label: key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
+                    "label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
                         .replace(/sensu lato/, "sl")
                         .replace(/chromosomal form/, "cf"),
-                    value: count,
-                    color: palette[key]
+                    "value": count,
+                    "color": (palette[key] ? palette[key] : "#000000")
                 });
                 //fullElStats[innElement.value] = innElement.count;
                 ++i;
@@ -390,8 +390,23 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
                 }
             }
         });
-        m.on("mouseout", function () {
-            //do mouseout stuff here
+        m.on("click", function () {
+            //do click stuff here
+            // first we need a list of all categories
+            var fullElStats = new Array;
+
+            var stats = cluster.stats;
+            for (var key in stats) {
+                fullElStats.push({
+                    "label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
+                        .replace(/sensu lato/, "sl")
+                        .replace(/chromosomal form/, "cf"),
+                    "value": stats[key],
+                    "color": (palette[key] ? palette[key] : "#000000")
+                });
+            }
+
+            updatePieChart(cluster.population, fullElStats);
         });
 
         m.on("mouseover", function (e) {
@@ -624,9 +639,9 @@ function buildPalette(items, nmColors, paletteType) {
     return newPalette;
 }
 
-function sortMapByValue(map) {
+function sortHashByValue(hash) {
     var tupleArray = [];
-    for (var key in map) tupleArray.push([key, map[key]]);
+    for (var key in hash) tupleArray.push([key, hash[key]]);
     tupleArray.sort(function (a, b) {
         return b[1] - a[1]
     });
@@ -636,8 +651,62 @@ function sortMapByValue(map) {
 function updatePieChart(population, stats) {
     if (stats) {
 
-        pie.updateProp("header.title.text", population);
-        pie.updateProp("data.content", stats);
+        //FixMe: Hovering over the pie segments after window resize
+        var height = 500;
+        var width = $("#graphs").width();
+        //console.log(width);
+
+        //$("#piechart").width(width)
+        //    .height(height)
+        //.html("");
+        //}
+        //var width = 400;
+
+        nv.addGraph(function () {
+            var chart = nv.models.pieChart()
+                    .x(function (d) {
+                        return d.label
+                    })
+                    .y(function (d) {
+                        return d.value
+                    })
+                    .color(function (d) {
+                        return d.data["color"]
+                    })
+                    .showLabels(true)     //Display pie labels
+                    .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
+                    .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
+                    .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
+                    .donutRatio(0.5)     //Configure how big you want the donut hole size to be.
+                    .growOnHover(false)
+
+            //.showLegend(false)
+
+
+                ;
+
+            //chart.title(population);
+
+
+            d3.select("#piechart")
+                .datum(stats)
+                .transition().duration(800)
+                .attr('width', width)
+                .attr('height', height)
+                .call(chart);
+
+
+            nv.utils.windowResize(              //Updates the window resize event callback.
+                function () {
+                    chart.update();         //Renders the chart when window is resized.
+                }
+            );
+
+
+            //nv.utils.windowResize(chart.update());
+            return chart;
+        });
+
 
     } else {
 

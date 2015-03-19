@@ -15,13 +15,11 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/dvf.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="./css/example.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="./css/ui.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="./css/nv.d3.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/MarkerCluster.Default.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/Control.FullScreen.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/L.Control.ZoomMin.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="./css/leaflet-sidebar.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/leaflet-sidebar.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="./css/nv.d3.css" type="text/css" media="screen"/>
 
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -35,7 +33,8 @@
     <script type="text/javascript" src="./js/L.Control.ZoomMin.js"></script>
     <script type="text/javascript" src="./js/leaflet-sidebar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="./js/d3pie.min.js"></script>
+    <!--<script type="text/javascript" src="./js/d3pie.min.js"></script>-->
+    <script type="text/javascript" src="./js/nv.d3.pie.js"></script>
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
 
     <style>
@@ -97,7 +96,7 @@
             height: 18px;
             float: left;
             margin-right: 8px;
-            opacity: 0.7;
+            opacity: 1;
         }
 
 
@@ -172,9 +171,12 @@
                 <div id="legend" class="info legend"></div>
 
             </div>
-            <div class="sidebar-pane" id="graphs"><h1>Hover over a marker</h1>
+            <div class="sidebar-pane" id="graphs"><h1>Click a marker for specimens data</h1>
 
-                <div id="pieChart"></div>
+                <!--<div id="pieChart"></div>-->
+                <div id="chart">
+                    <svg id="piechart"></svg>
+                </div>
             </div>
             <div class="sidebar-pane" id="messages"><h1>Messages</h1></div>
             <div class="sidebar-pane" id="settings"><h1>Settings</h1></div>
@@ -306,7 +308,7 @@
             }
         }
 
-        var sortedItems = sortMapByValue(items);
+        var sortedItems = sortHashByValue(items);
         palette = buildPalette(sortedItems, 20, 1);
 
         var inHtml = "<h1>Legend</h1>";
@@ -320,88 +322,91 @@
     var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample%20AND%20has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.pivot=geohash_2,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
     $.getJSON(url, genPalette);
 
+
     //TODO: Also bound this to local cluster markers
     //TODO: Move this to the library
 
-    var pie = new d3pie("pieChart", {
-        "header": {
-            "title": {
-                "text": " ",
-                "fontSize": 20,
-                "font": "arial"
-            },
-            "subtitle": {
-                "text": "specimens",
-                "color": "#999999",
-                "fontSize": 14,
-                "font": "arial"
-            },
-            "location": "pie-center",
-            "titleSubtitlePadding": 10
-        },
-        "footer": {
-            "color": "#999999",
-            "fontSize": 10,
-            "font": "arial",
-            "location": "bottom-left"
-        },
-        "size": {
-            "canvasHeight": 400,
-            "canvasWidth": 380,
-            "pieInnerRadius": "75%",
-            "pieOuterRadius": "50%"
-        },
-        "data": {
-            "sortOrder": "value-desc"
-        },
-        "labels": {
-            "outer": {
-                "format": "label-value1",
-                "pieDistance": 11
-            },
-            "inner": {
-                "format": "none"
-            },
-            "mainLabel": {
-                "font": "arial",
-                "fontSize": 12
-            },
-            "percentage": {
-                "color": "#999999",
-                "fontSize": 11,
-                "decimalPlaces": 0
-            },
-            "value": {
-                "color": "#438fcc",
-                "font": "arial",
-                "fontSize": 12
-            },
-            "lines": {
-                "enabled": true,
-                "color": "#777777"
-            }
-        },
-        "tooltips": {
-            "enabled": true,
-            "type": "placeholder",
-            "string": "{label}: {value}, {percentage}%"
-        },
-        "effects": {
-            "load": {
-                "speed": 600
-            },
-            "pullOutSegmentOnClick": {
-                "effect": "linear",
-                "speed": 400,
-                "size": 8
-            }
-        },
-        "misc": {
-            "colors": {
-                "segmentStroke": "#FFFFFF"
-            }
-        }
-    });
+    //    var pie = new d3pie("pieChart", {
+    //        "header": {
+    //            "title": {
+    //                "text": " ",
+    //                "fontSize": 20,
+    //                "font": "arial"
+    //            },
+    //            "subtitle": {
+    //                "text": "specimens",
+    //                "color": "#999999",
+    //                "fontSize": 14,
+    //                "font": "arial"
+    //            },
+    //            "location": "pie-center",
+    //            "titleSubtitlePadding": 10
+    //        },
+    //        "footer": {
+    //            "color": "#999999",
+    //            "fontSize": 10,
+    //            "font": "arial",
+    //            "location": "bottom-left"
+    //        },
+    //        "size": {
+    //            "canvasHeight": 400,
+    //            "canvasWidth": 380,
+    //            "pieInnerRadius": "75%",
+    //            "pieOuterRadius": "50%"
+    //        },
+    //        "data": {
+    //            "sortOrder": "value-desc"
+    //        },
+    //        "labels": {
+    //            "outer": {
+    //                "format": "label-value1",
+    //                "pieDistance": 11
+    //            },
+    //            "inner": {
+    //                "format": "none"
+    //            },
+    //            "mainLabel": {
+    //                "font": "arial",
+    //                "fontSize": 12
+    //            },
+    //            "percentage": {
+    //                "color": "#999999",
+    //                "fontSize": 11,
+    //                "decimalPlaces": 0
+    //            },
+    //            "value": {
+    //                "color": "#438fcc",
+    //                "font": "arial",
+    //                "fontSize": 12
+    //            },
+    //            "lines": {
+    //                "enabled": true,
+    //                "color": "#777777"
+    //            }
+    //        },
+    //        "tooltips": {
+    //            "enabled": true,
+    //            "type": "placeholder",
+    //            "string": "{label}: {value}, {percentage}%"
+    //        },
+    //        "effects": {
+    //            "load": {
+    //                "speed": 600
+    //            },
+    //            "pullOutSegmentOnClick": {
+    //                "effect": "linear",
+    //                "speed": 400,
+    //                "size": 8
+    //            }
+    //        },
+    //        "misc": {
+    //            "colors": {
+    //                "segmentStroke": "#FFFFFF"
+    //            }
+    //        }
+    //    });
+
+
 
 
     loadSolr({clear: 0, zoomLevel: map.getZoom()});
