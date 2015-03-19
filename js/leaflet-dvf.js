@@ -6247,7 +6247,7 @@ L.StackedPieChartDataLayer = L.ChartDataLayer.extend({
 
 	_getMarker: function (latLng, options) {
 		return new L.StackedPieChartMarker(latLng, options);
-	},
+    }
 });
 
 L.stackedPieChartDataLayer = function (data, options) {
@@ -6301,7 +6301,7 @@ L.RadialMeterMarkerDataLayer = L.DataLayer.extend({
 
 	_getMarker: function (latLng, options) {
 		return new L.RadialMeterMarker(latLng, options);
-	},
+    }
 });
 
 L.radialMeterMarkerDataLayer = function (data, options) {
