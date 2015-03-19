@@ -39,8 +39,8 @@
       <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.81898457" vertical-offset="8299" max-vertical-offset="9622">
-              <caret line="663" column="33" selection-start-line="663" selection-start-column="33" selection-end-line="663" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.4812362" vertical-offset="8299" max-vertical-offset="9622">
+              <caret line="654" column="41" selection-start-line="654" selection-start-column="41" selection-end-line="654" selection-end-column="41" />
               <folding>
                 <element signature="n#!!block;n#buildBbox#0" expanded="false" />
                 <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
@@ -468,7 +468,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426788144654</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="* Hooked pie charts to local cluster markers&#10;* Fixed various issues with pie charts">
+      <created>1426788173632</created>
+      <option name="number" value="00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1426788173632</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1008,8 +1014,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81898457" vertical-offset="8299" max-vertical-offset="9622">
-          <caret line="663" column="33" selection-start-line="663" selection-start-column="33" selection-end-line="663" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.4812362" vertical-offset="8299" max-vertical-offset="9622">
+          <caret line="654" column="41" selection-start-line="654" selection-start-column="41" selection-end-line="654" selection-end-column="41" />
           <folding>
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
