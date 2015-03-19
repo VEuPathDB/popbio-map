@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Palette generation now takes into account the position of the species in level 2 geohashes. This results into less markers with all species in the &quot;Others&quot; category&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/leaflet-sidebar.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/leaflet-sidebar.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/leaflet-sidebar.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/leaflet-sidebar.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Icon.Canvas.js" afterPath="$PROJECT_DIR$/js/Icon.Canvas.js" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Added a sidebar&#10;* Moved legend and pie-charts into the sidebar&#10;* Pie-chart colors now match the legend and marker colors&#10;* Marker pie segments now match the pie chart&#10;* Other improvements in pie-chart generation&#10;">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/vb_geohashes_mean.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -36,8 +30,8 @@
       <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7127496" vertical-offset="5401" max-vertical-offset="7259">
-              <caret line="340" column="31" selection-start-line="340" selection-start-column="31" selection-end-line="340" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.61445785" vertical-offset="4352" max-vertical-offset="7276">
+              <caret line="278" column="52" selection-start-line="278" selection-start-column="52" selection-end-line="278" selection-end-column="52" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -51,18 +45,12 @@
       <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1671" max-vertical-offset="5100">
-              <caret line="117" column="33" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3253" max-vertical-offset="8466">
+              <caret line="211" column="19" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
               <folding>
-                <element signature="n#!!block;n#loadSmall#0" expanded="false" />
                 <element signature="n#!!block;n#buildBbox#0" expanded="false" />
                 <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
                 <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-                <marker date="1426713636367" expanded="true" signature="317:10222" placeholder="{...}" />
-                <marker date="1426713636367" expanded="true" signature="990:9567" placeholder="{...}" />
-                <marker date="1426713636367" expanded="true" signature="4513:5499" placeholder="{...}" />
-                <marker date="1426713636367" expanded="true" signature="4714:5381" placeholder="{...}" />
-                <marker date="1426713636367" expanded="true" signature="21743:21752" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -71,7 +59,7 @@
       <file leaf-file-name="Icon.Canvas.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Icon.Canvas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.9117646" vertical-offset="445" max-vertical-offset="1547">
+            <state vertical-scroll-proportion="0.0" vertical-offset="445" max-vertical-offset="1547">
               <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="35" selection-end-column="25" />
               <folding />
             </state>
@@ -81,7 +69,7 @@
       <file leaf-file-name="geohashes_mean.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.076923" vertical-offset="1319" max-vertical-offset="1802">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1319" max-vertical-offset="1802">
               <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
               <folding />
             </state>
@@ -114,8 +102,8 @@
         <option value="$PROJECT_DIR$/geohashes_mean.html" />
         <option value="$PROJECT_DIR$/js/leaflet-dvf.js" />
         <option value="$PROJECT_DIR$/js/Icon.Canvas.js" />
-        <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/vb_geohashes_mean.html" />
+        <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
       </list>
     </option>
   </component>
@@ -200,7 +188,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -253,6 +240,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -307,15 +295,15 @@
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
     </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
       <setting name="configLocationType" value="CONFIG_FILE" />
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="Chrome" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -480,7 +468,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426706873288</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="* Added a sidebar&#10;* Moved legend and pie-charts into the sidebar&#10;* Pie-chart colors now match the legend and marker colors&#10;* Marker pie segments now match the pie chart&#10;* Other improvements in pie-chart generation&#10;">
+      <created>1426714004182</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1426714004182</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -507,26 +501,26 @@
     <frame x="-4" y="-4" width="1448" height="860" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263889" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.3042877" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946997" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16749117" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.3042877" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263889" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -546,9 +540,9 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16749117" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -585,7 +579,8 @@
     <MESSAGE value="* Added a fullscreen control&#10;" />
     <MESSAGE value="* Added a button to directly go to minimum zoom level&#10;" />
     <MESSAGE value="* Palette generation now takes into account the position of the species in level 2 geohashes. This results into less markers with all species in the &quot;Others&quot; category&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Palette generation now takes into account the position of the species in level 2 geohashes. This results into less markers with all species in the &quot;Others&quot; category&#10;" />
+    <MESSAGE value="* Added a sidebar&#10;* Moved legend and pie-charts into the sidebar&#10;* Pie-chart colors now match the legend and marker colors&#10;* Marker pie segments now match the pie chart&#10;* Other improvements in pie-chart generation&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Added a sidebar&#10;* Moved legend and pie-charts into the sidebar&#10;* Pie-chart colors now match the legend and marker colors&#10;* Marker pie segments now match the pie chart&#10;* Other improvements in pie-chart generation&#10;" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -595,6 +590,47 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7191">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1671" max-vertical-offset="5066">
+          <caret line="117" column="33" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
+          <folding>
+            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
+            <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
+            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Icon.Canvas.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="445" max-vertical-offset="1547">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="35" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1319" max-vertical-offset="1802">
+          <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4046">
@@ -613,15 +649,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="5117" max-vertical-offset="10438">
           <caret line="301" column="56" selection-start-line="301" selection-start-column="56" selection-end-line="301" selection-end-column="56" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <marker date="1426713636367" expanded="true" signature="317:10222" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="990:9567" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4513:5499" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4714:5381" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="21743:21752" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -660,15 +690,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="3860" max-vertical-offset="9078">
           <caret line="247" column="47" selection-start-line="247" selection-start-column="47" selection-end-line="247" selection-end-column="47" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <marker date="1426713636367" expanded="true" signature="317:10222" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="990:9567" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4513:5499" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4714:5381" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="21743:21752" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -693,7 +717,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="9595" max-vertical-offset="14399">
           <caret line="577" column="37" selection-start-line="577" selection-start-column="32" selection-end-line="577" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -715,15 +738,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5763">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <marker date="1426713636367" expanded="true" signature="317:10222" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="990:9567" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4513:5499" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4714:5381" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="21743:21752" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -732,7 +749,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="9595" max-vertical-offset="14399">
           <caret line="577" column="37" selection-start-line="577" selection-start-column="32" selection-end-line="577" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -754,15 +770,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5763">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <marker date="1426713636367" expanded="true" signature="317:10222" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="990:9567" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4513:5499" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4714:5381" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="21743:21752" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -793,15 +803,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1683" max-vertical-offset="5763">
           <caret line="418" column="39" selection-start-line="418" selection-start-column="39" selection-end-line="418" selection-end-column="39" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <marker date="1426713636367" expanded="true" signature="317:10222" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="990:9567" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4513:5499" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4714:5381" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="21743:21752" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -819,15 +823,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7038">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <marker date="1426713636367" expanded="true" signature="317:10222" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="990:9567" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4513:5499" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4714:5381" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="21743:21752" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -836,7 +834,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="8619">
           <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -933,13 +930,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/PruneCluster.js.map">
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="641">
           <caret line="0" column="101" selection-start-line="0" selection-start-column="101" selection-end-line="0" selection-end-column="101" />
         </state>
-      </provider>
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/MarkerCluster.Default.css">
@@ -961,7 +958,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.2941175" vertical-offset="2387" max-vertical-offset="6035">
           <caret line="153" column="21" selection-start-line="153" selection-start-column="21" selection-end-line="153" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -969,7 +965,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5761905" vertical-offset="268" max-vertical-offset="14552">
           <caret line="30" column="24" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -977,15 +972,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.002381" vertical-offset="13817" max-vertical-offset="118269">
           <caret line="787" column="10" selection-start-line="787" selection-start-column="1" selection-end-line="787" selection-end-column="10" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.076923" vertical-offset="1319" max-vertical-offset="1802">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1319" max-vertical-offset="1802">
           <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
           <folding />
         </state>
@@ -995,9 +987,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2193">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1426614598946" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1005,7 +994,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33203125" vertical-offset="16269" max-vertical-offset="20638">
           <caret line="5" column="18848" selection-start-line="5" selection-start-column="18848" selection-end-line="5" selection-end-column="18848" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1013,13 +1001,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8521739" vertical-offset="1707" max-vertical-offset="2397">
           <caret line="135" column="0" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Icon.Canvas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.9117646" vertical-offset="445" max-vertical-offset="1547">
+        <state vertical-scroll-proportion="0.0" vertical-offset="445" max-vertical-offset="1547">
           <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="35" selection-end-column="25" />
           <folding />
         </state>
@@ -1027,26 +1014,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1671" max-vertical-offset="5100">
-          <caret line="117" column="33" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="3253" max-vertical-offset="8466">
+          <caret line="211" column="19" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <marker date="1426713636367" expanded="true" signature="317:10222" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="990:9567" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4513:5499" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="4714:5381" placeholder="{...}" />
-            <marker date="1426713636367" expanded="true" signature="21743:21752" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7127496" vertical-offset="5401" max-vertical-offset="7259">
-          <caret line="340" column="31" selection-start-line="340" selection-start-column="31" selection-end-line="340" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.61445785" vertical-offset="4352" max-vertical-offset="7276">
+          <caret line="278" column="52" selection-start-line="278" selection-start-column="52" selection-end-line="278" selection-end-column="52" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />

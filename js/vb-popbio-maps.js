@@ -214,14 +214,14 @@ function loadSolr(parameters) {
             onEachRecord: function (layer, record) {
                 //console.log("taki"+ record.population);
                 //record.stats.push(100);
-                layer.on("click", function () {
+                layer.on("dblclick", function () {
                     map.fitBounds(record.bounds);
                 });
-                layer.on("mouseover", function () {
+                layer.on("click", function () {
                     updatePieChart(record.population, record.fullstats)
                 });
                 layer.on("mouseout", function () {
-                    updatePieChart()
+                    //updatePieChart()
                 });
             }
 
@@ -361,7 +361,7 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
         });
 
 
-        m.on("click", function () {
+        m.on("dblclick", function () {
             // Compute the  cluster bounds (it"s slow : O(n))
             var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
             var b = pruneCluster.Cluster.ComputeBounds(markersArea);
