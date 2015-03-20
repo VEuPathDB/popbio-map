@@ -51,7 +51,7 @@ L.Icon.Canvas = L.Icon.extend({
                     //console.log(key + '*' + palette["others"]);
                 }
                 //var from = start,
-                var from = start + 0.14,
+                var from = start + 0.08,
                     to = start + size * pi2;
 
                 if (to < from) {

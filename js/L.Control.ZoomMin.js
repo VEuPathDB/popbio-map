@@ -32,7 +32,9 @@ L.Control.ZoomMin = L.Control.Zoom.extend({
     },
 
     _zoomMin: function () {
-        this._map.setZoom(this._map.getMinZoom())
+        this._map.setView([18, 0.0], 3, {animation: true});
+        //setZoom(3).center([18, 0.0]);
+        //this._map.setZoom(this._map.getMinZoom())
     },
 
     _updateDisabled: function () {
@@ -56,3 +58,4 @@ L.Control.ZoomMin = L.Control.Zoom.extend({
         }
     }
 })
+

@@ -2,13 +2,17 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/js/Icon.Canvas.min.js" />
         <item url="file://$PROJECT_DIR$/js/vb-popbio-maps.min.js" />
+        <item url="file://$PROJECT_DIR$/js/L.Control.ZoomMin.min.js" />
         <item url="file://$PROJECT_DIR$/js/Control.FullScreen.min.js" />
         <item url="file://$PROJECT_DIR$/js/leaflet-dvf.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
+      <root url="file://$PROJECT_DIR$/js/Icon.Canvas.min.js" />
       <root url="file://$PROJECT_DIR$/js/vb-popbio-maps.min.js" />
+      <root url="file://$PROJECT_DIR$/js/L.Control.ZoomMin.min.js" />
       <root url="file://$PROJECT_DIR$/js/Control.FullScreen.min.js" />
       <root url="file://$PROJECT_DIR$/js/leaflet-dvf.min.js" />
     </CLASSES>

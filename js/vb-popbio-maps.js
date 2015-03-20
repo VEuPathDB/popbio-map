@@ -627,14 +627,32 @@ function buildPalette(items, nmColors, paletteType) {
         "#FFCDF3", // Pink
     ];
 
+    var noItems = items.length,
+        stNoItems = noItems;
+
+    console.log('items: ' + noItems);
     for (var i = 0; i < nmColors; i++) {
         var item = items[i][0];
-        //var item = items.shift();
         newPalette[item] = kelly_colors_hex[i];
-        //console.log(item + ": " + palette[item]);
+
+        noItems--; // track how many items don't have a proper color
+        console.log(i + ': ' + items[i][0]);
     }
 
-    newPalette["others"] = "#000000";
+    console.log('items: ' + noItems);
+
+    var lumInterval = 0.5 / noItems,
+        lum = 0.7;
+    for (var c = 0; c < noItems; c++) {
+        var element = stNoItems - noItems + c;
+        var item = items[element][0];
+        newPalette[item] = colorLuminance("#FFFFFF", -lum);
+        lum -= lumInterval;
+        console.log(lum + ': ' + colorLuminance("#FFFFFF", -lum));
+
+    }
+
+    newPalette["others"] = "radial-gradient(" + colorLuminance("#FFFFFF", -0.7) + ", " + colorLuminance("#FFFFFF", -lum) + ")";
 
     return newPalette;
 }
@@ -726,3 +744,34 @@ $.fn.redraw = function () {
         var redraw = this.offsetHeight;
     });
 };
+
+function colorLuminance(hex, lum) {
+    /*
+     function colorLuminance
+     date: 20/03/2015
+     purpose: extracts the red, green and blue values in turn, converts them to decimal, applies the luminosity factor,
+     and converts them back to hexadecimal.
+     inputs: <hex> original hex color value <lum> level of luminosity from 0 (lightest) to 1 (darkest)
+     outputs: a hex represantation of the color
+     source: http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+     */
+
+    // validate hex string
+    "use strict";
+
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+    if (hex.length < 6) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    lum = lum || 0;
+
+    // convert to decimal and change luminosity
+    var rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+        c = parseInt(hex.substr(i * 2, 2), 16);
+        c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+        rgb += ("00" + c).substr(c.length);
+    }
+
+    return rgb;
+}
