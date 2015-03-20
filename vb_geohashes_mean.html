@@ -29,7 +29,7 @@
     <script type="text/javascript" src="./js/spin.min.js"></script>
     <script type="text/javascript" src="./js/leaflet.spin.min.js"></script>
     <script type="text/javascript" src="./js/Icon.Canvas.js"></script>
-    <script type="text/javascript" src="./js/Control.FullScreen.min.js"></script>
+    <script type="text/javascript" src="./js/Control.FullScreen.js"></script>
     <script type="text/javascript" src="./js/L.Control.ZoomMin.min.js"></script>
     <script type="text/javascript" src="./js/leaflet-sidebar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js" charset="utf-8"></script>
@@ -59,10 +59,15 @@
             right: 0px;
         }
 
+        #map_container {
+            height: 95%;
+
+        }
+
         #map {
             border-top: 3px solid #154b6f;
             border-bottom: 3px solid #154b6f;
-            height: 95%;
+            height: 100%;
 
         }
 
@@ -153,37 +158,37 @@
 
 
     </div>
+    <div id="map_container">
+        <div id="sidebar" class="sidebar collapsed">
+            <!-- Nav tabs -->
+            <ul class="sidebar-tabs" role="tablist">
+                <li><a href="#tablegend" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
+                <li><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>
+                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+            </ul>
 
-    <div id="sidebar" class="sidebar collapsed">
-        <!-- Nav tabs -->
-        <ul class="sidebar-tabs" role="tablist">
-            <li><a href="#tablegend" role="tab"><i class="fa fa-bars"></i></a></li>
-            <li><a href="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
-            <li><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>
-            <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-        </ul>
+            <!-- Tab panes -->
+            <div class="sidebar-content active">
+                <div class="sidebar-pane" id="tablegend">
 
-        <!-- Tab panes -->
-        <div class="sidebar-content active">
-            <div class="sidebar-pane" id="tablegend">
+                    <div id="legend" class="info legend"></div>
 
-                <div id="legend" class="info legend"></div>
-
-            </div>
-            <div class="sidebar-pane" id="graphs"><h1>Click a marker for specimens data</h1>
-
-                <!--<div id="pieChart"></div>-->
-                <div id="chart">
-                    <svg id="piechart"></svg>
                 </div>
+                <div class="sidebar-pane" id="graphs"><h1>Click a marker for specimens data</h1>
+
+                    <!--<div id="pieChart"></div>-->
+                    <div id="chart">
+                        <svg id="piechart"></svg>
+                    </div>
+                </div>
+                <div class="sidebar-pane" id="messages"><h1>Messages</h1></div>
+                <div class="sidebar-pane" id="settings"><h1>Settings</h1></div>
             </div>
-            <div class="sidebar-pane" id="messages"><h1>Messages</h1></div>
-            <div class="sidebar-pane" id="settings"><h1>Settings</h1></div>
         </div>
+
+        <div id="map" class="sidebar-map"></div>
     </div>
-
-    <div id="map" class="sidebar-map"></div>
-
 
     <div id="footer">
         <div class="column-wrapper">
@@ -218,7 +223,11 @@
         zoomControl: false
     });
 
-    map.addControl(new L.Control.FullScreen({position: "topright"}));
+    map.addControl(new L.Control.FullScreen({
+        position: "topright",
+        forcePseudoFullscreen: true
+    }));
+
     map.addControl(new L.Control.ZoomMin({position: "topright"}));
     var sidebar = L.control.sidebar('sidebar').addTo(map);
 

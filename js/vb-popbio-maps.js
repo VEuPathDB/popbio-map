@@ -712,3 +712,17 @@ function updatePieChart(population, stats) {
 
     }
 };
+
+$.fn.redraw = function () {
+    /*
+     function redraw
+     date: 20/03/2015
+     purpose: This snippet can help in cases where the browser doesn't redraw an updated element properly.
+     inputs: call it like $('.theElement').redraw();
+     outputs:
+     */
+
+    $(this).each(function () {
+        var redraw = this.offsetHeight;
+    });
+};
