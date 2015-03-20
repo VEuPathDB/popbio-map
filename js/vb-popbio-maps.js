@@ -112,8 +112,8 @@ function loadSolr(parameters) {
                 }
 
                 fullElStats.push({
-                    "label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
-                        .replace(/sensu lato/, "sl")
+                    //"label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
+                    "label": key.replace(/sensu lato/, "sl")
                         .replace(/chromosomal form/, "cf"),
                     "value": count,
                     "color": (palette[key] ? palette[key] : "#000000")
@@ -398,8 +398,8 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
             var stats = cluster.stats;
             for (var key in stats) {
                 fullElStats.push({
-                    "label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
-                        .replace(/sensu lato/, "sl")
+                    //"label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
+                    "label": key.replace(/sensu lato/, "sl")
                         .replace(/chromosomal form/, "cf"),
                     "value": stats[key],
                     "color": (palette[key] ? palette[key] : "#000000")

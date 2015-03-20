@@ -215,11 +215,11 @@
     map = L.map('map', {
         center: [18, 0.0],
         zoom: 3,
-        fullscreenControl: true,
         zoomControl: false
     });
 
-    map.addControl(new L.Control.ZoomMin());
+    map.addControl(new L.Control.FullScreen({position: "topright"}));
+    map.addControl(new L.Control.ZoomMin({position: "topright"}));
     var sidebar = L.control.sidebar('sidebar').addTo(map);
 
 
@@ -259,7 +259,7 @@
         'OpenStreetMap': mp3,
         'MapQuest Open Aerial': mp2
     });
-    layerCtl.setPosition('topleft');
+    layerCtl.setPosition('topright');
     layerCtl.addTo(map);
 
     map.spin(true);
