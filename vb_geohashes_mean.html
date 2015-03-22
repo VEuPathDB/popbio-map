@@ -226,6 +226,8 @@
         zoomControl: false
     });
 
+    map.spin(true);
+
     map.addControl(new L.Control.FullScreen({
         position: "topright",
         forcePseudoFullscreen: true
@@ -274,7 +276,6 @@
     layerCtl.setPosition('topright');
     layerCtl.addTo(map);
 
-    map.spin(true);
 
     // fetch a list of all species with geodata and build a color palette for them
     //TODO: Move this to the library
@@ -334,6 +335,9 @@
             $("#legend").html(inHtml);
             cntLegend++;
         }
+        // moved this here to avoid querying SOLR before the palette is done building
+        loadSolr({clear: 0, zoomLevel: map.getZoom()});
+
     };
 
     //    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.field=species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
@@ -341,7 +345,6 @@
     $.getJSON(url, genPalette);
 
 
-    loadSolr({clear: 0, zoomLevel: map.getZoom()});
     map.spin(false);
 
     // detect when user changes zoom or pans around the map

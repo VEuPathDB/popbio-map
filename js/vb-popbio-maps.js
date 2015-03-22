@@ -134,11 +134,19 @@ function loadSolr(parameters) {
                     continue;
                 }
 
-                if (zoomLevel === 5 && count < 11) {
+                if (zoomLevel === 3 && count < 6) {
                     smallClusters.push(key);
                     continue;
                 }
-                if (zoomLevel === 6 && count < 26) {
+                if (zoomLevel === 4 && count < 11) {
+                    smallClusters.push(key);
+                    continue;
+                }
+                if (zoomLevel === 5 && count < 21) {
+                    smallClusters.push(key);
+                    continue;
+                }
+                if (zoomLevel === 6 && count < 31) {
                     smallClusters.push(key);
                     continue;
                 }
@@ -146,24 +154,24 @@ function loadSolr(parameters) {
                     smallClusters.push(key);
                     continue;
                 }
-                if (zoomLevel === 8 && count < 61) {
+                if (zoomLevel === 8 && count < 51) {
                     smallClusters.push(key);
                     continue;
                 }
-                if (zoomLevel === 9 && count < 81) {
+                if (zoomLevel === 9 && count < 61) {
                     smallClusters.push(key);
                     continue;
                 }
-                if (zoomLevel > 9 && count < 101) {
+                if (zoomLevel > 9 && count < 71) {
                     smallClusters.push(key);
                     continue;
                 }
 
                 // add to small clusters geohashes with all landmarks from the same location
-                if (docLat[key].min === docLat[key].max && docLng[key].min === docLng[key].max) {
-                    smallClusters.push(key);
-                    continue;
-                }
+                //if (docLat[key].min === docLat[key].max && docLng[key].min === docLng[key].max) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
                 // process the JSON returned from SOLR to make it compatible with leaflet-dvf
                 var arr = {};
                 arr.term = key;
@@ -265,7 +273,7 @@ function loadSolr(parameters) {
 
 function loadSmall(mode, zoomLevel, SolrBBox) {
     "use strict";
-    var pruneCluster = new PruneClusterForLeaflet(40);
+    var pruneCluster = new PruneClusterForLeaflet(100);
 
     pruneCluster.BuildLeafletClusterIcon = function (cluster) {
         var e = new L.Icon.MarkerCluster();
@@ -630,16 +638,16 @@ function buildPalette(items, nmColors, paletteType) {
     var noItems = items.length,
         stNoItems = noItems;
 
-    console.log('items: ' + noItems);
+    //console.log('items: ' + noItems);
     for (var i = 0; i < nmColors; i++) {
         var item = items[i][0];
         newPalette[item] = kelly_colors_hex[i];
 
         noItems--; // track how many items don't have a proper color
-        console.log(i + ': ' + items[i][0]);
+        //console.log(i + ': ' + items[i][0]);
     }
 
-    console.log('items: ' + noItems);
+    //console.log('items: ' + noItems);
 
     var lumInterval = 0.5 / noItems,
         lum = 0.7;
@@ -648,7 +656,7 @@ function buildPalette(items, nmColors, paletteType) {
         var item = items[element][0];
         newPalette[item] = colorLuminance("#FFFFFF", -lum);
         lum -= lumInterval;
-        console.log(lum + ': ' + colorLuminance("#FFFFFF", -lum));
+        //console.log(lum + ': ' + colorLuminance("#FFFFFF", -lum));
 
     }
 
