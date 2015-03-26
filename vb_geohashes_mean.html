@@ -20,10 +20,15 @@
     <link rel="stylesheet" href="./css/L.Control.ZoomMin.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/leaflet-sidebar.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/nv.d3.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./css/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="./css/typeaheadjs.css">
 
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="./js/leaflet-dvf.min.js"></script>
     <script type="text/javascript" src="./js/PruneCluster.min.js"></script>
     <script type="text/javascript" src="./js/spin.min.js"></script>
@@ -34,6 +39,10 @@
     <script type="text/javascript" src="./js/leaflet-sidebar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/nv.d3.pie.min.js"></script>
+    <script type="text/javascript" src="./js/typeahead.bundle.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-tagsinput.js"></script>
+
+
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
 
     <style>
@@ -109,7 +118,7 @@
     </style>
 </head>
 
-<body class="no_tabs static" id="ensembl-webpage">
+<body class="no_tabs static fuelux">
 
 <div id="min_width_container">
     <div id="masthead" class="js_panel">
@@ -177,19 +186,22 @@
                     <div id="legend" class="info legend"></div>
 
                 </div>
-                <div class="sidebar-pane" id="graphs"><h1>Click a marker for specimens data</h1>
+                <div class="sidebar-pane" id="graphs"><h2>Click a marker for specimens data</h2>
 
                     <!--<div id="pieChart"></div>-->
                     <div id="chart">
                         <svg id="piechart"></svg>
                     </div>
                 </div>
-                <div class="sidebar-pane" id="search"><h1>Search VB Popbio</h1></div>
-                <div class="sidebar-pane" id="settings"><h1>Settings</h1></div>
+                <div class="sidebar-pane" id="search"><h2>Search VB Popbio</h2>
+                    <input type="text" id="search_ac" data-role="tagsinput" style="width:100%;"/>
+
+                </div>
+                <div class="sidebar-pane" id="settings"><h2>Settings</h2></div>
             </div>
         </div>
 
-        <div id="map" class="sidebar-map"></div>
+        <div id="map"></div>
     </div>
 
     <div id="footer">
@@ -323,7 +335,7 @@
         var sortedItems = sortHashByValue(items);
         palette = buildPalette(sortedItems, legendSpecies, 1);
 
-        var inHtml = "<h1>Legend</h1>";
+        var inHtml = "<h2>Legend</h2>";
         var cntLegend = 1;
         for (var obj in palette) {
             if (cntLegend > legendSpecies - 1) {
@@ -346,6 +358,64 @@
 
 
     map.spin(false);
+
+    var dsrc = new Bloodhound({
+        datumTokenizer: function (d) {
+            return Bloodhound.tokenizers.whitespace(d.value);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 10,
+        minLength: 3,
+
+        remote: {
+            url: 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/ac?q==%QUERY',
+            ajax: {
+                dataType: 'jsonp',
+
+                data: {
+                    'wt': 'json',
+                    'rows': 10
+                },
+
+                jsonp: 'json.wrf'
+            },
+            filter: function (data) {
+                console.log(data.grouped.textsuggest_category.doclist.docs[1])
+                return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
+                    return {
+                        value: data['textsuggest_category'],
+                        type: data['type'],
+                        id: data['id']
+                    };
+                });
+            }
+        }
+    });
+
+    dsrc.initialize();
+
+    $('#search_ac').tagsinput({
+        tagClass: function (item) {
+            switch (item.type) {
+                case 'Taxonomy'   :
+                    return 'label label-primary';
+                case 'Title'  :
+                    return 'label label-danger label-important';
+                case 'Description':
+                    return 'label label-success';
+                case 'Projects'   :
+                    return 'label label-default';
+            }
+        },
+        itemValue: 'value',
+        itemText: 'value',
+        itemType: 'type',
+        typeaheadjs: {
+            name: 'value',
+            displayKey: 'value',
+            source: dsrc.ttAdapter()
+        }
+    });
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
