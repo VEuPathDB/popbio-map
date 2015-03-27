@@ -257,9 +257,9 @@ function loadSolr(parameters) {
     };
 
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata%3Atrue&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
-    //console.log(url);
+    console.log(url);
 
     // inform the user that data is loading
     map.spin(true);
@@ -271,7 +271,7 @@ function loadSolr(parameters) {
 
 }
 
-function loadSmall(mode, zoomLevel, SolrBBox) {
+function loadSmall(mode, zoomLevel) {
     "use strict";
     var pruneCluster = new PruneClusterForLeaflet(100);
 
@@ -475,7 +475,7 @@ function loadSmall(mode, zoomLevel, SolrBBox) {
     };
 
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     //console.log(url);
 
@@ -784,3 +784,53 @@ function colorLuminance(hex, lum) {
     return rgb;
 }
 
+function filterMarkers(items) {
+    if (items.length === 0) {
+        qryUrl = '';
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+        return;
+    }
+    var terms = new Object;
+    //items = $("#search_ac").tagsinput('items');
+    items.forEach(function (element) {
+
+        if (terms.hasOwnProperty(element.field)) {
+            terms[element.field].push(element.value);
+        } else {
+            terms[element.field] = [];
+            terms[element.field].push(element.value);
+        }
+
+
+    });
+
+    var tlen = Object.keys(terms).length;
+    var i = 0;
+    for (var obj in terms) {
+        var arr = terms[obj];
+        var qry = '';
+        var alen = arr.length;
+        arr.forEach(function (element, index) {
+            if (index < alen - 1) {
+                qry += '"' + element + '" OR '
+            } else {
+                qry += '"' + element + '"'
+            }
+        });
+        if (i === 0) {
+            qryUrl = ' AND (';
+        }
+        if (i < tlen - 1) {
+            qryUrl += obj + ':(' + qry + ') OR ';
+
+        } else {
+            qryUrl += obj + ':(' + qry + '))';
+
+        }
+
+
+        console.log('lakis' + qryUrl);
+        i++;
+    }
+    loadSolr({clear: 1, zoomLevel: map.getZoom()})
+}

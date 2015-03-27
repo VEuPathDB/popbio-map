@@ -230,7 +230,7 @@
     var smallClusters = [];
     var palette;
     var legendSpecies = 20;
-
+    var qryUrl = '';
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
         center: [18, 0.0],
@@ -360,15 +360,39 @@
     map.spin(false);
 
     var dsrc = new Bloodhound({
-        datumTokenizer: function (d) {
-            return Bloodhound.tokenizers.whitespace(d.value);
-        },
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         limit: 10,
         minLength: 3,
 
+//        prefetch: {
+//            url: 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/ac?q=*&rows=200',
+//            ajax: {
+//                dataType: 'jsonp',
+//
+//                data: {
+//                    'wt': 'json',
+//                    'rows': 10
+//                },
+//
+//                jsonp: 'json.wrf'
+//            },
+//            filter: function (data) {
+//                console.log("prefetch");
+////                console.log("query: " + data.debug.querystring);
+////                console.log("parsed query: " + data.debug.parsedquery);
+//                return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
+//                    return {
+//                        value: data['textsuggest_category'],
+//                        type: data['type'],
+//                        id: data['id'],
+//                        field: data['field']
+//                    };
+//                });
+//            }
+//        },
         remote: {
-            url: 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/ac?q==%QUERY',
+            url: 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/ac?q=%QUERY',
             ajax: {
                 dataType: 'jsonp',
 
@@ -380,15 +404,22 @@
                 jsonp: 'json.wrf'
             },
             filter: function (data) {
-                console.log(data.grouped.textsuggest_category.doclist.docs[1])
+//                console.log("remote");
+//                console.log("query: " + data.debug.querystring);
+//                console.log("parsed query: " + data.debug.parsedquery);
                 return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
                     return {
                         value: data['textsuggest_category'],
                         type: data['type'],
-                        id: data['id']
+                        id: data['id'],
+                        field: data['field']
+
                     };
                 });
             }
+        },
+        dupDetector: function (remoteMatch, localMatch) {
+            return remoteMatch.value === localMatch.value;
         }
     });
 
@@ -410,11 +441,60 @@
         itemValue: 'value',
         itemText: 'value',
         itemType: 'type',
+        itemField: 'field',
         typeaheadjs: {
-            name: 'value',
-            displayKey: 'value',
-            source: dsrc.ttAdapter()
+            options: {
+                minLength: 1,
+                hint: true
+            },
+            datasets: {
+                name: 'dsrc',
+                displayKey: 'value',
+//                valueKey: 'value',
+                source: dsrc.ttAdapter(),
+                templates: {
+                    empty: [
+                        '<div style="width: 200px; text-align: center;">',
+                        'Unable to find any results',
+                        '</div>'
+                    ].join('\n'),
+                    suggestion: function (item) {
+//                        switch (item.type) {
+//                            case 'Taxonomy'   :
+//                                return ['<div class="label label-primary">',
+//                                    item.value + ' in ' + item.type,
+//                                    '</div>'
+//                                ].join('\n');
+//                            case 'Title'  :
+//                                return ['<div class="label label-danger label-important">',
+//                                    item.value + ' in ' + item.type,
+//                                    '</div>'
+//                                ].join('\n');
+//                            case 'Description':
+//                                return ['<div class="label label-success">',
+//                                    item.value + ' in ' + item.type,
+//                                    '</div>'
+//                                ].join('\n');
+//                            case 'Projects'   :
+//                                return ['<div class="label label-default">',
+//                                    item.value + ' in ' + item.type,
+//                                    '</div>'
+//                                ].join('\n');
+//                        }
+                        return '<p>' + item.value + ' <em>in ' + item.type + '</em></p>';
+                    }
+
+                }
+            }
         }
+    });
+
+
+    $("#search_ac").on('itemAdded', function () {
+        filterMarkers(items = $("#search_ac").tagsinput('items'))
+    });
+    $("#search_ac").on('itemRemoved', function () {
+        filterMarkers(items = $("#search_ac").tagsinput('items'))
     });
 
     // detect when user changes zoom or pans around the map
@@ -426,3 +506,11 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
