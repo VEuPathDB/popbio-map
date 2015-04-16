@@ -359,6 +359,7 @@
 
     map.spin(false);
 
+    var partSearch = false;
     var dsrc = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -403,24 +404,56 @@
 
                 jsonp: 'json.wrf'
             },
+            replace: function (url, query) {
+                console.log('constructing query now');
+                var match = query.match(/([^@]+)@([^@]*)/);
+                if (match != null) {
+                    // matched text: match[0]
+                    // match start: match.index
+                    // capturing group n: match[n]
+                    partSearch = match[1];
+                    console.log('http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/acat?q=' + encodeURI(match[1]));
+                    return 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/acat?q=' + encodeURI(match[1]);
+                } else {
+                    // Match attempt failed
+                    partSearch = false;
+                    return 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/ac?q=' + encodeURI(query);
+                }
+
+            },
             filter: function (data) {
-//                console.log("remote");
+//                console.log("remote: " + query);
 //                console.log("query: " + data.debug.querystring);
 //                console.log("parsed query: " + data.debug.parsedquery);
-                return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
-                    return {
-                        value: data['textsuggest_category'],
-                        type: data['type'],
-                        id: data['id'],
-                        field: data['field']
+                if (partSearch) {
+                    return $.map(data.grouped.type.doclist.docs, function (data) {
+                        return {
+                            value: partSearch,
+                            id: data['id'],
+                            type: data['type'],
+                            field: data['field'],
+                            qtype: 'partial'
 
-                    };
-                });
+                        };
+                    });
+                } else {
+                    return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
+                        return {
+                            value: data['textsuggest_category'],
+                            type: data['type'],
+                            id: data['id'],
+                            field: data['field'],
+                            qtype: 'exact'
+
+                        };
+                    });
+
+                }
             }
         },
-        dupDetector: function (remoteMatch, localMatch) {
-            return remoteMatch.value === localMatch.value;
-        }
+//        dupDetector: function (remoteMatch, localMatch) {
+//            return remoteMatch.value === localMatch.value;
+//        }
     });
 
     dsrc.initialize();
@@ -443,6 +476,7 @@
         itemText: 'value',
         itemType: 'type',
         itemField: 'field',
+        itemQtype: 'qtype',
         typeaheadjs: {
             options: {
                 minLength: 1,

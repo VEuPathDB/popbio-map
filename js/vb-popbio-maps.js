@@ -795,13 +795,19 @@ function filterMarkers(items) {
     items.forEach(function (element) {
 
         if (terms.hasOwnProperty(element.field)) {
-            terms[element.field].push(element.value);
+            if (element.qtype === 'exact') {
+                terms[element.field].push('"' + element.value + '"');
+            } else {
+                terms[element.field].push(element.value + '*');
+            }
         } else {
             terms[element.field] = [];
-            terms[element.field].push(element.value);
+            if (element.qtype === 'exact') {
+                terms[element.field].push('"' + element.value + '"');
+            } else {
+                terms[element.field].push(element.value + '*');
+            }
         }
-
-
     });
 
     var tlen = Object.keys(terms).length;
@@ -812,9 +818,9 @@ function filterMarkers(items) {
         var alen = arr.length;
         arr.forEach(function (element, index) {
             if (index < alen - 1) {
-                qry += '"' + element + '" OR '
+                qry += element + ' OR '
             } else {
-                qry += '"' + element + '"'
+                qry += element
             }
         });
         if (i === 0) {
