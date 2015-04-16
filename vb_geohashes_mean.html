@@ -362,7 +362,7 @@
     var dsrc = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        limit: 10,
+        limit: 15,
         minLength: 3,
 
 //        prefetch: {
@@ -398,7 +398,7 @@
 
                 data: {
                     'wt': 'json',
-                    'rows': 10
+                    'rows': 15
                 },
 
                 jsonp: 'json.wrf'
@@ -424,6 +424,7 @@
     });
 
     dsrc.initialize();
+
 
     $('#search_ac').tagsinput({
         tagClass: function (item) {
