@@ -785,6 +785,7 @@ function colorLuminance(hex, lum) {
 }
 
 function filterMarkers(items) {
+    //ToDo: Handle queries with no results
     if (items.length === 0) {
         qryUrl = '';
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
@@ -795,17 +796,19 @@ function filterMarkers(items) {
     items.forEach(function (element) {
 
         if (terms.hasOwnProperty(element.field)) {
-            if (element.qtype === 'exact') {
+            if (element.qtype == 'exact') {
                 terms[element.field].push('"' + element.value + '"');
             } else {
                 terms[element.field].push(element.value + '*');
+                console.log("inexact");
             }
         } else {
             terms[element.field] = [];
-            if (element.qtype === 'exact') {
+            if (element.qtype == 'exact') {
                 terms[element.field].push('"' + element.value + '"');
             } else {
                 terms[element.field].push(element.value + '*');
+                console.log("inexact");
             }
         }
     });

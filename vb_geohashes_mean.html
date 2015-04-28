@@ -412,9 +412,10 @@
                     // match start: match.index
                     // capturing group n: match[n]
                     partSearch = match[1];
-                    console.log('http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/acat?q=' + encodeURI(match[1]));
+                    console.log('partial');
+                    console.log('http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acat?q=' + encodeURI(match[1]));
                     // ToDo: Replace this URL with a proxied one
-                    return 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/acat?q=' + encodeURI(match[1]);
+                    return 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acat?q=' + encodeURI(match[1]);
                 } else {
                     // Match attempt failed
                     partSearch = false;
