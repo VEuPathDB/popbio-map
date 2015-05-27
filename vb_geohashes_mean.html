@@ -114,6 +114,27 @@
             border-radius: 10px;
         }
 
+        /*center the search box*/
+        .mapbox {
+            position: relative;
+            margin-left: 80px;
+            margin-right: 80px;
+        }
+
+        .mapbox .overlay {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            width: 50%;
+            min-width: 250px;
+            /*max-width: 500px;*/
+            z-index: 314159;
+        }
+
+        /*keep the curson inline with the tags if the space left is more than width*/
+        span.twitter-typeahead {
+            width: 250px;
+        }
 
     </style>
 </head>
@@ -170,6 +191,23 @@
 
     </div>
     <div id="map_container">
+
+        <div class="mapbox">
+            <div class="overlay">
+                <!--<div class="input-group">-->
+                <input type="search" placeholder="Search..." id="search_ac" data-role="tagsinput" style="width: 100%;"/>
+
+                <!--</div>-->
+                <!-- /input-group -->
+            </div>
+        </div>
+        <!-- /.col-lg-6 -->
+        <!-- /.row -->
+
+        <!--<div class="sidebar-pane" id="search"><h2>Search VB Popbio</h2>-->
+        <!--<input type="text" id="search_ac" data-role="tagsinput" style="width:100%;"/>-->
+
+        <!--</div>-->
         <div id="sidebar" class="sidebar collapsed">
             <!-- Nav tabs -->
             <ul class="sidebar-tabs" role="tablist">
@@ -193,10 +231,10 @@
                         <svg id="piechart"></svg>
                     </div>
                 </div>
-                <div class="sidebar-pane" id="search"><h2>Search VB Popbio</h2>
-                    <input type="text" id="search_ac" data-role="tagsinput" style="width:100%;"/>
+                <!--<div class="sidebar-pane" id="search"><h2>Search VB Popbio</h2>-->
+                <!--<input type="text" id="search_ac" data-role="tagsinput" style="width:100%;"/>-->
 
-                </div>
+                <!--</div>-->
                 <div class="sidebar-pane" id="settings"><h2>Settings</h2></div>
             </div>
         </div>
@@ -499,7 +537,7 @@
                 source: dsrc.ttAdapter(),
                 templates: {
                     empty: [
-                        '<div style="width: 200px; text-align: center;">',
+                        '<div style="width: 250px; text-align: center;">',
                         'Unable to find any results',
                         '</div>'
                     ].join('\n'),

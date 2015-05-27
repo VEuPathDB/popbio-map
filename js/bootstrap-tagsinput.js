@@ -450,11 +450,11 @@
                 }
 
                 // test for @ input detection
-                if (keyCombinationInList(event, [64])) {
-                    console.log('@ input detected');
-                    console.log('value is ' + text);
-
-                }
+                //if (keyCombinationInList(event, [64])) {
+                //    console.log('@ input detected');
+                //    console.log('value is ' + text);
+                //
+                //}
 
                 // Reset internal input's size
                 var textLength = $input.val().length,
