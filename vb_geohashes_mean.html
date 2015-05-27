@@ -11,7 +11,7 @@
 
 
     <link rel="stylesheet" type="text/css" media="all"
-          href="https://www.vectorbase.org/minified/932ff214ba8bca9fb5f0fcd87690f3d1.css"/>
+          href="https://www.vectorbase.org/minified/c6a48c3adcbeafed959ece477ab7a8e5.css"/>
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/dvf.min.css" type="text/css" media="screen"/>
@@ -360,6 +360,15 @@
     map.spin(false);
 
     var partSearch = false;
+    //FixMe: In partial search mode adding the same query to different categories is not working
+    //ToDo: Add copy/paste support of IDs
+    //ToDo: Search the whole world or just map region
+    //ToDo: Inform user there are more results in each category. When in exact mode if a user enters a common term
+    // (e.g. Anopheles) all of the returned suggestions may be from the same category (e.g. Taxonomy) and leave the user
+    // clueless as to whether there are results in other categories as well. Find a way to inform the user that results
+    // exist into other categories as well
+    //ToDo: Add more fields into SOLR autocomplete
+
     var dsrc = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -414,7 +423,6 @@
                     partSearch = match[1];
                     console.log('partial');
                     console.log('http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acat?q=' + encodeURI(match[1]));
-                    // ToDo: Replace this URL with a proxied one
                     return 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acat?q=' + encodeURI(match[1]);
                 } else {
                     // Match attempt failed
