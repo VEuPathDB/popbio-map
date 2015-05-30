@@ -10,7 +10,7 @@ function loadSolr(parameters) {
     var clear = parameters.clear;
     var zoomLevel = parameters.zoomLevel;
     // detect the zoom level and request the appropriate facets
-    var geoLevel = geohashLevel(zoomLevel,"geohash");
+    var geoLevel = geohashLevel(zoomLevel, "geohash");
 
     //we are too deep in, just download the landmarks instead
 
@@ -456,7 +456,7 @@ function loadSmall(mode, zoomLevel) {
 
         var doc = result.response.docs;
 
-        for (var key in doc) if (doc.hasOwnProperty(key)) { 
+        for (var key in doc) if (doc.hasOwnProperty(key)) {
             var coords = doc[key].geo_coords.split(",");
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
             if (doc[key].hasOwnProperty("species_category")) {
@@ -485,7 +485,7 @@ function loadSmall(mode, zoomLevel) {
 
 }
 
-function buildBbox(bounds){
+function buildBbox(bounds) {
     /*
      function buildBbox
      date: 11/03/2015
@@ -528,7 +528,7 @@ function buildBbox(bounds){
         //console.log("bounds is not an object");
         solrBbox = "[-90,-180 TO 90, 180]"; // a generic Bbox
     }
-    return(solrBbox);
+    return (solrBbox);
 }
 
 function geohashLevel(zoomLevel, type) {
@@ -830,10 +830,18 @@ function filterMarkers(items) {
             qryUrl = ' AND (';
         }
         if (i < tlen - 1) {
-            qryUrl += obj + ':(' + qry + ') OR ';
+            if (obj === 'anywhere') {   // search in any field
+                qryUrl += '(*' + qry + ') OR ';
+            } else {
+                qryUrl += obj + ':(' + qry + ') OR ';
+            }
 
         } else {
-            qryUrl += obj + ':(' + qry + '))';
+            if (obj === 'anywhere') {
+                qryUrl += '(*' + qry + '))';
+            } else {
+                qryUrl += obj + ':(' + qry + '))';
+            }
 
         }
 
@@ -842,4 +850,17 @@ function filterMarkers(items) {
         i++;
     }
     loadSolr({clear: 1, zoomLevel: map.getZoom()})
+}
+
+function mapTypeToField(category) {
+    switch (category) {
+        case "Taxonomy":
+            return "species_cvterms"
+        case "Title":
+            return "label"
+        default :
+            return category.toLowerCase()
+
+    }
+
 }
