@@ -35,6 +35,9 @@ function loadSolr(parameters) {
 
         // detect empty results set
         if (result.response.numFound === 0) {
+            if (clear) {
+                assetLayerGroup.clearLayers();
+            }
             map.spin(false);
             return;
         }
@@ -785,7 +788,6 @@ function colorLuminance(hex, lum) {
 }
 
 function filterMarkers(items) {
-    //ToDo: Handle queries with no results
     if (items.length === 0) {
         qryUrl = '';
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
@@ -799,7 +801,7 @@ function filterMarkers(items) {
             if (element.qtype == 'exact') {
                 terms[element.field].push('"' + element.value + '"');
             } else {
-                terms[element.field].push(element.value + '*');
+                terms[element.field].push('*' + element.value + '*');
                 console.log("inexact");
             }
         } else {
@@ -807,7 +809,7 @@ function filterMarkers(items) {
             if (element.qtype == 'exact') {
                 terms[element.field].push('"' + element.value + '"');
             } else {
-                terms[element.field].push(element.value + '*');
+                terms[element.field].push('*' + element.value + '*');
                 console.log("inexact");
             }
         }
@@ -831,14 +833,14 @@ function filterMarkers(items) {
         }
         if (i < tlen - 1) {
             if (obj === 'anywhere') {   // search in any field
-                qryUrl += '(*' + qry + ') OR ';
+                qryUrl += '(' + qry + ') OR ';
             } else {
                 qryUrl += obj + ':(' + qry + ') OR ';
             }
 
         } else {
             if (obj === 'anywhere') {
-                qryUrl += '(*' + qry + '))';
+                qryUrl += '(' + qry + '))';
             } else {
                 qryUrl += obj + ':(' + qry + '))';
             }
