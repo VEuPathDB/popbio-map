@@ -33,6 +33,8 @@ function loadSolr(parameters) {
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
 
+        // display the number of results
+        $("#markersCount").html(result.response.numFound + ' samples');
         // detect empty results set
         if (result.response.numFound === 0) {
             if (clear) {

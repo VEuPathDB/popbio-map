@@ -211,6 +211,8 @@
             while (self.itemsArray.length > 0)
                 self.itemsArray.pop();
 
+            self.$input.val('');
+            self.$input.typeahead('val', '');
             self.pushVal();
         },
 

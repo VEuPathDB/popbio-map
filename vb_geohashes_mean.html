@@ -122,12 +122,22 @@
             margin-right: 80px;
         }
 
-        .mapbox .overlay {
+        .mapbox .overlaytop {
             position: absolute;
             top: 10px;
             left: 25%;
             width: 50%;
             min-width: 250px;
+            /*max-width: 500px;*/
+            z-index: 314159;
+        }
+
+        .mapbox .overlaybottom {
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7);
             /*max-width: 500px;*/
             z-index: 314159;
         }
@@ -143,6 +153,7 @@
             padding: 3px 0;
             border-bottom: 1px solid #ccc;
         }
+
 
     </style>
 </head>
@@ -201,21 +212,24 @@
     <div id="map_container">
 
         <div class="mapbox">
-            <div class="overlay">
-                <!--<div class="input-group">-->
-                <input type="search" placeholder="Search..." id="search_ac" data-role="tagsinput" style="width: 100%;"/>
+            <div class="overlaytop">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
 
-                <!--</div>-->
-                <!-- /input-group -->
+                    <input type="text" class="form-control" placeholder="Search samples" id="search_ac"
+                           data-role="tagsinput"/>
+
+                    <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"><i
+                            class="fa fa-times fa-fw"
+                            style="color: white"></i></span>
+                </div>
+
+
             </div>
+
         </div>
-        <!-- /.col-lg-6 -->
-        <!-- /.row -->
 
-        <!--<div class="sidebar-pane" id="search"><h2>Search VB Popbio</h2>-->
-        <!--<input type="text" id="search_ac" data-role="tagsinput" style="width:100%;"/>-->
 
-        <!--</div>-->
         <div id="sidebar" class="sidebar collapsed">
             <!-- Nav tabs -->
             <ul class="sidebar-tabs" role="tablist">
@@ -248,6 +262,13 @@
         </div>
 
         <div id="map"></div>
+
+        <div class="mapbox">
+            <div class="overlaybottom" id="markersCount">
+            </div>
+
+        </div>
+
     </div>
 
     <div id="footer">
@@ -271,6 +292,10 @@
 
 
 <script language="JavaScript">
+    $('#reset-search').click(function () {
+        $('#search_ac').tagsinput('removeAll');
+        filterMarkers('');
+    });
     var map;
     var assetLayerGroup;
     var smallClusters = [];
