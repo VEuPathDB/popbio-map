@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* User can now freely input a universal search term by pressing Enter&#10;* Duplicated search terms detection now also takes into account the field/class of the term&#10;* Various bugfixes&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/bootstrap-tagsinput.css" afterPath="$PROJECT_DIR$/css/bootstrap-tagsinput.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/bootstrap-tagsinput.js" afterPath="$PROJECT_DIR$/js/bootstrap-tagsinput.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/bootstrap-tagsinput.min.css" afterPath="$PROJECT_DIR$/css/bootstrap-tagsinput.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/bootstrap-tagsinput.min.js" afterPath="$PROJECT_DIR$/js/bootstrap-tagsinput.min.js" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Added a reset button for search&#10;* Beautified the search field">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/popbio_map.iml" afterPath="$PROJECT_DIR$/.idea/popbio_map.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/vb_geohashes_mean.html" />
@@ -33,8 +31,8 @@
       <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.65993786">
-              <caret line="300" column="16" selection-start-line="300" selection-start-column="16" selection-end-line="300" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.734098">
+              <caret line="672" column="26" selection-start-line="672" selection-start-column="26" selection-end-line="672" selection-end-column="26" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -43,21 +41,15 @@
                 <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-                <element signature="e#20692#20713#0" expanded="false" />
-                <element signature="e#24424#25811#0" expanded="false" />
-                <marker date="1433257541012" expanded="true" signature="24201:24234" placeholder="..." />
+                <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="e#21966#21987#0" expanded="false" />
+                <element signature="e#26462#27849#0" expanded="false" />
+                <marker date="1433268056482" expanded="true" signature="26030:26045" placeholder="..." />
+                <marker date="1433268056482" expanded="true" signature="26156:26176" placeholder="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bootstrap-tagsinput.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/css/bootstrap-tagsinput.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -65,15 +57,13 @@
       <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="25" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
+            <state vertical-scroll-proportion="-13.205882">
+              <caret line="813" column="42" selection-start-line="813" selection-start-column="42" selection-end-line="813" selection-end-column="42" />
               <folding>
-                <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-                <element signature="n#!!block;n#buildBbox#0" expanded="false" />
                 <element signature="n#!!block;n#buildPalette#0" expanded="false" />
                 <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
                 <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-                <element signature="e#25223#25538#0" expanded="false" />
+                <element signature="e#25297#25612#0" expanded="false" />
                 <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
               </folding>
             </state>
@@ -83,7 +73,7 @@
       <file leaf-file-name="bootstrap-tagsinput.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/bootstrap-tagsinput.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="29.764706">
+            <state vertical-scroll-proportion="0.0">
               <caret line="216" column="10" selection-start-line="216" selection-start-column="10" selection-end-line="216" selection-end-column="10" />
               <folding />
             </state>
@@ -138,9 +128,9 @@
         <option value="$PROJECT_DIR$/js/cities.json" />
         <option value="$PROJECT_DIR$/css/typeaheadjs.css" />
         <option value="$PROJECT_DIR$/js/typeahead.bundle.js" />
-        <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
-        <option value="$PROJECT_DIR$/css/bootstrap-tagsinput.css" />
         <option value="$PROJECT_DIR$/js/bootstrap-tagsinput.js" />
+        <option value="$PROJECT_DIR$/css/bootstrap-tagsinput.css" />
+        <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/vb_geohashes_mean.html" />
       </list>
     </option>
@@ -248,6 +238,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap-toggle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="popbio_map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -282,8 +286,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -666,7 +670,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433173846766</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="* Added a reset button for search&#10;* Beautified the search field">
+      <created>1433257630357</created>
+      <option name="number" value="00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1433257630358</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TodoView" selected-index="3">
@@ -682,16 +692,16 @@
     <frame x="-9" y="-9" width="1938" height="1168" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17730871" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17730871" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.327112" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24907652" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24907652" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30943024" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30943024" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -699,7 +709,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4204322" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4194499" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -743,7 +753,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Added a button to directly go to minimum zoom level&#10;" />
     <MESSAGE value="* Palette generation now takes into account the position of the species in level 2 geohashes. This results into less markers with all species in the &quot;Others&quot; category&#10;" />
     <MESSAGE value="* Added a sidebar&#10;* Moved legend and pie-charts into the sidebar&#10;* Pie-chart colors now match the legend and marker colors&#10;* Marker pie segments now match the pie chart&#10;* Other improvements in pie-chart generation&#10;" />
     <MESSAGE value="* Hooked zoom to double click&#10;* Hooked pie generation to single click&#10;* No more actions on hover (for now)&#10;" />
@@ -768,7 +777,8 @@
     <MESSAGE value="* Moved search box at the top center of the map" />
     <MESSAGE value="* Added Result counts in all categories. A user can now click in one of these listings to search directly within a category of even everywhere&#10;* Various bugfixes&#10;" />
     <MESSAGE value="* User can now freely input a universal search term by pressing Enter&#10;* Duplicated search terms detection now also takes into account the field/class of the term&#10;* Various bugfixes&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="* User can now freely input a universal search term by pressing Enter&#10;* Duplicated search terms detection now also takes into account the field/class of the term&#10;* Various bugfixes&#10;" />
+    <MESSAGE value="* Added a reset button for search&#10;* Beautified the search field" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Added a reset button for search&#10;* Beautified the search field" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -776,7 +786,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="92" />
+      <option name="time" value="95" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -798,12 +808,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -814,12 +822,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -837,10 +843,14 @@
             <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#20692#20713#0" expanded="false" />
-            <element signature="e#24424#25811#0" expanded="false" />
-            <marker date="1433257541012" expanded="true" signature="24201:24234" placeholder="..." />
+            <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="e#21966#21987#0" expanded="false" />
+            <element signature="e#26462#27849#0" expanded="false" />
+            <marker date="1433268056482" expanded="true" signature="26030:26045" placeholder="..." />
+            <marker date="1433268056482" expanded="true" signature="26156:26176" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -850,12 +860,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="230" column="21" selection-start-line="230" selection-start-column="21" selection-end-line="230" selection-end-column="21" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -873,10 +881,14 @@
             <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#20692#20713#0" expanded="false" />
-            <element signature="e#24424#25811#0" expanded="false" />
-            <marker date="1433257541012" expanded="true" signature="24201:24234" placeholder="..." />
+            <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="e#21966#21987#0" expanded="false" />
+            <element signature="e#26462#27849#0" expanded="false" />
+            <marker date="1433268056482" expanded="true" signature="26030:26045" placeholder="..." />
+            <marker date="1433268056482" expanded="true" signature="26156:26176" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -886,12 +898,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="301" column="56" selection-start-line="301" selection-start-column="56" selection-end-line="301" selection-end-column="56" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -916,10 +926,14 @@
             <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#20692#20713#0" expanded="false" />
-            <element signature="e#24424#25811#0" expanded="false" />
-            <marker date="1433257541012" expanded="true" signature="24201:24234" placeholder="..." />
+            <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="e#21966#21987#0" expanded="false" />
+            <element signature="e#26462#27849#0" expanded="false" />
+            <marker date="1433268056482" expanded="true" signature="26030:26045" placeholder="..." />
+            <marker date="1433268056482" expanded="true" signature="26156:26176" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -929,12 +943,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="247" column="47" selection-start-line="247" selection-start-column="47" selection-end-line="247" selection-end-column="47" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -966,10 +978,14 @@
             <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#20692#20713#0" expanded="false" />
-            <element signature="e#24424#25811#0" expanded="false" />
-            <marker date="1433257541012" expanded="true" signature="24201:24234" placeholder="..." />
+            <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="e#21966#21987#0" expanded="false" />
+            <element signature="e#26462#27849#0" expanded="false" />
+            <marker date="1433268056482" expanded="true" signature="26030:26045" placeholder="..." />
+            <marker date="1433268056482" expanded="true" signature="26156:26176" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -979,12 +995,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -1009,10 +1023,14 @@
             <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#20692#20713#0" expanded="false" />
-            <element signature="e#24424#25811#0" expanded="false" />
-            <marker date="1433257541012" expanded="true" signature="24201:24234" placeholder="..." />
+            <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="e#21966#21987#0" expanded="false" />
+            <element signature="e#26462#27849#0" expanded="false" />
+            <marker date="1433268056482" expanded="true" signature="26030:26045" placeholder="..." />
+            <marker date="1433268056482" expanded="true" signature="26156:26176" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1022,12 +1040,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -1045,10 +1061,14 @@
             <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#20692#20713#0" expanded="false" />
-            <element signature="e#24424#25811#0" expanded="false" />
-            <marker date="1433257541012" expanded="true" signature="24201:24234" placeholder="..." />
+            <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="e#21966#21987#0" expanded="false" />
+            <element signature="e#26462#27849#0" expanded="false" />
+            <marker date="1433268056482" expanded="true" signature="26030:26045" placeholder="..." />
+            <marker date="1433268056482" expanded="true" signature="26156:26176" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1058,12 +1078,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="418" column="39" selection-start-line="418" selection-start-column="39" selection-end-line="418" selection-end-column="39" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -1074,12 +1092,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -1107,13 +1123,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/PruneCluster.js.map">
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="101" selection-start-line="0" selection-start-column="101" selection-end-line="0" selection-end-column="101" />
         </state>
+      </provider>
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Downloads/novus-nvd3-dbcdc25/examples/pieChart.html">
@@ -1286,33 +1302,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/bootstrap-tagsinput.css">
+    <entry file="file://$PROJECT_DIR$/js/bootstrap-tagsinput.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+          <caret line="216" column="10" selection-start-line="216" selection-start-column="10" selection-end-line="216" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/bootstrap-tagsinput.js">
+    <entry file="file://$PROJECT_DIR$/css/bootstrap-tagsinput.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="29.764706">
-          <caret line="216" column="10" selection-start-line="216" selection-start-column="10" selection-end-line="216" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.27910447">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="25" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
+        <state vertical-scroll-proportion="-13.205882">
+          <caret line="813" column="42" selection-start-line="813" selection-start-column="42" selection-end-line="813" selection-end-column="42" />
           <folding>
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25223#25538#0" expanded="false" />
+            <element signature="e#25297#25612#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -1320,8 +1334,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.65993786">
-          <caret line="300" column="16" selection-start-line="300" selection-start-column="16" selection-end-line="300" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.734098">
+          <caret line="672" column="26" selection-start-line="672" selection-start-column="26" selection-end-line="672" selection-end-column="26" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1330,10 +1344,14 @@
             <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#20692#20713#0" expanded="false" />
-            <element signature="e#24424#25811#0" expanded="false" />
-            <marker date="1433257541012" expanded="true" signature="24201:24234" placeholder="..." />
+            <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="e#21966#21987#0" expanded="false" />
+            <element signature="e#26462#27849#0" expanded="false" />
+            <marker date="1433268056482" expanded="true" signature="26030:26045" placeholder="..." />
+            <marker date="1433268056482" expanded="true" signature="26156:26176" placeholder="..." />
           </folding>
         </state>
       </provider>

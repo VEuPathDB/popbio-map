@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="./css/bootstrap-tagsinput.css">
     <link rel="stylesheet" href="./css/typeaheadjs.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -41,6 +42,7 @@
     <script type="text/javascript" src="./js/nv.d3.pie.min.js"></script>
     <script type="text/javascript" src="./js/typeahead.bundle.js"></script>
     <script type="text/javascript" src="./js/bootstrap-tagsinput.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
 
 
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
@@ -219,9 +221,20 @@
                     <input type="text" class="form-control" placeholder="Search samples" id="search_ac"
                            data-role="tagsinput"/>
 
-                    <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"><i
+                    <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"
+                          title="Reset search"><i
                             class="fa fa-times fa-fw"
                             style="color: white"></i></span>
+
+                    <span id="toggle-world" class="input-group-addon btn-primary" style="cursor: pointer"
+                          title="Toggle world search OFF">
+                        <i class="fa fa-globe fa-fw"
+                           id="world-icon"
+                           style="color: white"></i></span>
+
+
+                    <input type="hidden" id="world-search" name="world-search" value="1">
+
                 </div>
 
 
@@ -295,6 +308,21 @@
     $('#reset-search').click(function () {
         $('#search_ac').tagsinput('removeAll');
         filterMarkers('');
+    });
+
+    $('#toggle-world').click(function () {
+        console.log($('#world-search').val());
+        if ($('#world-search').val() === '1') {
+            $('#toggle-world').toggleClass("btn-primary", false)
+                    .attr('title', 'Toggle world search ON');
+            $('#world-search').val('0');
+            $('#world-icon').css('color', '#265a88');
+        } else {
+            $('#toggle-world').toggleClass("btn-primary", true)
+                    .attr('title', 'Toggle world search OFF');
+            $('#world-search').val('1');
+            $('#world-icon').css('color', 'white');
+        }
     });
     var map;
     var assetLayerGroup;
@@ -446,7 +474,7 @@
         hint: false,
 
         remote: {
-            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/ac?q=%QUERY',
+            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/ac?q=',
             ajax: {
                 dataType: 'jsonp',
                 data: {
@@ -462,20 +490,25 @@
                     // match start: match.index
                     // capturing group n: match[n]
                     partSearch = match[1];
-                    console.log('partial');
                     console.log('http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acat?q=' + encodeURI(match[1]));
-                    return 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acat?q=' + encodeURI(match[1]);
+                    if ($('#world-search').val() === '1') {
+                        return url + encodeURI(match[1]);
+                    } else {
+                        return url + encodeURI(match[1]) + buildBbox(map.getBounds());
+                    }
                 } else {
                     // Match attempt failed
                     partSearch = false;
-                    return 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/ac?q=' + encodeURI(query);
+
+                    if ($('#world-search').val() === '1') {
+                        return url + encodeURI(query);
+                    } else {
+                        return url + encodeURI(query) + buildBbox(map.getBounds());
+                    }
                 }
 
             },
             filter: function (data) {
-//                console.log("@@@remote: " + .getQuery());
-//                console.log("query: " + data.debug.querystring);
-//                console.log("parsed query: " + data.debug.parsedquery);
                 if (partSearch) {
                     return $.map(data.grouped.type.doclist.docs, function (data) {
                         return {
@@ -545,7 +578,7 @@
 
 
         remote: {
-            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acgrouped?q=%QUERY*',
+            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acgrouped?q=',
             ajax: {
                 dataType: 'jsonp',
 
@@ -555,6 +588,13 @@
                 },
 
                 jsonp: 'json.wrf'
+            },
+            replace: function (url, query) {
+                if ($('#world-search').val() === '1') {
+                    return url + encodeURI(query) + '*';
+                } else {
+                    return url + encodeURI(query) + '*' + buildBbox(map.getBounds());
+                }
             },
             filter: function (data) {
                 var allResults = data.grouped.stable_id.ngroups;
@@ -575,10 +615,7 @@
 
 //                }
             }
-        },
-//        dupDetector: function (remoteMatch, localMatch) {
-//            return remoteMatch.value === localMatch.value;
-//        }
+        }
     });
 
     acOtherResults.initialize();
@@ -616,11 +653,24 @@
 //                valueKey: 'value',
                     source: acSuggestions.ttAdapter(),
                     templates: {
-                        empty: [
-                            '<div style="width: 250px; text-align: center;">',
-                            'Unable to find any results',
-                            '</div>'
-                        ].join('\n'),
+                        empty: function () {
+                            var msg;
+                            if ($('#world-search').val() === '1') {
+                                msg = 'No results found';
+                            } else {
+                                msg = 'No results found. Try enabling world search.';
+
+                            }
+                            return [
+                                '<span class="tt-suggestions" style="display: block;">',
+                                '<div class="tt-suggestion">',
+                                '<p style="white-space: normal;">',
+                                msg,
+                                '</p>',
+                                '</div>',
+                                '</span>'
+                            ].join('\n')
+                        },
                         suggestion: function (item) {
 //                        switch (item.type) {
 //                            case 'Taxonomy'   :

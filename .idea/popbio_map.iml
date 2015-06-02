@@ -8,5 +8,7 @@
     <orderEntry type="library" name="leaflet" level="application" />
     <orderEntry type="library" name="Node.js v0.12.0 Core Modules" level="application" />
     <orderEntry type="library" name="d3" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="bootstrap-toggle" level="application" />
   </component>
 </module>

@@ -22,8 +22,8 @@ function loadSolr(parameters) {
     }
 
     // get the visible world to filter the records based on what the user is currently viewing
-    var bounds = map.getBounds();
-    var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
+    //var bounds = map.getBounds();
+    //var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
 
     var terms = [];
 
@@ -262,7 +262,7 @@ function loadSolr(parameters) {
     };
 
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&rows=0" + buildBbox(map.getBounds()) + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     console.log(url);
 
@@ -434,8 +434,8 @@ function loadSmall(mode, zoomLevel) {
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
     // get the visible world to filter the records based on what the user is currently viewing
-    var bounds = map.getBounds();
-    var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
+    //var bounds = map.getBounds();
+    //var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
 
     var geoQuery;
 
@@ -480,7 +480,7 @@ function loadSmall(mode, zoomLevel) {
     };
 
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     //console.log(url);
 
@@ -528,10 +528,10 @@ function buildBbox(bounds) {
         if (east < -180) {
             east = -180;
         }
-        solrBbox = "[" + south + "," + west + " TO " + north + "," + east + "]";
+        solrBbox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
     } else {
         //console.log("bounds is not an object");
-        solrBbox = "[-90,-180 TO 90, 180]"; // a generic Bbox
+        solrBbox = "&fq=geo_coords:[-90,-180 TO 90, 180]"; // a generic Bbox
     }
     return (solrBbox);
 }
@@ -803,7 +803,7 @@ function filterMarkers(items) {
             if (element.qtype == 'exact') {
                 terms[element.field].push('"' + element.value + '"');
             } else {
-                terms[element.field].push('*' + element.value + '*');
+                terms[element.field].push(element.value + '*');
                 console.log("inexact");
             }
         } else {
@@ -811,7 +811,7 @@ function filterMarkers(items) {
             if (element.qtype == 'exact') {
                 terms[element.field].push('"' + element.value + '"');
             } else {
-                terms[element.field].push('*' + element.value + '*');
+                terms[element.field].push(element.value + '*');
                 console.log("inexact");
             }
         }
