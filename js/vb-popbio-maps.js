@@ -856,14 +856,27 @@ function filterMarkers(items) {
     loadSolr({clear: 1, zoomLevel: map.getZoom()})
 }
 
-function mapTypeToField(category) {
-    switch (category) {
+function mapTypeToField(type) {
+    switch (type) {
         case "Taxonomy":
             return "species_cvterms"
         case "Title":
             return "label"
         default :
-            return category.toLowerCase()
+            return type.toLowerCase()
+
+    }
+
+}
+
+function mapTypeToIcon(type) {
+    switch (type) {
+        case "Taxonomy":
+            return '<i class="fa fa-sitemap"></i>';
+        case "Title":
+            return '<i class="fa fa-info-circle"></i>';
+        default :
+            return '<i class="fa fa-camera-retro"></i>';
 
     }
 
