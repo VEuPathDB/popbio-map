@@ -10,7 +10,7 @@ function loadSolr(parameters) {
     var clear = parameters.clear;
     var zoomLevel = parameters.zoomLevel;
     // detect the zoom level and request the appropriate facets
-    var geoLevel = geohashLevel(zoomLevel,"geohash");
+    var geoLevel = geohashLevel(zoomLevel, "geohash");
 
     //we are too deep in, just download the landmarks instead
 
@@ -21,10 +21,6 @@ function loadSolr(parameters) {
 
     }
 
-    // get the visible world to filter the records based on what the user is currently viewing
-    var bounds = map.getBounds();
-    var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
-
     var terms = [];
 
     // this function processes the JSON file requested by jquery
@@ -33,8 +29,13 @@ function loadSolr(parameters) {
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
 
+        // display the number of results
+        $("#markersCount").html(result.response.numFound + ' samples in current view');
         // detect empty results set
         if (result.response.numFound === 0) {
+            if (clear) {
+                assetLayerGroup.clearLayers();
+            }
             map.spin(false);
             return;
         }
@@ -42,7 +43,7 @@ function loadSolr(parameters) {
         var docLat;
         var docLng;
         var docSpc;
-        var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
+        //var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
 
         // process the correct geohashed based on the zoomlevel
         switch (zoomLevel) {
@@ -110,7 +111,7 @@ function loadSolr(parameters) {
                 } else {
                     elStats.others += count;
                 }
-
+//FixMe: Remove these replacements when proper names are returned from the popbio API
                 fullElStats.push({
                     //"label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
                     "label": key.replace(/sensu lato/, "sl")
@@ -181,7 +182,7 @@ function loadSolr(parameters) {
                 arr.population = populations[key];
                 arr.stats = statistics[key];
                 arr.fullstats = fullStatistics[key];
-                arr.colors = colors;
+                //arr.colors = colors;
                 //console.log('see:' + arr.stats);
                 terms.push(arr);
             }
@@ -257,7 +258,8 @@ function loadSolr(parameters) {
     };
 
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&rows=0" + SolrBBox + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    //ToDo: Define a search handler in SOLR to simplify the URL.
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&rows=0" + buildBbox(map.getBounds()) + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     console.log(url);
 
@@ -282,8 +284,6 @@ function loadSmall(mode, zoomLevel) {
         e.population = cluster.population;
         return e;
     };
-
-    var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
 
     L.Icon.MarkerCluster = L.Icon.extend({
         options: {
@@ -403,6 +403,7 @@ function loadSmall(mode, zoomLevel) {
             // first we need a list of all categories
             var fullElStats = new Array;
 
+//FixMe: Remove these replacements when proper names are returned from the popbio API
             var stats = cluster.stats;
             for (var key in stats) {
                 fullElStats.push({
@@ -428,10 +429,6 @@ function loadSmall(mode, zoomLevel) {
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
-    // get the visible world to filter the records based on what the user is currently viewing
-    var bounds = map.getBounds();
-    var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
-
     var geoQuery;
 
     if (mode === 0) {
@@ -456,7 +453,7 @@ function loadSmall(mode, zoomLevel) {
 
         var doc = result.response.docs;
 
-        for (var key in doc) if (doc.hasOwnProperty(key)) { 
+        for (var key in doc) if (doc.hasOwnProperty(key)) {
             var coords = doc[key].geo_coords.split(",");
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
             if (doc[key].hasOwnProperty("species_category")) {
@@ -468,6 +465,8 @@ function loadSmall(mode, zoomLevel) {
 
         if (mode) {
             assetLayerGroup.clearLayers();
+            $("#markersCount").html(result.response.numFound + ' samples in current view');
+
         }
         assetLayerGroup.addLayer(pruneCluster);
         //inform the user loading is done
@@ -475,9 +474,8 @@ function loadSmall(mode, zoomLevel) {
     };
 
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + SolrBBox + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
-
-    //console.log(url);
+    //ToDo: Define a search handler in SOLR to simplify the URL.
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     // inform the user that data is loading
     map.spin(true);
@@ -485,7 +483,7 @@ function loadSmall(mode, zoomLevel) {
 
 }
 
-function buildBbox(bounds){
+function buildBbox(bounds) {
     /*
      function buildBbox
      date: 11/03/2015
@@ -523,12 +521,12 @@ function buildBbox(bounds){
         if (east < -180) {
             east = -180;
         }
-        solrBbox = "[" + south + "," + west + " TO " + north + "," + east + "]";
+        solrBbox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
     } else {
         //console.log("bounds is not an object");
-        solrBbox = "[-90,-180 TO 90, 180]"; // a generic Bbox
+        solrBbox = "&fq=geo_coords:[-90,-180 TO 90, 180]"; // a generic Bbox
     }
-    return(solrBbox);
+    return (solrBbox);
 }
 
 function geohashLevel(zoomLevel, type) {
@@ -638,16 +636,12 @@ function buildPalette(items, nmColors, paletteType) {
     var noItems = items.length,
         stNoItems = noItems;
 
-    //console.log('items: ' + noItems);
     for (var i = 0; i < nmColors; i++) {
         var item = items[i][0];
         newPalette[item] = kelly_colors_hex[i];
 
         noItems--; // track how many items don't have a proper color
-        //console.log(i + ': ' + items[i][0]);
     }
-
-    //console.log('items: ' + noItems);
 
     var lumInterval = 0.5 / noItems,
         lum = 0.7;
@@ -656,7 +650,6 @@ function buildPalette(items, nmColors, paletteType) {
         var item = items[element][0];
         newPalette[item] = colorLuminance("#FFFFFF", -lum);
         lum -= lumInterval;
-        //console.log(lum + ': ' + colorLuminance("#FFFFFF", -lum));
 
     }
 
@@ -679,13 +672,6 @@ function updatePieChart(population, stats) {
 
         var height = 500;
         var width = $("#graphs").width();
-        //console.log(width);
-
-        //$("#piechart").width(width)
-        //    .height(height)
-        //.html("");
-        //}
-        //var width = 400;
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
@@ -703,15 +689,7 @@ function updatePieChart(population, stats) {
                     .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
                     .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
                     .donutRatio(0.5)     //Configure how big you want the donut hole size to be.
-                    .growOnHover(false)
-
-            //.showLegend(false)
-
-
-                ;
-
-            //chart.title(population);
-
+                .growOnHover(false);
 
             d3.select("#piechart")
                 .datum(stats)
@@ -786,22 +764,32 @@ function colorLuminance(hex, lum) {
 
 function filterMarkers(items) {
     if (items.length === 0) {
-        qryUrl = '';
+        qryUrl = 'q=*';
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
         return;
     }
+
+    //qryUrl = 'q=';
     var terms = new Object;
     //items = $("#search_ac").tagsinput('items');
     items.forEach(function (element) {
 
         if (terms.hasOwnProperty(element.field)) {
-            terms[element.field].push(element.value);
+            if (element.qtype == 'exact') {
+                terms[element.field].push('"' + element.value + '"');
+            } else {
+                terms[element.field].push(element.value + '*');
+                console.log("inexact");
+            }
         } else {
             terms[element.field] = [];
-            terms[element.field].push(element.value);
+            if (element.qtype == 'exact') {
+                terms[element.field].push('"' + element.value + '"');
+            } else {
+                terms[element.field].push(element.value + '*');
+                console.log("inexact");
+            }
         }
-
-
     });
 
     var tlen = Object.keys(terms).length;
@@ -812,19 +800,28 @@ function filterMarkers(items) {
         var alen = arr.length;
         arr.forEach(function (element, index) {
             if (index < alen - 1) {
-                qry += '"' + element + '" OR '
+                qry += element + ' OR '
             } else {
-                qry += '"' + element + '"'
+                qry += element
             }
         });
         if (i === 0) {
-            qryUrl = ' AND (';
+            //qryUrl = ' AND (';
+            qryUrl = 'q=(';
         }
         if (i < tlen - 1) {
-            qryUrl += obj + ':(' + qry + ') OR ';
+            if (obj === 'anywhere') {   // search in any field
+                qryUrl += '(' + qry + ') OR ';
+            } else {
+                qryUrl += obj + ':(' + qry + ') OR ';
+            }
 
         } else {
-            qryUrl += obj + ':(' + qry + '))';
+            if (obj === 'anywhere') {
+                qryUrl += '(' + qry + '))';
+            } else {
+                qryUrl += obj + ':(' + qry + '))';
+            }
 
         }
 
@@ -833,4 +830,30 @@ function filterMarkers(items) {
         i++;
     }
     loadSolr({clear: 1, zoomLevel: map.getZoom()})
+}
+
+function mapTypeToField(type) {
+    switch (type) {
+        case "Taxonomy":
+            return "species_cvterms"
+        case "Title":
+            return "label"
+        default :
+            return type.toLowerCase()
+
+    }
+
+}
+
+function mapTypeToIcon(type) {
+    switch (type) {
+        case "Taxonomy":
+            return '<i class="fa fa-sitemap"></i>';
+        case "Title":
+            return '<i class="fa fa-info-circle"></i>';
+        default :
+            return '<i class="fa fa-camera-retro"></i>';
+
+    }
+
 }

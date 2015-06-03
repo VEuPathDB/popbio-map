@@ -11,7 +11,7 @@
 
 
     <link rel="stylesheet" type="text/css" media="all"
-          href="https://www.vectorbase.org/minified/932ff214ba8bca9fb5f0fcd87690f3d1.css"/>
+          href="https://www.vectorbase.org/minified/c6a48c3adcbeafed959ece477ab7a8e5.css"/>
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="./css/dvf.min.css" type="text/css" media="screen"/>
@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="./css/bootstrap-tagsinput.css">
     <link rel="stylesheet" href="./css/typeaheadjs.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -41,6 +42,7 @@
     <script type="text/javascript" src="./js/nv.d3.pie.min.js"></script>
     <script type="text/javascript" src="./js/typeahead.bundle.js"></script>
     <script type="text/javascript" src="./js/bootstrap-tagsinput.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
 
 
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
@@ -81,10 +83,17 @@
 
         }
 
+        /*Overwrite boostrap's label font size*/
+        .label {
+            font-weight: normal;
+            font-size: 100%;
+        }
+
         .sidebar {
             top: 123px;
             bottom: 50px;
         }
+
         .info {
             padding: 6px 8px;
             /*font: 14px/16px Arial, Helvetica, sans-serif;*/
@@ -114,6 +123,47 @@
             border-radius: 10px;
         }
 
+        /*center the search box*/
+        .mapbox {
+            position: relative;
+            margin-left: 80px;
+            margin-right: 80px;
+        }
+
+        .mapbox .overlaytop {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            width: 50%;
+            min-width: 250px;
+            /*max-width: 500px;*/
+            z-index: 314159;
+        }
+
+        .mapbox .overlaybottom {
+            position: absolute;
+            bottom: 3px;
+            left: 40%;
+            width: 20%;
+            min-width: 200px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7);
+            /*max-width: 500px;*/
+            z-index: 314159;
+        }
+
+        /*keep the curson inline with the tags if the space left is more than width*/
+        /*span.twitter-typeahead {*/
+        /*width: 250px;*/
+        /*}*/
+
+        /*typeahead more results header*/
+        .more-results {
+            margin: 0 20px 5px 20px;
+            padding: 3px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
 
     </style>
 </head>
@@ -121,6 +171,7 @@
 <body class="no_tabs static fuelux">
 
 <div id="min_width_container">
+    <!-- Vectorbase stuff-->
     <div id="masthead" class="js_panel">
         <div class="logo_holder"><a href="/"><img src="https://www.vectorbase.org/i/vectorbase_logo.png"
                                                   alt="VectorBase Home" title="VectorBase Home" class="print_hide"
@@ -170,6 +221,36 @@
 
     </div>
     <div id="map_container">
+
+        <!-- Map stuff -->
+        <!-- Place a floating div above the map for the search controls -->
+        <div class="mapbox">
+            <div class="overlaytop">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+
+                    <input type="text" class="form-control" placeholder="Search samples" id="search_ac"
+                           data-role="tagsinput"/>
+
+                    <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"
+                          title="Reset search"><i
+                            class="fa fa-times fa-fw"
+                            style="color: white"></i></span>
+
+                    <span id="toggle-world" class="input-group-addon btn-primary" style="cursor: pointer"
+                          title="Limit search suggestions to current view">
+                        <i class="fa fa-globe fa-fw"
+                           id="world-icon"
+                           style="color: white"></i></span>
+
+
+                    <input type="hidden" id="world-search" name="world-search" value="1">
+
+                </div>
+            </div>
+        </div>
+
+
         <div id="sidebar" class="sidebar collapsed">
             <!-- Nav tabs -->
             <ul class="sidebar-tabs" role="tablist">
@@ -193,15 +274,22 @@
                         <svg id="piechart"></svg>
                     </div>
                 </div>
-                <div class="sidebar-pane" id="search"><h2>Search VB Popbio</h2>
-                    <input type="text" id="search_ac" data-role="tagsinput" style="width:100%;"/>
+                <!--<div class="sidebar-pane" id="search"><h2>Search VB Popbio</h2>-->
+                <!--<input type="text" id="search_ac" data-role="tagsinput" style="width:100%;"/>-->
 
-                </div>
+                <!--</div>-->
                 <div class="sidebar-pane" id="settings"><h2>Settings</h2></div>
             </div>
         </div>
 
         <div id="map"></div>
+
+        <div class="mapbox">
+            <div class="overlaybottom" id="markersCount">
+            </div>
+
+        </div>
+
     </div>
 
     <div id="footer">
@@ -221,16 +309,40 @@
 </div>
 
 
-<!--<style>.tb_button {padding:1px;cursor:pointer;border-right: 1px solid #8b8b8b;border-left: 1px solid #FFF;border-bottom: 1px solid #fff;}.tb_button.hover {borer:2px outset #def; background-color: #f8f8f8 !important;}.ws_toolbar {z-index:100000} .ws_toolbar .ws_tb_btn {cursor:pointer;border:1px solid #555;padding:3px}   .tb_highlight{background-color:yellow} .tb_hide {visibility:hidden} .ws_toolbar img {padding:2px;margin:0px}</style>-->
-
-
 <script language="JavaScript">
+
+    "use strict";
+
+    // Reset search "button"
+    $('#reset-search').click(function () {
+        $('#search_ac').tagsinput('removeAll');
+        filterMarkers('');
+    });
+
+    // World search toggle
+    $('#toggle-world').click(function () {
+
+        if ($('#world-search').val() === '1') {
+            $('#toggle-world').toggleClass("btn-primary", false)
+                    .attr('title', 'Limit search suggestions to current view');
+            $('#world-search').val('0');
+            $('#world-icon').css('color', '#265a88');
+        } else {
+            $('#toggle-world').toggleClass("btn-primary", true)
+                    .attr('title', 'Enable global search suggestions');
+            $('#world-search').val('1');
+            $('#world-icon').css('color', 'white');
+        }
+    });
+
+    // some global variables
+    //ToDo: Clean and move code to a separate js file
     var map;
     var assetLayerGroup;
     var smallClusters = [];
     var palette;
     var legendSpecies = 20;
-    var qryUrl = '';
+    var qryUrl = 'q=*';
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
         center: [18, 0.0],
@@ -305,6 +417,7 @@
                 var species = pivot[pivotElm].value;
                 var index = parseInt(pivotElm);
                 var points;
+                // Use a scoring scheme to make sure species with a good presence per region get a proper color (we only have 20 good colours)
                 switch (index) {
                     case 1:
                         points = 7 * ratio;
@@ -337,129 +450,211 @@
 
         var inHtml = "<h2>Legend</h2>";
         var cntLegend = 1;
-        for (var obj in palette) {
+        for (var obj1 in palette) {
             if (cntLegend > legendSpecies - 1) {
                 inHtml += '<i style="background:' + palette["others"] + '"></i> ' + 'Others<br />';
                 $("#legend").html(inHtml);
                 break;
             }
-            inHtml += '<i style="background:' + palette[obj] + '"></i> ' + (obj ? '<em>' + obj + '</em><br>' : '+');
+            inHtml += '<i style="background:' + palette[obj1] + '"></i> ' + (obj1 ? '<em>' + obj1 + '</em><br>' : '+');
             $("#legend").html(inHtml);
             cntLegend++;
         }
         // moved this here to avoid querying SOLR before the palette is done building
         loadSolr({clear: 0, zoomLevel: map.getZoom()});
+//        filterMarkers('');
 
     };
 
-    //    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.field=species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample%20AND%20has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.pivot=geohash_2,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    //ToDo: Define a search handler in SOLR to simplify the URL.
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=*&fq=bundle_name:Sample&fq=has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.pivot=geohash_2,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
     $.getJSON(url, genPalette);
 
 
     map.spin(false);
 
-    var dsrc = new Bloodhound({
+    var partSearch = false;
+    //FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case handling
+    //       update: the issue was with the number of results Anywhere. When within a certain categories the results seem to match
+    //              will keep an eye on it
+    //ToDo: Add copy/paste support of IDs (low priority)
+    //ToDo: Add more fields into SOLR autocomplete
+
+    var acSuggestions = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        limit: 15,
+        limit: 7,
+        minLength: 2,
+        hint: false,
+
+        remote: {
+            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/ac?q=',
+            ajax: {
+                dataType: 'jsonp',
+                data: {
+                    'wt': 'json',
+                    'rows': 7
+                },
+                jsonp: 'json.wrf'
+            },
+            replace: function (url, query) {
+                var match = query.match(/([^@]+)@([^@]*)/);
+                if (match != null) {
+                    // matched text: match[0]
+                    // match start: match.index
+                    // capturing group n: match[n]
+                    partSearch = match[1];
+                    console.log('http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acat?q=' + encodeURI(match[1]));
+                    if ($('#world-search').val() === '1') {
+                        return url + encodeURI(match[1]);
+                    } else {
+                        return url + encodeURI(match[1]) + buildBbox(map.getBounds());
+                    }
+                } else {
+                    // Match attempt failed
+                    partSearch = false;
+
+                    if ($('#world-search').val() === '1') {
+                        return url + encodeURI(query);
+                    } else {
+                        return url + encodeURI(query) + buildBbox(map.getBounds());
+                    }
+                }
+
+            },
+            filter: function (data) {
+                if (partSearch) {
+                    return $.map(data.grouped.type.doclist.docs, function (data) {
+                        return {
+                            value: partSearch,
+                            id: data['id'],
+                            type: data['type'],
+                            field: data['field'],
+                            qtype: 'partial'
+
+                        };
+                    });
+                } else {
+                    return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
+                        return {
+                            value: data['textsuggest_category'],
+                            type: data['type'],
+                            id: data['id'],
+                            field: data['field'],
+                            qtype: 'exact'
+
+                        };
+                    });
+
+                }
+            }
+        }
+    });
+
+    acSuggestions.initialize();
+
+
+    var acOtherResults = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 10,
         minLength: 3,
 
-//        prefetch: {
-//            url: 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_ta/ac?q=*&rows=200',
-//            ajax: {
-//                dataType: 'jsonp',
-//
-//                data: {
-//                    'wt': 'json',
-//                    'rows': 10
-//                },
-//
-//                jsonp: 'json.wrf'
-//            },
-//            filter: function (data) {
-//                console.log("prefetch");
-////                console.log("query: " + data.debug.querystring);
-////                console.log("parsed query: " + data.debug.parsedquery);
-//                return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
-//                    return {
-//                        value: data['textsuggest_category'],
-//                        type: data['type'],
-//                        id: data['id'],
-//                        field: data['field']
-//                    };
-//                });
-//            }
-//        },
         remote: {
-            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/ac?q=%QUERY',
+            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/acgrouped?q=',
             ajax: {
                 dataType: 'jsonp',
 
                 data: {
                     'wt': 'json',
-                    'rows': 15
+                    'rows': 10
                 },
 
                 jsonp: 'json.wrf'
             },
+            replace: function (url, query) {
+                if ($('#world-search').val() === '1') {
+                    return url + encodeURI(query) + '*';
+                } else {
+                    return url + encodeURI(query) + '*' + buildBbox(map.getBounds());
+                }
+            },
             filter: function (data) {
-//                console.log("remote");
-//                console.log("query: " + data.debug.querystring);
-//                console.log("parsed query: " + data.debug.parsedquery);
-                return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
-                    return {
-                        value: data['textsuggest_category'],
-                        type: data['type'],
-                        id: data['id'],
-                        field: data['field']
+                var allResults = data.grouped.stable_id.ngroups;
+                return $.map(data.facet_counts.facet_fields.type, function (data) {
+                    if (data[1] > 0) {
+                        return {
+                            count: data[1],
+                            type: data[0],
+                            field: mapTypeToField(data[0]),
+                            value: $('#search_ac').tagsinput('input')[0].value,
+                            qtype: 'summary'
 
-                    };
+                        }
+                    }
                 });
             }
-        },
-        dupDetector: function (remoteMatch, localMatch) {
-            return remoteMatch.value === localMatch.value;
         }
     });
 
-    dsrc.initialize();
+    acOtherResults.initialize();
 
 
     $('#search_ac').tagsinput({
         tagClass: function (item) {
             switch (item.type) {
                 case 'Taxonomy'   :
-                    return 'label label-primary';
+                    return 'label label-primary fa fa-sitemap';   // dark blue
                 case 'Title'  :
-                    return 'label label-danger label-important';
+                    return 'label label-success label-important fa fa-tag';    // green
                 case 'Description':
-                    return 'label label-success';
+                    return 'label label-success fa fa-info-circle';   // green
                 case 'Projects'   :
-                    return 'label label-default';
+                    return 'label label-success fa fa-database';   // green
+//                    return 'label label-default fa fa-database';   // grey
+                case 'Anywhere'   :
+                    return 'label label-default fa fa-search';   // grey
+//                    return 'label label-info fa fa-search';   // cyan
+                default :
+                    return 'label label-warning';   // orange
             }
         },
         itemValue: 'value',
-        itemText: 'value',
-        itemType: 'type',
-        itemField: 'field',
-        typeaheadjs: {
+        itemText: function (item) {
+            // add a leading space to separate text from tag icon
+            return ' ' + item.value;
+        },
+        typeaheadjs: ({
             options: {
-                minLength: 1,
-                hint: true
+                minLength: 3,
+                hint: false,
+                highlight: false
             },
-            datasets: {
-                name: 'dsrc',
-                displayKey: 'value',
-//                valueKey: 'value',
-                source: dsrc.ttAdapter(),
-                templates: {
-                    empty: [
-                        '<div style="width: 200px; text-align: center;">',
-                        'Unable to find any results',
-                        '</div>'
-                    ].join('\n'),
-                    suggestion: function (item) {
+            datasets: [
+                {
+                    name: 'acSuggestions',
+                    displayKey: 'value',
+                    source: acSuggestions.ttAdapter(),
+                    templates: {
+                        empty: function () {
+                            var msg;
+                            if ($('#world-search').val() === '1') {
+                                msg = 'No results found';
+                            } else {
+                                msg = 'No results found. Try enabling world search.';
+
+                            }
+                            return [
+                                '<span class="tt-suggestions" style="display: block;">',
+                                '<div class="tt-suggestion">',
+                                '<p style="white-space: normal;">',
+                                msg,
+                                '</p>',
+                                '</div>',
+                                '</span>'
+                            ].join('\n')
+                        },
+                        suggestion: function (item) {
 //                        switch (item.type) {
 //                            case 'Taxonomy'   :
 //                                return ['<div class="label label-primary">',
@@ -482,26 +677,40 @@
 //                                    '</div>'
 //                                ].join('\n');
 //                        }
-                        return '<p>' + item.value + ' <em>in ' + item.type + '</em></p>';
+                            return '<p>' + item.value + ' <em>in ' + item.type + '</em></p>';
+                        }
+
                     }
+                },
+                {
+                    name: 'acOtherResults',
+                    displayKey: 'value',
+//                valueKey: 'value',
+                    source: acOtherResults.ttAdapter(),
+//                    minLength:3,
+//                    highlight:false,
+                    templates: {
+                        header: '<h4 class="more-results">More results</h4>',
+                        suggestion: function (item) {
+                            return '<p>' + item.count + ' <em>in ' + item.type + '</em></p>';
+                        }
 
+                    }
                 }
-            }
-        }
-    });
+            ]
+        })
 
-
-    $("#search_ac").on('itemAdded', function () {
-        filterMarkers(items = $("#search_ac").tagsinput('items'))
     });
-    $("#search_ac").on('itemRemoved', function () {
-        filterMarkers(items = $("#search_ac").tagsinput('items'))
+    $('#search_ac').on('itemAdded', function () {
+        filterMarkers($("#search_ac").tagsinput('items'))
+    });
+    $('#search_ac').on('itemRemoved', function () {
+        filterMarkers($("#search_ac").tagsinput('items'))
     });
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
-//        console.log("My zoom level is " + map.getZoom());
     });
 
 </script>

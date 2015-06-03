@@ -592,7 +592,7 @@ L.CategoryFunction = L.Class.extend({
 	getCategories: function () {
 		return this._categoryKeys;
 	}
-});;// indexOf doesn't work in IE 8 and below, so add this method if it doesn't exist
+});// indexOf doesn't work in IE 8 and below, so add this method if it doesn't exist
 // Copied from:  http://stackoverflow.com/questions/1744310/how-to-fix-array-indexof-in-javascript-for-ie-browsers
 if (!Array.prototype.indexOf) {
 	Array.prototype.indexOf = function(obj, start) {
@@ -1750,7 +1750,7 @@ L.Animation = L.Class.extend({
 		this._inProgress = false;
 		this.fire('end');
 	}
-});;// @preserve This product includes color specifications and designs developed by Cynthia Brewer (http://colorbrewer.org/).
+});// @preserve This product includes color specifications and designs developed by Cynthia Brewer (http://colorbrewer.org/).
 // Adapted from:  https://raw.github.com/mbostock/d3/master/lib/colorbrewer/colorbrewer.js
 L.ColorBrewer = {
 	Sequential: {
@@ -2309,7 +2309,7 @@ L.DynamicPaletteElement = L.Class.extend({
 	}
 
 });
-;/*
+/*
  * Draws a regular polygon on the map given a radius in meters
  */
 L.RegularPolygon = L.Polygon.extend({
@@ -2414,8 +2414,8 @@ L.RegularPolygon = L.Polygon.extend({
 
 L.regularPolygon = function (centerLatLng, options) {
 	return new L.RegularPolygon(centerLatLng, options);
-};;L.Path.XLINK_NS = 'http://www.w3.org/1999/xlink';
-
+};
+L.Path.XLINK_NS = 'http://www.w3.org/1999/xlink';
 /*
  * Functions that support displaying text on an SVG path
  */
@@ -3660,7 +3660,7 @@ L.MarkerGroup = L.FeatureGroup.extend({
 		return featureCollection;
 	}
 });
-;/*
+/*
  * Class for a drawing a bar marker on the map.  This is the basis for the BarChartMarker
  */
 L.BarMarker = L.Path.extend({
@@ -4595,7 +4595,8 @@ L.RadialMeterMarker = L.ChartMarker.extend({
 			}
 		}
 	}
-});;/*
+});
+/*
  * Various modes in which location information can be encoded
  */
 L.LocationModes = {
@@ -6307,7 +6308,7 @@ L.RadialMeterMarkerDataLayer = L.DataLayer.extend({
 L.radialMeterMarkerDataLayer = function (data, options) {
 	return new L.RadialMeterMarkerDataLayer(data, options);
 };
-;/*
+/*
  *
  */
 L.CalloutLine = L.Path.extend({
@@ -6838,7 +6839,8 @@ L.ArcedPolyline = L.Path.extend({
 
 L.arcedPolyline = function (latlngs, options) {
 	return new L.ArcedPolyline(latlngs, options);
-};;L.Control.Legend = L.Control.extend({
+};
+L.Control.Legend = L.Control.extend({
 	options: {
 		position: 'bottomright',
 		autoAdd: true

@@ -591,7 +591,7 @@ nv.nearestValueIndex = function (values, searchVal, threshold) {
 
             container.node().innerHTML = newContent;
             container.style("top", 0).style("left", 0).style("opacity", 0);
-            container.selectAll("div, table, td, tr").classed(nvPointerEventsClass, true)
+            container.selectAll("div, table, td, tr").classed(nvPointerEventsClass, true);
             container.classed(nvPointerEventsClass, true);
             return container.node();
         }
@@ -1924,8 +1924,8 @@ nv.models.pie = function () {
             slices.exit().remove();
             pieLabels.exit().remove();
 
-            var ae = slices.enter().append('g')
-            ae.attr('class', 'nv-slice')
+            var ae = slices.enter().append('g');
+            ae.attr('class', 'nv-slice');
             ae.on('mouseover', function (d, i) {
                 d3.select(this).classed('hover', true);
                 if (growOnHover) {
@@ -1961,7 +1961,7 @@ nv.models.pie = function () {
 
             slices.attr('fill', function (d, i) {
                 return color(d, i);
-            })
+            });
             slices.attr('stroke', function (d, i) {
                 return color(d, i);
             });
@@ -2038,7 +2038,7 @@ nv.models.pie = function () {
 
                     group.append('text')
                         .style('text-anchor', labelSunbeamLayout ? ((d.startAngle + d.endAngle) / 2 < Math.PI ? 'start' : 'end') : 'middle') //center the text on it's origin or begin/end if orthogonal aligned
-                        .style('fill', '#fff') // ikirmitz: changed this to white
+                        .style('fill', '#fff'); // ikirmitz: changed this to white
 
                 });
 
