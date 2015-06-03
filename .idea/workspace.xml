@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Added font awesome icons to search terms:&#10;** Taxonomy gets fa-sitemap&#10;** Title gets fa-tag&#10;** Description gets fa-info-circle&#10;** Projects get fa-database&#10;** Anywhere gets fa-search&#10;* Simplified color scheme for search terms:&#10;** Taxonomy gets blue (label-primary)&#10;** Other tags get green (label-success)&#10;** Free search gets grey (label-default)">
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Re-engineered SOLR query construction to give to rely more on fq (instead q) and thus give a slight perfornance gain due to caching&#10; * Samples counter now says 'X samples in current view'">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/L.Control.ZoomMin.js" afterPath="$PROJECT_DIR$/js/L.Control.ZoomMin.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/bootstrap-tagsinput.js" afterPath="$PROJECT_DIR$/js/bootstrap-tagsinput.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/bootstrap-tagsinput.min.js" afterPath="$PROJECT_DIR$/js/bootstrap-tagsinput.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/bootstrap/js/bootstrap.js" afterPath="$PROJECT_DIR$/js/bootstrap/js/bootstrap.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/bootstrap/js/bootstrap.min.js" afterPath="$PROJECT_DIR$/js/bootstrap/js/bootstrap.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/leaflet-dvf.js" afterPath="$PROJECT_DIR$/js/leaflet-dvf.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/nv.d3.pie.js" afterPath="$PROJECT_DIR$/js/nv.d3.pie.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/nv.d3.pie.min.js" afterPath="$PROJECT_DIR$/js/nv.d3.pie.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/spin.js" afterPath="$PROJECT_DIR$/js/spin.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/spin.min.js" afterPath="$PROJECT_DIR$/js/spin.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/vb_geohashes_mean.html" />
@@ -26,12 +37,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7718919">
-              <caret line="147" column="31" selection-start-line="147" selection-start-column="31" selection-end-line="147" selection-end-column="31" />
+            <state vertical-scroll-proportion="-6.6">
+              <caret line="468" column="22" selection-start-line="468" selection-start-column="0" selection-end-line="469" selection-end-column="0" />
               <folding>
+                <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -40,12 +52,10 @@
                 <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
                 <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-                <element signature="e#22433#22454#0" expanded="false" />
-                <element signature="e#27210#28597#0" expanded="false" />
-                <marker date="1433343554618" expanded="true" signature="26778:26793" placeholder="..." />
-                <marker date="1433343554618" expanded="true" signature="26904:26924" placeholder="..." />
+                <element signature="e#25444#26831#0" expanded="false" />
+                <marker date="1433364883475" expanded="true" signature="25012:25027" placeholder="..." />
+                <marker date="1433364883475" expanded="true" signature="25138:25158" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -54,24 +64,21 @@
       <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.323529">
-              <caret line="36" column="84" selection-start-line="36" selection-start-column="84" selection-end-line="36" selection-end-column="84" />
+            <state vertical-scroll-proportion="48.058823">
+              <caret line="693" column="0" selection-start-line="693" selection-start-column="0" selection-end-line="693" selection-end-column="0" />
               <folding>
-                <element signature="n#!!block;n#buildPalette#0" expanded="false" />
                 <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-                <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-                <element signature="e#26283#26598#0" expanded="false" />
                 <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootstrap-tagsinput.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="bootstrap-tagsinput.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/bootstrap-tagsinput.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="142" column="46" selection-start-line="142" selection-start-column="46" selection-end-line="142" selection-end-column="46" />
+              <caret line="159" column="123" selection-start-line="159" selection-start-column="123" selection-end-line="159" selection-end-column="123" />
               <folding />
             </state>
           </provider>
@@ -127,8 +134,8 @@
         <option value="$PROJECT_DIR$/js/typeahead.bundle.js" />
         <option value="$PROJECT_DIR$/css/bootstrap-tagsinput.css" />
         <option value="$PROJECT_DIR$/js/bootstrap-tagsinput.js" />
-        <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/vb_geohashes_mean.html" />
+        <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
       </list>
     </option>
   </component>
@@ -143,7 +150,7 @@
     <option name="x" value="-9" />
     <option name="y" value="-9" />
     <option name="width" value="1938" />
-    <option name="height" value="1168" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -217,31 +224,12 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="popbio_map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bootstrap-toggle" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -254,8 +242,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -362,12 +365,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00001" summary="First commit">
-      <created>1425912694345</created>
-      <option name="number" value="00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1425912694345</updated>
     </task>
     <task id="LOCAL-00002" summary="First commit">
       <created>1425913108214</created>
@@ -657,10 +654,16 @@
       <option name="project" value="LOCAL" />
       <updated>1433286028286</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="* Re-engineered SOLR query construction to give to rely more on fq (instead q) and thus give a slight perfornance gain due to caching&#10; * Samples counter now says 'X samples in current view'">
+      <created>1433343807095</created>
+      <option name="number" value="00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1433343807098</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
-  <component name="TodoView" selected-index="3">
+  <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -670,17 +673,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1168" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18181819" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18153034" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850778" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.327112" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1757256" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1757256" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30846325" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
@@ -689,11 +692,11 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41759464" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41650295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -734,7 +737,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Hooked zoom to double click&#10;* Hooked pie generation to single click&#10;* No more actions on hover (for now)&#10;" />
     <MESSAGE value="* Hooked pie charts to local cluster markers&#10;* Fixed various issues with pie charts" />
     <MESSAGE value="* Project files clean-up&#10;* Added minified versions of JS &amp; CSS" />
     <MESSAGE value="* Added minified versions of JS &amp; CSS (properly)" />
@@ -759,7 +761,8 @@
     <MESSAGE value="* Added a reset button for search&#10;* Beautified the search field" />
     <MESSAGE value="* Added a search the world toggle button&#10;* Improved SOLR query and BBox generation" />
     <MESSAGE value="* Added font awesome icons to search terms:&#10;** Taxonomy gets fa-sitemap&#10;** Title gets fa-tag&#10;** Description gets fa-info-circle&#10;** Projects get fa-database&#10;** Anywhere gets fa-search&#10;* Simplified color scheme for search terms:&#10;** Taxonomy gets blue (label-primary)&#10;** Other tags get green (label-success)&#10;** Free search gets grey (label-default)" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Added font awesome icons to search terms:&#10;** Taxonomy gets fa-sitemap&#10;** Title gets fa-tag&#10;** Description gets fa-info-circle&#10;** Projects get fa-database&#10;** Anywhere gets fa-search&#10;* Simplified color scheme for search terms:&#10;** Taxonomy gets blue (label-primary)&#10;** Other tags get green (label-success)&#10;** Free search gets grey (label-default)" />
+    <MESSAGE value="* Re-engineered SOLR query construction to give to rely more on fq (instead q) and thus give a slight perfornance gain due to caching&#10; * Samples counter now says 'X samples in current view'" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Re-engineered SOLR query construction to give to rely more on fq (instead q) and thus give a slight perfornance gain due to caching&#10; * Samples counter now says 'X samples in current view'" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -789,10 +792,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -803,10 +803,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -817,6 +814,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -825,12 +823,10 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#22433#22454#0" expanded="false" />
-            <element signature="e#27210#28597#0" expanded="false" />
-            <marker date="1433343554618" expanded="true" signature="26778:26793" placeholder="..." />
-            <marker date="1433343554618" expanded="true" signature="26904:26924" placeholder="..." />
+            <element signature="e#25444#26831#0" expanded="false" />
+            <marker date="1433364883475" expanded="true" signature="25012:25027" placeholder="..." />
+            <marker date="1433364883475" expanded="true" signature="25138:25158" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -840,10 +836,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="230" column="21" selection-start-line="230" selection-start-column="21" selection-end-line="230" selection-end-column="21" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -854,6 +847,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -862,12 +856,10 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#22433#22454#0" expanded="false" />
-            <element signature="e#27210#28597#0" expanded="false" />
-            <marker date="1433343554618" expanded="true" signature="26778:26793" placeholder="..." />
-            <marker date="1433343554618" expanded="true" signature="26904:26924" placeholder="..." />
+            <element signature="e#25444#26831#0" expanded="false" />
+            <marker date="1433364883475" expanded="true" signature="25012:25027" placeholder="..." />
+            <marker date="1433364883475" expanded="true" signature="25138:25158" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -877,10 +869,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="301" column="56" selection-start-line="301" selection-start-column="56" selection-end-line="301" selection-end-column="56" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -898,6 +887,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -906,12 +896,10 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#22433#22454#0" expanded="false" />
-            <element signature="e#27210#28597#0" expanded="false" />
-            <marker date="1433343554618" expanded="true" signature="26778:26793" placeholder="..." />
-            <marker date="1433343554618" expanded="true" signature="26904:26924" placeholder="..." />
+            <element signature="e#25444#26831#0" expanded="false" />
+            <marker date="1433364883475" expanded="true" signature="25012:25027" placeholder="..." />
+            <marker date="1433364883475" expanded="true" signature="25138:25158" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -921,10 +909,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="247" column="47" selection-start-line="247" selection-start-column="47" selection-end-line="247" selection-end-column="47" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -949,6 +934,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="166" column="25" selection-start-line="166" selection-start-column="25" selection-end-line="166" selection-end-column="25" />
           <folding>
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -957,12 +943,10 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#22433#22454#0" expanded="false" />
-            <element signature="e#27210#28597#0" expanded="false" />
-            <marker date="1433343554618" expanded="true" signature="26778:26793" placeholder="..." />
-            <marker date="1433343554618" expanded="true" signature="26904:26924" placeholder="..." />
+            <element signature="e#25444#26831#0" expanded="false" />
+            <marker date="1433364883475" expanded="true" signature="25012:25027" placeholder="..." />
+            <marker date="1433364883475" expanded="true" signature="25138:25158" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -972,10 +956,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -993,6 +974,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="166" column="25" selection-start-line="166" selection-start-column="25" selection-end-line="166" selection-end-column="25" />
           <folding>
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1001,12 +983,10 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#22433#22454#0" expanded="false" />
-            <element signature="e#27210#28597#0" expanded="false" />
-            <marker date="1433343554618" expanded="true" signature="26778:26793" placeholder="..." />
-            <marker date="1433343554618" expanded="true" signature="26904:26924" placeholder="..." />
+            <element signature="e#25444#26831#0" expanded="false" />
+            <marker date="1433364883475" expanded="true" signature="25012:25027" placeholder="..." />
+            <marker date="1433364883475" expanded="true" signature="25138:25158" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1016,10 +996,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -1030,6 +1007,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="157" column="33" selection-start-line="157" selection-start-column="33" selection-end-line="157" selection-end-column="33" />
           <folding>
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1038,12 +1016,10 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#22433#22454#0" expanded="false" />
-            <element signature="e#27210#28597#0" expanded="false" />
-            <marker date="1433343554618" expanded="true" signature="26778:26793" placeholder="..." />
-            <marker date="1433343554618" expanded="true" signature="26904:26924" placeholder="..." />
+            <element signature="e#25444#26831#0" expanded="false" />
+            <marker date="1433364883475" expanded="true" signature="25012:25027" placeholder="..." />
+            <marker date="1433364883475" expanded="true" signature="25138:25158" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1053,10 +1029,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="418" column="39" selection-start-line="418" selection-start-column="39" selection-end-line="418" selection-end-column="39" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -1067,10 +1040,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
             <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
           </folding>
         </state>
@@ -1098,13 +1068,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/PruneCluster.js.map">
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="101" selection-start-line="0" selection-start-column="101" selection-end-line="0" selection-end-column="101" />
         </state>
+      </provider>
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Downloads/novus-nvd3-dbcdc25/examples/pieChart.html">
@@ -1284,33 +1254,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/bootstrap-tagsinput.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="142" column="46" selection-start-line="142" selection-start-column="46" selection-end-line="142" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.323529">
-          <caret line="36" column="84" selection-start-line="36" selection-start-column="84" selection-end-line="36" selection-end-column="84" />
-          <folding>
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#26283#26598#0" expanded="false" />
-            <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7718919">
-          <caret line="147" column="31" selection-start-line="147" selection-start-column="31" selection-end-line="147" selection-end-column="31" />
+        <state vertical-scroll-proportion="-6.6">
+          <caret line="468" column="22" selection-start-line="468" selection-start-column="0" selection-end-line="469" selection-end-column="0" />
           <folding>
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1319,13 +1268,30 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="e#22433#22454#0" expanded="false" />
-            <element signature="e#27210#28597#0" expanded="false" />
-            <marker date="1433343554618" expanded="true" signature="26778:26793" placeholder="..." />
-            <marker date="1433343554618" expanded="true" signature="26904:26924" placeholder="..." />
+            <element signature="e#25444#26831#0" expanded="false" />
+            <marker date="1433364883475" expanded="true" signature="25012:25027" placeholder="..." />
+            <marker date="1433364883475" expanded="true" signature="25138:25158" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="48.058823">
+          <caret line="693" column="0" selection-start-line="693" selection-start-column="0" selection-end-line="693" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
+            <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/bootstrap-tagsinput.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="159" column="123" selection-start-line="159" selection-start-column="123" selection-end-line="159" selection-end-column="123" />
+          <folding />
         </state>
       </provider>
     </entry>

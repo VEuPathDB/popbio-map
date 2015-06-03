@@ -21,10 +21,6 @@ function loadSolr(parameters) {
 
     }
 
-    // get the visible world to filter the records based on what the user is currently viewing
-    //var bounds = map.getBounds();
-    //var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
-
     var terms = [];
 
     // this function processes the JSON file requested by jquery
@@ -47,7 +43,7 @@ function loadSolr(parameters) {
         var docLat;
         var docLng;
         var docSpc;
-        var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
+        //var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
 
         // process the correct geohashed based on the zoomlevel
         switch (zoomLevel) {
@@ -186,7 +182,7 @@ function loadSolr(parameters) {
                 arr.population = populations[key];
                 arr.stats = statistics[key];
                 arr.fullstats = fullStatistics[key];
-                arr.colors = colors;
+                //arr.colors = colors;
                 //console.log('see:' + arr.stats);
                 terms.push(arr);
             }
@@ -262,7 +258,7 @@ function loadSolr(parameters) {
     };
 
 
-    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&rows=0" + buildBbox(map.getBounds()) + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    //ToDo: Define a search handler in SOLR to simplify the URL.
     var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&rows=0" + buildBbox(map.getBounds()) + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     console.log(url);
@@ -288,8 +284,6 @@ function loadSmall(mode, zoomLevel) {
         e.population = cluster.population;
         return e;
     };
-
-    var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
 
     L.Icon.MarkerCluster = L.Icon.extend({
         options: {
@@ -435,10 +429,6 @@ function loadSmall(mode, zoomLevel) {
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
-    // get the visible world to filter the records based on what the user is currently viewing
-    //var bounds = map.getBounds();
-    //var SolrBBox = "&fq=geo_coords:" + buildBbox(bounds);
-
     var geoQuery;
 
     if (mode === 0) {
@@ -475,6 +465,8 @@ function loadSmall(mode, zoomLevel) {
 
         if (mode) {
             assetLayerGroup.clearLayers();
+            $("#markersCount").html(result.response.numFound + ' samples in current view');
+
         }
         assetLayerGroup.addLayer(pruneCluster);
         //inform the user loading is done
@@ -482,10 +474,8 @@ function loadSmall(mode, zoomLevel) {
     };
 
 
-    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    //ToDo: Define a search handler in SOLR to simplify the URL.
     var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
-
-    //console.log(url);
 
     // inform the user that data is loading
     map.spin(true);
@@ -646,16 +636,12 @@ function buildPalette(items, nmColors, paletteType) {
     var noItems = items.length,
         stNoItems = noItems;
 
-    //console.log('items: ' + noItems);
     for (var i = 0; i < nmColors; i++) {
         var item = items[i][0];
         newPalette[item] = kelly_colors_hex[i];
 
         noItems--; // track how many items don't have a proper color
-        //console.log(i + ': ' + items[i][0]);
     }
-
-    //console.log('items: ' + noItems);
 
     var lumInterval = 0.5 / noItems,
         lum = 0.7;
@@ -664,7 +650,6 @@ function buildPalette(items, nmColors, paletteType) {
         var item = items[element][0];
         newPalette[item] = colorLuminance("#FFFFFF", -lum);
         lum -= lumInterval;
-        //console.log(lum + ': ' + colorLuminance("#FFFFFF", -lum));
 
     }
 
@@ -687,13 +672,6 @@ function updatePieChart(population, stats) {
 
         var height = 500;
         var width = $("#graphs").width();
-        //console.log(width);
-
-        //$("#piechart").width(width)
-        //    .height(height)
-        //.html("");
-        //}
-        //var width = 400;
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
@@ -711,15 +689,7 @@ function updatePieChart(population, stats) {
                     .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
                     .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
                     .donutRatio(0.5)     //Configure how big you want the donut hole size to be.
-                    .growOnHover(false)
-
-            //.showLegend(false)
-
-
-                ;
-
-            //chart.title(population);
-
+                .growOnHover(false);
 
             d3.select("#piechart")
                 .datum(stats)

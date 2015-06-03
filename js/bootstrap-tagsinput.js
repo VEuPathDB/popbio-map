@@ -157,6 +157,7 @@
          * Removes the given item. Pass true to dontPushVal to prevent updating the
          * elements val()
          */
+        //FixMe: When two tags with the same text (but different class) exist, sometimes if fails to remove the correct tag
         remove: function (item, dontPushVal) {
             var self = this;
 
