@@ -142,7 +142,9 @@
         .mapbox .overlaybottom {
             position: absolute;
             bottom: 3px;
-            left: 50%;
+            left: 40%;
+            width: 20%;
+            min-width: 200px;
             text-align: center;
             background: rgba(255, 255, 255, 0.7);
             /*max-width: 500px;*/
@@ -452,12 +454,14 @@
             cntLegend++;
         }
         // moved this here to avoid querying SOLR before the palette is done building
-        loadSolr({clear: 0, zoomLevel: map.getZoom()});
+//        loadSolr({clear: 0, zoomLevel: map.getZoom()});
+        filterMarkers('');
 
     };
 
     //    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.field=species_category&wt=json&indent=true&json.nl=map&json.wrf=?&callback=?";
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample%20AND%20has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.pivot=geohash_2,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    //    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample%20AND%20has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.pivot=geohash_2,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=*&fq=bundle_name:Sample&fq=has_geodata:true&rows=0&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&facet.pivot=geohash_2,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
     $.getJSON(url, genPalette);
 
 
@@ -736,7 +740,8 @@
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
-        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+//        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+        filterMarkers('')
 //        console.log("My zoom level is " + map.getZoom());
     });
 

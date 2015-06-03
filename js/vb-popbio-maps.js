@@ -34,7 +34,7 @@ function loadSolr(parameters) {
         // landmarks in each geohash
 
         // display the number of results
-        $("#markersCount").html(result.response.numFound + ' samples');
+        $("#markersCount").html(result.response.numFound + ' samples in current view');
         // detect empty results set
         if (result.response.numFound === 0) {
             if (clear) {
@@ -115,7 +115,7 @@ function loadSolr(parameters) {
                 } else {
                     elStats.others += count;
                 }
-
+//FixMe: Remove these replacements when proper names are returned from the popbio API
                 fullElStats.push({
                     //"label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
                     "label": key.replace(/sensu lato/, "sl")
@@ -262,7 +262,8 @@ function loadSolr(parameters) {
     };
 
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&rows=0" + buildBbox(map.getBounds()) + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&rows=0" + buildBbox(map.getBounds()) + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&rows=0" + buildBbox(map.getBounds()) + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     console.log(url);
 
@@ -408,6 +409,7 @@ function loadSmall(mode, zoomLevel) {
             // first we need a list of all categories
             var fullElStats = new Array;
 
+//FixMe: Remove these replacements when proper names are returned from the popbio API
             var stats = cluster.stats;
             for (var key in stats) {
                 fullElStats.push({
@@ -480,7 +482,8 @@ function loadSmall(mode, zoomLevel) {
     };
 
 
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?q=bundle_name:Sample AND has_geodata:true" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     //console.log(url);
 
@@ -791,10 +794,12 @@ function colorLuminance(hex, lum) {
 
 function filterMarkers(items) {
     if (items.length === 0) {
-        qryUrl = '';
+        qryUrl = 'q=*';
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
         return;
     }
+
+    //qryUrl = 'q=';
     var terms = new Object;
     //items = $("#search_ac").tagsinput('items');
     items.forEach(function (element) {
@@ -831,7 +836,8 @@ function filterMarkers(items) {
             }
         });
         if (i === 0) {
-            qryUrl = ' AND (';
+            //qryUrl = ' AND (';
+            qryUrl = 'q=(';
         }
         if (i < tlen - 1) {
             if (obj === 'anywhere') {   // search in any field
