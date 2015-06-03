@@ -102,7 +102,8 @@
 
             // Ignore items allready added
             var existing = $.grep(self.itemsArray, function (item) {
-                return self.options.itemValue(item) === itemValue;
+                //return self.options.itemValue(item) === itemValue;
+                return (self.options.itemValue(item) === itemValue && self.options.tagClass(item) === tagClass);
             })[0];
             if (existing && !self.options.allowDuplicates) {
                 // Invoke onTagExists
@@ -156,6 +157,7 @@
          * Removes the given item. Pass true to dontPushVal to prevent updating the
          * elements val()
          */
+        //FixMe: When two tags with the same text (but different class) exist, sometimes if fails to remove the correct tag
         remove: function (item, dontPushVal) {
             var self = this;
 
@@ -210,6 +212,8 @@
             while (self.itemsArray.length > 0)
                 self.itemsArray.pop();
 
+            self.$input.val('');
+            self.$input.typeahead('val', '');
             self.pushVal();
         },
 
@@ -270,8 +274,10 @@
 
             self.options = $.extend({}, defaultOptions, options);
             // When itemValue is set, freeInput should always be false
-            if (self.objectItems)
-                self.options.freeInput = false;
+
+            // ikirmitz: Disable this to enable free input searches
+            //if (self.objectItems)
+            //self.options.freeInput = false;
 
             makeOptionItemFunction(self.options, 'itemValue');
             makeOptionItemFunction(self.options, 'itemText');
@@ -343,7 +349,7 @@
                 //add for instantiation if not exists
                 if (typeaheadjsKeys.indexOf('options') < 0) {
                     typeaheadjs.options = {};
-                    console.log("got options")
+                    //console.log("got options")
                 }
 
                 self.$input.typeahead(typeaheadjs.options, typeaheadjs.datasets).on('typeahead:selected', $.proxy(function (obj, datum) {
@@ -444,17 +450,28 @@
                 var text = $input.val(),
                     maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
                 if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
-                    self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
+                    //self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
+                    // Pressing enter will add the current text as a search term in the "anywhere" field
+                    self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : {
+                        id: Math.random().toString(36).substring(7),
+                        text: text,
+                        value: text,
+                        type: 'Anywhere',
+                        field: 'anywhere'
+                    });
                     $input.val('');
+                    if ($('.typeahead, .twitter-typeahead', self.$container).length > 0) {
+                        self.$input.typeahead('val', '');
+                    }
                     event.preventDefault();
                 }
 
                 // test for @ input detection
-                if (keyCombinationInList(event, [64])) {
-                    console.log('@ input detected');
-                    console.log('value is ' + text);
-
-                }
+                //if (keyCombinationInList(event, [64])) {
+                //    console.log('@ input detected');
+                //    console.log('value is ' + text);
+                //
+                //}
 
                 // Reset internal input's size
                 var textLength = $input.val().length,
