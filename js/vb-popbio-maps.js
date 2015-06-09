@@ -6,6 +6,10 @@
  */
 
 function loadSolr(parameters) {
+
+    //ToDo: Add AJAX error and timeout handling
+    //FixMe: Missing values from species_category field messing up pie charts.
+    // http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/select?q=*:*&fq=bundle_name:Sample&fq=has_geodata:true&wt=json&indent=true&stats=true&stats.field=species_category&rows=0
     "use strict";
     var clear = parameters.clear;
     var zoomLevel = parameters.zoomLevel;
@@ -43,7 +47,6 @@ function loadSolr(parameters) {
         var docLat;
         var docLng;
         var docSpc;
-        //var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'];
 
         // process the correct geohashed based on the zoomlevel
         switch (zoomLevel) {
@@ -97,37 +100,10 @@ function loadSolr(parameters) {
         var statistics = []; // keep the species count for each geohash
         var fullStatistics = []; // keep the species count for each geohash
 
-        // go over the facet pivots and save the population and statistics
-        docSpc.forEach(function (element, index, array) {
-            populations[element.value] = element.count;
-            var elStats = [];
-            var fullElStats = [];
-            var i = 1;
-            element.pivot.forEach(function (innElement) {
-                var key = innElement.value,
-                    count = innElement.count;
-                if (i < 8) {
-                    elStats[key] = count;
-                } else {
-                    elStats.others += count;
-                }
-//FixMe: Remove these replacements when proper names are returned from the popbio API
-                fullElStats.push({
-                    //"label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
-                    "label": key.replace(/sensu lato/, "sl")
-                        .replace(/chromosomal form/, "cf"),
-                    "value": count,
-                    "color": (palette[key] ? palette[key] : "#000000")
-                });
-                //fullElStats[innElement.value] = innElement.count;
-                ++i;
-
-            });
-            statistics[element.value] = elStats;
-            fullStatistics[element.value] = fullElStats;
-        });
 
         for (var key in docLat) {
+            // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be processed later
+            // at the same time exclude them from [terms] so as to not display them twice
             if (docLat.hasOwnProperty(key)) {
                 var count = docLat[key].count;
                 if (count < 2) {
@@ -173,6 +149,33 @@ function loadSolr(parameters) {
                 //    smallClusters.push(key);
                 //    continue;
                 //}
+
+
+                // go over the facet pivots and save the population and statistics
+                docSpc.forEach(function (element, index, array) {
+                    populations[element.value] = element.count;
+                    var elStats = [];
+                    var fullElStats = [];
+                    element.pivot.forEach(function (innElement) {
+                        var key = innElement.value,
+                            count = innElement.count;
+
+                        elStats[key] = count;
+
+                        //FixMe: Remove these replacements when proper names are returned from the popbio API
+                        fullElStats.push({
+                            "label": key.replace(/sensu lato/, "sl")
+                                .replace(/chromosomal form/, "cf"),
+                            //"label": key,
+                            "value": count,
+                            "color": (palette[key] ? palette[key] : "#000000")
+                        });
+
+                    });
+                    statistics[element.value] = elStats;
+                    fullStatistics[element.value] = fullElStats;
+                });
+
                 // process the JSON returned from SOLR to make it compatible with leaflet-dvf
                 var arr = {};
                 arr.term = key;
@@ -215,7 +218,7 @@ function loadSolr(parameters) {
                 var size = 40;
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
-                    className: "prunecluster leaflet-markercluster-icon lamogio",
+                    className: "prunecluster leaflet-markercluster-icon",
                     population: record.population,
                     stats: record.stats
                 });
@@ -285,6 +288,7 @@ function loadSmall(mode, zoomLevel) {
         return e;
     };
 
+
     L.Icon.MarkerCluster = L.Icon.extend({
         options: {
             iconSize: new L.Point(40, 40),
@@ -307,14 +311,10 @@ function loadSmall(mode, zoomLevel) {
         },
 
         draw: function (canvas, width, height) {
-            var pi2 = Math.PI * 2,
-                pi15 = Math.PI * 1.5;
-
-            var start = pi15;
+            var pi2 = Math.PI * 2;
+            var start = Math.PI * 1.5;
             var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
-            var lol = 0;
 
-            var i = 8;
             for (var key in this.stats) if (this.stats.hasOwnProperty(key)) {
 
                 var size = this.stats[key] / this.population;
@@ -330,7 +330,7 @@ function loadSmall(mode, zoomLevel) {
                         canvas.fillStyle = palette["others"];
                         //console.log(key + '*' + palette["others"]);
                     }
-                    var from = start + 0.14,
+                    var from = start,
                         to = start + size * pi2;
 
                     if (to < from) {
@@ -344,7 +344,6 @@ function loadSmall(mode, zoomLevel) {
                     canvas.closePath();
                 }
 
-                --i;
 
             }
 
@@ -401,7 +400,7 @@ function loadSmall(mode, zoomLevel) {
         m.on("click", function () {
             //do click stuff here
             // first we need a list of all categories
-            var fullElStats = new Array;
+            var fullElStats = [];
 
 //FixMe: Remove these replacements when proper names are returned from the popbio API
             var stats = cluster.stats;
@@ -457,9 +456,23 @@ function loadSmall(mode, zoomLevel) {
             var coords = doc[key].geo_coords.split(",");
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
             if (doc[key].hasOwnProperty("species_category")) {
+                var species = doc[key].species_category[0];
                 marker.category = doc[key].species_category[0];
                 //console.log(doc[key].species_category[0]);
+            } else {
+                console.log(key + ": no species defined")
             }
+            marker.data.icon = L.VectorMarkers.icon({
+                prefix: 'fa',
+                icon: 'circle',
+                markerColor: palette[species] ? palette[species] : "red"
+            });
+            //    gradient: true,
+            //    dropShadow: true,
+            //    radius: Math.random() * 20,
+            //    fillColor: 'hsl(' + Math.random() * 360 + ',100%,50%)'
+            //});
+
             pruneCluster.RegisterMarker(marker);
         }
 
@@ -639,6 +652,7 @@ function buildPalette(items, nmColors, paletteType) {
     for (var i = 0; i < nmColors; i++) {
         var item = items[i][0];
         newPalette[item] = kelly_colors_hex[i];
+        //console.log(item);
 
         noItems--; // track how many items don't have a proper color
     }
@@ -650,6 +664,8 @@ function buildPalette(items, nmColors, paletteType) {
         var item = items[element][0];
         newPalette[item] = colorLuminance("#FFFFFF", -lum);
         lum -= lumInterval;
+        //console.log(item);
+
 
     }
 
@@ -675,20 +691,20 @@ function updatePieChart(population, stats) {
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
-                    .x(function (d) {
-                        return d.label
-                    })
-                    .y(function (d) {
-                        return d.value
-                    })
-                    .color(function (d) {
-                        return d.data["color"]
-                    })
-                    .showLabels(true)     //Display pie labels
-                    .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
-                    .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
-                    .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
-                    .donutRatio(0.5)     //Configure how big you want the donut hole size to be.
+                .x(function (d) {
+                    return d.label
+                })
+                .y(function (d) {
+                    return d.value
+                })
+                .color(function (d) {
+                    return d.data["color"]
+                })
+                .showLabels(true)     //Display pie labels
+                .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
+                .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
+                .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
+                .donutRatio(0.5)     //Configure how big you want the donut hole size to be.
                 .growOnHover(false);
 
             d3.select("#piechart")

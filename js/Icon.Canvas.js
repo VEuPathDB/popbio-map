@@ -7,8 +7,7 @@ L.Icon.Canvas = L.Icon.extend({
          */
         className: 'leaflet-canvas-icon',
         population: 0,
-        stats: [],
-        colors: ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e']
+        stats: []
     },
 
     createIcon: function () {
@@ -29,12 +28,10 @@ L.Icon.Canvas = L.Icon.extend({
     draw: function (canvas, width, height) {
 
         var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
-        var lol = 0;
-        var pi2 = Math.PI * 2,
-            pi15 = Math.PI * 1.5;
+        var pi2 = Math.PI * 2;
 
-        var start = pi15;
-        var i = 0;
+        var start = Math.PI * 1.5;
+        //var start = Math.PI * 2;
         for (var key in this.options.stats) if (this.options.stats.hasOwnProperty(key)) {
 
             var size = this.options.stats[key] / this.options.population;
@@ -50,8 +47,8 @@ L.Icon.Canvas = L.Icon.extend({
                     canvas.fillStyle = palette["others"];
                     //console.log(key + '*' + palette["others"]);
                 }
-                //var from = start,
-                var from = start + 0.08,
+
+                var from = start,
                     to = start + size * pi2;
 
                 if (to < from) {
@@ -64,8 +61,6 @@ L.Icon.Canvas = L.Icon.extend({
                 canvas.fill();
                 canvas.closePath();
             }
-
-            ++i;
 
         }
 

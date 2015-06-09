@@ -535,25 +535,62 @@ L.PiecewiseFunction = L.LinearFunction.extend({
 	}
 });
 
+/*
+ * Specific an array of x values to break on along with a set of colors (breaks.length - 1)
+ */
+L.ColorClassFunction = L.PiecewiseFunction.extend({
+	options: {
+		interpolate: false
+	},
+
+	initialize: function (classBreaks, colors, options) {
+		var functions = [];
+		var colorFunction;
+
+		L.Util.setOptions(this, options);
+
+		for (var i = 0; i < classBreaks.length - 1; ++i) {
+			var start = classBreaks[i],
+				end = classBreaks[i + 1],
+				startColor = colors[i],
+				endColor = this.options.interpolate ? colors[Math.min(colors.length - 1, i + 1)] : colors[i];
+
+			colorFunction = new L.RGBColorBlendFunction(start, end, startColor, endColor);
+
+			functions.push(colorFunction);
+		}
+
+		L.PiecewiseFunction.prototype.initialize.call(this, functions);
+	}
+});
+
 L.CustomColorFunction = L.PiecewiseFunction.extend({
 	options: {
 		interpolate: true
 	},
 	
 	initialize: function (minX, maxX, colors, options) {
+
+		L.Util.setOptions(this, options);
+    
 		var range = maxX - minX;
-		var xRange = range/(colors.length - 1);
+		var count = this.options.interpolate ? colors.length - 1 : colors.length;
+		var xRange = range / count;
 		var functions = [];
 		var colorFunction;
-		
-		L.Util.setOptions(this, options);
-		
-		for (var i = 0; i < colors.length; ++i) {
-			var next = Math.min(i + 1, colors.length - 1);
-			colorFunction = this.options.interpolate ? new L.RGBColorBlendFunction(minX + xRange * i, minX + xRange * next, colors[i], colors[next]) : new L.RGBColorBlendFunction(minX + xRange * i, minX + xRange * next, colors[i], colors[i]);
+		var next;
+
+		var func = new L.LinearFunction([0, minX], [count, maxX]);
+
+		for (var i = 0; i < count; ++i) {
+			next = i + 1;
+			//colorFunction = this.options.interpolate ? new L.RGBColorBlendFunction(minX + xRange * i, minX + xRange * next, colors[i], colors[next]) : new L.RGBColorBlendFunction(minX + xRange * i, minX + xRange * next, colors[i], colors[i]);
+			colorFunction = this.options.interpolate ? new L.RGBColorBlendFunction(func.evaluate(i), func.evaluate(next), colors[i], colors[next]) : new L.RGBColorBlendFunction(func.evaluate(i), func.evaluate(next), colors[i], colors[i]);
 			
 			functions.push(colorFunction);	
 		}
+
+		func = null;
 		
 		L.PiecewiseFunction.prototype.initialize.call(this, functions);
 	}
@@ -592,7 +629,8 @@ L.CategoryFunction = L.Class.extend({
 	getCategories: function () {
 		return this._categoryKeys;
 	}
-});// indexOf doesn't work in IE 8 and below, so add this method if it doesn't exist
+});
+;// indexOf doesn't work in IE 8 and below, so add this method if it doesn't exist
 // Copied from:  http://stackoverflow.com/questions/1744310/how-to-fix-array-indexof-in-javascript-for-ie-browsers
 if (!Array.prototype.indexOf) {
 	Array.prototype.indexOf = function(obj, start) {
@@ -827,7 +865,8 @@ L.CategoryLegend = L.Class.extend({
  */
 L.LegendIcon = L.DivIcon.extend({
 	initialize: function (fields, layerOptions, options) {
-		var container = document.createElement('div');
+		var fragment = document.createDocumentFragment();
+		var container = document.createElement('div', '', fragment);
 		var legendContent = L.DomUtil.create('div', 'legend', container);
 		var legendTitle = L.DomUtil.create('div', 'title', legendContent);
 		var legendBox = L.DomUtil.create('div', 'legend-box', legendContent);
@@ -1336,10 +1375,17 @@ L.HTMLUtils = {
 	buildTable: function (obj, className, ignoreFields) {
 		className = className || 'table table-condensed table-striped table-bordered';
 
-		var table = L.DomUtil.create('table', className);
+		var fragment = document.createDocumentFragment();
+		var table = L.DomUtil.create('table', className, fragment);
 		var thead = L.DomUtil.create('thead', '', table);
 		var tbody = L.DomUtil.create('tbody', '', table);
-		thead.innerHTML = '<tr><th>Name</th><th>Value</th></tr>';
+
+		var thead_tr = L.DomUtil.create('tr', '', thead);
+		var thead_values = ['Name', 'Value'];
+		for (var i = 0, l = thead_values.length; i < l; i++) {
+			var thead_th = L.DomUtil.create('th', '', thead_tr);
+			thead_th.innerHTML = thead_values[i];
+		}
 
 		ignoreFields = ignoreFields || [];
 
@@ -1360,7 +1406,13 @@ L.HTMLUtils = {
 					container.appendChild(L.HTMLUtils.buildTable(value, ignoreFields));
 					value = container.innerHTML;
 				}
-				tbody.innerHTML += '<tr><td>' + property + '</td><td>' + value + '</td></tr>';
+
+				var tbody_tr = L.DomUtil.create('tr', '', tbody);
+				var tbody_values = [property, value];
+				for (i = 0, l = tbody_values.length; i < l; i++) {
+					var tbody_td = L.DomUtil.create('td', '', tbody_tr);
+					tbody_td.innerHTML = tbody_values[i];
+				}
 			}
 		}
 
@@ -1750,7 +1802,8 @@ L.Animation = L.Class.extend({
 		this._inProgress = false;
 		this.fire('end');
 	}
-});// @preserve This product includes color specifications and designs developed by Cynthia Brewer (http://colorbrewer.org/).
+});
+;// @preserve This product includes color specifications and designs developed by Cynthia Brewer (http://colorbrewer.org/).
 // Adapted from:  https://raw.github.com/mbostock/d3/master/lib/colorbrewer/colorbrewer.js
 L.ColorBrewer = {
 	Sequential: {
@@ -2309,6 +2362,7 @@ L.DynamicPaletteElement = L.Class.extend({
 	}
 
 });
+;
 /*
  * Draws a regular polygon on the map given a radius in meters
  */
@@ -2404,8 +2458,8 @@ L.RegularPolygon = L.Polygon.extend({
 		
 		for (var i = 0; i < this._latlngs.length; ++i) {
 			var latlng = this._latlngs[i];
-			
-			feature.coordinates[0].push([latlng[1], latlng[0]]);
+
+			feature.geometry.coordinates[0].push([latlng.lng, latlng.lat]);
 		}
 		
 		return feature;
@@ -2415,7 +2469,9 @@ L.RegularPolygon = L.Polygon.extend({
 L.regularPolygon = function (centerLatLng, options) {
 	return new L.RegularPolygon(centerLatLng, options);
 };
+;
 L.Path.XLINK_NS = 'http://www.w3.org/1999/xlink';
+
 /*
  * Functions that support displaying text on an SVG path
  */
@@ -3660,6 +3716,7 @@ L.MarkerGroup = L.FeatureGroup.extend({
 		return featureCollection;
 	}
 });
+;
 /*
  * Class for a drawing a bar marker on the map.  This is the basis for the BarChartMarker
  */
@@ -4596,6 +4653,7 @@ L.RadialMeterMarker = L.ChartMarker.extend({
 		}
 	}
 });
+;
 /*
  * Various modes in which location information can be encoded
  */
@@ -5462,9 +5520,15 @@ L.DataLayer = L.LayerGroup.extend({
 
 		L.StyleConverter.applySVGStyle(i, layerOptions);
 
+		var breakFunction = {
+			evaluate: function (value) {
+				return params.breaks[value];
+			}
+		};
+		
 		for (var property in displayProperties) {
 
-			if (ignoreProperties.indexOf(property) === -1) {
+			if (displayProperties.hasOwnProperty(property) && ignoreProperties.indexOf(property) === -1) {
 
 				valueFunction = displayProperties[property];
 
@@ -5473,7 +5537,7 @@ L.DataLayer = L.LayerGroup.extend({
 					var minX = bounds ? bounds[0].x : displayProperties.minValue;
 					var maxX = bounds ? bounds[1].x : displayProperties.maxValue;
 
-					var binFunction = new L.LinearFunction(new L.Point(0, minX), new L.Point(numSegments, maxX));
+					var binFunction = params.breaks ? breakFunction : new L.LinearFunction(new L.Point(0, minX), new L.Point(numSegments, maxX));
 
 					displayMin = minX;
 					displayMax = maxX;
@@ -5506,7 +5570,7 @@ L.DataLayer = L.LayerGroup.extend({
 										   'background-image:-webkit-linear-gradient(left , ' + value + ' 0%, ' + nextValue + ' 100%);';
 						}
 						else {
-							i.style.cssText += 'background-color:' + nextValue + ';';
+							i.style.cssText += 'background-color:' + value + ';';
 						}
 					}
 
@@ -5524,8 +5588,8 @@ L.DataLayer = L.LayerGroup.extend({
 								   'border-right-width:' + nextValue + ';';
 					}
 
-					var min = (segmentSize * index) + minX;
-					var max = min + segmentSize;
+					var min = params.minX || (segmentSize * index) + minX;
+					var max = params.maxX || min + segmentSize;
 
 					if (displayTextFunction && valueFunction) {
 						min = displayTextFunction(min);
@@ -5571,53 +5635,94 @@ L.DataLayer = L.LayerGroup.extend({
 			return value;
 		};
 
+		// Create a different legend section for each field specified in displayOptions
+		// Iterate through the fields
 		for (var field in displayOptions) {
+			if (displayOptions.hasOwnProperty(field)) {
 
-			var displayProperties = displayOptions[field];
-			
-			if (!displayProperties.excludeFromLegend) {
-				var displayName = displayProperties.displayName || field;
+				// Get the properties associated with a given field
+				var displayProperties = displayOptions[field];
 
-				displayText = displayProperties.displayText;
+				// If the field should not be excluded from the legend, then continue...
+				if (!displayProperties.excludeFromLegend) {
 
-				var displayTextFunction = displayText ? displayText : defaultFunction;
+					// Use the provided name or use the field key
+					var displayName = displayProperties.displayName || field;
 
-				var styles = displayProperties.styles;
+					// Determine the function used to print out y values
+					displayText = displayProperties.displayText;
 
-				L.DomUtil.create('div', 'legend-title', legendElement).innerHTML = displayName;
+					var displayTextFunction = displayText ? displayText : defaultFunction;
 
-				if (styles) {
-					// Generate category legend
-					legendElement.innerHTML += new L.CategoryLegend(styles).generate();
-				}
-				else {
-					// Generate numeric legend
-					var legendItems = L.DomUtil.create('div', 'data-layer-legend');
-					var minValue = L.DomUtil.create('div', 'min-value', legendItems);
-					var scaleBars = L.DomUtil.create('div', 'scale-bars', legendItems);
-					var maxValue = L.DomUtil.create('div', 'max-value', legendItems);
-					var ignoreProperties = ['displayName', 'displayText', 'minValue', 'maxValue'];
+					var styles = displayProperties.styles;
 
-					for (var index = 0; index < numSegments; ++index) {
-						var legendParams = {
-							displayProperties: displayProperties,
-							layerOptions: layerOptions,
-							ignoreProperties: ignoreProperties,
-							displayTextFunction: displayTextFunction,
-							index: index,
-							numSegments: numSegments,
-							segmentWidth: segmentWidth,
-							minValue: minValue,
-							maxValue: maxValue,
-							gradient: legendOptions.gradient
-						};
+					L.DomUtil.create('div', 'legend-title', legendElement).innerHTML = displayName;
 
-						var element = this._getLegendElement(legendParams);
-
-						scaleBars.appendChild(element);
-
+					// If styles have been specified (e.g. a key/value mapping b/w a given input value and a given output value),
+					// then use those
+					if (styles) {
+						// Generate category legend
+						legendElement.innerHTML += new L.CategoryLegend(styles).generate();
 					}
-					legendElement.appendChild(legendItems);
+					else {
+						// Generate numeric legend
+						var legendItems = L.DomUtil.create('div', 'data-layer-legend');
+						var minValue = L.DomUtil.create('div', 'min-value', legendItems);
+						var scaleBars = L.DomUtil.create('div', 'scale-bars', legendItems);
+						var maxValue = L.DomUtil.create('div', 'max-value', legendItems);
+						var ignoreProperties = ['displayName', 'displayText', 'minValue', 'maxValue'];
+						var breaks = displayProperties.breaks;
+						var segmentWidths = [];
+
+						numSegments = legendOptions.numSegments || 10;
+
+						// If breaks have been specified, then use those values to calculate segment widths and provide x ranges
+						// for each segment
+						if (breaks) {
+							// Scale the break numbers relative to the width of the legend
+							var scaleFunction = new L.LinearFunction([breaks[0], 0], [breaks[breaks.length - 1], legendWidth]);
+							var lastWidth = 0;
+							var width = 0;
+							for (var i = 1; i < breaks.length; ++i) {
+								width = scaleFunction.evaluate(breaks[i]);
+								segmentWidths.push(width - lastWidth - 2 * weight);
+								lastWidth = width;
+							}
+
+							numSegments = segmentWidths.length;
+						}
+
+						// Add each segment to the legend
+						for (var index = 0; index < numSegments; ++index) {
+							var legendParams = {
+								displayProperties: displayProperties,
+								layerOptions: layerOptions,
+								ignoreProperties: ignoreProperties,
+								displayTextFunction: displayTextFunction,
+								index: index,
+								numSegments: numSegments,
+								segmentWidth: segmentWidth,
+								minValue: minValue,
+								maxValue: maxValue,
+								gradient: legendOptions.gradient
+							};
+
+							// If there are segmentWidths, then use those
+							if (breaks && segmentWidths.length > 0) {
+								legendParams.segmentWidth = segmentWidths[index];
+								legendParams.segmentSize = segmentWidths[index];
+								legendParams.minX = breaks[index];
+								legendParams.maxX = breaks[index + 1];
+								legendParams.breaks = breaks;
+							}
+
+							var element = this._getLegendElement(legendParams);
+
+							scaleBars.appendChild(element);
+
+						}
+						legendElement.appendChild(legendItems);
+					}
 				}
 			}
 		}
@@ -6248,7 +6353,7 @@ L.StackedPieChartDataLayer = L.ChartDataLayer.extend({
 
 	_getMarker: function (latLng, options) {
 		return new L.StackedPieChartMarker(latLng, options);
-    }
+	},
 });
 
 L.stackedPieChartDataLayer = function (data, options) {
@@ -6302,12 +6407,13 @@ L.RadialMeterMarkerDataLayer = L.DataLayer.extend({
 
 	_getMarker: function (latLng, options) {
 		return new L.RadialMeterMarker(latLng, options);
-    }
+	},
 });
 
 L.radialMeterMarkerDataLayer = function (data, options) {
 	return new L.RadialMeterMarkerDataLayer(data, options);
 };
+;
 /*
  *
  */
@@ -6840,6 +6946,7 @@ L.ArcedPolyline = L.Path.extend({
 L.arcedPolyline = function (latlngs, options) {
 	return new L.ArcedPolyline(latlngs, options);
 };
+;
 L.Control.Legend = L.Control.extend({
 	options: {
 		position: 'bottomright',

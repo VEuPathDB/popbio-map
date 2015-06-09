@@ -1,21 +1,17 @@
 .marker-cluster-small {
-    background-color: rgba(253, 156, 115, 0.6);
-    *background-color: rgba(181, 226, 140, 0.6)
+    background-color: rgba(253, 156, 115, 0.6)
 }
 
 .marker-cluster-small div {
-    background-color: rgba(241, 128, 23, 0.6);
-    *background-color: rgba(110, 204, 57, 0.6)
+    background-color: rgba(241, 128, 23, 0.6)
 }
 
 .marker-cluster-medium {
-    background-color: rgba(253, 156, 115, 0.6);
-    *background-color: rgba(241, 211, 87, 0.6)
+    background-color: rgba(253, 156, 115, 0.6)
 }
 
 .marker-cluster-medium div {
-    background-color: rgba(241, 128, 23, 0.6);
-    *background-color: rgba(240, 194, 12, 0.6)
+    background-color: rgba(241, 128, 23, 0.6)
 }
 
 .marker-cluster-large {
@@ -27,22 +23,18 @@
 }
 
 .leaflet-oldie .marker-cluster-small {
-    background-color: #fd9c73;
-    *background-color: #b5e28c
+    background-color: #fd9c73
 }
 
 .leaflet-oldie .marker-cluster-small div {
-    background-color: #f18017;
-    *background-color: #6ecc39
+    background-color: #f18017
 }
 
 .leaflet-oldie .marker-cluster-medium {
-    background-color: #fd9c73;
-    *background-color: #f1d357
+    background-color: #fd9c73
 }
 
 .leaflet-oldie .marker-cluster-medium div {
-    *background-color: #f0c20c;
     background-color: #f18017
 }
 
