@@ -30,7 +30,9 @@
                     icon = this._createInner();
                 }
                 pin_path = L.VectorMarkers.MAP_PIN;
-                div.innerHTML = '<svg width="32px" height="52px" viewBox="0 0 32 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + '<path d="' + pin_path + '" fill="' + options.markerColor + '"></path>' + icon + '</svg>';
+                //ikirmitz: fix issue with iner icons not showing properly in firefox
+                //div.innerHTML = '<svg width="32px" height="52px" viewBox="0 0 32 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + '<path d="' + pin_path + '" fill="' + options.markerColor + '"></path>' + icon + '</svg>';
+                div.innerHTML = '<svg width="32px" height="52px" viewBox="0 0 32 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + '<path d="' + pin_path + '" fill="' + options.markerColor + '"></path></svg>' + icon;
                 this._setIconStyles(div, "icon");
                 this._setIconStyles(div, "icon-" + options.markerColor);
                 return div;
@@ -82,12 +84,12 @@
                     return img.style.height = size.y + "px";
                 }
             },
-            createShadow: function () {
-                var div;
-                div = document.createElement("div");
-                this._setIconStyles(div, "shadow");
-                return div;
-            }
+            //createShadow: function () {
+            //    var div;
+            //    div = document.createElement("div");
+            //    this._setIconStyles(div, "shadow");
+            //    return div;
+            //}
         });
         return L.VectorMarkers.icon = function (options) {
             return new L.VectorMarkers.Icon(options);
