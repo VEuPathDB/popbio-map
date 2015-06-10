@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/easy-button.js" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Moved the legend to the bottom-right of the map so as to not interfere with the charts on the left side&#10;** Made it toggleable&#10;">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/easy-button.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/vb_geohashes_mean.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -28,8 +28,8 @@
       <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.53513515">
-              <caret line="482" column="21" selection-start-line="482" selection-start-column="21" selection-end-line="482" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.8291892">
+              <caret line="497" column="0" selection-start-line="497" selection-start-column="0" selection-end-line="497" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -42,11 +42,11 @@
                 <element signature="e#14137#14508#0" expanded="false" />
                 <element signature="e#14598#14865#0" expanded="false" />
                 <element signature="e#14952#15261#0" expanded="false" />
-                <element signature="e#19654#22248#0" expanded="false" />
-                <element signature="e#22326#23748#0" expanded="false" />
-                <element signature="e#23817#26847#0" expanded="false" />
-                <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
-                <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
+                <element signature="e#19652#22246#0" expanded="false" />
+                <element signature="e#22324#23746#0" expanded="false" />
+                <element signature="e#23815#26845#0" expanded="false" />
+                <marker date="1433955146959" expanded="true" signature="25733:25748" placeholder="..." />
+                <marker date="1433955146959" expanded="true" signature="25859:25879" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -317,6 +317,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easy-button.js" />
+              <option name="myItemType" value="com.intellij.plugins.watcher.projectView.NestingTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -447,12 +465,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Reformated &amp; rearranged code&#10;Fixed project settings">
-      <created>1425919013195</created>
-      <option name="number" value="00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1425919013195</updated>
     </task>
     <task id="LOCAL-00006" summary="Code cleaning">
       <created>1425919127964</created>
@@ -742,7 +754,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433884154847</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="* Moved the legend to the bottom-right of the map so as to not interfere with the charts on the left side&#10;** Made it toggleable&#10;">
+      <created>1433955052390</created>
+      <option name="number" value="00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1433955052392</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -756,12 +774,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1168" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1530343" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1530343" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37229863" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20633246" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -770,11 +790,9 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.39390963" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37305123" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -816,7 +834,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Fixed a strange error in leaflet-dvf.js (probably caused by accident)" />
     <MESSAGE value="* Refreshed minified files" />
     <MESSAGE value="* Using full species name at the piechart legends now&#10;* Move all controls besides sidebar to the top right&#10;* Removed unnecessary files from the project" />
     <MESSAGE value="* Full-screen now maximizes the space used by the map and its controls (pseudo-fullscreen, browser chrome is still showing)&#10;* Sidebar now works properly when fullscreen is activated" />
@@ -841,7 +858,8 @@
     <MESSAGE value="* Merge (hopefully correct this time)" />
     <MESSAGE value="* Added colored markers for single-species samples&#10;* Fine-tuned pie-charts&#10;** They no longer draw gaps between pie segments&#10;** More than 8 species/colored showed&#10;* Discovered a bug in SOLR data with samples missing the species_category field&#10;* Updated prunecluster &amp; leaflet-dvf libs to the latest version&#10; * Added Leaflet.vector-markers lib to the project" />
     <MESSAGE value="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;" />
+    <MESSAGE value="* Moved the legend to the bottom-right of the map so as to not interfere with the charts on the left side&#10;** Made it toggleable&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Moved the legend to the bottom-right of the map so as to not interfere with the charts on the left side&#10;** Made it toggleable&#10;" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -882,11 +900,11 @@
             <element signature="e#14137#14508#0" expanded="false" />
             <element signature="e#14598#14865#0" expanded="false" />
             <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#19654#22248#0" expanded="false" />
-            <element signature="e#22326#23748#0" expanded="false" />
-            <element signature="e#23817#26847#0" expanded="false" />
-            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
-            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
+            <element signature="e#19652#22246#0" expanded="false" />
+            <element signature="e#22324#23746#0" expanded="false" />
+            <element signature="e#23815#26845#0" expanded="false" />
+            <marker date="1433955146959" expanded="true" signature="25733:25748" placeholder="..." />
+            <marker date="1433955146959" expanded="true" signature="25859:25879" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -934,11 +952,11 @@
             <element signature="e#14137#14508#0" expanded="false" />
             <element signature="e#14598#14865#0" expanded="false" />
             <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#19654#22248#0" expanded="false" />
-            <element signature="e#22326#23748#0" expanded="false" />
-            <element signature="e#23817#26847#0" expanded="false" />
-            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
-            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
+            <element signature="e#19652#22246#0" expanded="false" />
+            <element signature="e#22324#23746#0" expanded="false" />
+            <element signature="e#23815#26845#0" expanded="false" />
+            <marker date="1433955146959" expanded="true" signature="25733:25748" placeholder="..." />
+            <marker date="1433955146959" expanded="true" signature="25859:25879" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -979,11 +997,11 @@
             <element signature="e#14137#14508#0" expanded="false" />
             <element signature="e#14598#14865#0" expanded="false" />
             <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#19654#22248#0" expanded="false" />
-            <element signature="e#22326#23748#0" expanded="false" />
-            <element signature="e#23817#26847#0" expanded="false" />
-            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
-            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
+            <element signature="e#19652#22246#0" expanded="false" />
+            <element signature="e#22324#23746#0" expanded="false" />
+            <element signature="e#23815#26845#0" expanded="false" />
+            <marker date="1433955146959" expanded="true" signature="25733:25748" placeholder="..." />
+            <marker date="1433955146959" expanded="true" signature="25859:25879" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1017,11 +1035,11 @@
             <element signature="e#14137#14508#0" expanded="false" />
             <element signature="e#14598#14865#0" expanded="false" />
             <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#19654#22248#0" expanded="false" />
-            <element signature="e#22326#23748#0" expanded="false" />
-            <element signature="e#23817#26847#0" expanded="false" />
-            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
-            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
+            <element signature="e#19652#22246#0" expanded="false" />
+            <element signature="e#22324#23746#0" expanded="false" />
+            <element signature="e#23815#26845#0" expanded="false" />
+            <marker date="1433955146959" expanded="true" signature="25733:25748" placeholder="..." />
+            <marker date="1433955146959" expanded="true" signature="25859:25879" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1312,8 +1330,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53513515">
-          <caret line="482" column="21" selection-start-line="482" selection-start-column="21" selection-end-line="482" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.8291892">
+          <caret line="497" column="0" selection-start-line="497" selection-start-column="0" selection-end-line="497" selection-end-column="0" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1326,11 +1344,11 @@
             <element signature="e#14137#14508#0" expanded="false" />
             <element signature="e#14598#14865#0" expanded="false" />
             <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#19654#22248#0" expanded="false" />
-            <element signature="e#22326#23748#0" expanded="false" />
-            <element signature="e#23817#26847#0" expanded="false" />
-            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
-            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
+            <element signature="e#19652#22246#0" expanded="false" />
+            <element signature="e#22324#23746#0" expanded="false" />
+            <element signature="e#23815#26845#0" expanded="false" />
+            <marker date="1433955146959" expanded="true" signature="25733:25748" placeholder="..." />
+            <marker date="1433955146959" expanded="true" signature="25859:25879" placeholder="..." />
           </folding>
         </state>
       </provider>
