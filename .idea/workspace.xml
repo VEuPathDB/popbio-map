@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Added colored markers for single-species samples&#10;* Fine-tuned pie-charts&#10;** They no longer draw gaps between pie segments&#10;** More than 8 species/colored showed&#10;* Discovered a bug in SOLR data with samples missing the species_category field&#10;* Updated prunecluster &amp; leaflet-dvf libs to the latest version&#10; * Added Leaflet.vector-markers lib to the project">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/Leaflet.vector-markers.css" afterPath="$PROJECT_DIR$/css/Leaflet.vector-markers.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Leaflet.vector-markers.js" afterPath="$PROJECT_DIR$/js/Leaflet.vector-markers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/Leaflet.vector-markers.min.css" afterPath="$PROJECT_DIR$/css/Leaflet.vector-markers.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Leaflet.vector-markers.min.js" afterPath="$PROJECT_DIR$/js/Leaflet.vector-markers.min.js" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/easy-button.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/vb_geohashes_mean.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -27,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="55" column="30" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.53513515">
+              <caret line="482" column="21" selection-start-line="482" selection-start-column="21" selection-end-line="482" selection-end-column="21" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -41,13 +39,25 @@
                 <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="e#14215#14586#0" expanded="false" />
-                <element signature="e#14676#14943#0" expanded="false" />
-                <element signature="e#15030#15339#0" expanded="false" />
-                <element signature="e#15480#15582#0" expanded="false" />
-                <marker date="1433877152804" expanded="true" signature="24956:24971" placeholder="..." />
-                <marker date="1433877152804" expanded="true" signature="25082:25102" placeholder="..." />
+                <element signature="e#14137#14508#0" expanded="false" />
+                <element signature="e#14598#14865#0" expanded="false" />
+                <element signature="e#14952#15261#0" expanded="false" />
+                <element signature="e#19654#22248#0" expanded="false" />
+                <element signature="e#22326#23748#0" expanded="false" />
+                <element signature="e#23817#26847#0" expanded="false" />
+                <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
+                <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="easy-button.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/easy-button.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -77,11 +87,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Leaflet.vector-markers.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Leaflet.vector-markers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Leaflet.vector-markers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.68536586">
-              <caret line="34" column="59" selection-start-line="34" selection-start-column="59" selection-end-line="34" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -148,10 +158,11 @@
         <option value="$PROJECT_DIR$/js/PruneCluster.js" />
         <option value="$PROJECT_DIR$/js/leaflet-dvf.js" />
         <option value="$PROJECT_DIR$/css/leaflet.awesome-markers.css" />
-        <option value="$PROJECT_DIR$/vb_geohashes_mean.html" />
         <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/css/Leaflet.vector-markers.css" />
         <option value="$PROJECT_DIR$/js/Leaflet.vector-markers.js" />
+        <option value="$PROJECT_DIR$/js/easy-button.js" />
+        <option value="$PROJECT_DIR$/vb_geohashes_mean.html" />
       </list>
     </option>
   </component>
@@ -166,7 +177,7 @@
     <option name="x" value="-9" />
     <option name="y" value="-9" />
     <option name="width" value="1938" />
-    <option name="height" value="1048" />
+    <option name="height" value="1168" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -241,6 +252,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -329,7 +341,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -436,12 +447,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Reformated &amp; rearranged code&#10;Fixed project settings">
-      <created>1425918517968</created>
-      <option name="number" value="00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1425918517968</updated>
     </task>
     <task id="LOCAL-00005" summary="Reformated &amp; rearranged code&#10;Fixed project settings">
       <created>1425919013195</created>
@@ -731,7 +736,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433878908232</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;">
+      <created>1433884154846</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1433884154847</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -744,7 +755,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1168" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1530343" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -763,7 +774,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37328094" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37305123" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -805,7 +816,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Added minified versions of JS &amp; CSS (properly)" />
     <MESSAGE value="* Fixed a strange error in leaflet-dvf.js (probably caused by accident)" />
     <MESSAGE value="* Refreshed minified files" />
     <MESSAGE value="* Using full species name at the piechart legends now&#10;* Move all controls besides sidebar to the top right&#10;* Removed unnecessary files from the project" />
@@ -830,7 +840,8 @@
     <MESSAGE value="* Re-engineered SOLR query construction to give to rely more on fq (instead q) and thus give a slight perfornance gain due to caching&#10; * Samples counter now says 'X samples in current view'" />
     <MESSAGE value="* Merge (hopefully correct this time)" />
     <MESSAGE value="* Added colored markers for single-species samples&#10;* Fine-tuned pie-charts&#10;** They no longer draw gaps between pie segments&#10;** More than 8 species/colored showed&#10;* Discovered a bug in SOLR data with samples missing the species_category field&#10;* Updated prunecluster &amp; leaflet-dvf libs to the latest version&#10; * Added Leaflet.vector-markers lib to the project" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Added colored markers for single-species samples&#10;* Fine-tuned pie-charts&#10;** They no longer draw gaps between pie segments&#10;** More than 8 species/colored showed&#10;* Discovered a bug in SOLR data with samples missing the species_category field&#10;* Updated prunecluster &amp; leaflet-dvf libs to the latest version&#10; * Added Leaflet.vector-markers lib to the project" />
+    <MESSAGE value="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -838,7 +849,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="108" />
+      <option name="time" value="109" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -855,19 +866,6 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="230" column="21" selection-start-line="230" selection-start-column="21" selection-end-line="230" selection-end-column="21" />
-          <folding>
-            <element signature="e#9397#9883#0" expanded="false" />
-            <element signature="e#9986#10085#0" expanded="false" />
-            <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
-            <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -881,55 +879,14 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14215#14586#0" expanded="false" />
-            <element signature="e#14676#14943#0" expanded="false" />
-            <element signature="e#15030#15339#0" expanded="false" />
-            <element signature="e#15480#15582#0" expanded="false" />
-            <marker date="1433877152804" expanded="true" signature="24956:24971" placeholder="..." />
-            <marker date="1433877152804" expanded="true" signature="25082:25102" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="301" column="56" selection-start-line="301" selection-start-column="56" selection-end-line="301" selection-end-column="56" />
-          <folding>
-            <element signature="e#9397#9883#0" expanded="false" />
-            <element signature="e#9986#10085#0" expanded="false" />
-            <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
-            <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Icon.Canvas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="47" column="24" selection-start-line="47" selection-start-column="24" selection-end-line="47" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14215#14586#0" expanded="false" />
-            <element signature="e#14676#14943#0" expanded="false" />
-            <element signature="e#15030#15339#0" expanded="false" />
-            <element signature="e#15480#15582#0" expanded="false" />
-            <marker date="1433877152804" expanded="true" signature="24956:24971" placeholder="..." />
-            <marker date="1433877152804" expanded="true" signature="25082:25102" placeholder="..." />
+            <element signature="e#14137#14508#0" expanded="false" />
+            <element signature="e#14598#14865#0" expanded="false" />
+            <element signature="e#14952#15261#0" expanded="false" />
+            <element signature="e#19654#22248#0" expanded="false" />
+            <element signature="e#22326#23748#0" expanded="false" />
+            <element signature="e#23817#26847#0" expanded="false" />
+            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
+            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -974,12 +931,14 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14215#14586#0" expanded="false" />
-            <element signature="e#14676#14943#0" expanded="false" />
-            <element signature="e#15030#15339#0" expanded="false" />
-            <element signature="e#15480#15582#0" expanded="false" />
-            <marker date="1433877152804" expanded="true" signature="24956:24971" placeholder="..." />
-            <marker date="1433877152804" expanded="true" signature="25082:25102" placeholder="..." />
+            <element signature="e#14137#14508#0" expanded="false" />
+            <element signature="e#14598#14865#0" expanded="false" />
+            <element signature="e#14952#15261#0" expanded="false" />
+            <element signature="e#19654#22248#0" expanded="false" />
+            <element signature="e#22326#23748#0" expanded="false" />
+            <element signature="e#23817#26847#0" expanded="false" />
+            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
+            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1017,12 +976,14 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14215#14586#0" expanded="false" />
-            <element signature="e#14676#14943#0" expanded="false" />
-            <element signature="e#15030#15339#0" expanded="false" />
-            <element signature="e#15480#15582#0" expanded="false" />
-            <marker date="1433877152804" expanded="true" signature="24956:24971" placeholder="..." />
-            <marker date="1433877152804" expanded="true" signature="25082:25102" placeholder="..." />
+            <element signature="e#14137#14508#0" expanded="false" />
+            <element signature="e#14598#14865#0" expanded="false" />
+            <element signature="e#14952#15261#0" expanded="false" />
+            <element signature="e#19654#22248#0" expanded="false" />
+            <element signature="e#22326#23748#0" expanded="false" />
+            <element signature="e#23817#26847#0" expanded="false" />
+            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
+            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1053,12 +1014,14 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14215#14586#0" expanded="false" />
-            <element signature="e#14676#14943#0" expanded="false" />
-            <element signature="e#15030#15339#0" expanded="false" />
-            <element signature="e#15480#15582#0" expanded="false" />
-            <marker date="1433877152804" expanded="true" signature="24956:24971" placeholder="..." />
-            <marker date="1433877152804" expanded="true" signature="25082:25102" placeholder="..." />
+            <element signature="e#14137#14508#0" expanded="false" />
+            <element signature="e#14598#14865#0" expanded="false" />
+            <element signature="e#14952#15261#0" expanded="false" />
+            <element signature="e#19654#22248#0" expanded="false" />
+            <element signature="e#22326#23748#0" expanded="false" />
+            <element signature="e#23817#26847#0" expanded="false" />
+            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
+            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1310,6 +1273,22 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/Leaflet.vector-markers.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Leaflet.vector-markers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1323,10 +1302,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
+    <entry file="file://$PROJECT_DIR$/js/easy-button.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="30" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
+          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.53513515">
+          <caret line="482" column="21" selection-start-line="482" selection-start-column="21" selection-end-line="482" selection-end-column="21" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1336,29 +1323,15 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14215#14586#0" expanded="false" />
-            <element signature="e#14676#14943#0" expanded="false" />
-            <element signature="e#15030#15339#0" expanded="false" />
-            <element signature="e#15480#15582#0" expanded="false" />
-            <marker date="1433877152804" expanded="true" signature="24956:24971" placeholder="..." />
-            <marker date="1433877152804" expanded="true" signature="25082:25102" placeholder="..." />
+            <element signature="e#14137#14508#0" expanded="false" />
+            <element signature="e#14598#14865#0" expanded="false" />
+            <element signature="e#14952#15261#0" expanded="false" />
+            <element signature="e#19654#22248#0" expanded="false" />
+            <element signature="e#22326#23748#0" expanded="false" />
+            <element signature="e#23817#26847#0" expanded="false" />
+            <marker date="1433954900868" expanded="true" signature="25735:25750" placeholder="..." />
+            <marker date="1433954900868" expanded="true" signature="25861:25881" placeholder="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/Leaflet.vector-markers.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Leaflet.vector-markers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68536586">
-          <caret line="34" column="59" selection-start-line="34" selection-start-column="59" selection-end-line="34" selection-end-column="59" />
-          <folding />
         </state>
       </provider>
     </entry>
