@@ -156,22 +156,30 @@ function loadSolr(parameters) {
                     populations[element.value] = element.count;
                     var elStats = [];
                     var fullElStats = [];
-                    element.pivot.forEach(function (innElement) {
-                        var key = innElement.value,
-                            count = innElement.count;
+                    // check if pinot is empty
+                    if (element.pivot) {
 
-                        elStats[key] = count;
 
-                        //FixMe: Remove these replacements when proper names are returned from the popbio API
-                        fullElStats.push({
-                            "label": key.replace(/sensu lato/, "sl")
-                                .replace(/chromosomal form/, "cf"),
-                            //"label": key,
-                            "value": count,
-                            "color": (palette[key] ? palette[key] : "#000000")
+                        element.pivot.forEach(function (innElement) {
+                            var key = innElement.value,
+                                count = innElement.count;
+
+                            elStats[key] = count;
+
+                            //FixMe: Remove these replacements when proper names are returned from the popbio API
+                            fullElStats.push({
+                                "label": key.replace(/sensu lato/, "sl")
+                                    .replace(/chromosomal form/, "cf"),
+                                //"label": key,
+                                "value": count,
+                                "color": (palette[key] ? palette[key] : "#000000")
+                            });
+
                         });
+                    } else {
 
-                    });
+                        console.log("ERROR: Pivot for element " + element.value + "appears to be empty");
+                    }
                     statistics[element.value] = elStats;
                     fullStatistics[element.value] = fullElStats;
                 });
@@ -264,7 +272,7 @@ function loadSolr(parameters) {
     //ToDo: Define a search handler in SOLR to simplify the URL.
     var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&rows=0" + buildBbox(map.getBounds()) + "&fl=geo_coords&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
-    console.log(url);
+    //console.log(url);
 
     // inform the user that data is loading
     map.spin(true);
@@ -431,6 +439,7 @@ function loadSmall(mode, zoomLevel) {
     var geoQuery;
 
     if (mode === 0) {
+        //geoQuery = "(";
         geoQuery = "(";
 
         for (var i = 0; i < smallClusters.length; i++) {
@@ -438,7 +447,8 @@ function loadSmall(mode, zoomLevel) {
                 geoQuery += smallClusters[i];
                 break;
             }
-            geoQuery += smallClusters[i] + " OR ";
+            //geoQuery += smallClusters[i] + " OR ";
+            geoQuery += smallClusters[i] + " ";
         }
 
         geoQuery += ")";
@@ -488,7 +498,7 @@ function loadSmall(mode, zoomLevel) {
 
 
     //ToDo: Define a search handler in SOLR to simplify the URL.
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
+    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true&q.op=OR" + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
 
     // inform the user that data is loading
     map.spin(true);
@@ -842,7 +852,7 @@ function filterMarkers(items) {
         }
 
 
-        console.log('lakis' + qryUrl);
+        //console.log('lakis' + qryUrl);
         i++;
     }
     loadSolr({clear: 1, zoomLevel: map.getZoom()})
