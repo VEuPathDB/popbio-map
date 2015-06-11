@@ -48,48 +48,51 @@ function loadSolr(parameters) {
         var docLng;
         var docSpc;
 
-        // process the correct geohashed based on the zoomlevel
+        var statFields = result.stats.stats_fields;
+        var facetCounts = result.facet_counts;
+
+        // process the correct geohashes based on the zoom level
         switch (zoomLevel) {
             case 1:
             case 2:
-                docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_1;
-                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_1;
-                docSpc = result.facet_counts.facet_pivot["geohash_1,species_category"];
+                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_1;
+                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_1;
+                docSpc = facetCounts.facet_pivot["geohash_1,species_category"];
                 break;
             case 3:
             case 4:
             case 5:
-                docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_2;
-                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_2;
-                docSpc = result.facet_counts.facet_pivot["geohash_2,species_category"];
+                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_2;
+                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_2;
+                docSpc = facetCounts.facet_pivot["geohash_2,species_category"];
                 break;
             case 6:
             case 7:
-                docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_3;
-                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_3;
-                docSpc = result.facet_counts.facet_pivot["geohash_3,species_category"];
+                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_3;
+                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_3;
+                docSpc = facetCounts.facet_pivot["geohash_3,species_category"];
                 break;
             case 8:
             case 9:
-                docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_4;
-                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_4;
-                docSpc = result.facet_counts.facet_pivot["geohash_4,species_category"];
+                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_4;
+                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_4;
+                docSpc = facetCounts.facet_pivot["geohash_4,species_category"];
                 break;
             case 10:
             case 11:
-                docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_5;
-                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_5;
-                docSpc = result.facet_counts.facet_pivot["geohash_5,species_category"];
+                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_5;
+                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_5;
+                docSpc = facetCounts.facet_pivot["geohash_5,species_category"];
                 break;
             default:
-                docLat = result.stats.stats_fields.geo_coords_ll_0___tdouble.facets.geohash_6;
-                docLng = result.stats.stats_fields.geo_coords_ll_1___tdouble.facets.geohash_6;
-                docSpc = result.facet_counts.facet_pivot["geohash_6,species_category"];
+                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_6;
+                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_6;
+                docSpc = facetCounts.facet_pivot["geohash_6,species_category"];
                 break;
 
         }
 
-        // depending on the zoomlevel and the count of landmarks in each geohash we are saving
+        // depending on the zoom level and the count of landmarks in each geohash we are saving
         // geohashes that contain few enough landmarks to display them using the prune cluster
         // layer. This needs tweaking to get the right balance of info, performance and transfer times
         // The following values seem to work well. Most of the latency is due to SOLR taking a long
@@ -152,11 +155,11 @@ function loadSolr(parameters) {
 
 
                 // go over the facet pivots and save the population and statistics
-                docSpc.forEach(function (element, index, array) {
+                docSpc.forEach(function (element, array) {
                     populations[element.value] = element.count;
                     var elStats = [];
                     var fullElStats = [];
-                    // check if pinot is empty
+                    // check if pivot is empty
                     if (element.pivot) {
 
 
@@ -232,8 +235,6 @@ function loadSolr(parameters) {
                 });
             },
             onEachRecord: function (layer, record) {
-                //console.log("taki"+ record.population);
-                //record.stats.push(100);
                 layer.on("dblclick", function () {
                     map.fitBounds(record.bounds);
                 });
@@ -318,7 +319,7 @@ function loadSmall(mode, zoomLevel) {
             return null;
         },
 
-        draw: function (canvas, width, height) {
+        draw: function (canvas) {
             var pi2 = Math.PI * 2;
             var start = Math.PI * 1.5;
             var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
@@ -389,7 +390,7 @@ function loadSmall(mode, zoomLevel) {
                 var zoomLevelBefore = pruneCluster._map.getZoom();
                 var zoomLevelAfter = pruneCluster._map.getBoundsZoom(bounds, false, new L.Point(20, 20, null));
 
-                // If the zoom level doesn"t change
+                // If the zoom level doesn't change
                 if (zoomLevelAfter === zoomLevelBefore) {
                     // Send an event for the LeafletSpiderfier
                     pruneCluster._map.fire("overlappingmarkers", {
