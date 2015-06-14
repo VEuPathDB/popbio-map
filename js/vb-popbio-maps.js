@@ -279,7 +279,7 @@ function loadSolr(parameters) {
     map.spin(true);
     $.getJSON(url, buildMap).fail(function () {
         console.log("Ahhh");
-        return;
+
     });
 
 
@@ -742,8 +742,7 @@ function updatePieChart(population, stats) {
 
 
     }
-};
-
+}
 $.fn.redraw = function () {
     /*
      function redraw
@@ -790,6 +789,7 @@ function colorLuminance(hex, lum) {
 }
 
 function filterMarkers(items) {
+    "use strict";
     if (items.length === 0) {
         qryUrl = 'q=*';
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
@@ -797,74 +797,127 @@ function filterMarkers(items) {
     }
 
     //qryUrl = 'q=';
-    var terms = new Object;
+    var terms = {};
     //items = $("#search_ac").tagsinput('items');
     items.forEach(function (element) {
 
-        if (terms.hasOwnProperty(element.field)) {
-            if (element.qtype == 'exact') {
-                terms[element.field].push('"' + element.value + '"');
-            } else {
-                terms[element.field].push(element.value + '*');
-                console.log("inexact");
-            }
+        if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
+
+        if (element.qtype == 'exact') {
+            terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
         } else {
-            terms[element.field] = [];
-            if (element.qtype == 'exact') {
-                terms[element.field].push('"' + element.value + '"');
-            } else {
-                terms[element.field].push(element.value + '*');
-                console.log("inexact");
-            }
+            terms[element.type].push({"field": element.field, "value": element.value + '*'});
+            //console.log("inexact");
         }
+
     });
 
-    var tlen = Object.keys(terms).length;
     var i = 0;
+    qryUrl = 'q=(';
+    // get the count of terms categories (types)
+    var tlen = Object.keys(terms).length;
+
     for (var obj in terms) {
+        var qries = {}; // store category terms grouped by field
+        var k = 0;
         var arr = terms[obj];
-        var qry = '';
-        var alen = arr.length;
-        arr.forEach(function (element, index) {
-            if (index < alen - 1) {
-                qry += element + ' OR '
-            } else {
-                qry += element
-            }
+
+        // sort the elements by field
+        arr.sort(function (a, b) {
+            if (a.field < b.field) return -1;
+            if (a.field > b.field) return 1;
+            return 0;
+        }).forEach(function (element, index) {  // concatenate and store the terms for each field
+            qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;
         });
-        if (i === 0) {
-            //qryUrl = ' AND (';
-            qryUrl = 'q=(';
-        }
+
+        // get the numbeer of different field queries per catego (this is usually one or two)
+        var alen = Object.keys(qries).length;
+        // more than one categories
         if (i < tlen - 1) {
-            if (obj === 'anywhere') {   // search in any field
-                qryUrl += '(' + qry + ') OR ';
-            } else {
-                qryUrl += obj + ':(' + qry + ') OR ';
-            }
+            // more than one fields for this category
+            if (k < alen - 1) {
+                if (obj === 'Anywhere') {
+                    qryUrl += '(' + qries['anywhere'] + ') AND ';
+                } else {
+                    qryUrl += '(';
+                    for (var fieldQry in qries) {
+                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        if (k === alen - 1) {
+                            qryUrl += ') AND ';
+                            continue;
+                        }
+                        qryUrl += ' OR ';
+                        k++;
+                    }
+                }
 
-        } else {
-            if (obj === 'anywhere') {
-                qryUrl += '(' + qry + '))';
             } else {
-                qryUrl += obj + ':(' + qry + '))';
+                if (obj === 'Anywhere') {
+                    qryUrl += '(' + qries['anywhere'] + ') AND ';
+                } else {
+                    for (var fieldQry in qries) {
+
+                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        if (k === alen - 1) {
+                            qryUrl += ' AND ';
+                            continue;
+                        }
+                        qryUrl += ' OR ';
+                        k++;
+                    }
+                }
+
             }
+        } else {
+            if (k < alen - 1) {
+                if (obj === 'Anywhere') {
+                    //do nothing
+                } else {
+                    qryUrl += '(';
+                    for (var fieldQry in qries) {
+                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        if (k === alen - 1) {
+                            qryUrl += '))';
+                            continue;
+                        }
+                        qryUrl += ' OR ';
+                        k++;
+                    }
+                }
+
+            } else {
+                if (obj === 'Anywhere') {
+                    qryUrl += '(' + qries['anywhere'] + '))';
+                } else {
+                    for (var fieldQry in qries) {
+                        qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
+                    }
+                }
+
+            }
+            k++;
 
         }
+        i++;
 
 
         //console.log('lakis' + qryUrl);
-        i++;
     }
+    //return;
+    // process each type
+
     loadSolr({clear: 1, zoomLevel: map.getZoom()})
 }
 
 function mapTypeToField(type) {
     switch (type) {
         case "Taxonomy":
-            return "species_cvterms"
+            return "species_cvterms";
         case "Title":
-            return "label"
+            return "label";
+        case "Sample type":
+            return "sample_type";
         default :
             return type.toLowerCase()
 

@@ -456,7 +456,7 @@
                 break;
             }
             var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2");
-            console.log(abbrSpecies);
+//            console.log(abbrSpecies);
             inHtml += '<i style="background:' + palette[obj1] + '" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + abbrSpecies + '</em><br>' : '+');
             $("#legend").html(inHtml);
             cntLegend++;
