@@ -921,15 +921,15 @@ function mapTypeToField(type) {
         case "Sample type":
             return "sample_type";
         case "Geography":
-            return "geolocation_cvterms";
+            return "geolocations_cvterms";
         case "Collection protocols":
-            return "collection_protocol_cvterms";
+            return "collection_protocols_cvterms";
         case "Protocols":
-            return "protocol_cvterms";
+            return "protocols_cvterms";
         case "Stable ID":
             return "id";
         case "Insecticides":
-            return "insecticide_s";
+            return "insecticide_cvterms";
         default :
             return type.toLowerCase()
 
