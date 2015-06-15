@@ -906,7 +906,6 @@
         </lst>
     </requestHandler>
 
-
     <!-- realtime get handler, guaranteed to return the latest stored fields of
          any document, without the need to commit or open a new searcher.  The
          current implementation relies on the updateLog feature being enabled.
@@ -1253,6 +1252,161 @@
              <str name="pollInterval">00:00:60</str>
            </lst>
         -->
+    </requestHandler>
+
+
+    <!-- A request handler to serve the proper document structure to display geo-clusters on the popbio map -->
+
+    <requestHandler name="/smplGeoclust" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <int name="rows">0</int>
+            <str name="stats">true</str>
+            <str name="stats.field">geo_coords_ll_0___tdouble</str>
+            <str name="stats.field">geo_coords_ll_1___tdouble</str>
+            <str name="facet">true</str>
+            <int name="facet.limit">-1</int>
+            <str name="facet.sort">count</str>
+            <int name="facet.pivot.mincount">1</int>
+        </lst>
+
+    </requestHandler>
+
+    <requestHandler name="/irGeoclust" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_phenotype</str>
+            <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <int name="rows">0</int>
+            <str name="stats">true</str>
+            <str name="stats.field">geo_coords_ll_0___tdouble</str>
+            <str name="stats.field">geo_coords_ll_1___tdouble</str>
+            <str name="facet">true</str>
+            <int name="facet.limit">-1</int>
+            <str name="facet.sort">count</str>
+            <int name="facet.pivot.mincount">1</int>
+        </lst>
+
+    </requestHandler>
+
+    <!-- A request handler to serve the proper document structure for samples pallete generation -->
+
+    <requestHandler name="/smplPallete" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <int name="rows">0</int>
+            <str name="facet">true</str>
+            <int name="facet.limit">-1</int>
+            <str name="facet.sort">count</str>
+            <int name="facet.pivot.mincount">1</int>
+        </lst>
+
+    </requestHandler>
+
+
+    <!-- A request handler to serve the proper document structure for IR assays pallete generation -->
+
+    <requestHandler name="/irPallete" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_phenotype</str>
+            <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+        </lst>
+        <lst name="invariants">
+            <int name="rows">0</int>
+            <str name="fq">has_geodata:true</str>
+            <str name="facet">true</str>
+            <int name="facet.limit">-1</int>
+            <str name="facet.sort">count</str>
+            <int name="facet.pivot.mincount">1</int>
+        </lst>
+
+    </requestHandler>
+
+
+    <!-- A request handler to display markers for geohashes (limited to samples)-->
+
+    <requestHandler name="/smplMarkers" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <int name="rows">10000000</int>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <str name="fl">geo_coords,species_category</str>
+            <str name="q.op">OR</str>
+        </lst>
+
+    </requestHandler>
+
+    <!-- A request handler to display markers for geohashes (limited to IR assays)-->
+    <requestHandler name="/irMarkers" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <int name="rows">10000000</int>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_phenotype</str>
+            <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <str name="fl">geo_coords,species_category</str>
+            <str name="q.op">OR</str>
+        </lst>
+
     </requestHandler>
 
     <!-- Search Components
