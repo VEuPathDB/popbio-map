@@ -920,6 +920,16 @@ function mapTypeToField(type) {
             return "label";
         case "Sample type":
             return "sample_type";
+        case "Geography":
+            return "geolocation_cvterms";
+        case "Collection protocols":
+            return "collection_protocol_cvterms";
+        case "Protocols":
+            return "protocol_cvterms";
+        case "Stable ID":
+            return "id";
+        case "Insecticides":
+            return "insecticide_s";
         default :
             return type.toLowerCase()
 
