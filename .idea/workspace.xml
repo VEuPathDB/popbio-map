@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Fixed partial searches field mapping, initiated with the auto-complete">
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* If a field has an accompanying _cvterms field then search will be done using the _cvterms field&#10;** This is because in many cases, upper level terms (e.g. Brazil for Geography) may actually be the in the lowest level field (geolocations) instead in the _cvterms&#10;** Only exception for now is species, since it seems to be more accurately defined&#10;* Fixed a couple of bugs in type to field mapping">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -25,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.216666">
-              <caret line="615" column="49" selection-start-line="615" selection-start-column="35" selection-end-line="615" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.6968944">
+              <caret line="696" column="40" selection-start-line="696" selection-start-column="40" selection-end-line="696" selection-end-column="40" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -42,19 +43,28 @@
                 <element signature="e#14161#14532#0" expanded="false" />
                 <element signature="e#14622#14889#0" expanded="false" />
                 <element signature="e#14976#15285#0" expanded="false" />
-                <element signature="e#24031#27061#0" expanded="false" />
-                <marker date="1434382337715" expanded="true" signature="25949:25964" placeholder="..." />
-                <marker date="1434382337715" expanded="true" signature="26075:26095" placeholder="..." />
+                <marker date="1434406662563" expanded="true" signature="25949:25964" placeholder="..." />
+                <marker date="1434406662563" expanded="true" signature="26075:26095" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="solrconfig.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.1470585">
+              <caret line="67" column="74" selection-start-line="67" selection-start-column="73" selection-end-line="67" selection-end-column="74" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7135981">
-              <caret line="922" column="25" selection-start-line="922" selection-start-column="25" selection-end-line="922" selection-end-column="25" />
+            <state vertical-scroll-proportion="-6.147059">
+              <caret line="785" column="52" selection-start-line="785" selection-start-column="51" selection-end-line="785" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -123,10 +133,10 @@
         <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/schema.xml" />
         <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
-        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
         <option value="$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/SOLR/README" />
         <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
+        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
       </list>
     </option>
   </component>
@@ -379,12 +389,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Added vb_geohashes_mean.html which incorporates the VB genome browser header and footer.">
-      <created>1426104633380</created>
-      <option name="number" value="00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1426104633380</updated>
     </task>
     <task id="LOCAL-00015" summary="*Removed Google Maps layers as it caused the app to hang&#10;*Added OpenStreetMap tiles">
       <created>1426513213674</created>
@@ -674,7 +678,13 @@
       <option name="project" value="LOCAL" />
       <updated>1434387686812</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="* If a field has an accompanying _cvterms field then search will be done using the _cvterms field&#10;** This is because in many cases, upper level terms (e.g. Brazil for Geography) may actually be the in the lowest level field (geolocations) instead in the _cvterms&#10;** Only exception for now is species, since it seems to be more accurately defined&#10;* Fixed a couple of bugs in type to field mapping">
+      <created>1434405572640</created>
+      <option name="number" value="00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1434405572640</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -699,8 +709,8 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15508021" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20588236" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15508021" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20588236" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4465479" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -749,7 +759,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Autocomplete now updates the map" />
     <MESSAGE value="* Autocomplete SOLR is now behind proxy" />
     <MESSAGE value="* Master commit before starting new branch to test bloodhound customization" />
     <MESSAGE value="* Partial searches and wildcards 1st prototype" />
@@ -774,7 +783,8 @@
     <MESSAGE value="* Restructured directories&#10;* Added SOLR configs to repo" />
     <MESSAGE value="* Added search handlers separately for samples and IR assays with most options predefined. This decreased significantly the length of the SOLR GET requests&#10;* Fixed type boosting in auto-complete.&#10;* Fixed partial search initiated with the @ symbol" />
     <MESSAGE value="* Fixed partial searches field mapping, initiated with the auto-complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Fixed partial searches field mapping, initiated with the auto-complete" />
+    <MESSAGE value="* If a field has an accompanying _cvterms field then search will be done using the _cvterms field&#10;** This is because in many cases, upper level terms (e.g. Brazil for Geography) may actually be the in the lowest level field (geolocations) instead in the _cvterms&#10;** Only exception for now is species, since it seems to be more accurately defined&#10;* Fixed a couple of bugs in type to field mapping" />
+    <option name="LAST_COMMIT_MESSAGE" value="* If a field has an accompanying _cvterms field then search will be done using the _cvterms field&#10;** This is because in many cases, upper level terms (e.g. Brazil for Geography) may actually be the in the lowest level field (geolocations) instead in the _cvterms&#10;** Only exception for now is species, since it seems to be more accurately defined&#10;* Fixed a couple of bugs in type to field mapping" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -822,9 +832,8 @@
             <element signature="e#14161#14532#0" expanded="false" />
             <element signature="e#14622#14889#0" expanded="false" />
             <element signature="e#14976#15285#0" expanded="false" />
-            <element signature="e#24031#27061#0" expanded="false" />
-            <marker date="1434382337715" expanded="true" signature="25949:25964" placeholder="..." />
-            <marker date="1434382337715" expanded="true" signature="26075:26095" placeholder="..." />
+            <marker date="1434406662563" expanded="true" signature="25949:25964" placeholder="..." />
+            <marker date="1434406662563" expanded="true" signature="26075:26095" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -853,9 +862,8 @@
             <element signature="e#14161#14532#0" expanded="false" />
             <element signature="e#14622#14889#0" expanded="false" />
             <element signature="e#14976#15285#0" expanded="false" />
-            <element signature="e#24031#27061#0" expanded="false" />
-            <marker date="1434382337715" expanded="true" signature="25949:25964" placeholder="..." />
-            <marker date="1434382337715" expanded="true" signature="26075:26095" placeholder="..." />
+            <marker date="1434406662563" expanded="true" signature="25949:25964" placeholder="..." />
+            <marker date="1434406662563" expanded="true" signature="26075:26095" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1173,14 +1181,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18883249">
-          <caret line="1655" column="36" selection-start-line="1655" selection-start-column="36" selection-end-line="1655" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.021319797">
@@ -1189,10 +1189,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.1470585">
+          <caret line="67" column="74" selection-start-line="67" selection-start-column="73" selection-end-line="67" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.147059">
+          <caret line="785" column="52" selection-start-line="785" selection-start-column="51" selection-end-line="785" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.216666">
-          <caret line="615" column="49" selection-start-line="615" selection-start-column="35" selection-end-line="615" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.6968944">
+          <caret line="696" column="40" selection-start-line="696" selection-start-column="40" selection-end-line="696" selection-end-column="40" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1205,18 +1221,9 @@
             <element signature="e#14161#14532#0" expanded="false" />
             <element signature="e#14622#14889#0" expanded="false" />
             <element signature="e#14976#15285#0" expanded="false" />
-            <element signature="e#24031#27061#0" expanded="false" />
-            <marker date="1434382337715" expanded="true" signature="25949:25964" placeholder="..." />
-            <marker date="1434382337715" expanded="true" signature="26075:26095" placeholder="..." />
+            <marker date="1434406662563" expanded="true" signature="25949:25964" placeholder="..." />
+            <marker date="1434406662563" expanded="true" signature="26075:26095" placeholder="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7135981">
-          <caret line="922" column="25" selection-start-line="922" selection-start-column="25" selection-end-line="922" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>

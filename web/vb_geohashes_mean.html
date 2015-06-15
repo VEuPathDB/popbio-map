@@ -692,9 +692,9 @@
                     displayKey: 'value',
                     source: acOtherResults.ttAdapter(),
                     templates: {
-                        header: '<h4 class="more-results">More results</h4>',
+                        header: '<h4 class="more-results">More suggestions</h4>',
                         suggestion: function (item) {
-                            return '<p>' + item.count + ' <em>in ' + item.type + '</em></p>';
+                            return '<p>~' + item.count + ' <em>in ' + item.type + '</em></p>';
                         }
 
                     }

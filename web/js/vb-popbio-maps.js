@@ -808,7 +808,7 @@ function filterMarkers(items) {
         if (element.qtype == 'exact') {
             terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
         } else {
-            terms[element.type].push({"field": element.field, "value": element.value + '*'});
+            terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
             //console.log("inexact");
         }
 
