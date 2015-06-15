@@ -5,7 +5,9 @@
       <paths name="vb-dev">
         <serverdata>
           <mappings>
-            <mapping deploy="/popbio/map/htdocs" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/popbio/map/htdocs" local="$PROJECT_DIR$/web" web="/" />
+            <mapping deploy="/Software/solr-4.10.3/example/solr/vb_popbio/conf" local="$PROJECT_DIR$/SOLR/vb_popbio/conf" />
+            <mapping deploy="/Software/solr-4.10.3/example/solr/vb_ta/conf" local="$PROJECT_DIR$/SOLR/vb_ta/conf" />
           </mappings>
         </serverdata>
       </paths>

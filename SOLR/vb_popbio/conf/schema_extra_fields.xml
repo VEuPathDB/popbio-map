@@ -1,0 +1,294 @@
+<fields>
+    <!--
+      Adding German dynamic field types to our Solr Schema
+      If you enable this, make sure you have a folder called lang with stopwords_de.txt
+      and synonyms_de.txt in there
+      This also requires to enable the content in schema_extra_types.xml
+    -->
+    <!--
+       <field name="label_de" type="text_de" indexed="true" stored="true" termVectors="true" omitNorms="true"/>
+       <field name="content_de" type="text_de" indexed="true" stored="true" termVectors="true"/>
+       <field name="teaser_de" type="text_de" indexed="false" stored="true"/>
+       <field name="path_alias_de" type="text_de" indexed="true" stored="true" termVectors="true" omitNorms="true"/>
+       <field name="taxonomy_names_de" type="text_de" indexed="true" stored="false" termVectors="true" multiValued="true" omitNorms="true"/>
+       <field name="spell_de" type="text_de" indexed="true" stored="true" multiValued="true"/>
+       <copyField source="label_de" dest="spell_de"/>
+       <copyField source="content_de" dest="spell_de"/>
+       <dynamicField name="tags_de_*" type="text_de" indexed="true" stored="false" omitNorms="true"/>
+       <dynamicField name="ts_de_*" type="text_de" indexed="true" stored="true" multiValued="false" termVectors="true"/>
+       <dynamicField name="tm_de_*" type="text_de" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+       <dynamicField name="tos_de_*" type="text_de" indexed="true" stored="true" multiValued="false" termVectors="true" omitNorms="true"/>
+       <dynamicField name="tom_de_*" type="text_de" indexed="true" stored="true" multiValued="true" termVectors="true" omitNorms="true"/>
+    -->
+
+    <!-- The Following are fields that were originally in the schema.xml file, but were modified specifically for VectorBase-->
+    <field name="label" type="text_ws_finer" indexed="true" stored="true" termVectors="true" omitNorms="true"/>
+    <field name="content" type="text_ws_finer" indexed="true" stored="true" termVectors="true"/>
+
+    <!-- The following are fields that were added specifically for the different domains of VectorBase-->
+    <!-- UNIVERSAL -->
+    <field name="accession" type="string" indexed="true" stored="true"/>
+    <field name="description" type="text_ws_finer" indexed="true" stored="true"/>
+
+    <field name="text" type="string_ci" indexed="true" stored="true" multiValued="true"/>
+
+    <copyField source="bundle_name" dest="text"/>
+    <!-- useful for user queries like "AGAP001234 microarray probes"? -->
+    <copyField source="label" dest="text"/>
+
+    <copyField source="accession" dest="text"/>
+    <copyField source="description" dest="text"/>
+
+    <!-- USED BY SEVERAL DATA TYPES -->
+    <field name="species" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="species" dest="text"/>
+
+    <!-- Added by Greg Davis to test string values for the species field-->
+    <field name="species_category" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="species" dest="species_category"/>
+
+    <!-- ======================= -->
+    <!-- GENOME: site = "genome" -->
+    <!-- ======================= -->
+
+    <!-- GENE: entity_type = bundle = "gene", bundle_name = "gene" -->
+    <!-- CAP GENE: entity_type = bundle = "cap_gene", bundle_name = "CAP gene" -->
+    <!-- CAP TRANSCRIPT: entity_type = bundle = "cap_transcript", bundle_name = "CAP transcript" -->
+
+    <field name="seq_region_name" type="text_ws_na" indexed="true" stored="true"/>
+    <copyField source="seq_region_name" dest="text"/>
+
+    <field name="seq_region_start" type="text_ws_na" indexed="true" stored="true"/>
+
+    <field name="seq_region_end" type="text_ws_na" indexed="true" stored="true"/>
+
+    <field name="biotype" type="text_ws_na" indexed="true" stored="true"/>
+
+    <field name="symbol" type="text_ws_na" indexed="true" stored="true"/>
+
+    <field name="transcript" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="transcript" dest="text"/>
+
+    <field name="exon" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="exon" dest="text"/>
+
+    <field name="peptide" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="peptide" dest="text"/>
+
+    <field name="strain" type="text_ws_case" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="strain" dest="text"/>
+
+    <field name="domain" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="domain" dest="text"/>
+
+    <field name="xref" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="xref" dest="text"/>
+
+    <!--Old stable IDs and CAP IDs (from stable_id_events)  -->
+    <field name="history" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="history" dest="text"/>
+
+    <!--capturing the protein compara gene tree stable ID-->
+    <field name="genetree" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="genetree" dest="text"/>
+
+    <!--PubMed ID prefixed with PMID(from xref)  -->
+    <field name="go_cvterms" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="go_cvterms" dest="text"/>
+
+    <!--PubMed ID prefixed with PMID(from xref)  -->
+    <field name="pubmed" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="pubmed" dest="text"/>
+
+    <!--pathway IDs from xref prefixed with source i.e KEGG-->
+    <field name="pathway" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="pathway" dest="text"/>
+
+    <!--database identifiers Uniprot,protein_id,EMBL,VectorBase-->
+    <field name="identifier" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="identifier" dest="text"/>
+
+
+    <!-- transcript only -->
+
+    <field name="seq_region_strand" type="text_ws_na" indexed="true" stored="true"/>
+
+    <field name="submitter" type="text_ws_na" indexed="true" stored="true"/>
+    <copyField source="submitter" dest="text"/>
+
+    <!-- ======================= -->
+    <!-- COMPARATIVE: site = "comparative" -->
+    <!-- ======================= -->
+
+    <!-- GENE_TREE: entity_type = bundle = "gene_tree", bundle_name = "gene_tree" -->
+
+    <!--gene tree members i.e translation stable_id-->
+    <field name="members" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="members" dest="text"/>
+
+
+    <!-- =========================== -->
+    <!-- ONTOLOGY: site = "ontology" -->
+    <!-- =========================== -->
+
+    <!-- TERM: entity_type = bundle = "ontology_term", bundle_name = "Ontology term" -->
+
+    <field name="alt_id" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="alt_id" dest="text"/>
+
+    <field name="synonym" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="synonym" dest="text"/>
+
+    <field name="is_a" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="is_a" dest="text"/>
+
+    <!-- =================================== -->
+    <!-- POPULATION BIOLOGY: site = "popbio" -->
+    <!-- =================================== -->
+
+    <!-- SAMPLE: entity_type = bundle = "pop_sample", bundle_name = "sample" -->
+
+    <!-- cvterm.name -->
+
+    <field name="phenotypes" type="text_en_splitting" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="phenotypes" dest="text"/>
+
+    <field name="genotypes" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="genotypes" dest="text"/>
+
+    <field name="geolocations" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="geolocations" dest="text"/>
+
+    <field name="annotations" type="text_en_splitting" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="annotations" dest="text"/>
+
+    <field name="annotation" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="annotation" dest="text"/>
+
+    <field name="latitude" type="float" indexed="true" stored="true"/>
+
+    <field name="longitude" type="float" indexed="true" stored="true"/>
+
+    <field name="authors" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="authors" dest="text"/>
+
+    <field name="projects" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="projects" dest="text"/>
+
+    <field name="projects_category" type="string_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="projects" dest="projects_category"/>
+
+    <field name="insecticides_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+
+    <field name="protocols_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+
+
+    <!-- Commented out for the December 2013 release. Will enable again in the future -->
+    <field name="date" type="date" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="date" dest="text"/>
+    <field name="collection_date" type="date" indexed="true" stored="true" multiValued="true"/>
+
+    <copyField source="collection_date" dest="text"/>
+    <field name="has_geodata" type="boolean" indexed="true" stored="true" multiValued="true"/>
+    <field name="sample_type" type="text_ws_na" indexed="true" stored="true" multiValued="false"/>
+    <copyField source="sample_type" dest="text"/>
+    <field name="assay_type" type="text_ws_na" indexed="true" stored="true" multiValued="false"/>
+    <copyField source="assay_type" dest="text"/>
+    <field name="collection_protocols" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="collection_protocols" dest="text"/>
+    <field name="protocols" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="protocols" dest="text"/>
+    <field name="study_designs" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="study_designs" dest="text"/>
+
+    <field name="genotypes_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="phenotypes_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="annotations_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="species_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="sample_type_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="collection_protocols_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="study_designs_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="geolocations_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="insecticide_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
+    <field name="geo_coords" type="location_rpt" indexed="true" stored="true"/>
+    <field name="geo_coords_ll" type="location" indexed="true" stored="true"/>
+    <copyField source="geo_coords" dest="geo_coords_ll"/>
+
+    <field name="geohash_6" type="string" indexed="true" stored="true"/>
+    <field name="geohash_5" type="string" indexed="true" stored="true"/>
+    <field name="geohash_4" type="string" indexed="true" stored="true"/>
+    <field name="geohash_3" type="string" indexed="true" stored="true"/>
+    <field name="geohash_2" type="string" indexed="true" stored="true"/>
+    <field name="geohash_1" type="string" indexed="true" stored="true"/>
+
+
+    <!-- =================================== -->
+    <!-- FUNCGEN: site = "funcgen" -->
+    <!-- =================================== -->
+
+    <!-- if there's a CamelCase-aware field type that could be useful here: -->
+    <!--<field name="experimental_factors" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />-->
+    <field name="experimental_factors" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="experimental_factors" dest="text"/>
+
+    <!-- REPORTER: bundle = 'reporter' bundle_name = "Probe/Reporter" -->
+    <field name="gene_ids" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="gene_ids" dest="text"/>
+
+    <!-- REPORTER-EXPRESSION bundle = 'reporter_expression' bundle_name = 'Expression statistic' -->
+    <field name="p_value" type="double" indexed="true" stored="true"/>
+    <field name="statistical_test" type="string" indexed="true" stored="true"/>
+    <copyField source="statistical_test" dest="text"/>
+    <field name="high_conditions" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <field name="high_conditions_cvterms" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <field name="low_conditions" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <field name="low_conditions_cvterms" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="*_conditions" dest="text"/>
+    <copyfield soruce="*_conditions_cvterms" dest="text"/>
+
+
+    <!-- cvterms: pooled -->
+    <field name="cvterms" type="string_ci" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="*_cvterms" dest="cvterms"/>
+
+    <!--  === DRUPAL DEFAULTS === -->
+    <!-- Dynamic field definitions allow using convention over configuration
+      for fields via the specification of patterns to match field names.
+      EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
+      RESTRICTION: the glob-like pattern in the name attribute must have
+      a "*" only at the start or the end.  -->
+
+    <dynamicField name="*_i" type="int" indexed="true" stored="true"/>
+    <dynamicField name="*_is" type="int" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_s" type="string" indexed="true" stored="true"/>
+    <dynamicField name="*_ss" type="string" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_l" type="long" indexed="true" stored="true"/>
+    <dynamicField name="*_ls" type="long" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_t" type="text_general" indexed="true" stored="true"/>
+    <dynamicField name="*_txt" type="text_general" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_en" type="text_en" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_b" type="boolean" indexed="true" stored="true"/>
+    <dynamicField name="*_bs" type="boolean" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_f" type="float" indexed="true" stored="true"/>
+    <dynamicField name="*_fs" type="float" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_d" type="double" indexed="true" stored="true"/>
+    <dynamicField name="*_ds" type="double" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Type used to index the lat and lon components for the "location" FieldType -->
+    <dynamicField name="*_coordinate" type="tdouble" indexed="true" stored="false"/>
+
+    <dynamicField name="*_dt" type="date" indexed="true" stored="true"/>
+    <dynamicField name="*_dts" type="date" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_p" type="location" indexed="true" stored="true"/>
+
+    <!-- some trie-coded dynamic fields for faster range queries -->
+    <dynamicField name="*_ti" type="tint" indexed="true" stored="true"/>
+    <dynamicField name="*_tl" type="tlong" indexed="true" stored="true"/>
+    <dynamicField name="*_tf" type="tfloat" indexed="true" stored="true"/>
+    <dynamicField name="*_td" type="tdouble" indexed="true" stored="true"/>
+    <dynamicField name="*_tdt" type="tdate" indexed="true" stored="true"/>
+
+    <dynamicField name="ignored_*" type="ignored" multiValued="true"/>
+    <dynamicField name="attr_*" type="text_general" indexed="true" stored="true" multiValued="true"/>
+
+</fields>

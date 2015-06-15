@@ -1,10 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Code cleanup">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/js/vb-popbio-maps.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/vb_geohashes_mean.html" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Redone the query generation&#10;** Terms from the same category are grouped together with an OR clause&#10;** Terms from different categories are added with an AND clause&#10;** For example, this allows to search for samples of one (or more) species that were collected in one (or more) areas">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/schema.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SOLR/vb_ta/conf/schema.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/schema_extra_fields.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/schema_extra_types.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\Control.FullScreen.css" afterPath="$PROJECT_DIR$/web/css/Control.FullScreen.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\Control.FullScreen.min.css" afterPath="$PROJECT_DIR$/web/css/Control.FullScreen.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\L.Control.ZoomMin.css" afterPath="$PROJECT_DIR$/web/css/L.Control.ZoomMin.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\L.Control.ZoomMin.min.css" afterPath="$PROJECT_DIR$/web/css/L.Control.ZoomMin.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\Leaflet.vector-markers.css" afterPath="$PROJECT_DIR$/web/css/Leaflet.vector-markers.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\Leaflet.vector-markers.min.css" afterPath="$PROJECT_DIR$/web/css/Leaflet.vector-markers.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\MarkerCluster.Default.css" afterPath="$PROJECT_DIR$/web/css/MarkerCluster.Default.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\MarkerCluster.Default.min.css" afterPath="$PROJECT_DIR$/web/css/MarkerCluster.Default.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\MarkerCluster.css" afterPath="$PROJECT_DIR$/web/css/MarkerCluster.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\MarkerCluster.min.css" afterPath="$PROJECT_DIR$/web/css/MarkerCluster.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\assets\shadow.png" afterPath="$PROJECT_DIR$/web/css/assets/shadow.png" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\assets\shadow@2x.png" afterPath="$PROJECT_DIR$/web/css/assets/shadow@2x.png" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\bootstrap-tagsinput.css" afterPath="$PROJECT_DIR$/web/css/bootstrap-tagsinput.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\bootstrap-tagsinput.min.css" afterPath="$PROJECT_DIR$/web/css/bootstrap-tagsinput.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\dvf.css" afterPath="$PROJECT_DIR$/web/css/dvf.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\dvf.min.css" afterPath="$PROJECT_DIR$/web/css/dvf.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\icon-fullscreen-2x.png" afterPath="$PROJECT_DIR$/web/css/icon-fullscreen-2x.png" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\icon-fullscreen.png" afterPath="$PROJECT_DIR$/web/css/icon-fullscreen.png" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\leaflet-sidebar.css" afterPath="$PROJECT_DIR$/web/css/leaflet-sidebar.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\leaflet-sidebar.min.css" afterPath="$PROJECT_DIR$/web/css/leaflet-sidebar.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\nv.d3.css" afterPath="$PROJECT_DIR$/web/css/nv.d3.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\nv.d3.min.css" afterPath="$PROJECT_DIR$/web/css/nv.d3.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\typeaheadjs.css" afterPath="$PROJECT_DIR$/web/css/typeaheadjs.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\css\typeaheadjs.min.css" afterPath="$PROJECT_DIR$/web/css/typeaheadjs.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\Control.FullScreen.js" afterPath="$PROJECT_DIR$/web/js/Control.FullScreen.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\Control.FullScreen.min.js" afterPath="$PROJECT_DIR$/web/js/Control.FullScreen.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\Icon.Canvas.js" afterPath="$PROJECT_DIR$/web/js/Icon.Canvas.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\Icon.Canvas.min.js" afterPath="$PROJECT_DIR$/web/js/Icon.Canvas.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\L.Control.ZoomMin.js" afterPath="$PROJECT_DIR$/web/js/L.Control.ZoomMin.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\L.Control.ZoomMin.min.js" afterPath="$PROJECT_DIR$/web/js/L.Control.ZoomMin.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\Leaflet.vector-markers.js" afterPath="$PROJECT_DIR$/web/js/Leaflet.vector-markers.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\Leaflet.vector-markers.min.js" afterPath="$PROJECT_DIR$/web/js/Leaflet.vector-markers.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\PruneCluster.js" afterPath="$PROJECT_DIR$/web/js/PruneCluster.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\PruneCluster.js.map" afterPath="$PROJECT_DIR$/web/js/PruneCluster.js.map" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\PruneCluster.min.js" afterPath="$PROJECT_DIR$/web/js/PruneCluster.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap-tagsinput.js" afterPath="$PROJECT_DIR$/web/js/bootstrap-tagsinput.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap-tagsinput.min.js" afterPath="$PROJECT_DIR$/web/js/bootstrap-tagsinput.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap\css\bootstrap-responsive.css" afterPath="$PROJECT_DIR$/web/js/bootstrap/css/bootstrap-responsive.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap\css\bootstrap-responsive.min.css" afterPath="$PROJECT_DIR$/web/js/bootstrap/css/bootstrap-responsive.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap\css\bootstrap.css" afterPath="$PROJECT_DIR$/web/js/bootstrap/css/bootstrap.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap\css\bootstrap.min.css" afterPath="$PROJECT_DIR$/web/js/bootstrap/css/bootstrap.min.css" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap\img\glyphicons-halflings-white.png" afterPath="$PROJECT_DIR$/web/js/bootstrap/img/glyphicons-halflings-white.png" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap\img\glyphicons-halflings.png" afterPath="$PROJECT_DIR$/web/js/bootstrap/img/glyphicons-halflings.png" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap\js\bootstrap.js" afterPath="$PROJECT_DIR$/web/js/bootstrap/js/bootstrap.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap\js\bootstrap.min.js" afterPath="$PROJECT_DIR$/web/js/bootstrap/js/bootstrap.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\easy-button.js" afterPath="$PROJECT_DIR$/web/js/easy-button.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\easy-button.min.js" afterPath="$PROJECT_DIR$/web/js/easy-button.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\leaflet-dvf.js" afterPath="$PROJECT_DIR$/web/js/leaflet-dvf.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\leaflet-dvf.min.js" afterPath="$PROJECT_DIR$/web/js/leaflet-dvf.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\leaflet-sidebar.js" afterPath="$PROJECT_DIR$/web/js/leaflet-sidebar.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\leaflet-sidebar.min.js" afterPath="$PROJECT_DIR$/web/js/leaflet-sidebar.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\leaflet.spin.js" afterPath="$PROJECT_DIR$/web/js/leaflet.spin.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\leaflet.spin.min.js" afterPath="$PROJECT_DIR$/web/js/leaflet.spin.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\nv.d3.min.js" afterPath="$PROJECT_DIR$/web/js/nv.d3.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\nv.d3.pie.js" afterPath="$PROJECT_DIR$/web/js/nv.d3.pie.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\nv.d3.pie.min.js" afterPath="$PROJECT_DIR$/web/js/nv.d3.pie.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\spin.js" afterPath="$PROJECT_DIR$/web/js/spin.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\spin.min.js" afterPath="$PROJECT_DIR$/web/js/spin.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\typeahead.bundle.js" afterPath="$PROJECT_DIR$/web/js/typeahead.bundle.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\typeahead.bundle.min.js" afterPath="$PROJECT_DIR$/web/js/typeahead.bundle.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\js\vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
+      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -26,11 +93,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
+      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.1666665">
-              <caret line="614" column="49" selection-start-line="614" selection-start-column="35" selection-end-line="614" selection-end-column="49" />
+            <state vertical-scroll-proportion="2.1386862">
+              <caret line="619" column="21" selection-start-line="619" selection-start-column="21" selection-end-line="619" selection-end-column="21" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -40,22 +107,22 @@
                 <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="e#14137#14508#0" expanded="false" />
-                <element signature="e#14598#14865#0" expanded="false" />
-                <element signature="e#14952#15261#0" expanded="false" />
-                <element signature="e#23818#26848#0" expanded="false" />
-                <marker date="1434301692197" expanded="true" signature="25736:25751" placeholder="..." />
-                <marker date="1434301692197" expanded="true" signature="25862:25882" placeholder="..." />
+                <element signature="e#14045#14416#0" expanded="false" />
+                <element signature="e#14506#14773#0" expanded="false" />
+                <element signature="e#14860#15169#0" expanded="false" />
+                <element signature="e#23726#26756#0" expanded="false" />
+                <marker date="1434366552719" expanded="true" signature="25644:25659" placeholder="..." />
+                <marker date="1434366552719" expanded="true" signature="25770:25790" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
+      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.92057765">
-              <caret line="904" column="5" selection-start-line="904" selection-start-column="5" selection-end-line="904" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="64" column="65" selection-start-line="64" selection-start-column="65" selection-end-line="64" selection-end-column="65" />
               <folding />
             </state>
           </provider>
@@ -78,7 +145,7 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/js/vb-popbio-maps.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -117,6 +184,13 @@
         <option value="$PROJECT_DIR$/js/easy-button.js" />
         <option value="$PROJECT_DIR$/vb_geohashes_mean.html" />
         <option value="$PROJECT_DIR$/js/vb-popbio-maps.js" />
+        <option value="$PROJECT_DIR$/SOLR_conf/vb_popbio/conf/schema.xml" />
+        <option value="$PROJECT_DIR$/SOLR_conf/vb_popbio/conf/schema_extra_fields.xml" />
+        <option value="$PROJECT_DIR$/SOLR_conf/vb_popbio/conf/schema_extra_types.xml" />
+        <option value="$PROJECT_DIR$/SOLR_conf/vb_popbio/conf/solrconfig.xml" />
+        <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/schema.xml" />
+        <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/solrconfig.xml" />
+        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
       </list>
     </option>
   </component>
@@ -131,7 +205,7 @@
     <option name="x" value="-9" />
     <option name="y" value="-9" />
     <option name="width" value="1938" />
-    <option name="height" value="1048" />
+    <option name="height" value="1168" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -178,7 +252,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -200,54 +273,8 @@
               <option name="myItemId" value="popbio_map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vb-popbio-maps.js" />
-              <option name="myItemType" value="com.intellij.plugins.watcher.projectView.NestingTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="typeahead.bundle.js" />
-              <option name="myItemType" value="com.intellij.plugins.watcher.projectView.NestingTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
+              <option name="myItemId" value="web" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -259,68 +286,11 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="popbio_map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="L.Control.ZoomMin.js" />
-              <option name="myItemType" value="com.intellij.plugins.watcher.projectView.NestingTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="easy-button.js" />
-              <option name="myItemType" value="com.intellij.plugins.watcher.projectView.NestingTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Leaflet.vector-markers.css" />
-              <option name="myItemType" value="com.intellij.plugins.watcher.projectView.NestingTreeNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -329,7 +299,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="C:/Program Files/nodejs/node.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/SOLR/vb_ta/conf" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="FullScreen" value="false" />
     <property name="LayoutCode.rearrangeEntriesHTML" value="true" />
@@ -355,7 +325,7 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="LayoutCode.rearrangeEntriesJavaScript 1.5" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="watcher.settings" />
+    <property name="settings.editor.selected.configurable" value="web.server" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
@@ -363,13 +333,14 @@
       <recent name="C:\Users\Ioannis\WebstormProjects\popbio_map" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ioannis\WebstormProjects\popbio_map\web" />
       <recent name="C:\Users\Ioannis\WebstormProjects\popbio_map\css" />
       <recent name="C:\Users\Ioannis\WebstormProjects\popbio_map\js" />
       <recent name="C:\Users\Ioannis\WebstormProjects\popbio_map\js\bootstrap" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.vb_geohashes_mean.html local">
-    <configuration default="false" name="vb_geohashes_mean.html on vb-dev" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" uri="http://vb-dev.bio.ic.ac.uk:9779/vb_geohashes_mean.html">
+    <configuration default="false" name="vb_geohashes_mean.html on vb-dev" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" uri="http://vb-dev.bio.ic.ac.uk:9779/web/vb_geohashes_mean.html">
       <RunnerSettings RunnerId="JavascriptDebugRunner" />
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
@@ -428,12 +399,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Fixes to comply with JSHint&#10;Moved main_init() to the html page. No need for geohashes_mean.js anymore">
-      <created>1426079610791</created>
-      <option name="number" value="00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1426079610791</updated>
     </task>
     <task id="LOCAL-00010" summary="Deleted geohashes_mean.js">
       <created>1426079689882</created>
@@ -723,7 +688,13 @@
       <option name="project" value="LOCAL" />
       <updated>1434061296349</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="* Redone the query generation&#10;** Terms from the same category are grouped together with an OR clause&#10;** Terms from different categories are added with an AND clause&#10;** For example, this allows to search for samples of one (or more) species that were collected in one (or more) areas">
+      <created>1434317456562</created>
+      <option name="number" value="00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1434317456564</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -736,10 +707,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1168" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1530343" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1530343" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -755,7 +726,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37082404" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37012264" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -797,7 +768,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Fixed palette &amp; legend generation. Now every species/item has its own color." />
     <MESSAGE value="* Fine-tuned small clusters generation. Works a bit better on slow networks now." />
     <MESSAGE value="* Optimized SOLR queries (disabled indentation)" />
     <MESSAGE value="* First prototype of autocomplete search" />
@@ -822,7 +792,8 @@
     <MESSAGE value="* Pushed minified version of easy-button" />
     <MESSAGE value="* Cleaned the generated query for fetching small clusters&#10;* Added an error check to skip processing geohashes with every sample missing the species_category field" />
     <MESSAGE value="* Code cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Code cleanup" />
+    <MESSAGE value="* Redone the query generation&#10;** Terms from the same category are grouped together with an OR clause&#10;** Terms from different categories are added with an AND clause&#10;** For example, this allows to search for samples of one (or more) species that were collected in one (or more) areas" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Redone the query generation&#10;** Terms from the same category are grouped together with an OR clause&#10;** Terms from different categories are added with an AND clause&#10;** For example, this allows to search for samples of one (or more) species that were collected in one (or more) areas" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -847,83 +818,7 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14137#14508#0" expanded="false" />
-            <element signature="e#14598#14865#0" expanded="false" />
-            <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#23818#26848#0" expanded="false" />
-            <marker date="1434301692197" expanded="true" signature="25736:25751" placeholder="..." />
-            <marker date="1434301692197" expanded="true" signature="25862:25882" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14137#14508#0" expanded="false" />
-            <element signature="e#14598#14865#0" expanded="false" />
-            <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#23818#26848#0" expanded="false" />
-            <marker date="1434301692197" expanded="true" signature="25736:25751" placeholder="..." />
-            <marker date="1434301692197" expanded="true" signature="25862:25882" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="247" column="47" selection-start-line="247" selection-start-column="47" selection-end-line="247" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Icon.Canvas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/PruneCluster.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="577" column="37" selection-start-line="577" selection-start-column="32" selection-end-line="577" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
+    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="166" column="25" selection-start-line="166" selection-start-column="25" selection-end-line="166" selection-end-column="25" />
@@ -936,17 +831,17 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14137#14508#0" expanded="false" />
-            <element signature="e#14598#14865#0" expanded="false" />
-            <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#23818#26848#0" expanded="false" />
-            <marker date="1434301692197" expanded="true" signature="25736:25751" placeholder="..." />
-            <marker date="1434301692197" expanded="true" signature="25862:25882" placeholder="..." />
+            <element signature="e#14045#14416#0" expanded="false" />
+            <element signature="e#14506#14773#0" expanded="false" />
+            <element signature="e#14860#15169#0" expanded="false" />
+            <element signature="e#23726#26756#0" expanded="false" />
+            <marker date="1434366552719" expanded="true" signature="25644:25659" placeholder="..." />
+            <marker date="1434366552719" expanded="true" signature="25770:25790" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -954,14 +849,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/PruneCluster.js">
+    <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="577" column="37" selection-start-line="577" selection-start-column="32" selection-end-line="577" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
+    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="166" column="25" selection-start-line="166" selection-start-column="25" selection-end-line="166" selection-end-column="25" />
@@ -974,17 +869,17 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14137#14508#0" expanded="false" />
-            <element signature="e#14598#14865#0" expanded="false" />
-            <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#23818#26848#0" expanded="false" />
-            <marker date="1434301692197" expanded="true" signature="25736:25751" placeholder="..." />
-            <marker date="1434301692197" expanded="true" signature="25862:25882" placeholder="..." />
+            <element signature="e#14045#14416#0" expanded="false" />
+            <element signature="e#14506#14773#0" expanded="false" />
+            <element signature="e#14860#15169#0" expanded="false" />
+            <element signature="e#23726#26756#0" expanded="false" />
+            <marker date="1434366552719" expanded="true" signature="25644:25659" placeholder="..." />
+            <marker date="1434366552719" expanded="true" signature="25770:25790" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -992,7 +887,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
+    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="157" column="33" selection-start-line="157" selection-start-column="33" selection-end-line="157" selection-end-column="33" />
@@ -1005,17 +900,17 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14137#14508#0" expanded="false" />
-            <element signature="e#14598#14865#0" expanded="false" />
-            <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#23818#26848#0" expanded="false" />
-            <marker date="1434301692197" expanded="true" signature="25736:25751" placeholder="..." />
-            <marker date="1434301692197" expanded="true" signature="25862:25882" placeholder="..." />
+            <element signature="e#14045#14416#0" expanded="false" />
+            <element signature="e#14506#14773#0" expanded="false" />
+            <element signature="e#14860#15169#0" expanded="false" />
+            <element signature="e#23726#26756#0" expanded="false" />
+            <marker date="1434366552719" expanded="true" signature="25644:25659" placeholder="..." />
+            <marker date="1434366552719" expanded="true" signature="25770:25790" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="418" column="39" selection-start-line="418" selection-start-column="39" selection-end-line="418" selection-end-column="39" />
@@ -1023,7 +918,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1031,35 +926,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/PruneCluster.js">
+    <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/leaflet-dvf.js">
+    <entry file="file://$PROJECT_DIR$/web/js/leaflet-dvf.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5634" column="0" selection-start-line="5634" selection-start-column="0" selection-end-line="5634" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/PruneCluster.js">
+    <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/PruneCluster.js.map">
+    <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js.map">
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="101" selection-start-line="0" selection-start-column="101" selection-end-line="0" selection-end-column="101" />
         </state>
-      </provider>
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Downloads/novus-nvd3-dbcdc25/examples/pieChart.html">
@@ -1069,49 +964,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/nv.d3.min.js">
+    <entry file="file://$PROJECT_DIR$/web/js/nv.d3.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33203125">
           <caret line="5" column="18848" selection-start-line="5" selection-start-column="18848" selection-end-line="5" selection-end-column="18848" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/Control.FullScreen.css">
+    <entry file="file://$PROJECT_DIR$/web/css/Control.FullScreen.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.04927536">
           <caret line="2" column="2" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/dvf.css">
+    <entry file="file://$PROJECT_DIR$/web/css/dvf.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/L.Control.ZoomMin.css">
+    <entry file="file://$PROJECT_DIR$/web/css/L.Control.ZoomMin.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.29955947">
           <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/spin.js">
+    <entry file="file://$PROJECT_DIR$/web/js/spin.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5837004">
           <caret line="156" column="45" selection-start-line="156" selection-start-column="45" selection-end-line="156" selection-end-column="45" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/leaflet.spin.js">
+    <entry file="file://$PROJECT_DIR$/web/js/leaflet.spin.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.61622804">
           <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/leaflet-sidebar.css">
+    <entry file="file://$PROJECT_DIR$/web/css/leaflet-sidebar.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0745614">
           <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
@@ -1125,117 +1020,117 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Control.FullScreen.min.js">
+    <entry file="file://$PROJECT_DIR$/web/js/Control.FullScreen.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="2914" selection-start-line="0" selection-start-column="2914" selection-end-line="0" selection-end-column="2914" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/leaflet-sidebar.js">
+    <entry file="file://$PROJECT_DIR$/web/js/leaflet-sidebar.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09565217">
           <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Control.FullScreen.js">
+    <entry file="file://$PROJECT_DIR$/web/js/Control.FullScreen.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.43507972">
           <caret line="70" column="13" selection-start-line="70" selection-start-column="13" selection-end-line="70" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/nv.d3.css">
+    <entry file="file://$PROJECT_DIR$/web/css/nv.d3.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.23684211">
           <caret line="56" column="21" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/nv.d3.pie.js">
+    <entry file="file://$PROJECT_DIR$/web/js/nv.d3.pie.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.17682926">
           <caret line="533" column="38" selection-start-line="533" selection-start-column="38" selection-end-line="533" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/L.Control.ZoomMin.js">
+    <entry file="file://$PROJECT_DIR$/web/js/L.Control.ZoomMin.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.90144926">
           <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/typeahead.bundle.min.js">
+    <entry file="file://$PROJECT_DIR$/web/js/typeahead.bundle.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.173913">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/bootstrap-tagsinput.css">
+    <entry file="file://$PROJECT_DIR$/web/css/bootstrap-tagsinput.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.157971">
           <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/typeaheadjs.css">
+    <entry file="file://$PROJECT_DIR$/web/css/typeaheadjs.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.6507246">
           <caret line="67" column="27" selection-start-line="67" selection-start-column="27" selection-end-line="67" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/bootstrap-tagsinput.js">
+    <entry file="file://$PROJECT_DIR$/web/js/bootstrap-tagsinput.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="452" column="78" selection-start-line="452" selection-start-column="78" selection-end-line="452" selection-end-column="78" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/typeahead.bundle.js">
+    <entry file="file://$PROJECT_DIR$/web/js/typeahead.bundle.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="574" column="23" selection-start-line="574" selection-start-column="23" selection-end-line="574" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/MarkerCluster.css">
+    <entry file="file://$PROJECT_DIR$/web/css/MarkerCluster.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1035533">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/MarkerCluster.Default.css">
+    <entry file="file://$PROJECT_DIR$/web/css/MarkerCluster.Default.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6435331">
           <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/leaflet-dvf.js">
+    <entry file="file://$PROJECT_DIR$/web/js/leaflet-dvf.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.25888324">
           <caret line="6415" column="32" selection-start-line="6415" selection-start-column="32" selection-end-line="6415" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/PruneCluster.js">
+    <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.4321766">
           <caret line="724" column="44" selection-start-line="724" selection-start-column="44" selection-end-line="724" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/assets/shadow.png">
+    <entry file="file://$PROJECT_DIR$/web/css/assets/shadow.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Leaflet.vector-markers.js">
+    <entry file="file://$PROJECT_DIR$/web/js/Leaflet.vector-markers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
@@ -1243,14 +1138,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/Leaflet.vector-markers.css">
+    <entry file="file://$PROJECT_DIR$/web/css/Leaflet.vector-markers.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.44771573">
           <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Icon.Canvas.js">
+    <entry file="file://$PROJECT_DIR$/web/js/Icon.Canvas.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
@@ -1258,14 +1153,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/easy-button.js">
+    <entry file="file://$PROJECT_DIR$/web/js/easy-button.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6203046">
           <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/L.Control.ZoomMin.min.js">
+    <entry file="file://$PROJECT_DIR$/web/js/L.Control.ZoomMin.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1273,17 +1168,73 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.min.js">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.03195489">
           <caret line="0" column="420" selection-start-line="0" selection-start-column="420" selection-end-line="0" selection-end-column="420" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vb_geohashes_mean.html">
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.1666665">
-          <caret line="614" column="49" selection-start-line="614" selection-start-column="35" selection-end-line="614" selection-end-column="49" />
+        <state vertical-scroll-proportion="-8.647716">
+          <caret line="17" column="71" selection-start-line="17" selection-start-column="71" selection-end-line="17" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema_extra_fields.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema_extra_types.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_ta/conf/schema.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.6730964">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="64" column="65" selection-start-line="64" selection-start-column="65" selection-end-line="64" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.1386862">
+          <caret line="619" column="21" selection-start-line="619" selection-start-column="21" selection-end-line="619" selection-end-column="21" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1293,21 +1244,13 @@
             <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#14137#14508#0" expanded="false" />
-            <element signature="e#14598#14865#0" expanded="false" />
-            <element signature="e#14952#15261#0" expanded="false" />
-            <element signature="e#23818#26848#0" expanded="false" />
-            <marker date="1434301692197" expanded="true" signature="25736:25751" placeholder="..." />
-            <marker date="1434301692197" expanded="true" signature="25862:25882" placeholder="..." />
+            <element signature="e#14045#14416#0" expanded="false" />
+            <element signature="e#14506#14773#0" expanded="false" />
+            <element signature="e#14860#15169#0" expanded="false" />
+            <element signature="e#23726#26756#0" expanded="false" />
+            <marker date="1434366552719" expanded="true" signature="25644:25659" placeholder="..." />
+            <marker date="1434366552719" expanded="true" signature="25770:25790" placeholder="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.92057765">
-          <caret line="904" column="5" selection-start-line="904" selection-start-column="5" selection-end-line="904" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
