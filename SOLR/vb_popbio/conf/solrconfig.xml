@@ -1310,9 +1310,9 @@
 
     </requestHandler>
 
-    <!-- A request handler to serve the proper document structure for samples pallete generation -->
+    <!-- A request handler to serve the proper document structure for samples palette generation -->
 
-    <requestHandler name="/smplPallete" class="solr.SearchHandler">
+    <requestHandler name="/smplPalette" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
              will be overridden by parameters in the request
           -->
@@ -1336,9 +1336,9 @@
     </requestHandler>
 
 
-    <!-- A request handler to serve the proper document structure for IR assays pallete generation -->
+    <!-- A request handler to serve the proper document structure for IR assays palette generation -->
 
-    <requestHandler name="/irPallete" class="solr.SearchHandler">
+    <requestHandler name="/irPalette" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
              will be overridden by parameters in the request
           -->

@@ -270,9 +270,8 @@ function loadSolr(parameters) {
     };
 
 
-    //ToDo: Define a search handler in SOLR to simplify the URL.
-    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true" + "&rows=0" + buildBbox(map.getBounds()) + "&stats=true&stats.field=geo_coords_ll_0___tdouble&stats.field=geo_coords_ll_1___tdouble&stats.facet=" + geoLevel + "&facet=true&facet.limit=-1&facet.sort=count&facet.pivot.mincount=1&facet.pivot=" + geoLevel + ",species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplGeoclust?" + qryUrl + buildBbox(map.getBounds()) + "&stats.facet=" + geoLevel + "&facet.pivot=" + geoLevel + ",species_category&json.wrf=?&callback=?";
+    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplGeoclust?" + qryUrl + buildBbox(map.getBounds()) + "&stats.facet=" + geoLevel + "&facet.pivot=" + geoLevel + ",species_category&json.wrf=?&callback=?";
+    var url = solrPopbioUrl + $('#view-mode').val() + 'Geoclust?' + qryUrl + buildBbox(map.getBounds()) + "&stats.facet=" + geoLevel + "&facet.pivot=" + geoLevel + ",species_category&json.wrf=?&callback=?";
 
     //console.log(url);
 
@@ -499,9 +498,8 @@ function loadSmall(mode, zoomLevel) {
     };
 
 
-    //ToDo: Define a search handler in SOLR to simplify the URL.
-    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/select?" + qryUrl + "&fq=bundle_name:Sample&fq=has_geodata:true&q.op=OR" + "&fq=" + geoLevel + ":" + geoQuery + "&rows=10000000" + buildBbox(map.getBounds()) + "&fl=geo_coords,species_category&wt=json&json.nl=map&json.wrf=?&callback=?";
-    var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplMarkers?" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
+    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplMarkers?" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
+    var url = solrPopbioUrl + $('#view-mode').val() + 'Markers?' + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
 
     // inform the user that data is loading
     map.spin(true);
@@ -811,7 +809,6 @@ function filterMarkers(items) {
             terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
             //console.log("inexact");
         }
-
     });
 
     var i = 0;
@@ -949,3 +946,79 @@ function mapTypeToIcon(type) {
     }
 
 }
+
+function generatePalette(result) {
+    var doc = result.facet_counts.facet_pivot["geohash_2,species_category"];
+    var items = [];
+    for (var obj in doc) if (doc.hasOwnProperty(obj)) {
+        var count = doc[obj].count;
+
+        var pivot = doc[obj].pivot;
+        for (var pivotElm in pivot) if (pivot.hasOwnProperty(pivotElm)) {
+            var ratio = pivot[pivotElm].count / count;
+            var species = pivot[pivotElm].value;
+            var index = parseInt(pivotElm);
+            var points;
+            // Use a scoring scheme to make sure species with a good presence per region get a proper color (we only have 20 good colours)
+            switch (index) {
+                case 1:
+                    points = 7 * ratio;
+                    break;
+                case 2:
+                    points = 3 * ratio;
+                    break;
+                case 3:
+                    points = 1 * ratio;
+                    break;
+                default:
+                    points = 0;
+                    break
+
+            }
+
+            if (items.hasOwnProperty(species)) {
+                items[species] += points;
+
+            } else {
+
+                items[species] = points;
+
+            }
+        }
+    }
+
+    var sortedItems = sortHashByValue(items);
+    palette = buildPalette(sortedItems, legendSpecies, 1);
+
+    var inHtml = "";
+    var cntLegend = 1;
+    for (var obj1 in palette) {
+        if (cntLegend > legendSpecies - 1) {
+            inHtml += '<i style="background:' + palette["others"] + '"></i> ' + 'Others<br />';
+            $("#legend").html(inHtml);
+            break;
+        }
+        var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2");
+        inHtml += '<i style="background:' + palette[obj1] + '" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + abbrSpecies + '</em><br>' : '+');
+        cntLegend++;
+    }
+
+
+    // Populate legend when added to map
+    legend.onAdd = function (map) {
+        legendDiv.innerHTML = inHtml;
+        return legendDiv;
+    };
+
+    // Was the legend already active? Refresh it!
+    if (L.DomUtil.hasClass(legendDiv, "active")) {
+        legend.removeFrom(map);
+        legend.addTo(map);
+    }
+
+
+    // moved this here to avoid querying SOLR before the palette is done building
+    loadSolr({clear: 1, zoomLevel: map.getZoom()});
+//        filterMarkers('');
+}
+
