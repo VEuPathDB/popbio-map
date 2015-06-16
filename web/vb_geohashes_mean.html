@@ -348,19 +348,7 @@
         }
     });
 
-    // Set current view
-    $(".dropdown-menu li a").click(function () {
-        var selText = $(this).text();
-        if (selText === "Samples view") {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
-            $('#view-mode').val('smpl');
-        } else {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html('IR phenotypes view' + ' <span class="caret"></span>');
-            $('#view-mode').val('ir');
-        }
-        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
-        $.getJSON(url, generatePalette);
-    });
+
 
     // some global variables
 
@@ -478,6 +466,7 @@
                 jsonp: 'json.wrf'
             },
             replace: function (url, query) {
+                url = solrTaUrl + $('#view-mode').val() + 'Ac?q=';
                 var match = query.match(/([^@]+)@([^@]*)/);
                 if (match != null) {
                     // matched text: match[0]
@@ -533,7 +522,6 @@
 
     acSuggestions.initialize();
 
-
     var acOtherResults = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -554,6 +542,7 @@
                 jsonp: 'json.wrf'
             },
             replace: function (url, query) {
+                url = solrTaUrl + $('#view-mode').val() + 'Acgrouped?q=';
                 if ($('#world-search').val() === '1') {
                     return url + encodeURI(query) + '*';
                 } else {
@@ -670,6 +659,21 @@
     });
     $('#search_ac').on('itemRemoved', function () {
         filterMarkers($("#search_ac").tagsinput('items'))
+    });
+
+    // Set current view
+    $(".dropdown-menu li a").click(function () {
+        var selText = $(this).text();
+        if (selText === "Samples view") {
+            $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
+            $('#view-mode').val('smpl');
+        } else {
+            $(this).parents(".dropdown").find(".dropdown-toggle").html('IR phenotypes view' + ' <span class="caret"></span>');
+            $('#view-mode').val('ir');
+        }
+        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+        $.getJSON(url, generatePalette);
+
     });
 
     // detect when user changes zoom or pans around the map
