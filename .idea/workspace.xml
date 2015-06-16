@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Replace &quot;More results&quot; with &quot;More suggestions&quot; at auto-complete&#10;* More suggestions counts have a &quot;~&quot; indicator now&#10;** This is until I solve why for some types suggestion and result counts don't match">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Added &quot;Insecticide Resistance Phenotypes&quot; view&#10;** Fine tuned behavior when switching views&#10;** Added auto-update for the legend as well">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/README" afterPath="$PROJECT_DIR$/SOLR/README" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -50,10 +47,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38344225">
+            <state vertical-scroll-proportion="-5.0">
               <caret line="962" column="28" selection-start-line="962" selection-start-column="28" selection-end-line="962" selection-end-column="28" />
               <folding>
                 <element signature="n#!!block;n#buildBbox#0" expanded="false" />
@@ -65,6 +62,26 @@
                 <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
                 <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="solrconfig.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.323529">
+              <caret line="1340" column="35" selection-start-line="1340" selection-start-column="29" selection-end-line="1340" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SOLR/README">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.05177665">
+              <caret line="2" column="336" selection-start-line="2" selection-start-column="336" selection-end-line="2" selection-end-column="336" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -132,10 +149,10 @@
         <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/schema.xml" />
         <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml" />
-        <option value="$PROJECT_DIR$/SOLR/README" />
         <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+        <option value="$PROJECT_DIR$/SOLR/README" />
       </list>
     </option>
   </component>
@@ -388,12 +405,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00016" summary="*Added categories in cluster markers (work in progress)">
-      <created>1426542662545</created>
-      <option name="number" value="00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1426542662545</updated>
     </task>
     <task id="LOCAL-00017" summary="* Various fixes for categories (work in progress)&#10;* Added species legend">
       <created>1426601858505</created>
@@ -683,7 +694,13 @@
       <option name="project" value="LOCAL" />
       <updated>1434406873994</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="* Added &quot;Insecticide Resistance Phenotypes&quot; view&#10;** Fine tuned behavior when switching views&#10;** Added auto-update for the legend as well">
+      <created>1434477188155</created>
+      <option name="number" value="00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1434477188156</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TodoView">
@@ -699,25 +716,25 @@
     <frame x="-9" y="-9" width="1938" height="1168" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15461741" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32612967" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36836934" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20588236" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15461741" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32612967" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20588236" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4459725" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36935166" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -758,7 +775,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Master commit before starting new branch to test bloodhound customization" />
     <MESSAGE value="* Partial searches and wildcards 1st prototype" />
     <MESSAGE value="*Minor changes to make the code live on funcgen" />
     <MESSAGE value="* Replaced internal SOLR URLs with proxied ones" />
@@ -783,7 +799,8 @@
     <MESSAGE value="* Fixed partial searches field mapping, initiated with the auto-complete" />
     <MESSAGE value="* If a field has an accompanying _cvterms field then search will be done using the _cvterms field&#10;** This is because in many cases, upper level terms (e.g. Brazil for Geography) may actually be the in the lowest level field (geolocations) instead in the _cvterms&#10;** Only exception for now is species, since it seems to be more accurately defined&#10;* Fixed a couple of bugs in type to field mapping" />
     <MESSAGE value="* Replace &quot;More results&quot; with &quot;More suggestions&quot; at auto-complete&#10;* More suggestions counts have a &quot;~&quot; indicator now&#10;** This is until I solve why for some types suggestion and result counts don't match" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Replace &quot;More results&quot; with &quot;More suggestions&quot; at auto-complete&#10;* More suggestions counts have a &quot;~&quot; indicator now&#10;** This is until I solve why for some types suggestion and result counts don't match" />
+    <MESSAGE value="* Added &quot;Insecticide Resistance Phenotypes&quot; view&#10;** Fine tuned behavior when switching views&#10;** Added auto-update for the legend as well" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Added &quot;Insecticide Resistance Phenotypes&quot; view&#10;** Fine tuned behavior when switching views&#10;** Added auto-update for the legend as well" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1197,26 +1214,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/README">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06903553">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="1304" column="39" selection-start-line="1304" selection-start-column="36" selection-end-line="1304" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="1340" column="36" selection-start-line="1340" selection-start-column="36" selection-end-line="1340" selection-end-column="36" />
           <folding />
         </state>
       </provider>
@@ -1244,7 +1245,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38344225">
+        <state vertical-scroll-proportion="-5.0">
           <caret line="962" column="28" selection-start-line="962" selection-start-column="28" selection-end-line="962" selection-end-column="28" />
           <folding>
             <element signature="n#!!block;n#buildBbox#0" expanded="false" />
@@ -1256,6 +1257,22 @@
             <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
             <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.323529">
+          <caret line="1340" column="35" selection-start-line="1340" selection-start-column="29" selection-end-line="1340" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/README">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.05177665">
+          <caret line="2" column="336" selection-start-line="2" selection-start-column="336" selection-end-line="2" selection-end-column="336" />
+          <folding />
         </state>
       </provider>
     </entry>
