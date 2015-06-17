@@ -114,44 +114,44 @@ function loadSolr(parameters) {
                     continue;
                 }
 
-                if (zoomLevel === 3 && count < 6) {
-                    smallClusters.push(key);
-                    continue;
-                }
-                if (zoomLevel === 4 && count < 11) {
-                    smallClusters.push(key);
-                    continue;
-                }
-                if (zoomLevel === 5 && count < 21) {
-                    smallClusters.push(key);
-                    continue;
-                }
-                if (zoomLevel === 6 && count < 31) {
-                    smallClusters.push(key);
-                    continue;
-                }
-                if (zoomLevel === 7 && count < 41) {
-                    smallClusters.push(key);
-                    continue;
-                }
-                if (zoomLevel === 8 && count < 51) {
-                    smallClusters.push(key);
-                    continue;
-                }
-                if (zoomLevel === 9 && count < 61) {
-                    smallClusters.push(key);
-                    continue;
-                }
-                if (zoomLevel > 9 && count < 71) {
-                    smallClusters.push(key);
-                    continue;
-                }
-
-                // add to small clusters geohashes with all landmarks from the same location
-                //if (docLat[key].min === docLat[key].max && docLng[key].min === docLng[key].max) {
+                //if (zoomLevel === 3 && count < 6) {
                 //    smallClusters.push(key);
                 //    continue;
                 //}
+                //if (zoomLevel === 4 && count < 11) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
+                //if (zoomLevel === 5 && count < 21) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
+                //if (zoomLevel === 6 && count < 31) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
+                //if (zoomLevel === 7 && count < 41) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
+                //if (zoomLevel === 8 && count < 51) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
+                //if (zoomLevel === 9 && count < 61) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
+                //if (zoomLevel > 9 && count < 71) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
+
+                //add to small clusters geohashes with all landmarks from the same location
+                if (docLat[key].min === docLat[key].max && docLng[key].min === docLng[key].max) {
+                    smallClusters.push(key);
+                    continue;
+                }
 
 
                 // go over the facet pivots and save the population and statistics

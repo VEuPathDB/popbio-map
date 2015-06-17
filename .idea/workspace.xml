@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Type-ahead query URLs are now set properly when changing views">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_popbio/conf/schema.xml" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/schema.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_ta/conf/schema.xml" afterPath="$PROJECT_DIR$/SOLR/vb_ta/conf/schema.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Updated SOLR configs to 5.x &#10;* smplGeoclust now returns only min, max, count and mean statistics. This should speed up geoclusters calculations">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -31,8 +28,8 @@
       <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.615385">
-              <caret line="675" column="39" selection-start-line="675" selection-start-column="39" selection-end-line="675" selection-end-column="39" />
+            <state vertical-scroll-proportion="-7.8461537">
+              <caret line="12" column="54" selection-start-line="12" selection-start-column="54" selection-end-line="12" selection-end-column="54" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -50,12 +47,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="solrconfig.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="solrconfig.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="10.245087">
+            <state vertical-scroll-proportion="0.0">
               <caret line="1276" column="77" selection-start-line="1276" selection-start-column="77" selection-end-line="1276" selection-end-column="77" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.78612715">
+              <caret line="150" column="0" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!block;n#buildBbox#0" expanded="false" />
+                <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
+                <element signature="n#!!block;n#buildPalette#0" expanded="false" />
+                <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
+                <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
+                <element signature="e#25580#25895#0" expanded="false" />
+                <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
+                <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -133,12 +149,12 @@
         <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/schema.xml" />
         <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/SOLR/vb_ta/conf/solrconfig.xml" />
-        <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/SOLR/README" />
         <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
         <option value="$PROJECT_DIR$/SOLR/vb_ta/conf/schema.xml" />
         <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/schema.xml" />
         <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
+        <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
       </list>
     </option>
   </component>
@@ -200,8 +216,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -221,6 +235,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -262,6 +298,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -369,12 +407,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00019" summary="* Added a fullscreen control&#10;">
-      <created>1426696898503</created>
-      <option name="number" value="00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1426696898503</updated>
     </task>
     <task id="LOCAL-00020" summary="* Added a button to directly go to minimum zoom level&#10;">
       <created>1426697769806</created>
@@ -664,7 +696,13 @@
       <option name="project" value="LOCAL" />
       <updated>1434488819542</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="* Updated SOLR configs to 5.x &#10;* smplGeoclust now returns only min, max, count and mean statistics. This should speed up geoclusters calculations">
+      <created>1434577008032</created>
+      <option name="number" value="00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1434577008033</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TodoView">
@@ -684,11 +722,12 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36636972" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20588236" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4454343" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -696,12 +735,11 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36636972" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32612967" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4454343" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
     </layout>
     <layout-to-restore>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -739,7 +777,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Replaced internal SOLR URLs with proxied ones" />
     <MESSAGE value="* Fixed VB CSS link" />
     <MESSAGE value="* Moved search box at the top center of the map" />
     <MESSAGE value="* Added Result counts in all categories. A user can now click in one of these listings to search directly within a category of even everywhere&#10;* Various bugfixes&#10;" />
@@ -764,7 +801,8 @@
     <MESSAGE value="* Added &quot;Insecticide Resistance Phenotypes&quot; view&#10;** Fine tuned behavior when switching views&#10;** Added auto-update for the legend as well" />
     <MESSAGE value="* Fixed typo for Palette (was Pallete) throughout the project" />
     <MESSAGE value="* Type-ahead query URLs are now set properly when changing views" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Type-ahead query URLs are now set properly when changing views" />
+    <MESSAGE value="* Updated SOLR configs to 5.x &#10;* smplGeoclust now returns only min, max, count and mean statistics. This should speed up geoclusters calculations" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Updated SOLR configs to 5.x &#10;* smplGeoclust now returns only min, max, count and mean statistics. This should speed up geoclusters calculations" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -826,7 +864,7 @@
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25524#25839#0" expanded="false" />
+            <element signature="e#25580#25895#0" expanded="false" />
             <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
             <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
           </folding>
@@ -863,7 +901,7 @@
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25524#25839#0" expanded="false" />
+            <element signature="e#25580#25895#0" expanded="false" />
             <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
             <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
           </folding>
@@ -880,7 +918,7 @@
             <element signature="n#!!block;n#buildPalette#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25524#25839#0" expanded="false" />
+            <element signature="e#25580#25895#0" expanded="false" />
             <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
             <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
           </folding>
@@ -909,13 +947,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js.map">
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="101" selection-start-line="0" selection-start-column="101" selection-end-line="0" selection-end-column="101" />
         </state>
+      </provider>
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Downloads/novus-nvd3-dbcdc25/examples/pieChart.html">
@@ -1138,23 +1176,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="962" column="28" selection-start-line="962" selection-start-column="28" selection-end-line="962" selection-end-column="28" />
-          <folding>
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
-            <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#25524#25839#0" expanded="false" />
-            <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
-            <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1203,10 +1225,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1276" column="77" selection-start-line="1276" selection-start-column="77" selection-end-line="1276" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.615385">
-          <caret line="675" column="39" selection-start-line="675" selection-start-column="39" selection-end-line="675" selection-end-column="39" />
+        <state vertical-scroll-proportion="-7.8461537">
+          <caret line="12" column="54" selection-start-line="12" selection-start-column="54" selection-end-line="12" selection-end-column="54" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1223,11 +1253,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="10.245087">
-          <caret line="1276" column="77" selection-start-line="1276" selection-start-column="77" selection-end-line="1276" selection-end-column="77" />
-          <folding />
+        <state vertical-scroll-proportion="0.78612715">
+          <caret line="150" column="0" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
+            <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
+            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
+            <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
+            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
+            <element signature="e#25580#25895#0" expanded="false" />
+            <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
+            <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
