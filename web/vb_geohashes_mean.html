@@ -673,6 +673,8 @@
         }
         var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
         $.getJSON(url, generatePalette);
+        acSuggestions.initialize(true);
+        acOtherResults.initialize(true);
 
     });
 

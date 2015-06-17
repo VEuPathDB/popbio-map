@@ -1273,8 +1273,8 @@
         <lst name="invariants">
             <int name="rows">0</int>
             <str name="stats">true</str>
-            <str name="stats.field">geo_coords_ll_0___tdouble</str>
-            <str name="stats.field">geo_coords_ll_1___tdouble</str>
+            <str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_0___tdouble</str>
+            <str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_1___tdouble</str>
             <str name="facet">true</str>
             <int name="facet.limit">-1</int>
             <str name="facet.sort">count</str>

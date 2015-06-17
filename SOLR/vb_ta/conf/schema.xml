@@ -137,7 +137,7 @@
                    positionIncrementGap="0"/>
 
         <!-- Field types for compatibility with main VectorBase schema -->
-        <fieldType name="date" class="solr.DateField" sortMissingLast="true" omitNorms="true"/>
+        <fieldType name="date" class="solr.TrieDateField" sortMissingLast="true" omitNorms="true"/>
         <fieldType name="tdate" class="solr.TrieDateField" omitNorms="true" precisionStep="6" positionIncrementGap="0"/>
         <fieldtype name="geohash" class="solr.GeoHashField"/>
         <fieldType name="location" class="solr.LatLonType" subFieldType="tdouble"/>
