@@ -1409,6 +1409,31 @@
 
     </requestHandler>
 
+    <!-- A request handler to serve data for violin plots (limited to IR assays)-->
+    <requestHandler name="/irVlnInsec" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <int name="rows">0</int>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+            <str name="json.facet">
+                {
+                vtypes: {}
+                }
+            </str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_phenotype</str>
+            <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+        </lst>
+
+    </requestHandler>
     <!-- Search Components
 
          Search components are registered to SolrCore and used by

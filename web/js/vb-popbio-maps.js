@@ -9,7 +9,7 @@
 function initialize_map() {
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
-        center: [18, 0.0],
+        center: [23.079, 3.515],
         zoom: 3,
         zoomControl: false
     });
@@ -340,6 +340,25 @@ function initialize_search() {
         })
 
     });
+
+    // Set current view
+    //    FixMe: Firefox loads the last view after refresh
+    $(".dropdown-menu li a").click(function () {
+        var selText = $(this).text();
+        if (selText === "Samples view") {
+            $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
+            $('#view-mode').val('smpl');
+        } else {
+            $(this).parents(".dropdown").find(".dropdown-toggle").html('IR phenotypes view' + ' <span class="caret"></span>');
+            $('#view-mode').val('ir');
+        }
+        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+        $.getJSON(url, generatePalette);
+        acSuggestions.initialize(true);
+        acOtherResults.initialize(true);
+
+    });
+
 
 }
 

@@ -45,7 +45,7 @@ L.Control.Sidebar = L.Control.extend({
         }
 
         this._hasTouchStart = L.Browser.touch &&
-        ('ontouchstart' in document.documentElement);
+            ('ontouchstart' in document.documentElement);
     },
 
     addTo: function (map) {

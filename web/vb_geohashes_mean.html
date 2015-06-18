@@ -229,23 +229,6 @@
         filterMarkers($("#search_ac").tagsinput('items'))
     });
 
-    // Set current view
-    //    FixMe: Firefox loads the last view after refresh
-    $(".dropdown-menu li a").click(function () {
-        var selText = $(this).text();
-        if (selText === "Samples view") {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
-            $('#view-mode').val('smpl');
-        } else {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html('IR phenotypes view' + ' <span class="caret"></span>');
-            $('#view-mode').val('ir');
-        }
-        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
-        $.getJSON(url, generatePalette);
-        acSuggestions.initialize(true);
-        acOtherResults.initialize(true);
-
-    });
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
