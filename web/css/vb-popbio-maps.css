@@ -1,0 +1,119 @@
+BODY {
+    margin: 0;
+    padding: 0;
+}
+
+#min_width_container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding-top: 110px;
+}
+
+#masthead {
+    height: 118px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#map_container {
+    height: 95%;
+
+}
+
+#map {
+    border-top: 3px solid #154b6f;
+    border-bottom: 3px solid #154b6f;
+    height: 100%;
+    background: #CAE9FE;
+
+}
+
+/*Overwrite boostrap's label font size*/
+.label {
+    font-weight: normal;
+    font-size: 100%;
+}
+
+.sidebar {
+    top: 123px;
+    bottom: 50px;
+}
+
+.info {
+    padding: 6px 8px;
+    font-size: small;
+    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+.legend {
+    text-align: left;
+    line-height: 16px;
+    color: #555;
+}
+
+.legend i {
+    width: 14px;
+    height: 14px;
+    float: left;
+    margin-right: 8px;
+    opacity: 1;
+    border-radius: 10px;
+}
+
+/*center the search box*/
+.mapbox {
+    position: relative;
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
+.mapbox .overlaytop {
+    position: absolute;
+    top: 11px;
+    left: 396px;
+    width: 56%;
+    min-width: 250px;
+    /*max-width: 500px;*/
+    z-index: 314159;
+}
+
+.mapbox .overlaybottom {
+    position: absolute;
+    bottom: 3px;
+    left: 40%;
+    width: 20%;
+    min-width: 200px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.7);
+    /*max-width: 500px;*/
+    z-index: 314159;
+}
+
+/*keep the curson inline with the tags if the space left is more than width*/
+/*span.twitter-typeahead {*/
+/*width: 250px;*/
+/*}*/
+
+/*typeahead more results header*/
+.more-results {
+    margin: 0 20px 5px 20px;
+    padding: 3px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.dropdown-menu li {
+    list-style-type: none;
+    list-style-image: none;
+}

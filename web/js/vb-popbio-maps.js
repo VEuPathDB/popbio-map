@@ -1,3 +1,348 @@
+/*
+ function initialize_map
+ date: 18/6/2015
+ purpose:
+ inputs:
+ outputs:
+ */
+
+function initialize_map() {
+    // create a map in the "map" div, set the view to a given place and zoom
+    map = L.map('map', {
+        center: [18, 0.0],
+        zoom: 3,
+        zoomControl: false
+    });
+
+    map.spin(true);
+
+    map.addControl(new L.Control.FullScreen({
+        position: "topright",
+        forcePseudoFullscreen: true
+    }));
+
+    map.addControl(new L.Control.ZoomMin({position: "topright"}));
+    var sidebar = L.control.sidebar('sidebar').addTo(map);
+
+
+    var mp1 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png", {
+        minZoom: 2,
+        maxZoom: 15,
+        subdomains: ["otile1", "otile2", "otile3", "otile4"],
+        noWrap: 1,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
+        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+    });
+
+    var mp2 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png", {
+        minZoom: 2,
+        maxZoom: 15,
+        maxNativeZoom: 11,
+        subdomains: ["otile1", "otile2", "otile3", "otile4"],
+        noWrap: 1,
+        attribution: 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+    });
+
+    var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        minZoom: 2,
+        maxZoom: 15,
+        noWrap: 1,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
+        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+    });
+
+    map.addLayer(mp1);
+    assetLayerGroup = new L.LayerGroup();
+    assetLayerGroup.addTo(map);
+    var layerCtl = new L.Control.Layers({
+        "MapQuest-OSM": mp1,
+        'OpenStreetMap': mp3,
+        'MapQuest Open Aerial': mp2
+    });
+    layerCtl.setPosition('topright');
+    layerCtl.addTo(map);
+
+    //    Add a legend control on the bottom right but don't show it just yet
+    legend = L.control({position: 'bottomright'});
+    legendDiv = L.DomUtil.create('div', 'info legend');
+
+    L.easyButton('fa-info',
+        function () {
+            if (L.DomUtil.hasClass(legendDiv, "active")) {
+                legend.removeFrom(map);
+                L.DomUtil.removeClass(legendDiv, "active");
+            } else {
+                legend.addTo(map);
+                L.DomUtil.addClass(legendDiv, "active");
+            }
+
+        },
+        'Toggle legend ON of OFF'
+    );
+
+    // Now generate the legend and .
+
+    var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+    $.getJSON(url, generatePalette);
+
+
+    map.spin(false);
+
+}
+
+
+/*
+ function initialize_search
+ date: 18/6/2015
+ purpose:
+ inputs:
+ outputs:
+ */
+function initialize_search() {
+
+    // Reset search "button"
+    $('#reset-search').click(function () {
+        $('#search_ac').tagsinput('removeAll');
+        filterMarkers('');
+    });
+
+    // World search toggle
+    $('#toggle-world').click(function () {
+
+        if ($('#world-search').val() === '1') {
+            $('#toggle-world').toggleClass("btn-primary", false)
+                .attr('title', 'Enable global search suggestions');
+            $('#world-search').val('0');
+            $('#world-icon').css('color', '#265a88');
+        } else {
+            $('#toggle-world').toggleClass("btn-primary", true)
+                .attr('title', 'Limit search suggestions to current view');
+            $('#world-search').val('1');
+            $('#world-icon').css('color', 'white');
+        }
+    });
+
+
+    //FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case handling
+    //       update: the issue was with the number of results Anywhere. When within a certain categories the results seem to match
+    //              will keep an eye on it
+    //ToDo: Add copy/paste support of IDs (low priority)
+
+    var acSuggestions = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 7,
+        minLength: 2,
+        hint: false,
+
+        remote: {
+            url: solrTaUrl + $('#view-mode').val() + 'Ac?q=',
+            ajax: {
+                dataType: 'jsonp',
+                data: {
+                    'wt': 'json',
+                    'rows': 7
+                },
+                jsonp: 'json.wrf'
+            },
+            replace: function (url, query) {
+                url = solrTaUrl + $('#view-mode').val() + 'Ac?q=';
+                var match = query.match(/([^@]+)@([^@]*)/);
+                if (match != null) {
+                    // matched text: match[0]
+                    // match start: match.index
+                    // capturing group n: match[n]
+                    partSearch = match[1];
+                    console.log(url + encodeURI(match[1]));
+                    if ($('#world-search').val() === '1') {
+                        return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]);
+                    } else {
+                        return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
+                    }
+                } else {
+                    // Match attempt failed
+                    partSearch = false;
+
+                    if ($('#world-search').val() === '1') {
+                        return url + encodeURI(query);
+                    } else {
+                        return url + encodeURI(query) + buildBbox(map.getBounds());
+                    }
+                }
+
+            },
+            filter: function (data) {
+                if (partSearch) {
+                    return $.map(data.grouped.type.doclist.docs, function (data) {
+                        return {
+                            value: partSearch,
+                            id: data['id'],
+                            type: data['type'],
+                            field: data['field'],
+                            qtype: 'partial'
+
+                        };
+                    });
+                } else {
+                    return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
+                        return {
+                            value: data['textsuggest_category'],
+                            type: data['type'],
+                            id: data['id'],
+                            field: data['field'],
+                            is_synonym: data['is_synonym'],
+                            qtype: 'exact'
+
+                        };
+                    });
+
+                }
+            }
+        }
+    });
+
+    acSuggestions.initialize();
+
+    var acOtherResults = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 10,
+        minLength: 3,
+
+        remote: {
+//            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/smplAcgrouped?q=',
+            url: solrTaUrl + $('#view-mode').val() + 'Acgrouped?q=',
+            ajax: {
+                dataType: 'jsonp',
+
+                data: {
+                    'wt': 'json',
+                    'rows': 10
+                },
+
+                jsonp: 'json.wrf'
+            },
+            replace: function (url, query) {
+                url = solrTaUrl + $('#view-mode').val() + 'Acgrouped?q=';
+                if ($('#world-search').val() === '1') {
+                    return url + encodeURI(query) + '*';
+                } else {
+                    return url + encodeURI(query) + '*' + buildBbox(map.getBounds());
+                }
+            },
+            filter: function (data) {
+                var allResults = data.grouped.stable_id.ngroups;
+                return $.map(data.facet_counts.facet_fields.type, function (data) {
+                    if (data[1] > 0) {
+                        return {
+                            count: data[1],
+                            type: data[0],
+                            field: mapTypeToField(data[0]),
+                            value: $('#search_ac').tagsinput('input')[0].value,
+                            qtype: 'summary'
+
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    acOtherResults.initialize();
+
+
+    $('#search_ac').tagsinput({
+        tagClass: function (item) {
+            switch (item.type) {
+                case 'Taxonomy'   :
+                    return 'label label-primary fa fa-sitemap';   // dark blue
+                case 'Geography':
+                    return 'label label-primary fa fa-map-marker';  // dark blue
+                case 'Title'  :
+                    return 'label label-success fa fa-tag';    // green
+                case 'Description':
+                    return 'label label-success fa fa-info-circle';   // green
+                case 'Projects'   :
+                    return 'label label-success fa fa-database';   // green
+//                    return 'label label-default fa fa-database';   // grey
+                case 'Anywhere'   :
+                    return 'label label-default fa fa-search';   // grey
+//                    return 'label label-info fa fa-search';   // cyan
+                case 'Pubmed references' :
+                    return 'label label-success fa fa-book';
+                case 'Insecticides' :
+                    return 'label label-success fa fa-eyedropper';
+                case 'Collection protocols' :
+                    return 'label label-success fa fa-shopping-cart';
+                default :
+                    return 'label label-warning fa fa-search';   // orange
+            }
+        },
+        itemValue: 'value',
+        itemText: function (item) {
+            // add a leading space to separate text from tag icon
+            return ' ' + item.value;
+        },
+        typeaheadjs: ({
+            options: {
+                minLength: 3,
+                hint: false,
+                highlight: false
+            },
+            datasets: [
+                {
+                    name: 'acSuggestions',
+                    displayKey: 'value',
+                    source: acSuggestions.ttAdapter(),
+                    templates: {
+                        empty: function () {
+                            var msg;
+                            if ($('#world-search').val() === '1') {
+                                msg = 'No results found';
+                            } else {
+                                msg = 'No results found. Try enabling world search.';
+
+                            }
+                            return [
+                                '<span class="tt-suggestions" style="display: block;">',
+                                '<div class="tt-suggestion">',
+                                '<p style="white-space: normal;">',
+                                msg,
+                                '</p>',
+                                '</div>',
+                                '</span>'
+                            ].join('\n')
+                        },
+                        suggestion: function (item) {
+                            return '<p>' + item.value + (item.is_synonym ? ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)' : '') +
+                                ' <em> in ' + item.type + '</em></p>';
+                        }
+
+                    }
+                },
+                {
+//                    ToDo: Partial searches should display wildcards in the tag
+//                    ToDo: Add hovers on tags to display the term and field description
+                    name: 'acOtherResults',
+                    displayKey: 'value',
+                    source: acOtherResults.ttAdapter(),
+                    templates: {
+                        header: '<h4 class="more-results">More suggestions</h4>',
+                        suggestion: function (item) {
+                            return '<p>~' + item.count + ' <em>in ' + item.type + '</em></p>';
+                        }
+
+                    }
+                }
+            ]
+        })
+
+    });
+
+}
+
 /**
  * Created by Ioannis on 10/03/2015.
  * A library that will gradually contain all the basic functions and objects for the VectorBase PopBio map
