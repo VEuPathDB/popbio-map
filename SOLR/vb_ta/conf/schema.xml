@@ -160,7 +160,7 @@
         <!-- Suggest type/category. Example: person, book, category, keyword -->
         <field name="type" type="string" indexed="true" stored="true" multiValued="false"/>
         <!-- An image URL for the autosuggest Ajax component to use as thumbnail in the suggestion -->
-        <field name="thumbnail_url" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="is_synonym" type="boolean" indexed="true" stored="true" multiValued="false"/>
         <field name="field" type="string" indexed="false" stored="true" multiValued="false"/>
         <!-- An action code for the autosuggest AJAX-component to act upon.
              Example usage could be: "search", "goto", "facet".

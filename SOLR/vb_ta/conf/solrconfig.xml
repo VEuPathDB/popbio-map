@@ -1537,7 +1537,7 @@
         <lst name="invariants">
             <str name="defType">edismax</str>
             <str name="rows">15</str>
-            <str name="fl">id,textsuggest_category,type,field</str>
+            <str name="fl">id,textsuggest_category,type,field,is_synonym</str>
             <str name="sort">score desc</str>
             <str name="group.field">textsuggest_category</str>
             <str name="group">true</str>
@@ -1576,7 +1576,7 @@
         <lst name="invariants">
             <str name="defType">edismax</str>
             <str name="rows">15</str>
-            <str name="fl">id,textsuggest_category,type,field</str>
+            <str name="fl">id,textsuggest_category,type,field,is_synonym</str>
             <str name="sort">score desc</str>
             <str name="group.field">textsuggest_category</str>
             <str name="group">true</str>

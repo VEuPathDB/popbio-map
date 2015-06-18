@@ -148,10 +148,10 @@ function loadSolr(parameters) {
                 //}
 
                 //add to small clusters geohashes with all landmarks from the same location
-                if (docLat[key].min === docLat[key].max && docLng[key].min === docLng[key].max) {
-                    smallClusters.push(key);
-                    continue;
-                }
+                //if (docLat[key].min === docLat[key].max && docLng[key].min === docLng[key].max) {
+                //    smallClusters.push(key);
+                //    continue;
+                //}
 
 
                 // go over the facet pivots and save the population and statistics
@@ -229,7 +229,8 @@ function loadSolr(parameters) {
                 var size = 40;
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
-                    className: "prunecluster leaflet-markercluster-icon",
+                    //className: "prunecluster leaflet-markercluster-icon",
+                    className: "marker-cluster",
                     population: record.population,
                     stats: record.stats
                 });
@@ -240,6 +241,12 @@ function loadSolr(parameters) {
                 });
                 layer.on("click", function () {
                     updatePieChart(record.population, record.fullstats)
+                });
+                layer.on("mouseover", function (e) {
+                    //console.log(e.target);
+                    //var elem = L.DomUtil.get(e.target);
+                    //L.DomUtil.addClass(elem, 'marker-cluster-selected')
+                    //this.options.icon.options.className = 'marker-cluster-selected';
                 });
                 layer.on("mouseout", function () {
                     //updatePieChart()

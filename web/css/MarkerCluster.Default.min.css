@@ -48,8 +48,13 @@
 
 .marker-cluster {
     background-clip: padding-box;
-    border-radius: 20px;
-    color: #000
+    border-radius: 20px
+}
+
+.marker-cluster-selected {
+    background-clip: padding-box;
+    border: 2px solid whitesmoke;
+    border-radius: 20px
 }
 
 .marker-cluster div {

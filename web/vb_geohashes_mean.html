@@ -349,7 +349,6 @@
     });
 
 
-
     // some global variables
 
     //ToDo: Clean and move code to a separate js file
@@ -510,6 +509,7 @@
                             type: data['type'],
                             id: data['id'],
                             field: data['field'],
+                            is_synonym: data['is_synonym'],
                             qtype: 'exact'
 
                         };
@@ -633,7 +633,8 @@
                             ].join('\n')
                         },
                         suggestion: function (item) {
-                            return '<p>' + item.value + ' <em>in ' + item.type + '</em></p>';
+                            return '<p>' + item.value + (item.is_synonym ? ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)' : '') +
+                                    ' <em> in ' + item.type + '</em></p>';
                         }
 
                     }
