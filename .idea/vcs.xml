@@ -5,13 +5,14 @@
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\Leaflet.EasyButton" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\Leaflet.Spin" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\Leaflet.vector-markers" vcs="Git" />
+    <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\PruneCluster" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\beeswarm" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\bootstrap-tagsinput" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\leaflet-dvf" vcs="Git" />
-    <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\leaflet-plugins" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\leaflet-zoom-min" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\leaflet.fullscreen" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\nvd3" vcs="Git" />
+    <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\sidebar-v2" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\spin.js" vcs="Git" />
     <mapping directory="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\typeahead.js" vcs="Git" />
   </component>

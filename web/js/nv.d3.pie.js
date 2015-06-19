@@ -1009,8 +1009,8 @@ nv.utils.defaultColor = function () {
 nv.utils.customTheme = function (dictionary, getKey, defaultColors) {
     // use default series.key if getKey is undefined
     getKey = getKey || function (series) {
-        return series.key
-    };
+            return series.key
+        };
     defaultColors = defaultColors || d3.scale.category20().range();
 
     // start at end of default color list and walk back to index 0
@@ -2455,7 +2455,7 @@ nv.models.pieChart = function () {
                 if (margin.top != legend.height()) {
                     margin.top = legend.height();
                     availableHeight = (height || parseInt(container.style('height')) || 400)
-                    - margin.top - margin.bottom;
+                        - margin.top - margin.bottom;
                 }
 
                 wrap.select('.nv-legendWrap')
