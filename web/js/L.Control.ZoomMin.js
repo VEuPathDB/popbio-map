@@ -38,7 +38,7 @@ L.Control.ZoomMin = L.Control.Zoom.extend({
     },
 
     _updateDisabled: function () {
-        var map = this._map
+        var map = this._map 
             , className = "leaflet-disabled";
 
         L.DomUtil.removeClass(this._zoomInButton, className);

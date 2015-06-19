@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Refined the starting location of the map&#10;* Added vb-violin-plots.(js|css). Still no working violin plots though&#10;* Re">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/css/vb-violin-plots.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/vb-violin-plots.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/css/vb-violin-plots.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/Control.FullScreen.min.css" afterPath="$PROJECT_DIR$/web/css/Control.FullScreen.min.css" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Refined the starting location of the map&#10;* Added vb-violin-plots.(js|css). Still no working violin plots though&#10;* Re-built minified versions of most js and css files">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/dist/css/dvf.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/Icon.Canvas.min.js" afterPath="$PROJECT_DIR$/web/js/Icon.Canvas.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/L.Control.ZoomMin.js" afterPath="$PROJECT_DIR$/web/js/L.Control.ZoomMin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/L.Control.ZoomMin.min.css" afterPath="$PROJECT_DIR$/web/css/L.Control.ZoomMin.min.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/L.Control.ZoomMin.min.js" afterPath="$PROJECT_DIR$/web/js/L.Control.ZoomMin.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/dvf.min.css" afterPath="$PROJECT_DIR$/web/css/dvf.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/leaflet-sidebar.js" afterPath="$PROJECT_DIR$/web/js/leaflet-sidebar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/leaflet-sidebar.min.css" afterPath="$PROJECT_DIR$/web/css/leaflet-sidebar.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/leaflet-sidebar.min.js" afterPath="$PROJECT_DIR$/web/js/leaflet-sidebar.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/leaflet.spin.min.js" afterPath="$PROJECT_DIR$/web/js/leaflet.spin.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/nv.d3.min.css" afterPath="$PROJECT_DIR$/web/css/nv.d3.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.min.js" afterPath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-dvf/examples/lib/tilefilter/TileLayer.Filter.min.js" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/examples/lib/tilefilter/TileLayer.Filter.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/beeswarm/beeswarm.min.js" afterPath="$PROJECT_DIR$/libs/beeswarm/beeswarm.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/typeahead.js/dist/bloodhound.min.js" afterPath="$PROJECT_DIR$/libs/typeahead.js/dist/bloodhound.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-dvf/examples/lib/bootstrap/css/bootstrap-responsive.min.css" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/examples/lib/bootstrap/css/bootstrap-responsive.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput-angular.min.js" afterPath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput-angular.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js" afterPath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-dvf/examples/lib/bootstrap/css/bootstrap.min.css" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/examples/lib/bootstrap/css/bootstrap.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-dvf/examples/lib/bootstrap/js/bootstrap.min.js" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/examples/lib/bootstrap/js/bootstrap.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-dvf/dist/css/dvf.css" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/dist/css/dvf.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-dvf/dist/leaflet-dvf.js" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/dist/leaflet-dvf.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-dvf/dist/leaflet-dvf.markers.min.js" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/dist/leaflet-dvf.markers.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-dvf/dist/leaflet-dvf.min.js" afterPath="$PROJECT_DIR$/libs/leaflet-dvf/dist/leaflet-dvf.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.min.css" afterPath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.min.js" afterPath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/spin.js/spin.min.js" afterPath="$PROJECT_DIR$/libs/spin.js/spin.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/typeahead.js/dist/typeahead.bundle.min.js" afterPath="$PROJECT_DIR$/libs/typeahead.js/dist/typeahead.bundle.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/typeahead.js/dist/typeahead.jquery.min.js" afterPath="$PROJECT_DIR$/libs/typeahead.js/dist/typeahead.jquery.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -41,11 +47,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.23077">
-              <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.2836288">
+              <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -57,46 +63,6 @@
                 <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5499398">
-              <caret line="364" column="3" selection-start-line="364" selection-start-column="3" selection-end-line="364" selection-end-column="3" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="n#!!block;n#loadSolr#0" expanded="false" />
-                <element signature="e#18189#18226#0" expanded="false" />
-                <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-                <element signature="n#!!block;n#buildBbox#0" expanded="false" />
-                <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
-                <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-                <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-                <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-                <element signature="e#39198#39513#0" expanded="false" />
-                <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
-                <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
-                <element signature="e#40609#40712#0" expanded="false" />
-                <element signature="n#!!block;n#mapTypeToField#0" expanded="false" />
-                <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
-                <element signature="n#!!block;n#generatePalette#0" expanded="false" />
-                <marker date="1434663111863" expanded="true" signature="10950:10965" placeholder="..." />
-                <marker date="1434663111863" expanded="true" signature="11076:11096" placeholder="..." />
-                <marker date="1434663111863" expanded="true" signature="11527:11542" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="L.Control.ZoomMin.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/L.Control.ZoomMin.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="40" column="27" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -118,6 +84,7 @@
       </list>
     </option>
     <option name="UPDATE_TYPE" value="MERGE" />
+    <option name="ROOT_SYNC" value="SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -131,9 +98,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/css/leaflet-sidebar.css" />
-        <option value="$PROJECT_DIR$/js/leaflet-sidebar.js" />
-        <option value="$PROJECT_DIR$/js/Control.FullScreen.js" />
         <option value="$PROJECT_DIR$/css/nv.d3.css" />
         <option value="$PROJECT_DIR$/js/L.Control.ZoomMin.js" />
         <option value="$PROJECT_DIR$/package.json" />
@@ -178,10 +142,13 @@
         <option value="$PROJECT_DIR$/web/js/leaflet-sidebar.js" />
         <option value="$PROJECT_DIR$/web/js/vb-violin-plots.js" />
         <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
-        <option value="$PROJECT_DIR$/web/lakis.js" />
-        <option value="$PROJECT_DIR$/web/js/L.Control.ZoomMin.js" />
-        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
         <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
+        <option value="$PROJECT_DIR$/web/js/L.Control.ZoomMin.js" />
+        <option value="$PROJECT_DIR$/web/js/Icon.Canvas.js" />
+        <option value="$PROJECT_DIR$/web/lakis.js" />
+        <option value="$PROJECT_DIR$/libs/leaflet-dvf/dist/leaflet-dvf.js" />
+        <option value="$PROJECT_DIR$/libs/leaflet-dvf/dist/css/dvf.css" />
+        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
       </list>
     </option>
   </component>
@@ -196,7 +163,7 @@
     <option name="x" value="-9" />
     <option name="y" value="-9" />
     <option name="width" value="1938" />
-    <option name="height" value="1048" />
+    <option name="height" value="1168" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -297,7 +264,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="SOLR" />
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -311,15 +292,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="SOLR" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vb_ta" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="conf" />
+              <option name="myItemId" value="libs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -333,22 +306,18 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="SOLR" />
+              <option name="myItemId" value="libs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="vb_popbio" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="conf" />
+              <option name="myItemId" value="leaflet-zoom-min" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -356,7 +325,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/SOLR/vb_ta/conf" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/js/leaflet-dvf.js" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="FullScreen" value="false" />
     <property name="LayoutCode.rearrangeEntriesHTML" value="true" />
@@ -382,8 +351,9 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="LayoutCode.rearrangeEntriesJavaScript 1.5" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="web.server" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/web/js/leaflet-dvf.js" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -456,12 +426,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00023" summary="* Hooked zoom to double click&#10;* Hooked pie generation to single click&#10;* No more actions on hover (for now)&#10;">
-      <created>1426765392396</created>
-      <option name="number" value="00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1426765392396</updated>
     </task>
     <task id="LOCAL-00024" summary="* Hooked pie charts to local cluster markers&#10;* Fixed various issues with pie charts">
       <created>1426787264159</created>
@@ -751,7 +715,13 @@
       <option name="project" value="LOCAL" />
       <updated>1434642146122</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="* Refined the starting location of the map&#10;* Added vb-violin-plots.(js|css). Still no working violin plots though&#10;* Re-built minified versions of most js and css files">
+      <created>1434663147659</created>
+      <option name="number" value="00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1434663147660</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TodoView">
@@ -764,15 +734,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1168" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15461741" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15461741" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284169" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32743362" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20580475" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -784,7 +754,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36444008" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36302894" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32612967" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -826,7 +796,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* User can now freely input a universal search term by pressing Enter&#10;* Duplicated search terms detection now also takes into account the field/class of the term&#10;* Various bugfixes&#10;" />
     <MESSAGE value="* Added a reset button for search&#10;* Beautified the search field" />
     <MESSAGE value="* Added a search the world toggle button&#10;* Improved SOLR query and BBox generation" />
     <MESSAGE value="* Added font awesome icons to search terms:&#10;** Taxonomy gets fa-sitemap&#10;** Title gets fa-tag&#10;** Description gets fa-info-circle&#10;** Projects get fa-database&#10;** Anywhere gets fa-search&#10;* Simplified color scheme for search terms:&#10;** Taxonomy gets blue (label-primary)&#10;** Other tags get green (label-success)&#10;** Free search gets grey (label-default)" />
@@ -851,7 +820,8 @@
     <MESSAGE value="* Trying a new setup&#10;** All markers now are computed on SOLR unless&#10;*** It is a single-sample marker&#10;*** All samples in the marker are from the exact same location" />
     <MESSAGE value="* Finetuned markers clustering&#10;* Added support for synonyms in auto-complete" />
     <MESSAGE value="* Code cleanup and re-arrangement" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Code cleanup and re-arrangement" />
+    <MESSAGE value="* Refined the starting location of the map&#10;* Added vb-violin-plots.(js|css). Still no working violin plots though&#10;* Re-built minified versions of most js and css files" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Refined the starting location of the map&#10;* Added vb-violin-plots.(js|css). Still no working violin plots though&#10;* Re-built minified versions of most js and css files" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -883,76 +853,6 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="418" column="39" selection-start-line="418" selection-start-column="39" selection-end-line="418" selection-end-column="39" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="n#!!block;n#loadSolr#0" expanded="false" />
-            <element signature="e#18189#18226#0" expanded="false" />
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
-            <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#39198#39513#0" expanded="false" />
-            <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
-            <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
-            <element signature="e#40609#40712#0" expanded="false" />
-            <element signature="n#!!block;n#mapTypeToField#0" expanded="false" />
-            <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
-            <element signature="n#!!block;n#generatePalette#0" expanded="false" />
-            <marker date="1434663111863" expanded="true" signature="10950:10965" placeholder="..." />
-            <marker date="1434663111863" expanded="true" signature="11076:11096" placeholder="..." />
-            <marker date="1434663111863" expanded="true" signature="11527:11542" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="n#!!block;n#loadSolr#0" expanded="false" />
-            <element signature="e#18189#18226#0" expanded="false" />
-            <element signature="n#!!block;n#loadSmall#0" expanded="false" />
-            <element signature="n#!!block;n#buildBbox#0" expanded="false" />
-            <element signature="n#!!block;n#geohashLevel#0" expanded="false" />
-            <element signature="n#!!block;n#buildPalette#0" expanded="false" />
-            <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#39198#39513#0" expanded="false" />
-            <element signature="n#!!block;n#colorLuminance#0" expanded="false" />
-            <element signature="n#!!block;n#filterMarkers#0" expanded="false" />
-            <element signature="e#40609#40712#0" expanded="false" />
-            <element signature="n#!!block;n#mapTypeToField#0" expanded="false" />
-            <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
-            <element signature="n#!!block;n#generatePalette#0" expanded="false" />
-            <marker date="1434663111863" expanded="true" signature="10950:10965" placeholder="..." />
-            <marker date="1434663111863" expanded="true" signature="11076:11096" placeholder="..." />
-            <marker date="1434663111863" expanded="true" signature="11527:11542" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/leaflet-dvf.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5634" column="0" selection-start-line="5634" selection-start-column="0" selection-end-line="5634" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1040,13 +940,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/leaflet-dvf.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25888324">
-          <caret line="6415" column="32" selection-start-line="6415" selection-start-column="32" selection-end-line="6415" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/js/PruneCluster.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.4321766">
@@ -1070,13 +963,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.44771573">
           <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/Icon.Canvas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1106,7 +992,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1137,7 +1022,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.16612378">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1145,7 +1029,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.553102">
           <caret line="62" column="19" selection-start-line="62" selection-start-column="19" selection-end-line="62" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1177,7 +1060,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1185,7 +1067,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34517765">
           <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1193,15 +1074,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.37969545">
           <caret line="22" column="2" selection-start-line="22" selection-start-column="2" selection-end-line="22" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/css/dvf.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17258883">
-          <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1209,7 +1081,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2071066">
           <caret line="12" column="2" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1217,7 +1088,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0822335">
           <caret line="47" column="12" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1225,7 +1095,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34416243">
           <caret line="31" column="2" selection-start-line="31" selection-start-column="2" selection-end-line="31" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1254,7 +1123,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.32791877">
           <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1262,21 +1130,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.039306358">
           <caret line="192" column="27" selection-start-line="192" selection-start-column="27" selection-end-line="192" selection-end-column="27" />
-          <folding>
-            <element signature="n#!!doc;n#addViolin#0" expanded="false" />
-            <element signature="n#!!block;n#addViolin#0" expanded="false" />
-            <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/lakis.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5895954">
-          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#43#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1291,32 +1144,40 @@
     <entry file="file://$PROJECT_DIR$/web/js/L.Control.ZoomMin.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="27" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
+          <caret line="40" column="28" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
+    <entry file="file://$PROJECT_DIR$/web/js/Icon.Canvas.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.23077">
-          <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/Icon.Canvas.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/lakis.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
           <folding>
-            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#0#43#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5499398">
+        <state vertical-scroll-proportion="0.34416243">
           <caret line="364" column="3" selection-start-line="364" selection-start-column="3" selection-end-line="364" selection-end-column="3" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -1335,9 +1196,75 @@
             <element signature="n#!!block;n#mapTypeToField#0" expanded="false" />
             <element signature="n#!!block;n#mapTypeToIcon#0" expanded="false" />
             <element signature="n#!!block;n#generatePalette#0" expanded="false" />
-            <marker date="1434663111863" expanded="true" signature="10950:10965" placeholder="..." />
-            <marker date="1434663111863" expanded="true" signature="11076:11096" placeholder="..." />
-            <marker date="1434663111863" expanded="true" signature="11527:11542" placeholder="..." />
+            <marker date="1434663111863" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1434663111863" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1434663111863" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/leaflet-dvf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6390" column="52" selection-start-line="6390" selection-start-column="52" selection-end-line="6390" selection-end-column="52" />
+          <folding>
+            <marker date="1433878901161" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1433878901161" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1433878901161" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/leaflet-dvf/dist/leaflet-dvf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24060914">
+          <caret line="7003" column="19" selection-start-line="7003" selection-start-column="19" selection-end-line="7003" selection-end-column="19" />
+          <folding>
+            <marker date="1434728787915" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1434728787915" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1434728787915" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/leaflet-dvf/dist/css/dvf.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.572589">
+          <caret line="207" column="0" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/dvf.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25888324">
+          <caret line="15" column="39" selection-start-line="0" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/leaflet-dvf/dist/css/dvf.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2836288">
+          <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
