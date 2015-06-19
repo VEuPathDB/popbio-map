@@ -1,103 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Replace">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/leaflet.fullscreen/Control.FullScreen.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/leaflet.fullscreen/Control.FullScreen.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/leaflet-zoom-min/L.Control.ZoomMin.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/Leaflet.EasyButton/easy-button.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/Leaflet.Spin/leaflet.spin.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/css/vectorbase.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/css/vectorbase.min.css" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\Control.FullScreen.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\Control.FullScreen.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\L.Control.ZoomMin.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\L.Control.ZoomMin.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\Leaflet.vector-markers.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\Leaflet.vector-markers.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\assets\shadow.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\assets\shadow@2x.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\bootstrap-tagsinput.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\bootstrap-tagsinput.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\dvf.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\dvf.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\icon-fullscreen-2x.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\icon-fullscreen.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\leaflet-sidebar.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\leaflet-sidebar.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\nv.d3.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\css\nv.d3.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\Control.FullScreen.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\Control.FullScreen.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\L.Control.ZoomMin.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\L.Control.ZoomMin.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\Leaflet.vector-markers.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\Leaflet.vector-markers.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\PruneCluster.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\PruneCluster.js.map" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\PruneCluster.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap-tagsinput.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap-tagsinput.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap\css\bootstrap-responsive.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap\css\bootstrap-responsive.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap\css\bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap\css\bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap\img\glyphicons-halflings-white.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap\img\glyphicons-halflings.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap\js\bootstrap.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\bootstrap\js\bootstrap.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\easy-button.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\easy-button.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\leaflet-dvf.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\leaflet-dvf.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\leaflet-sidebar.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\leaflet-sidebar.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\leaflet.spin.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\leaflet.spin.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\nv.d3.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\spin.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\spin.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\typeahead.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\js\typeahead.bundle.min.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet.fullscreen/Control.FullScreen.css" afterPath="$PROJECT_DIR$/libs/leaflet.fullscreen/Control.FullScreen.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet.fullscreen/Control.FullScreen.js" afterPath="$PROJECT_DIR$/libs/leaflet.fullscreen/Control.FullScreen.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-zoom-min/L.Control.ZoomMin.css" afterPath="$PROJECT_DIR$/libs/leaflet-zoom-min/L.Control.ZoomMin.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/leaflet-zoom-min/L.Control.ZoomMin.js" afterPath="$PROJECT_DIR$/libs/leaflet-zoom-min/L.Control.ZoomMin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.css" afterPath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.js" afterPath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.min.js" afterPath="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/PruneCluster/dist/PruneCluster.js" afterPath="$PROJECT_DIR$/libs/PruneCluster/dist/PruneCluster.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/PruneCluster/dist/PruneCluster.min.js" afterPath="$PROJECT_DIR$/libs/PruneCluster/dist/PruneCluster.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/beeswarm/beeswarm.js" afterPath="$PROJECT_DIR$/libs/beeswarm/beeswarm.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/beeswarm/beeswarm.min.js" afterPath="$PROJECT_DIR$/libs/beeswarm/beeswarm.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" afterPath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.js" afterPath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js" afterPath="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/Leaflet.EasyButton/easy-button.js" afterPath="$PROJECT_DIR$/libs/Leaflet.EasyButton/easy-button.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2/css/gmaps-sidebar.min.css" afterPath="$PROJECT_DIR$/libs/sidebar-v2/css/gmaps-sidebar.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2/js/jquery-sidebar.min.js" afterPath="$PROJECT_DIR$/libs/sidebar-v2/js/jquery-sidebar.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2/css/leaflet-sidebar.css" afterPath="$PROJECT_DIR$/libs/sidebar-v2/css/leaflet-sidebar.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2/js/leaflet-sidebar.js" afterPath="$PROJECT_DIR$/libs/sidebar-v2/js/leaflet-sidebar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2/css/leaflet-sidebar.min.css" afterPath="$PROJECT_DIR$/libs/sidebar-v2/css/leaflet-sidebar.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2/js/leaflet-sidebar.min.js" afterPath="$PROJECT_DIR$/libs/sidebar-v2/js/leaflet-sidebar.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/Leaflet.Spin/leaflet.spin.js" afterPath="$PROJECT_DIR$/libs/Leaflet.Spin/leaflet.spin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.css" afterPath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.js" afterPath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.min.css" afterPath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.min.js" afterPath="$PROJECT_DIR$/libs/nvd3/build/nv.d3.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/nv.d3.pie.js" afterPath="$PROJECT_DIR$/web/js/nv.d3.pie.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/nv.d3.pie.min.js" afterPath="$PROJECT_DIR$/web/js/nv.d3.pie.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2/css/ol2-sidebar.min.css" afterPath="$PROJECT_DIR$/libs/sidebar-v2/css/ol2-sidebar.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2/css/ol3-sidebar.min.css" afterPath="$PROJECT_DIR$/libs/sidebar-v2/css/ol3-sidebar.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/spin.js/spin.js" afterPath="$PROJECT_DIR$/libs/spin.js/spin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/spin.js/spin.min.js" afterPath="$PROJECT_DIR$/libs/spin.js/spin.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/typeahead.js/dist/typeahead.bundle.js" afterPath="$PROJECT_DIR$/libs/typeahead.js/dist/typeahead.bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/typeahead.js/dist/typeahead.bundle.min.js" afterPath="$PROJECT_DIR$/libs/typeahead.js/dist/typeahead.bundle.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Added minified versions for all css and js files in all repos">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/sidebar-v2" afterPath="$PROJECT_DIR$/libs/sidebar-v2" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -122,8 +27,8 @@
       <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.80864865">
-              <caret line="44" column="64" selection-start-line="44" selection-start-column="64" selection-end-line="44" selection-end-column="64" />
+            <state vertical-scroll-proportion="0.51602024">
+              <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -219,8 +124,8 @@
         <option value="$PROJECT_DIR$/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" />
         <option value="$PROJECT_DIR$/libs/beeswarm/beeswarm.js" />
         <option value="$PROJECT_DIR$/libs/Leaflet.vector-markers/dist/Leaflet.vector-markers.css" />
-        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
         <option value="$PROJECT_DIR$/web/css/vectorbase.css" />
+        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
       </list>
     </option>
   </component>
@@ -303,8 +208,18 @@
               <option name="myItemId" value="popbio_map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -318,21 +233,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
+              <option name="myItemId" value="libs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
+              <option name="myItemId" value="beeswarm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -448,18 +353,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00025" summary="* Hooked pie charts to local cluster markers&#10;* Fixed various issues with pie charts">
-      <created>1426788144654</created>
-      <option name="number" value="00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1426788144654</updated>
-    </task>
-    <task id="LOCAL-00026" summary="* Hooked pie charts to local cluster markers&#10;* Fixed various issues with pie charts">
-      <created>1426788173632</created>
-      <option name="number" value="00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1426788173632</updated>
     </task>
     <task id="LOCAL-00027" summary="* Project files clean-up&#10;* Added minified versions of JS &amp; CSS">
       <created>1426791281849</created>
@@ -743,7 +636,19 @@
       <option name="project" value="LOCAL" />
       <updated>1434729071214</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="* Replaced all local libs with the repo equivalents&#10;* Re-structured the project">
+      <created>1434736664591</created>
+      <option name="number" value="00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1434736664591</updated>
+    </task>
+    <task id="LOCAL-00075" summary="* Added minified versions for all css and js files in all repos">
+      <created>1434737220720</created>
+      <option name="number" value="00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1434737220720</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TodoView">
@@ -765,7 +670,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36247545" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32612967" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32743362" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20580475" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
@@ -818,8 +723,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Added a search the world toggle button&#10;* Improved SOLR query and BBox generation" />
-    <MESSAGE value="* Added font awesome icons to search terms:&#10;** Taxonomy gets fa-sitemap&#10;** Title gets fa-tag&#10;** Description gets fa-info-circle&#10;** Projects get fa-database&#10;** Anywhere gets fa-search&#10;* Simplified color scheme for search terms:&#10;** Taxonomy gets blue (label-primary)&#10;** Other tags get green (label-success)&#10;** Free search gets grey (label-default)" />
     <MESSAGE value="* Re-engineered SOLR query construction to give to rely more on fq (instead q) and thus give a slight perfornance gain due to caching&#10; * Samples counter now says 'X samples in current view'" />
     <MESSAGE value="* Merge (hopefully correct this time)" />
     <MESSAGE value="* Added colored markers for single-species samples&#10;* Fine-tuned pie-charts&#10;** They no longer draw gaps between pie segments&#10;** More than 8 species/colored showed&#10;* Discovered a bug in SOLR data with samples missing the species_category field&#10;* Updated prunecluster &amp; leaflet-dvf libs to the latest version&#10; * Added Leaflet.vector-markers lib to the project" />
@@ -843,7 +746,9 @@
     <MESSAGE value="* Code cleanup and re-arrangement" />
     <MESSAGE value="* Refined the starting location of the map&#10;* Added vb-violin-plots.(js|css). Still no working violin plots though&#10;* Re-built minified versions of most js and css files" />
     <MESSAGE value="* Switched to a new project structure&#10;** Libs are now repos" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Switched to a new project structure&#10;** Libs are now repos" />
+    <MESSAGE value="* Replaced all local libs with the repo equivalents&#10;* Re-structured the project" />
+    <MESSAGE value="* Added minified versions for all css and js files in all repos" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Added minified versions for all css and js files in all repos" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1250,8 +1155,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80864865">
-          <caret line="44" column="64" selection-start-line="44" selection-start-column="64" selection-end-line="44" selection-end-column="64" />
+        <state vertical-scroll-proportion="0.51602024">
+          <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
