@@ -1,789 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Fixed include paths for libs">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/Leaflet.EasyButton" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/Leaflet.Spin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/PruneCluster" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/beeswarm" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/bootstrap-tagsinput" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/leaflet-dvf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/leaflet-zoom-min" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/leaflet.fullscreen" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/nvd3" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/spin.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/libs/typeahead.js" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\Leaflet.EasyButton" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\Leaflet.Spin" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\Leaflet.vector-markers" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\PruneCluster" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\beeswarm" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\bootstrap-tagsinput" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\leaflet-dvf" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\leaflet-zoom-min" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\leaflet.fullscreen" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\nvd3" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\sidebar-v2" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\spin.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\libs\typeahead.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.Spin\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\.bowerrc" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\Gruntfile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\Gruntfile.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\dist\Leaflet.vector-markers.css.map" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\examples\basic.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\src\Leaflet.vector-markers.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\src\Leaflet.vector-markers.scss" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\Gruntfile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\Gruntfile.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\LeafletAdapter.ts" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\LeafletSpiderfier.ts" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\PruneCluster.ts" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\dist\LeafletStyleSheet.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\dist\PruneCluster.js.map" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\airplane.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\bug-11.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\bug-18.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\bug-23.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\examples.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\examples.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\helicopter.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\moving.1.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\moving.10.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.100-icons.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.100-popup.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.100.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.1000.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-categories-2.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-categories.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-control.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-delete.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-filtering.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-getclustermarkers.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-reseticons.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-size.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000-spiderfier.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.10000.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.1000000.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.150000.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\random.60000.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\realworld.50000-categories.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\realworld.50000.1.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\realworld.50000.1.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\realworld.50000.2.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\realworld.50000.2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\examples\realworld.50000.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\.travis.yml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\Gruntfile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\Gruntfile.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\bootstrap-tagsinput.jquery.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput-angular.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput-angular.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput-angular.min.js.map" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput.less" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput.min.js.map" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput.zip" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\app.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\app.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\app.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\app.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\app_bs2.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\app_bs2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\app_bs3.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\app_bs3.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\cities.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\assets\citynames.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\bootstrap-2.3.2.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\examples\index.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\karma.conf.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\karma.conf.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\src\bootstrap-tagsinput-angular.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\src\bootstrap-tagsinput-angular.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\src\bootstrap-tagsinput.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\src\bootstrap-tagsinput.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\src\bootstrap-tagsinput.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\src\bootstrap-tagsinput.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput-angular.tests.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput-angular.tests.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\events.tests.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\events.tests.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\input_with_object_items.tests.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\input_with_object_items.tests.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\input_with_string_items.tests.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\input_with_string_items.tests.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\reproduced_bugs.tests.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\reproduced_bugs.tests.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\select_with_object_items.tests.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\select_with_object_items.tests.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\select_with_string_items.tests.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\bootstrap-tagsinput\select_with_string_items.tests.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\helpers.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\helpers.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\test\index.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\.travis.yml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\Gruntfile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\Gruntfile.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\build\build.sh" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\dist\data\countryData.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\dist\data\stateData.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\MarkerCluster.Default.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\MarkerCluster.Default.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\MarkerCluster.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\MarkerCluster.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\example.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\example.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\meetups.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\meetups.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\ui.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\css\ui.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\20110827-060626-Run.gpx" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\20120620-232221-Run.gpx" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\20131031-012045-Run.gpx" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\NETPOPZ2.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\NETPOPZ2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\NETZIP2.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\NETZIP2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\armedConflicts.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\armedConflicts.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\battleDeaths.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\battleDeaths.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\countries_historical.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\countyNames.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\countyNames.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\countyStats.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\countyStats.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\data.txt" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\dccrimestats.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\dccrimestats.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\dcprecinctstopo.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\dcprecinctstopo.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\do_n17_8070_31ne.2013.jpg" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\do_n17_8070_34nw.2013.jpg" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\electionResults.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\electionResults.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\flightData.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\flightData.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\geojson.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\geojson.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\gz_2010_us_040_00_500k.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\incomesData.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\incomesData.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\pollsterData.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\pollsterData.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\solidFuels.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\solidFuels.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\telephoneLines.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\telephoneLines.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\us-10m.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\us-10m.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\usAirports.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\data\usAirports.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\airports.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\armedconflicts.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\choropleth.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\classification.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\colors.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\conflictdata.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\countystats.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\dccrimes.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\dcmetrobus.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\deathsbyconflict.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\earthquakes.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\earthquakes.ie8.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\earthquakes2.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\earthquakes3.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\earthquakes4.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\election2012.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\election2012results.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\geohashart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\geohashes.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\incomelevels.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\manymarkers.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\markers.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\meetups.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\minard.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\nlzip.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\panoramio.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\runmap.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\runningdata.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\sochistats.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\sochistats2.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\sparklines.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\uselectiondata.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\usstateflags.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\html\weather.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\grey_wash_wall\grey_wash_wall.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\grey_wash_wall\grey_wash_wall_@2X.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\grey_wash_wall\readme.txt" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\irongrip\irongrip.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\irongrip\irongrip_@2X.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\irongrip\readme.txt" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\pw_maze_white\pw_maze_white.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\pw_maze_white\pw_maze_white_@2X.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\img\subtlepatterns\pw_maze_white\readme.txt" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\chromaticgallery.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\chromaticgallery.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\colors.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\colors.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\earthquakes.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\earthquakes.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\election2012.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\election2012.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\election2012results.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\election2012results.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\geohashes.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\geohashes.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\incomelevels.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\incomelevels.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\leaflet-0.8.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\leaflet-0.8.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\markers.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\markers.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\meetups.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\meetups.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\panoramio.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\panoramio.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\uselectiondata.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\uselectiondata.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\weather.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\js\weather.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\bootstrap\css\bootstrap-responsive.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\bootstrap\css\bootstrap-responsive.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\bootstrap\css\bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\bootstrap\css\bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\bootstrap\img\glyphicons-halflings-white.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\bootstrap\img\glyphicons-halflings.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\bootstrap\js\bootstrap.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\bootstrap\js\bootstrap.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\date.format.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\date.format.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\geohash.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\geohash.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\jquery-1.11.0.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\json2.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\json2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\jsts\javascript.util.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\jsts\javascript.util.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\jsts\jsts.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\jsts\jsts.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet.markercluster-src.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet.markercluster-src.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\images\layers.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\images\marker-icon.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\images\marker-icon@2x.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\images\marker-shadow.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\leaflet-src.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\leaflet-src.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\leaflet.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\leaflet.ie.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\leaflet.ie.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\leaflet.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\leaflet.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\leaflet\leaflet.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\moment.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\tilefilter\TileLayer.Filter.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\tilefilter\TileLayer.Filter.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\16\delete.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\16\moveleft.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\16\moveright.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\16\new.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\16\zoomin.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\16\zoomout.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\24\delete.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\24\moveleft.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\24\moveright.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\24\new.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\24\zoomin.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\24\zoomout.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\32\delete.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\32\moveleft.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\32\moveright.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\32\new.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\32\zoomin.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\32\zoomout.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\img\cluster_bg.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\timeline-locales.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\timeline-locales.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\timeline-min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\timeline.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\timeline.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\timeline.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\examples\lib\timeline\timeline.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\copyright.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\copyright.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\css\dvf.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\css\dvf.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\data\countryData.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\data\countryData.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\data\stateData.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\data\stateData.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.chartmarkers.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.chartmarkers.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.controls.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.controls.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.datalayer.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.datalayer.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.experimental.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.experimental.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.linearfunctions.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.linearfunctions.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.lines.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.lines.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.markers.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.markers.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.palettes.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.palettes.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.regularpolygon.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.regularpolygon.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.utils.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\src\leaflet.dvf.utils.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-zoom-min\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-zoom-min\screenshot.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet.fullscreen\.jshintrc" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet.fullscreen\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet.fullscreen\index.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet.fullscreen\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\.jshintrc" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\.travis.yml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\GruntFile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\GruntFile.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\TimeSeries.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\boxPlot.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\bullet.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\bulletChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\candlestick.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\candlestickChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\cumulativeLineChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\discreteBarChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\documentation.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\donutChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\furiousLegend.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\historicalBar.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\historicalBarChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\images\background.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\images\body-background.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\images\bullet.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\images\hr.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\images\octocat-logo.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\index.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\legend.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\lib\colorbrewer.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\lib\colorbrewer.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\lib\stream_layers.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\lib\stream_layers.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\line.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\lineChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\lineChartSVGResize.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\linePlusBarChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\lineWithFocusChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\lineWithFocusChart_x2AxisLabel.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\monitoringChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\multiBarChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\multiBarChart2.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\multiBarHorizontalChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\multiChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\ohlc.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\ohlcChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\parallelCoordinates.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\pie.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\pieChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\scatter.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\scatterChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\scatterPlusLineChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\site.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\sparkline.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\sparklinePlus.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\stackedArea.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\stackedAreaChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\stylesheets\pygment_trac.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\stylesheets\pygment_trac.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\stylesheets\styles.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\stylesheets\styles.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\sunburst.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\examples\tooltip.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\index.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\package.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\core.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\core.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\axis.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\axis.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\bars.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\bars.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\boxplot.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\boxplot.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\bullet.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\bullet.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\candlestick.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\candlestick.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\furiousLegend.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\furiousLegend.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\lineplusbar.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\lineplusbar.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\lines.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\lines.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\main.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\main.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\ohlc.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\ohlc.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\parallelcoordinates.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\parallelcoordinates.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\pie.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\pie.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\scatter.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\scatter.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\sparkline.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\sparkline.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\stackedarea.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\stackedarea.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\tooltip.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\css\tooltip.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\dom.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\dom.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\interactiveLayer.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\interactiveLayer.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\axis.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\axis.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\boxPlot.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\boxPlot.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\boxPlotChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\boxPlotChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\bullet.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\bullet.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\bulletChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\bulletChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\candlestickBar.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\candlestickBar.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\cumulativeLineChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\cumulativeLineChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\discreteBar.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\discreteBar.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\discreteBarChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\discreteBarChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\distribution.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\distribution.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\furiousLegend.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\furiousLegend.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\historicalBar.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\historicalBar.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\historicalBarChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\historicalBarChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\legend.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\legend.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\line.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\line.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\lineChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\lineChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\linePlusBarChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\linePlusBarChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\lineWithFocusChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\lineWithFocusChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiBar.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiBar.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiBarChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiBarChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiBarHorizontal.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiBarHorizontal.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiBarHorizontalChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiBarHorizontalChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\multiChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\ohlcBar.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\ohlcBar.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\parallelCoordinates.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\parallelCoordinates.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\pie.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\pie.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\pieChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\pieChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\scatter.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\scatter.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\scatterChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\scatterChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\sparkline.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\sparkline.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\sparklinePlus.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\sparklinePlus.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\stackedArea.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\stackedArea.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\stackedAreaChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\stackedAreaChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\sunburst.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\sunburst.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\sunburstChart.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\models\sunburstChart.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\tooltip.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\tooltip.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\utils.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\src\utils.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\ScatterChartTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\boxPlotTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\cumulativeLineChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\lineChartTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\linePlusBarChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\linePlusBarWithFocusChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\lineWithFisheyeChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\lineWithFocusChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\lineWithFocusChartMissingData.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\axis.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\boxplot.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\bullet.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\core.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\cumulative-line.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\discretebar.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\historical-bar.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\legend.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\line.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\multibar-horizontal.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\multibar.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\pie.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\scatter.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\sparkline.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\stacked.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\sunburst.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\test-utils.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\mocha\utils.coffee" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\multiBarChartTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\multiBarHorizontalChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\node\GruntFile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\node\GruntFile.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\node\README.md" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\node\nodeTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\node\nodeTest.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\node\nodeTest.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\node\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\pieChartTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\polylinearTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\realTimeChartTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\scatterPlusLineChart.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\stackedAreaChartMissingData.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\stackedAreaChartTest.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\stream_layers.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\stream_layers.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\testScript.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\testScript.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\teststyle.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\test\teststyle.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\CHANGELOG.md" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\gmaps-sidebar.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\gmaps-sidebar.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\gmaps-sidebar.min.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\leaflet-sidebar.min.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\ol2-sidebar.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\ol2-sidebar.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\ol2-sidebar.min.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\ol3-sidebar.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\ol3-sidebar.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\ol3-sidebar.min.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\gmaps-1.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\gmaps-2.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\leaflet-1.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\leaflet-2.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\ol2-1.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\ol2-2.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\ol3-1.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\ol3-2.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\doc\sidebar-v2.gif" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\examples\gmaps.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\examples\index.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\examples\ol2.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\examples\ol3.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\gulpfile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\gulpfile.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\js\jquery-sidebar.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\js\jquery-sidebar.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\js\jquery-sidebar.min.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\scss\_base.scss" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\scss\_ol-base.scss" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\scss\gmaps-sidebar.scss" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\scss\leaflet-sidebar.scss" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\scss\ol2-sidebar.scss" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\scss\ol3-sidebar.scss" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\.jshintrc" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\.npmignore" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\.spmignore" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\Gruntfile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\Gruntfile.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\component.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\jquery.spin.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\jquery.spin.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\CNAME" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\bg.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\browsers.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\crosshair.gif" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\fd-slider\fd-slider-tooltip.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\fd-slider\fd-slider-tooltip.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\fd-slider\fd-slider.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\fd-slider\fd-slider.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\fd-slider\fd-slider.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\fd-slider\fd-slider.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\github.gif" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\main.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\main.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\prettify.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\prettify.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\prettify.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\prettify.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\preview.jpg" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\assets\ribbon.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\example\amd.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\example\jquery.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\example\modernizr.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\example\modernizr.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\example\modernizr.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\example\positioning.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\example\settings.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\favicon.ico" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\spin.js\site\index.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\.jshintrc" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\.travis.yml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\CHANGELOG.md" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\Gruntfile.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\bower.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\composer.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\doc\bloodhound.md" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\doc\jquery_typeahead.md" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\doc\migration\0.10.0.md" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\karma.conf.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\karma.conf.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\package.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\bloodhound.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\bloodhound.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\lru_cache.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\lru_cache.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\options_parser.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\options_parser.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\persistent_storage.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\persistent_storage.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\prefetch.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\prefetch.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\remote.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\remote.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\search_index.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\search_index.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\tokenizers.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\tokenizers.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\transport.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\transport.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\version.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\bloodhound\version.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\common\utils.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\common\utils.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\dataset.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\dataset.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\default_menu.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\default_menu.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\event_bus.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\event_bus.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\event_emitter.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\event_emitter.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\highlight.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\highlight.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\input.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\input.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\menu.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\menu.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\plugin.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\plugin.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\typeahead.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\typeahead.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\www.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\src\typeahead\www.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\bloodhound_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\bloodhound_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\lru_cache_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\lru_cache_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\options_parser_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\options_parser_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\persistent_storage_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\persistent_storage_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\prefetch_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\prefetch_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\remote_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\remote_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\search_index_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\search_index_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\tokenizers_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\tokenizers_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\transport_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\bloodhound\transport_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\ci" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\fixtures\ajax_responses.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\fixtures\ajax_responses.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\fixtures\data.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\fixtures\data.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\fixtures\html.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\fixtures\html.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\helpers\typeahead_mocks.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\helpers\typeahead_mocks.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\integration\test.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\integration\test.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\playground.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\dataset_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\dataset_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\default_results_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\default_results_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\event_bus_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\event_bus_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\event_emitter_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\event_emitter_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\highlight_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\highlight_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\input_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\input_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\plugin_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\plugin_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\results_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\results_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\typeahead_spec.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\test\typeahead\typeahead_spec.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\typeahead.js\typeahead.js.jquery.json" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.EasyButton\bower.json" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\dist\Leaflet.vector-markers.css" afterPath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers/Leaflet.vector-markers.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\dist\Leaflet.vector-markers.js" afterPath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers/Leaflet.vector-markers.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\dist\Leaflet.vector-markers.min.css" afterPath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers/Leaflet.vector-markers.min.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\dist\Leaflet.vector-markers.min.js" afterPath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\dist\assets\shadow.png" afterPath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers/assets/shadow.png" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\Leaflet.vector-markers\dist\assets\shadow@2x.png" afterPath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers/assets/shadow@2x.png" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\dist\LeafletStyleSheet.min.css" afterPath="$PROJECT_DIR$/web/libs/PruneCluster/LeafletStyleSheet.min.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\dist\PruneCluster.js" afterPath="$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\PruneCluster\dist\PruneCluster.min.js" afterPath="$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.min.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput.css" afterPath="$PROJECT_DIR$/web/libs/bootstrap-tagsinput/bootstrap-tagsinput.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput.js" afterPath="$PROJECT_DIR$/web/libs/bootstrap-tagsinput/bootstrap-tagsinput.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput.min.css" afterPath="$PROJECT_DIR$/web/libs/bootstrap-tagsinput/bootstrap-tagsinput.min.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\bootstrap-tagsinput\dist\bootstrap-tagsinput.min.js" afterPath="$PROJECT_DIR$/web/libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\dist\css\dvf.css" afterPath="$PROJECT_DIR$/web/libs/leaflet-dvf/css/dvf.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\dist\css\dvf.min.css" afterPath="$PROJECT_DIR$/web/libs/leaflet-dvf/css/dvf.min.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\dist\leaflet-dvf.js" afterPath="$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\dist\leaflet-dvf.markers.js" afterPath="$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.markers.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\dist\leaflet-dvf.markers.min.js" afterPath="$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.markers.min.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\leaflet-dvf\dist\leaflet-dvf.min.js" afterPath="$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.min.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\build\nv.d3.css" afterPath="$PROJECT_DIR$/web/libs/nvd3/nv.d3.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\build\nv.d3.js" afterPath="$PROJECT_DIR$/web/libs/nvd3/nv.d3.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\build\nv.d3.min.css" afterPath="$PROJECT_DIR$/web/libs/nvd3/nv.d3.min.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\nvd3\build\nv.d3.min.js" afterPath="$PROJECT_DIR$/web/libs/nvd3/nv.d3.min.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\leaflet-sidebar.css" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\css\leaflet-sidebar.min.css" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.css" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\js\leaflet-sidebar.js" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.js" />
-      <change type="MOVED" beforePath="C:\Users\Ioannis\WebstormProjects\popbio_map\web\libs\sidebar-v2\js\leaflet-sidebar.min.js" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Moved all libs under /web&#10;* Removed unnecessary files (docs, examples, etc) from libs repos">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers" afterPath="$PROJECT_DIR$/web/libs/Leaflet.vector-markers" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/PruneCluster" afterPath="$PROJECT_DIR$/web/libs/PruneCluster" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/leaflet-zoom-min" afterPath="$PROJECT_DIR$/web/libs/leaflet-zoom-min" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/leaflet.fullscreen" afterPath="$PROJECT_DIR$/web/libs/leaflet.fullscreen" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/nvd3" afterPath="$PROJECT_DIR$/web/libs/nvd3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/sidebar-v2" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/typeahead.js" afterPath="$PROJECT_DIR$/web/libs/typeahead.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -808,8 +33,8 @@
       <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.89153755">
-              <caret line="44" column="58" selection-start-line="44" selection-start-column="58" selection-end-line="44" selection-end-column="58" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -842,7 +67,7 @@
       </list>
     </option>
     <option name="UPDATE_TYPE" value="MERGE" />
-    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="ROOT_SYNC" value="SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -1081,7 +306,7 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="LayoutCode.rearrangeEntriesJavaScript 1.5" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/web/js/leaflet-dvf.js" />
   </component>
@@ -1157,12 +382,6 @@
       <created>1425910081753</created>
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00029" summary="* Fixed a strange error in leaflet-dvf.js (probably caused by accident)">
-      <created>1426793033909</created>
-      <option name="number" value="00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1426793033909</updated>
     </task>
     <task id="LOCAL-00030" summary="* Fixed a strange error in leaflet-dvf.js (probably caused by accident)">
       <created>1426793212579</created>
@@ -1452,7 +671,13 @@
       <option name="project" value="LOCAL" />
       <updated>1434737917491</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="* Moved all libs under /web&#10;* Removed unnecessary files (docs, examples, etc) from libs repos">
+      <created>1434742663294</created>
+      <option name="number" value="00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1434742663295</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1466,9 +691,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18311346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18311346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1527,7 +752,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Merge (hopefully correct this time)" />
     <MESSAGE value="* Added colored markers for single-species samples&#10;* Fine-tuned pie-charts&#10;** They no longer draw gaps between pie segments&#10;** More than 8 species/colored showed&#10;* Discovered a bug in SOLR data with samples missing the species_category field&#10;* Updated prunecluster &amp; leaflet-dvf libs to the latest version&#10; * Added Leaflet.vector-markers lib to the project" />
     <MESSAGE value="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;" />
     <MESSAGE value="* Moved the legend to the bottom-right of the map so as to not interfere with the charts on the left side&#10;** Made it toggleable&#10;" />
@@ -1552,7 +776,8 @@
     <MESSAGE value="* Replaced all local libs with the repo equivalents&#10;* Re-structured the project" />
     <MESSAGE value="* Added minified versions for all css and js files in all repos" />
     <MESSAGE value="* Fixed include paths for libs" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Fixed include paths for libs" />
+    <MESSAGE value="* Moved all libs under /web&#10;* Removed unnecessary files (docs, examples, etc) from libs repos" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Moved all libs under /web&#10;* Removed unnecessary files (docs, examples, etc) from libs repos" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1584,6 +809,24 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1730,7 +973,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.24060914">
           <caret line="7003" column="19" selection-start-line="7003" selection-start-column="19" selection-end-line="7003" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1753,7 +995,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.37969545">
           <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1761,7 +1002,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.96548223">
           <caret line="188" column="0" selection-start-line="188" selection-start-column="0" selection-end-line="188" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1792,9 +1032,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08629441">
           <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1802,7 +1039,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1810,7 +1046,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.25888324">
           <caret line="15" column="56" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1818,7 +1053,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.96548223">
           <caret line="909" column="41" selection-start-line="909" selection-start-column="41" selection-end-line="909" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1826,7 +1060,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.32690355">
           <caret line="62" column="9" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1834,7 +1067,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.035533">
           <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1852,7 +1084,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.96548223">
           <caret line="677" column="0" selection-start-line="677" selection-start-column="0" selection-end-line="677" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1860,7 +1091,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.034517765">
           <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1868,7 +1098,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.24060914">
           <caret line="137" column="4" selection-start-line="137" selection-start-column="4" selection-end-line="137" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1876,7 +1105,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.22436549">
           <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1884,7 +1112,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.96548223">
           <caret line="65" column="1" selection-start-line="65" selection-start-column="1" selection-end-line="65" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1892,9 +1119,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1902,7 +1126,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.96548223">
           <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1917,9 +1140,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8391167">
           <caret line="391" column="18" selection-start-line="391" selection-start-column="11" selection-end-line="391" selection-end-column="18" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1947,8 +1167,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.89153755">
-          <caret line="44" column="58" selection-start-line="44" selection-start-column="58" selection-end-line="44" selection-end-column="58" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
