@@ -50,6 +50,7 @@
 
     <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
     <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
 
 
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
@@ -235,6 +236,22 @@
         filterMarkers($("#search_ac").tagsinput('items'))
     });
 
+    // Test beeswarm
+
+    var beeswarm, num_data = 200,
+            min = 10, max = 300,
+            xaxis = 200, radius = 3,
+            dataset = [], i;
+
+    for (i = 0; i < num_data; ++i)
+        dataset.push({
+            'x': 1,
+            'y': Math.floor(Math.random() * (max - min + 1)) + min
+        });
+
+    beeswarm = new Beeswarm(dataset, xaxis, radius);
+
+    console.dir(beeswarm);
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
