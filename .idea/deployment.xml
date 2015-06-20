@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="vb-dev">
+  <component name="PublishConfigData" serverName="vb-dev" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;.gitignore">
     <serverData>
       <paths name="vb-dev">
         <serverdata>
@@ -8,16 +8,7 @@
             <mapping deploy="/popbio/map/htdocs" local="$PROJECT_DIR$/web" web="/" />
             <mapping deploy="/Software/solr-5.2.1/server/solr/vb_popbio/conf" local="$PROJECT_DIR$/SOLR/vb_popbio/conf" />
             <mapping deploy="/Software/solr-5.2.1/server/solr/vb_ta/conf" local="$PROJECT_DIR$/SOLR/vb_ta/conf" />
-            <mapping deploy="/popbio/map/htdocs/libs" local="$PROJECT_DIR$/libs" web="/libs" />
           </mappings>
-          <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/libs/beeswarm/beeswarm.js" />
-            <excludedPath local="true" path="$PROJECT_DIR$/libs/beeswarm/LICENSE" />
-            <excludedPath local="true" path="$PROJECT_DIR$/libs/beeswarm/README.md" />
-            <excludedPath local="true" path="$PROJECT_DIR$/libs/bootstrap-tagsinput/examples" />
-            <excludedPath local="true" path="$PROJECT_DIR$/libs/bootstrap-tagsinput/src" />
-            <excludedPath local="true" path="$PROJECT_DIR$/libs/bootstrap-tagsinput/test" />
-          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>

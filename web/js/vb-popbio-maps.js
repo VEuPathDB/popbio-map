@@ -1032,11 +1032,14 @@ function buildPalette(items, nmColors, paletteType) {
         stNoItems = noItems;
 
     for (var i = 0; i < nmColors; i++) {
-        var item = items[i][0];
-        newPalette[item] = kelly_colors_hex[i];
-        //console.log(item);
+        if (typeof (items[i]) !== 'undefined') {
+            var item = items[i][0];
+            newPalette[item] = kelly_colors_hex[i];
+            //console.log(item);
 
-        noItems--; // track how many items don't have a proper color
+            noItems--; // track how many items don't have a proper color
+        }
+
     }
 
     var lumInterval = 0.5 / noItems,
