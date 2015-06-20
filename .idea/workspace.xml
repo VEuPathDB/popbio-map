@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Moved all libs under /web&#10;* Removed unnecessary files (docs, examples, etc) from libs repos">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="* Fixed a bug in palette generation that caused a crash when the number of items in the palette was lower than the number of requested colors">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -29,7 +29,7 @@
       <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-21.153847">
               <caret line="220" column="11" selection-start-line="220" selection-start-column="8" selection-end-line="220" selection-end-column="11" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -49,16 +49,16 @@
       <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.41516244">
-              <caret line="90" column="20" selection-start-line="90" selection-start-column="20" selection-end-line="90" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.38868833">
+              <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
               <folding>
-                <element signature="e#18189#18226#0" expanded="false" />
+                <element signature="e#18186#18223#0" expanded="false" />
                 <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
                 <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-                <element signature="e#40685#40788#0" expanded="false" />
-                <marker date="1434804621864" expanded="true" signature="10950:10965" placeholder="..." />
-                <marker date="1434804621864" expanded="true" signature="11076:11096" placeholder="..." />
-                <marker date="1434804621864" expanded="true" signature="11527:11542" placeholder="..." />
+                <element signature="e#40682#40785#0" expanded="false" />
+                <marker date="1434805972349" expanded="true" signature="10947:10962" placeholder="..." />
+                <marker date="1434805972349" expanded="true" signature="11073:11093" placeholder="..." />
+                <marker date="1434805972349" expanded="true" signature="11524:11539" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -393,12 +393,6 @@
       <option name="number" value="Default" />
       <updated>1425910081753</updated>
     </task>
-    <task id="LOCAL-00031" summary="* Refreshed minified files">
-      <created>1426793385035</created>
-      <option name="number" value="00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1426793385035</updated>
-    </task>
     <task id="LOCAL-00032" summary="* Using full species name at the piechart legends now&#10;* Move all controls besides sidebar to the top right&#10;* Removed unnecessary files from the project">
       <created>1426857652468</created>
       <option name="number" value="00032" />
@@ -687,7 +681,13 @@
       <option name="project" value="LOCAL" />
       <updated>1434742943850</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="* Fixed a bug in palette generation that caused a crash when the number of items in the palette was lower than the number of requested colors">
+      <created>1434804713466</created>
+      <option name="number" value="00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1434804713467</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TodoView">
@@ -705,8 +705,10 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18311346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32516703" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32516703" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32743362" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20580475" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -715,7 +717,6 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3507795" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
@@ -723,7 +724,6 @@
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36191538" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32612967" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -762,7 +762,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="* Added colored markers for single-species samples&#10;* Fine-tuned pie-charts&#10;** They no longer draw gaps between pie segments&#10;** More than 8 species/colored showed&#10;* Discovered a bug in SOLR data with samples missing the species_category field&#10;* Updated prunecluster &amp; leaflet-dvf libs to the latest version&#10; * Added Leaflet.vector-markers lib to the project" />
     <MESSAGE value="* Removed shadows from single-specimen markers&#10;* Fixed an issue in leaflet.vector-markers lib that caused inner icons to not display properly on firefox&#10;" />
     <MESSAGE value="* Moved the legend to the bottom-right of the map so as to not interfere with the charts on the left side&#10;** Made it toggleable&#10;" />
     <MESSAGE value="* Pushed minified version of easy-button" />
@@ -787,7 +786,8 @@
     <MESSAGE value="* Added minified versions for all css and js files in all repos" />
     <MESSAGE value="* Fixed include paths for libs" />
     <MESSAGE value="* Moved all libs under /web&#10;* Removed unnecessary files (docs, examples, etc) from libs repos" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Moved all libs under /web&#10;* Removed unnecessary files (docs, examples, etc) from libs repos" />
+    <MESSAGE value="* Fixed a bug in palette generation that caused a crash when the number of items in the palette was lower than the number of requested colors" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Fixed a bug in palette generation that caused a crash when the number of items in the palette was lower than the number of requested colors" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -842,13 +842,13 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#18189#18226#0" expanded="false" />
+            <element signature="e#18186#18223#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#40685#40788#0" expanded="false" />
-            <marker date="1434804621864" expanded="true" signature="10950:10965" placeholder="..." />
-            <marker date="1434804621864" expanded="true" signature="11076:11096" placeholder="..." />
-            <marker date="1434804621864" expanded="true" signature="11527:11542" placeholder="..." />
+            <element signature="e#40682#40785#0" expanded="false" />
+            <marker date="1434805972349" expanded="true" signature="10947:10962" placeholder="..." />
+            <marker date="1434805972349" expanded="true" signature="11073:11093" placeholder="..." />
+            <marker date="1434805972349" expanded="true" signature="11524:11539" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -977,6 +977,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1197,7 +1198,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-21.153847">
           <caret line="220" column="11" selection-start-line="220" selection-start-column="8" selection-end-line="220" selection-end-column="11" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1215,16 +1216,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41516244">
-          <caret line="90" column="20" selection-start-line="90" selection-start-column="20" selection-end-line="90" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.38868833">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding>
-            <element signature="e#18189#18226#0" expanded="false" />
+            <element signature="e#18186#18223#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
             <element signature="n#!!block;n#updatePieChart#0" expanded="false" />
-            <element signature="e#40685#40788#0" expanded="false" />
-            <marker date="1434804621864" expanded="true" signature="10950:10965" placeholder="..." />
-            <marker date="1434804621864" expanded="true" signature="11076:11096" placeholder="..." />
-            <marker date="1434804621864" expanded="true" signature="11527:11542" placeholder="..." />
+            <element signature="e#40682#40785#0" expanded="false" />
+            <marker date="1434805972349" expanded="true" signature="10947:10962" placeholder="..." />
+            <marker date="1434805972349" expanded="true" signature="11073:11093" placeholder="..." />
+            <marker date="1434805972349" expanded="true" signature="11524:11539" placeholder="..." />
           </folding>
         </state>
       </provider>

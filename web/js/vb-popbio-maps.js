@@ -6,7 +6,7 @@
  outputs:
  */
 
-function initialize_map() {
+function initializeMap() {
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
         center: [23.079, 3.515],
@@ -94,13 +94,13 @@ function initialize_map() {
 
 
 /*
- function initialize_search
+ function initializeSearch
  date: 18/6/2015
  purpose:
  inputs:
  outputs:
  */
-function initialize_search() {
+function initializeSearch() {
 
     // Reset search "button"
     $('#reset-search').click(function () {
