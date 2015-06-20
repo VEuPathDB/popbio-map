@@ -2,7 +2,7 @@
  * Created by Ioannis on 18/6/2015.
  */
 // Class: Violin --------------------------------------------- //
-function addViolin(svg, results, range, width, domain, resolution, interpolation, imposeMax, log) {
+function addViolin(svg, results, range, width, domain, resolution, interpolation, log) {
 
     "use strict";
 
@@ -168,6 +168,129 @@ function addBoxPlot(svg, elmProbs, elmMean, range, width, domain, boxPlotWidth, 
         .attr("cx", x(0.5))
         .attr("cy", y(elmMean))
         .attr("r", x(boxPlotWidth / 10));
+
+
+}
+
+function addBeeswarm(svg, points, range, width, domain, log) {
+
+    "use strict";
+
+    if (log) {
+        var y = d3.scale.log()
+            .range(range)
+            .domain(domain)
+            .nice();
+
+    } else {
+
+        var y = d3.scale.linear()
+            .range(range)
+            .domain(domain)
+            .nice();
+    }
+
+    var x = d3.scale.linear()
+        .range([0, width])
+        .domain(domain)
+        .nice();
+
+    console.log('WIDTH: ' + width)
+
+    var gSwarmPlot = svg.append("g");
+
+
+    points.forEach(function (p) {
+        //.attr("class", "swarm")
+        gSwarmPlot.append("circle")
+            .attr("cx", p.x)
+            .attr("cy", y(p.y))
+            .attr("r", 4)
+            .style("fill", 'blue');
+        console.log('x:' + p.x + '->' + x(p.x));
+    });
+
+
+}
+
+function createBeeViolinPlot(svg) {
+
+    //"use strict";
+
+    var self = this;
+    var width = 280;
+    var height = 300;
+
+    //this.div = divEl.append("div").attr("id", "violin-popup").append("div").attr("class", "violin-div").attr("id", "violin");
+    //this.div = divEl;
+
+    $('#swarm-chart').empty();
+
+    var margin = {top: 30, bottom: 30, left: 30, right: 20};
+
+    var domain = [0, 350];
+    var d3ObjId = "violin";
+
+    var boxWidth = 100;
+    var boxSpacing = 10;
+
+    var yEvor = d3.scale.linear()
+        .range([height - margin.bottom, margin.top])
+        .domain(domain)
+        .nice();
+
+    var yAxisEvor = d3.svg.axis()
+        .scale(yEvor)
+        .orient("left");
+
+    //var svg = self.div.append("svg")
+    //    .attr("style", 'width: 32%; height: 100%; border: 0');
+
+    svg.attr("style", 'width: 300px; height: 500px; border: 0');
+
+
+    svg.append("text")
+        .attr("x", margin.left + boxWidth + boxSpacing / 2)
+        .attr("y", 10)
+        .style("text-anchor", "middle")
+        .text("Test");
+
+    svg.append("text")
+        .attr("x", margin.left + boxWidth / 2)
+        .attr("y", 290)
+        .style("text-anchor", "middle")
+        .text("All");
+
+    // add the global chart
+    var g = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
+
+    // Test beeswarm
+
+    var beeswarm, num_data = 100,
+        min = 10, max = 300,
+        xaxis = boxWidth / 2, radius = 4,
+        dataset = [], i;
+
+    for (i = 0; i < num_data; ++i)
+        dataset.push({
+            'x': 1,
+            'y': Math.floor(Math.random() * (max - min + 1)) + min
+        });
+
+    beeswarm = new Beeswarm(dataset, xaxis, radius);
+
+    addBeeswarm(g, beeswarm.swarm, [270, 30], boxWidth, domain, false);
+    //addViolin(g, json.facets.dupl.buckets, [height - margin.bottom, margin.top], boxWidth, domain, resolution, interpolation, 0.25, true);
+
+    // add the chart for the cluster
+
+
+    //d3.select("#violin-popup-back").style("display", "block");
+
+
+    //self.text += JSON.stringify(json.response.docs, null, 2);
+    //self.text += "</table>";
+    //self.div.node().innerHTML = self.text;
 
 
 }

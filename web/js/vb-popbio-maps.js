@@ -604,7 +604,8 @@ function loadSolr(parameters) {
                     map.fitBounds(record.bounds);
                 });
                 layer.on("click", function () {
-                    updatePieChart(record.population, record.fullstats)
+                    updatePieChart(record.population, record.fullstats);
+                    createBeeViolinPlot(d3.select("#swarm-chart"));
                 });
                 layer.on("mouseover", function (e) {
                     //console.log(e.target);
@@ -1072,7 +1073,8 @@ function updatePieChart(population, stats) {
     if (stats) {
 
         var height = 500;
-        var width = $("#graphs").width();
+        //var width = $("#graphs").width();
+        var width = 300;
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
@@ -1099,12 +1101,12 @@ function updatePieChart(population, stats) {
                 .attr('height', height)
                 .call(chart);
 
-
-            nv.utils.windowResize(              //Updates the window resize event callback.
-                function () {
-                    chart.update();         //Renders the chart when window is resized.
-                }
-            );
+            //
+            //nv.utils.windowResize(              //Updates the window resize event callback.
+            //    function () {
+            //        chart.update();         //Renders the chart when window is resized.
+            //    }
+            //);
 
 
             //nv.utils.windowResize(chart.update());

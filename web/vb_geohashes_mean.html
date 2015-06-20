@@ -51,6 +51,7 @@
     <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
     <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
     <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
+    <script type="text/javascript" src="js/vb-violin-plots.js"></script>
 
 
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
@@ -166,8 +167,11 @@
 
             <!-- Tab panes -->
             <div class="sidebar-content active">
-                <div class="sidebar-pane" id="swarm-plots">
+                <div class="sidebar-pane" id="swarm-plots"><h3>Click a marker for sample summary data</h3>
 
+                    <div id="swarm-chart-area">
+                        <svg id="swarm-chart"></svg>
+                    </div>
                 </div>
                 <div class="sidebar-pane" id="tablegend">
 
@@ -239,27 +243,15 @@
         filterMarkers($("#search_ac").tagsinput('items'))
     });
 
-    // Test beeswarm
+    //            .append("div").attr("id", "violin-popup").attr("class", "popup").append("div").attr("id", "violin"));
 
-    var beeswarm, num_data = 200,
-            min = 10, max = 300,
-            xaxis = 200, radius = 3,
-            dataset = [], i;
-
-    for (i = 0; i < num_data; ++i)
-        dataset.push({
-            'x': 1,
-            'y': Math.floor(Math.random() * (max - min + 1)) + min
-        });
-
-    beeswarm = new Beeswarm(dataset, xaxis, radius);
-
-    console.dir(beeswarm);
+    //    createBeeViolinPlot($('#swarm-plot'));
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
     });
+
 
 </script>
 </body>
