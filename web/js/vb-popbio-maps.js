@@ -420,38 +420,38 @@ function loadSolr(parameters) {
         switch (zoomLevel) {
             case 1:
             case 2:
-                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_1;
-                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_1;
+                docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_1;
+                docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_1;
                 docSpc = facetCounts.facet_pivot["geohash_1,species_category"];
                 break;
             case 3:
             case 4:
             case 5:
-                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_2;
-                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_2;
+                docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_2;
+                docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_2;
                 docSpc = facetCounts.facet_pivot["geohash_2,species_category"];
                 break;
             case 6:
             case 7:
-                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_3;
-                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_3;
+                docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_3;
+                docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_3;
                 docSpc = facetCounts.facet_pivot["geohash_3,species_category"];
                 break;
             case 8:
             case 9:
-                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_4;
-                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_4;
+                docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_4;
+                docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_4;
                 docSpc = facetCounts.facet_pivot["geohash_4,species_category"];
                 break;
             case 10:
             case 11:
-                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_5;
-                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_5;
+                docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_5;
+                docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_5;
                 docSpc = facetCounts.facet_pivot["geohash_5,species_category"];
                 break;
             default:
-                docLat = statFields.geo_coords_ll_0___tdouble.facets.geohash_6;
-                docLng = statFields.geo_coords_ll_1___tdouble.facets.geohash_6;
+                docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_6;
+                docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_6;
                 docSpc = facetCounts.facet_pivot["geohash_6,species_category"];
                 break;
 
@@ -839,6 +839,7 @@ function loadSmall(mode, zoomLevel) {
         var doc = result.response.docs;
 
         for (var key in doc) if (doc.hasOwnProperty(key)) {
+            console.log(key);
             var coords = doc[key].geo_coords.split(",");
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
             if (doc[key].hasOwnProperty("species_category")) {
