@@ -1409,8 +1409,31 @@
 
     </requestHandler>
 
-    <!-- A request handler to serve data for violin plots (limited to IR assays)-->
-    <requestHandler name="/irVlnInsec" class="solr.SearchHandler">
+    <requestHandler name="/irBeeswarm" class="solr.SearchHandler">
+    <!-- default values for query parameters can be specified, these
+         will be overridden by parameters in the request
+      -->
+    <lst name="defaults">
+        <str name="echoParams">explicit</str>
+        <str name="wt">json</str>
+        <str name="json.nl">map</str>
+    </lst>
+    <lst name="appends">
+        <str name="fq">bundle:pop_sample_phenotype</str>
+        <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+        <str name="fq">has_geodata:true</str>
+    </lst>
+    <lst name="invariants">
+        <int name="rows">100</int>
+        <str name="group">true</str>
+        <str name="group.field">phenotype_value_type_s</str>
+        <str name="group.limit">100</str>
+        <str name="fl">species_category,phenotype_value_f,phenotype_value_unit_s</str>
+    </lst>
+    </requestHandler>
+
+     <!--A request handler to serve data for violin plots (limited to IR assays)-->
+    <requestHandler name="/irViolin" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
              will be overridden by parameters in the request
           -->
@@ -1419,16 +1442,30 @@
             <int name="rows">0</int>
             <str name="wt">json</str>
             <str name="json.nl">map</str>
-            <str name="json.facet">
-                {
-                vtypes: {}
+            <str name="json.facet">{
+                pmean: "avg(phenotype_value_f)",
+                pperc: "percentile(phenotype_value_f,5,25,50,75,95)",
+                pmin: "min(phenotype_value_f)",
+                pmax: "max(phenotype_value_f)",
+                denplot : {
+                type : range,
+                field : phenotype_value_f,
+                gap : ${PGAP:0.1},
+                start: ${PSTART:0},
+                end: ${PEND:1}
+                }
                 }
             </str>
+            <str name="fq">phenotype_value_type_s:${PFIELD:"mortality rate"}</str>
         </lst>
         <lst name="appends">
+            <str name="pgap">2</str>
+            <str name="pstart">1</str>
+            <str name="pend">11</str>
             <str name="fq">bundle:pop_sample_phenotype</str>
             <str name="fq">phenotype_type_s:"insecticide resistance"</str>
             <str name="fq">has_geodata:true</str>
+
         </lst>
         <lst name="invariants">
         </lst>

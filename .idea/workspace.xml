@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Fix Beeswarm to properly return the swarm&#10;&#10;Beeswarm only returned the original data. Did some minor code restructuring to also return the swarm data.">
+    <list id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Add first prototype of Beeswarm/Violin Plots&#10;&#10;So far it's just a demonstration that it can be done. Data displayed &#10;is randomly generated.&#10;&#10;Next step is to actually grab data from SOLR" />
+    <list default="true" id="88e3272f-a0b2-4367-9eb6-c783ed60c977" name="VB-3798 Create Violin/Beeswarm Box Plot for selected IR markers" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/beeswarm" afterPath="$PROJECT_DIR$/web/libs/beeswarm" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.js" afterPath="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.min.js" afterPath="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-violin-plots.js" afterPath="$PROJECT_DIR$/web/js/vb-violin-plots.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" afterPath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="untitled.iws" />
@@ -32,21 +30,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
+      <file leaf-file-name="vb-violin-plots.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="252" column="0" selection-start-line="252" selection-start-column="0" selection-end-line="252" selection-end-column="0" />
+              <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
               <folding>
-                <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#ul#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#i#0;n#span#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#i#0;n#span#2;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#!!block;n#addViolin#0" expanded="false" />
+                <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -56,27 +47,24 @@
         <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="607" column="63" selection-start-line="607" selection-start-column="51" selection-end-line="607" selection-end-column="63" />
+              <caret line="360" column="7" selection-start-line="360" selection-start-column="7" selection-end-line="360" selection-end-column="7" />
               <folding>
-                <element signature="e#18186#18223#0" expanded="false" />
+                <element signature="e#18187#18224#0" expanded="false" />
                 <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-                <marker date="1434827726741" expanded="true" signature="10947:10962" placeholder="..." />
-                <marker date="1434827726741" expanded="true" signature="11073:11093" placeholder="..." />
-                <marker date="1434827726741" expanded="true" signature="11524:11539" placeholder="..." />
+                <marker date="1434984243813" expanded="true" signature="10947:10962" placeholder="..." />
+                <marker date="1434984243813" expanded="true" signature="11073:11093" placeholder="..." />
+                <marker date="1434984243813" expanded="true" signature="11524:11539" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vb-violin-plots.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
+      <file leaf-file-name="lakis.js.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/lakis.js.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
-              <folding>
-                <element signature="n#!!block;n#addViolin#0" expanded="false" />
-                <element signature="n#!!block;n#Violin#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.24791667">
+              <caret line="7" column="36" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="36" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -112,7 +100,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/SOLR_conf/vb_popbio/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/schema.xml" />
         <option value="$PROJECT_DIR$/SOLR_conf/vb_ta/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/SOLR/README" />
@@ -131,7 +118,6 @@
         <option value="$PROJECT_DIR$/web/js/Control.FullScreen.js" />
         <option value="$PROJECT_DIR$/web/js/leaflet.spin.js" />
         <option value="$PROJECT_DIR$/web/js/leaflet-sidebar.js" />
-        <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/web/js/L.Control.ZoomMin.js" />
         <option value="$PROJECT_DIR$/web/js/Icon.Canvas.js" />
         <option value="$PROJECT_DIR$/web/lakis.js" />
@@ -161,8 +147,10 @@
         <option value="$PROJECT_DIR$/web/css/vectorbase.css" />
         <option value="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.js" />
         <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
-        <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/web/js/vb-violin-plots.js" />
+        <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
+        <option value="$PROJECT_DIR$/web/lakis.js.txt" />
+        <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
       </list>
     </option>
   </component>
@@ -224,6 +212,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -231,10 +220,6 @@
               <option name="myItemId" value="popbio_map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -247,68 +232,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spin.js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="beeswarm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -339,11 +262,36 @@
               <option name="myItemId" value="popbio_map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SOLR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SOLR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vb_popbio" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="conf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -377,7 +325,7 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="LayoutCode.rearrangeEntriesJavaScript 1.5" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="tasks" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/web/js/leaflet-dvf.js" />
   </component>
@@ -448,23 +396,11 @@
     <configuration>C:\Users\Ioannis\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
+    <task id="Default" summary="Default task">
       <changelist id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="" />
       <created>1425910081753</created>
       <option name="number" value="Default" />
-      <updated>1425910081753</updated>
-    </task>
-    <task id="LOCAL-00035" summary="* Fine-tuned small clusters generation. Works a bit better on slow networks now.">
-      <created>1427058824496</created>
-      <option name="number" value="00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1427058824496</updated>
-    </task>
-    <task id="LOCAL-00036" summary="* Optimized SOLR queries (disabled indentation)">
-      <created>1427064465482</created>
-      <option name="number" value="00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1427064465482</updated>
+      <updated>1435060611521</updated>
     </task>
     <task id="LOCAL-00037" summary="* First prototype of autocomplete search">
       <created>1427406134744</created>
@@ -748,8 +684,40 @@
       <option name="project" value="LOCAL" />
       <updated>1434824480911</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
-    <servers />
+    <task id="LOCAL-00084" summary="Add first prototype of Beeswarm/Violin Plots&#10;&#10;So far it's just a demonstration that it can be done. Data displayed &#10;is randomly generated.&#10;&#10;Next step is to actually grab data from SOLR">
+      <created>1434833073222</created>
+      <option name="number" value="00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1434833073223</updated>
+    </task>
+    <task active="true" id="VB-3798" summary="Create Violin/Beeswarm Box Plot for selected IR markers">
+      <changelist id="88e3272f-a0b2-4367-9eb6-c783ed60c977" name="VB-3798 Create Violin/Beeswarm Box Plot for selected IR markers" comment="" />
+      <created>1435060378000</created>
+      <option name="issue" value="true" />
+      <option name="number" value="3798" />
+      <option name="project" value="VB" />
+      <updated>1435060615000</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
+    <option name="createBranch" value="false" />
+    <servers>
+      <JIRA shared="false" url="https://www.ebi.ac.uk/panda/jira">
+        <option name="apiType" value="REST_2_0" />
+        <commitMessageFormat>{id} {summary}</commitMessageFormat>
+        <password>dffadfdadf98df9adfd9dfc7dfc7dfdedfcbdfc7</password>
+        <option name="jiraVersion" value="6.2" />
+        <option name="loginAnonymously" value="false" />
+        <option name="preferredCloseTaskState" />
+        <option name="preferredOpenTaskState">
+          <CustomTaskState id="4" predefined="false" name="In Progress" />
+        </option>
+        <option name="searchQuery" value="assignee = currentUser() and resolution = Unresolved order by updated" />
+        <option name="shouldFormatCommitMessage" value="false" />
+        <option name="useHttpAuthentication" value="true" />
+        <option name="useProxy" value="false" />
+        <username>i.kirmitzoglou@imperial.ac.uk</username>
+      </JIRA>
+    </servers>
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -766,9 +734,11 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18311346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33636364" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32514736" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41102183" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32492432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20580475" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -779,13 +749,13 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36191538" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32743362" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Issues - JIRA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5882946" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32516703" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49312377" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23379175" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
     </layout>
     <layout-to-restore>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -825,7 +795,6 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="USE_COMMIT_MESSAGE_MARGIN" value="true" />
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
-    <MESSAGE value="* Cleaned the generated query for fetching small clusters&#10;* Added an error check to skip processing geohashes with every sample missing the species_category field" />
     <MESSAGE value="* Code cleanup" />
     <MESSAGE value="* Redone the query generation&#10;** Terms from the same category are grouped together with an OR clause&#10;** Terms from different categories are added with an AND clause&#10;** For example, this allows to search for samples of one (or more) species that were collected in one (or more) areas" />
     <MESSAGE value="* Restructured directories&#10;* Added SOLR configs to repo" />
@@ -850,7 +819,8 @@
     <MESSAGE value="Apply camelCase to method names&#10;&#10;Rename initialize_search and initialize map to initializeSeach and initializeMap&#10;respectively" />
     <MESSAGE value="Fix Beeswarm to properly return the swarm&#10;&#10;Beeswarm only returned the original data. Did some minor code restru-&#10;cturing to also return the swarm data." />
     <MESSAGE value="Update D3 to 3.5.5" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update D3 to 3.5.5" />
+    <MESSAGE value="Add first prototype of Beeswarm/Violin Plots&#10;&#10;So far it's just a demonstration that it can be done. Data displayed &#10;is randomly generated.&#10;&#10;Next step is to actually grab data from SOLR" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add first prototype of Beeswarm/Violin Plots&#10;&#10;So far it's just a demonstration that it can be done. Data displayed &#10;is randomly generated.&#10;&#10;Next step is to actually grab data from SOLR" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -858,7 +828,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="158" />
+      <option name="time" value="160" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -874,6 +844,198 @@
       </PATH_ELEMENT>
     </PATH>
   </component>
+  <component name="atlassian-ide-plugin-workspace">
+    <option name="activeToolWindowTab" value="Issues - JIRA" />
+    <option name="defaultCredentials">
+      <UserCfgBean>
+        <option name="username" value="i.kirmitzoglou@imperial.ac.uk" />
+      </UserCfgBean>
+    </option>
+    <option name="defaultCredentialsAsked" value="true" />
+  </component>
+  <component name="atlassian-ide-plugin-workspace-issues">
+    <option name="activeJiraIssuee">
+      <ActiveJiraIssueBean>
+        <option name="issueKey" value="VB-3798" />
+        <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3798" />
+        <option name="secondsSpent" value="30548" />
+        <option name="serverId">
+          <ServerIdImpl>
+            <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+          </ServerIdImpl>
+        </option>
+      </ActiveJiraIssueBean>
+    </option>
+    <option name="filtersMap">
+      <map>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="presetFiltersMap">
+      <map>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraPresetFilterMap>
+              <option name="map">
+                <map>
+                  <entry key="Added recently">
+                    <value>
+                      <JIRAProjectBean>
+                        <option name="id" value="10272" />
+                        <option name="key" value="VB" />
+                        <option name="name" value="VectorBase" />
+                      </JIRAProjectBean>
+                    </value>
+                  </entry>
+                  <entry key="Assigned to me">
+                    <value>
+                      <JIRAProjectBean>
+                        <option name="id" value="10272" />
+                        <option name="key" value="VB" />
+                        <option name="name" value="VectorBase" />
+                      </JIRAProjectBean>
+                    </value>
+                  </entry>
+                  <entry key="Most important">
+                    <value>
+                      <JIRAProjectBean>
+                        <option name="id" value="10272" />
+                        <option name="key" value="VB" />
+                        <option name="name" value="VectorBase" />
+                      </JIRAProjectBean>
+                    </value>
+                  </entry>
+                  <entry key="Outstanding">
+                    <value>
+                      <JIRAProjectBean>
+                        <option name="id" value="10272" />
+                        <option name="key" value="VB" />
+                        <option name="name" value="VectorBase" />
+                      </JIRAProjectBean>
+                    </value>
+                  </entry>
+                  <entry key="Reported by me">
+                    <value>
+                      <JIRAProjectBean>
+                        <option name="id" value="10272" />
+                        <option name="key" value="VB" />
+                        <option name="name" value="VectorBase" />
+                      </JIRAProjectBean>
+                    </value>
+                  </entry>
+                  <entry key="Resolved recently">
+                    <value>
+                      <JIRAProjectBean>
+                        <option name="id" value="10272" />
+                        <option name="key" value="VB" />
+                        <option name="name" value="VectorBase" />
+                      </JIRAProjectBean>
+                    </value>
+                  </entry>
+                  <entry key="Unscheduled">
+                    <value>
+                      <JIRAProjectBean>
+                        <option name="id" value="10272" />
+                        <option name="key" value="VB" />
+                        <option name="name" value="VectorBase" />
+                      </JIRAProjectBean>
+                    </value>
+                  </entry>
+                  <entry key="Updated recently">
+                    <value>
+                      <JIRAProjectBean>
+                        <option name="id" value="10272" />
+                        <option name="key" value="VB" />
+                        <option name="name" value="VectorBase" />
+                      </JIRAProjectBean>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </JiraPresetFilterMap>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="recentlyOpenIssuess">
+      <list>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3798" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3798" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3797" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3797" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3795" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3795" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+      </list>
+    </option>
+    <option name="view">
+      <JiraViewConfigurationBean>
+        <option name="groupBy" value="Type" />
+        <option name="serverDefaultss">
+          <map>
+            <entry>
+              <key>
+                <ServerIdImpl>
+                  <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+                </ServerIdImpl>
+              </key>
+              <value>
+                <JiraProjectDefaultComponentsBean>
+                  <option name="components">
+                    <set>
+                      <option value="10537" />
+                    </set>
+                  </option>
+                  <option name="project" value="VB" />
+                </JiraProjectDefaultComponentsBean>
+              </value>
+            </entry>
+          </map>
+        </option>
+        <option name="viewFilterId" value="com.atlassian.theplugin.jira.model.presetfilters.AssignedToMePresetFilter" />
+        <option name="viewFilterType" value="presetFilter" />
+        <option name="viewServerIdd">
+          <ServerIdImpl>
+            <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+          </ServerIdImpl>
+        </option>
+      </JiraViewConfigurationBean>
+    </option>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/web/libs/beeswarm/beeswarm.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -888,7 +1050,7 @@
           <caret line="481" column="1" selection-start-line="481" selection-start-column="1" selection-end-line="481" selection-end-column="1" />
           <folding>
             <element signature="n#!!block;n#addViolin#0" expanded="false" />
-            <element signature="n#!!block;n#Violin#0" expanded="false" />
+            <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -916,11 +1078,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
           <folding>
-            <element signature="e#18186#18223#0" expanded="false" />
+            <element signature="e#18187#18224#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <marker date="1434827726741" expanded="true" signature="10947:10962" placeholder="..." />
-            <marker date="1434827726741" expanded="true" signature="11073:11093" placeholder="..." />
-            <marker date="1434827726741" expanded="true" signature="11524:11539" placeholder="..." />
+            <marker date="1434984243813" expanded="true" signature="10947:10962" placeholder="..." />
+            <marker date="1434984243813" expanded="true" signature="11073:11093" placeholder="..." />
+            <marker date="1434984243813" expanded="true" signature="11524:11539" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -948,11 +1110,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#18186#18223#0" expanded="false" />
+            <element signature="e#18187#18224#0" expanded="false" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <marker date="1434827726741" expanded="true" signature="10947:10962" placeholder="..." />
-            <marker date="1434827726741" expanded="true" signature="11073:11093" placeholder="..." />
-            <marker date="1434827726741" expanded="true" signature="11524:11539" placeholder="..." />
+            <marker date="1434984243813" expanded="true" signature="10947:10962" placeholder="..." />
+            <marker date="1434984243813" expanded="true" signature="11073:11093" placeholder="..." />
+            <marker date="1434984243813" expanded="true" signature="11524:11539" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1060,13 +1222,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.32791877">
           <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="903" column="29" selection-start-line="903" selection-start-column="23" selection-end-line="903" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -1252,13 +1407,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/lakis.js.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="60" selection-start-line="13" selection-start-column="60" selection-end-line="13" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/libs/spin.js/spin.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1276,7 +1424,7 @@
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="252" column="0" selection-start-line="252" selection-start-column="0" selection-end-line="252" selection-end-column="0" />
+          <caret line="253" column="0" selection-start-line="253" selection-start-column="0" selection-end-line="253" selection-end-column="0" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1291,28 +1439,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="607" column="63" selection-start-line="607" selection-start-column="51" selection-end-line="607" selection-end-column="63" />
+          <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
           <folding>
-            <element signature="e#18186#18223#0" expanded="false" />
-            <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <marker date="1434827726741" expanded="true" signature="10947:10962" placeholder="..." />
-            <marker date="1434827726741" expanded="true" signature="11073:11093" placeholder="..." />
-            <marker date="1434827726741" expanded="true" signature="11524:11539" placeholder="..." />
+            <element signature="n#!!block;n#addViolin#0" expanded="false" />
+            <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+          <caret line="360" column="7" selection-start-line="360" selection-start-column="7" selection-end-line="360" selection-end-column="7" />
           <folding>
-            <element signature="n#!!block;n#addViolin#0" expanded="false" />
-            <element signature="n#!!block;n#Violin#0" expanded="false" />
+            <element signature="e#18187#18224#0" expanded="false" />
+            <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
+            <marker date="1434984243813" expanded="true" signature="10947:10962" placeholder="..." />
+            <marker date="1434984243813" expanded="true" signature="11073:11093" placeholder="..." />
+            <marker date="1434984243813" expanded="true" signature="11524:11539" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33215547">
+          <caret line="1769" column="28" selection-start-line="1769" selection-start-column="25" selection-end-line="1769" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/lakis.js.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24791667">
+          <caret line="7" column="36" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>

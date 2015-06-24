@@ -195,7 +195,6 @@ function addBeeswarm(svg, points, range, width, domain, log) {
         .domain(domain)
         .nice();
 
-    console.log('WIDTH: ' + width)
 
     var gSwarmPlot = svg.append("g");
 
@@ -207,46 +206,53 @@ function addBeeswarm(svg, points, range, width, domain, log) {
             .attr("cy", y(p.y))
             .attr("r", 4)
             .style("fill", 'blue');
-        console.log('x:' + p.x + '->' + x(p.x));
     });
 
 
 }
 
-function createBeeViolinPlot(svg) {
+function createBeeViolinPlot(svg, BBox, count) {
 
-    //"use strict";
+    "use strict";
+
+    if ($('#view-mode').val() === 'smpl') return;
 
     var self = this;
     var width = 280;
     var height = 300;
 
+    console.log(BBox);
+    console.log(count);
     //this.div = divEl.append("div").attr("id", "violin-popup").append("div").attr("class", "violin-div").attr("id", "violin");
     //this.div = divEl;
 
+    // Clear the graph
+    // Doing this with jquery for now
+    //ToDo: Clear graph using D3 and the passed svg object
     $('#swarm-chart').empty();
 
     var margin = {top: 30, bottom: 30, left: 30, right: 20};
 
+    if (count < 101) {
+
+    }
     var domain = [0, 350];
-    var d3ObjId = "violin";
+    //var d3ObjId = "violin";
 
     var boxWidth = 100;
     var boxSpacing = 10;
 
-    var yEvor = d3.scale.linear()
+    var y = d3.scale.linear()
         .range([height - margin.bottom, margin.top])
         .domain(domain)
         .nice();
 
-    var yAxisEvor = d3.svg.axis()
-        .scale(yEvor)
+    var yAxis = d3.svg.axis()
+        .scale(y)
         .orient("left");
 
-    //var svg = self.div.append("svg")
-    //    .attr("style", 'width: 32%; height: 100%; border: 0');
 
-    svg.attr("style", 'width: 300px; height: 500px; border: 0');
+    svg.attr("style", 'width: 400px; height: 500px; border: 0');
 
 
     svg.append("text")
@@ -280,17 +286,6 @@ function createBeeViolinPlot(svg) {
     beeswarm = new Beeswarm(dataset, xaxis, radius);
 
     addBeeswarm(g, beeswarm.swarm, [270, 30], boxWidth, domain, false);
-    //addViolin(g, json.facets.dupl.buckets, [height - margin.bottom, margin.top], boxWidth, domain, resolution, interpolation, 0.25, true);
-
-    // add the chart for the cluster
-
-
-    //d3.select("#violin-popup-back").style("display", "block");
-
-
-    //self.text += JSON.stringify(json.response.docs, null, 2);
-    //self.text += "</table>";
-    //self.div.node().innerHTML = self.text;
 
 
 }

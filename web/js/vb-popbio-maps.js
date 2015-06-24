@@ -353,6 +353,7 @@ function initializeSearch() {
             $('#view-mode').val('ir');
         }
         var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+
         $.getJSON(url, generatePalette);
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
@@ -605,7 +606,9 @@ function loadSolr(parameters) {
                 });
                 layer.on("click", function () {
                     updatePieChart(record.population, record.fullstats);
-                    createBeeViolinPlot(d3.select("#swarm-chart"));
+                    var recBounds = L.latLngBounds(record.bounds);
+                    createBeeViolinPlot(d3.select("#swarm-chart"), buildBbox(recBounds), record.count);
+
                 });
                 layer.on("mouseover", function (e) {
                     //console.log(e.target);
