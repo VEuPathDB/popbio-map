@@ -544,12 +544,12 @@
              by document id.  The fieldValueCache is created by default
              even if not configured here.
           -->
-    <!--
-       <fieldValueCache class="solr.FastLRUCache"
-                        size="512"
-                        autowarmCount="128"
-                        showItems="32" />
-      -->
+        <!--
+           <fieldValueCache class="solr.FastLRUCache"
+                            size="512"
+                            autowarmCount="128"
+                            showItems="32" />
+          -->
 
         <!-- Custom Cache
 
@@ -560,15 +560,15 @@
              be specified as an implementation of solr.CacheRegenerator
              if autowarming is desired.
           -->
-    <!--
-       <cache name="myUserCache"
-              class="solr.LRUCache"
-              size="4096"
-              initialSize="1024"
-              autowarmCount="1024"
-              regenerator="com.mycompany.MyRegenerator"
-              />
-      -->
+        <!--
+           <cache name="myUserCache"
+                  class="solr.LRUCache"
+                  size="4096"
+                  initialSize="1024"
+                  autowarmCount="1024"
+                  regenerator="com.mycompany.MyRegenerator"
+                  />
+          -->
 
 
         <!-- Lazy Field Loading
@@ -635,10 +635,10 @@
           -->
         <listener event="newSearcher" class="solr.QuerySenderListener">
             <arr name="queries">
-        <!--
-           <lst><str name="q">solr</str><str name="sort">price asc</str></lst>
-           <lst><str name="q">rocks</str><str name="sort">weight asc</str></lst>
-          -->
+                <!--
+                   <lst><str name="q">solr</str><str name="sort">price asc</str></lst>
+                   <lst><str name="q">rocks</str><str name="sort">weight asc</str></lst>
+                  -->
             </arr>
         </listener>
         <listener event="firstSearcher" class="solr.QuerySenderListener">
@@ -832,11 +832,11 @@
              "appends" values from being used, so don't use this mechanism
              unless you are sure you always want it.
           -->
-    <!--
-       <lst name="appends">
-         <str name="fq">inStock:true</str>
-       </lst>
-      -->
+        <!--
+           <lst name="appends">
+             <str name="fq">inStock:true</str>
+           </lst>
+          -->
         <!-- "invariants" are a way of letting the Solr maintainer lock down
              the options available to Solr clients.  Any params values
              specified here are used regardless of what values may be specified
@@ -1247,29 +1247,71 @@
     </requestHandler>
 
     <requestHandler name="/irBeeswarm" class="solr.SearchHandler">
-    <!-- default values for query parameters can be specified, these
-         will be overridden by parameters in the request
-      -->
-    <lst name="defaults">
-        <str name="echoParams">explicit</str>
-        <str name="wt">json</str>
-        <str name="json.nl">map</str>
-    </lst>
-    <lst name="appends">
-        <str name="fq">bundle:pop_sample_phenotype</str>
-        <str name="fq">phenotype_type_s:"insecticide resistance"</str>
-        <str name="fq">has_geodata:true</str>
-    </lst>
-    <lst name="invariants">
-        <int name="rows">100</int>
-        <str name="group">true</str>
-        <str name="group.field">phenotype_value_type_s</str>
-        <str name="group.limit">100</str>
-        <str name="fl">species_category,phenotype_value_f,phenotype_value_unit_s</str>
-    </lst>
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_phenotype</str>
+            <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <int name="rows">100</int>
+            <str name="group">true</str>
+            <str name="group.field">phenotype_value_type_s</str>
+            <str name="group.limit">100</str>
+            <str name="fl">species_category,phenotype_value_f,phenotype_value_unit_s</str>
+        </lst>
     </requestHandler>
 
-     <!--A request handler to serve data for violin plots (limited to IR assays)-->
+
+    <!--A request handler to serve basic stats for violin plots (limited to IR assays)-->
+    <requestHandler name="/irViolinStats" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_phenotype</str>
+            <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <int name="rows">0</int>
+            <str name="df">text</str>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+            <str name="json.facet">{
+                vtypes: {
+                type: terms,
+                field: phenotype_value_type_s,
+                sort: {count: desc},
+                facet: {
+                vunits: {
+                type: terms,
+                field: phenotype_value_unit_s,
+                sort: {count: desc},
+                facet: {
+                pmin: "min(phenotype_value_f)",
+                pmax: "max(phenotype_value_f)"
+                }
+                }
+                }
+                }
+                }
+            </str>
+        </lst>
+
+    </requestHandler>
+
+    <!--A request handler to serve data for violin plots (limited to IR assays)-->
     <requestHandler name="/irViolin" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
              will be overridden by parameters in the request
@@ -1687,7 +1729,7 @@
                         class="solr.highlight.GapFragmenter">
                 <lst name="defaults">
                     <int name="hl.fragsize">100</int>
-        </lst>
+                </lst>
             </fragmenter>
 
             <!-- A regular-expression-based fragmenter
@@ -1695,24 +1737,24 @@
               -->
             <fragmenter name="regex"
                         class="solr.highlight.RegexFragmenter">
-        <lst name="defaults">
-            <!-- slightly smaller fragsizes work better because of slop -->
-            <int name="hl.fragsize">70</int>
-            <!-- allow 50% slop on fragment sizes -->
-            <float name="hl.regex.slop">0.5</float>
-            <!-- a basic sentence pattern -->
-            <str name="hl.regex.pattern">[-\w ,/\n\&quot;&apos;]{20,200}</str>
-        </lst>
+                <lst name="defaults">
+                    <!-- slightly smaller fragsizes work better because of slop -->
+                    <int name="hl.fragsize">70</int>
+                    <!-- allow 50% slop on fragment sizes -->
+                    <float name="hl.regex.slop">0.5</float>
+                    <!-- a basic sentence pattern -->
+                    <str name="hl.regex.pattern">[-\w ,/\n\&quot;&apos;]{20,200}</str>
+                </lst>
             </fragmenter>
 
             <!-- Configure the standard formatter -->
             <formatter name="html"
                        default="true"
                        class="solr.highlight.HtmlFormatter">
-        <lst name="defaults">
-            <str name="hl.simple.pre"><![CDATA[<em>]]></str>
-            <str name="hl.simple.post"><![CDATA[</em>]]></str>
-        </lst>
+                <lst name="defaults">
+                    <str name="hl.simple.pre"><![CDATA[<em>]]></str>
+                    <str name="hl.simple.post"><![CDATA[</em>]]></str>
+                </lst>
             </formatter>
 
             <!-- Configure the standard encoder -->
@@ -1734,7 +1776,7 @@
 
             <!-- default tag FragmentsBuilder -->
             <fragmentsBuilder name="default"
-                        default="true"
+                              default="true"
                               class="solr.highlight.ScoreOrderFragmentsBuilder">
                 <!--
                 <lst name="defaults">
