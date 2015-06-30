@@ -58,6 +58,14 @@
     <style>
 
 
+        .tooltip {
+            position: absolute;
+            width: 200px;
+            height: 28px;
+            pointer-events: none;
+            z-index: 99999;
+        }
+
     </style>
 </head>
 
@@ -137,13 +145,12 @@
                            style="color: white"></i></span>
 
 
-                    <div class="input-group-addon dropdown btn-default" style="cursor: pointer">
-                        <span class="dropdown-toggle" id="SelectView"
-                              data-toggle="dropdown" aria-expanded="true">
+                    <div class="input-group-addon dropdown btn-default" id="SelectView" style="cursor: pointer">
+                        <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                            Samples view
                             <span class="caret"></span>
                         </span>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="Select view">
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Samples view</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Insecticide resistance
                                 phenotypes view</a></li>
@@ -170,7 +177,8 @@
                 <div class="sidebar-pane" id="swarm-plots"><h3>Click a marker for sample summary data</h3>
 
                     <div id="swarm-chart-area">
-                        <svg id="swarm-chart"></svg>
+
+                        <!--<svg id="swarm-chart"></svg>-->
                     </div>
                 </div>
                 <div class="sidebar-pane" id="tablegend">

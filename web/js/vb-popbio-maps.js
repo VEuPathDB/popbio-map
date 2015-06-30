@@ -343,7 +343,7 @@ function initializeSearch() {
 
     // Set current view
     //    FixMe: Firefox loads the last view after refresh
-    $(".dropdown-menu li a").click(function () {
+    $("#SelectView").find("li a").click(function () {
         var selText = $(this).text();
         if (selText === "Samples view") {
             $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
@@ -607,7 +607,7 @@ function loadSolr(parameters) {
                 layer.on("click", function () {
                     updatePieChart(record.population, record.fullstats);
                     var recBounds = L.latLngBounds(record.bounds);
-                    createBeeViolinPlot(d3.select("#swarm-chart"), buildBbox(recBounds), record.count);
+                    createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds), record.count);
 
                 });
                 layer.on("mouseover", function (e) {

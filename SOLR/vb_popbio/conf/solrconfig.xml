@@ -1254,6 +1254,7 @@
             <str name="echoParams">explicit</str>
             <str name="wt">json</str>
             <str name="json.nl">map</str>
+            <str name="df">text</str>
         </lst>
         <lst name="appends">
             <str name="fq">bundle:pop_sample_phenotype</str>
@@ -1265,7 +1266,7 @@
             <str name="group">true</str>
             <str name="group.field">phenotype_value_type_s</str>
             <str name="group.limit">100</str>
-            <str name="fl">species_category,phenotype_value_f,phenotype_value_unit_s</str>
+            <str name="fl">species_category,phenotype_value_f,phenotype_value_unit_s, insecticide_s</str>
         </lst>
     </requestHandler>
 

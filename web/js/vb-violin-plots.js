@@ -175,6 +175,18 @@ function addBoxPlot(svg, elmProbs, elmMean, range, width, domain, boxPlotWidth, 
 function addBeeswarm(svg, points, range, width, domain, log) {
 
     "use strict";
+// add the tooltip area to the webpage
+    var tooltip;
+    if (d3.select('#beeSwarmTooltip').empty) {
+        tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .attr("id", "beeSwarmTooltip")
+            .style("opacity", 0);
+    } else {
+        tooltip = d3.select('#beeSwarmTooltip');
+
+    }
+
 
     if (log) {
         var y = d3.scale.log()
@@ -199,19 +211,37 @@ function addBeeswarm(svg, points, range, width, domain, log) {
     var gSwarmPlot = svg.append("g");
 
 
-    points.forEach(function (p) {
+    points.swarm.forEach(function (p, i) {
         //.attr("class", "swarm")
+        var species = points.data[i].species, insecticide = points.data[i].insecticide;
         gSwarmPlot.append("circle")
             .attr("cx", p.x)
             .attr("cy", y(p.y))
             .attr("r", 4)
-            .style("fill", 'blue');
+            .style("fill", palette[species])
+            //ToDo: Make mouseovers stylistically similar with the donut charts
+            .on("mouseover", function (d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(species + "<br/> ("
+                    + insecticide + ": " + points.data[i].y + ")")
+                    .style("left", (d3.event.pageX + 5) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px")
+
+            })
+            .on("mouseout", function (d) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
+
     });
 
 
 }
 
-function createBeeViolinPlot(svg, BBox, count) {
+function createBeeViolinPlot(divid, BBox, count) {
 
     "use strict";
 
@@ -220,55 +250,153 @@ function createBeeViolinPlot(svg, BBox, count) {
     var self = this;
     var width = 280;
     var height = 300;
+    var url = 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/irViolinStats?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
 
     console.log(BBox);
     console.log(count);
-    //this.div = divEl.append("div").attr("id", "violin-popup").append("div").attr("class", "violin-div").attr("id", "violin");
-    //this.div = divEl;
 
-    // Clear the graph
-    // Doing this with jquery for now
-    //ToDo: Clear graph using D3 and the passed svg object
-    $('#swarm-chart').empty();
+    function generateSelectionBox(json) {
+        $(divid).empty();
+        if (json.facets.count && json.facets.count > 0) {
+            // let's create and populate a drop down
 
+            var s = $('<select />').attr('id', 'plotType');
+
+            json.facets.vtypes.buckets.forEach(function (element) {
+                    var i = 0;
+                    element.vunits.buckets.forEach(function (innElement) {
+                        var optionText = element.val + ' (' + innElement.val + '): ' + innElement.count + ' phenotypes';
+                        // add options to the selection box, store additional info into data
+                        $('<option/>', {
+                            text: optionText,
+                            value: innElement.val,
+                            data: {
+                                phenotype_value_type_s: element.val,
+                                phenotype_value_unit_s: innElement.val,
+                                count: innElement.count,
+                                min: innElement.pmin,
+                                max: innElement.pmax
+                            }
+                        }).appendTo(s);
+                    })
+                }
+            )
+            ;
+
+            s.appendTo($(divid));
+
+            // build the graph using the first option in the drop-down
+            var selectionData = s.find(':selected').data();
+            buildPlot(divid, BBox, selectionData);
+
+            // build a new graph whenever selection is changed
+            s.change(function () {
+                selectionData = s.find(':selected').data();
+                buildPlot(divid, BBox, selectionData);
+            });
+
+
+        }
+    }
+
+    $.getJSON(url, generateSelectionBox)
+        .fail(function () {
+            console.log('Failed while loading irViolinStats')
+        });
+
+
+}
+
+function buildPlot(divid, BBox, selection) {
+    var pCount = selection.count, pMin = selection.min, pMax = selection.max,
+        pType = selection.phenotype_value_type_s, pUnit = selection.phenotype_value_unit_s;
+    var width = 250, height = 300;
+    var plotDiv = d3.select(divid);
+
+    if (d3.select('#beeViolinPlot')) d3.select('#beeViolinPlot').remove();
+    var svg = plotDiv.append("svg")
+        .attr("style", 'width: 400px; height: 500px; border: 0; padding-top:20px')
+        .attr("id", "beeViolinPlot");
+
+    var domain, boxWidth = 100, boxSpacing = 10;
     var margin = {top: 30, bottom: 30, left: 30, right: 20};
 
-    if (count < 101) {
+    var url = 'http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/irBeeswarm?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + BBox + '&json.wrf=?&callback=?';
 
-    }
-    var domain = [0, 350];
-    //var d3ObjId = "violin";
-
-    var boxWidth = 100;
-    var boxSpacing = 10;
-
-    var y = d3.scale.linear()
-        .range([height - margin.bottom, margin.top])
-        .domain(domain)
-        .nice();
-
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left");
-
-
-    svg.attr("style", 'width: 400px; height: 500px; border: 0');
-
-
-    svg.append("text")
-        .attr("x", margin.left + boxWidth + boxSpacing / 2)
-        .attr("y", 10)
-        .style("text-anchor", "middle")
-        .text("Test");
-
-    svg.append("text")
-        .attr("x", margin.left + boxWidth / 2)
-        .attr("y", 290)
-        .style("text-anchor", "middle")
-        .text("All");
-
-    // add the global chart
+    console.log(url);
     var g = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
+
+    function addAxis() {
+        var y = d3.scale.linear()
+            .range([height - margin.bottom, margin.top])
+            .domain(domain)
+            .nice();
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+
+
+        svg.append("text")
+            .attr("x", margin.left + boxWidth + boxSpacing / 2)
+            .attr("y", 10)
+            .style("text-anchor", "middle")
+            .text("Selection");
+
+        svg.append("text")
+            .attr("x", margin.left + boxWidth / 2)
+            .attr("y", 290)
+            .style("text-anchor", "middle")
+            .text("Background");
+
+        // add the global chart
+    }
+
+    if (pCount > 1000) {
+        // Lot's of data, do a violin box-plot
+        domain = [pMin, pMax]
+        //
+        //} else if (pCount > 10) {
+        //    // Manageable amounts of data, do a beeswarm box-plot
+        //    domain = [pMin, pMax]
+
+    } else {
+        // Few data-points, just do a beeswarm skipping the box-plot
+        domain = [pMin, pMax];
+        function generateBeeswarm(json) {
+            if (json.grouped.phenotype_value_type_s.matches > 0) {
+                var firstResult = json.grouped.phenotype_value_type_s.groups[0];
+                //console.log(firstResult.groupValue);
+                var beeswarm, xaxis = boxWidth / 2, radius = 4,
+                    dataset = [];
+
+                firstResult.doclist.docs.forEach(function (element, index) {
+                    console.log(element.phenotype_value_f);
+
+                    dataset.push({
+                        x: 1,
+                        y: element.phenotype_value_f,
+                        species: element.species_category[0],
+                        insecticide: element.insecticide_s
+                    });
+
+                });
+
+                beeswarm = new Beeswarm(dataset, xaxis, radius);
+                addAxis();
+                addBeeswarm(g, beeswarm, [270, 30], boxWidth, domain, false);
+            }
+        }
+
+        $.getJSON(url, generateBeeswarm)
+            .fail(function () {
+                console.log('Failed while loading irViolinStats')
+            });
+    }
+
+    return;
+
 
     // Test beeswarm
 
@@ -286,10 +414,7 @@ function createBeeViolinPlot(svg, BBox, count) {
     beeswarm = new Beeswarm(dataset, xaxis, radius);
 
     addBeeswarm(g, beeswarm.swarm, [270, 30], boxWidth, domain, false);
-
-
 }
-
 
 function Violin(div, options) {
     var self = this;
