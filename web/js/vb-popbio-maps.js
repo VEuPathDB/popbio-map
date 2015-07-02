@@ -839,7 +839,6 @@ function loadSmall(mode, zoomLevel) {
         var doc = result.response.docs;
 
         for (var key in doc) if (doc.hasOwnProperty(key)) {
-            console.log(key);
             var coords = doc[key].geo_coords.split(",");
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
             if (doc[key].hasOwnProperty("species_category")) {
@@ -1402,3 +1401,6 @@ function generatePalette(result) {
 //        filterMarkers('');
 }
 
+String.prototype.capitalizeFirstLetter = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}

@@ -60,11 +60,59 @@
 
         .tooltip {
             position: absolute;
-            width: 200px;
-            height: 28px;
+            display: inline-block;
+            /*width: auto;*/
+            /*height: 28px;*/
             pointer-events: none;
             z-index: 99999;
+            background-color: rgb(255, 255, 255);
         }
+
+        /* for the violin plots */
+
+        .area {
+            shape-rendering: geometricPrecision;
+            fill: #ccc !important;
+        }
+
+        .boxplot {
+            shape-rendering: crispEdges;
+            fill: none;
+            stroke: black;
+            stroke-width: 2px;
+        }
+
+        .boxplot.fill {
+            fill: none;
+        }
+
+        .boxplot.mean, .boxplot.median {
+            fill: white;
+            stroke: red;
+        }
+
+        .boxplot.mean {
+            shape-rendering: geometricPrecision;
+        }
+
+        .violin {
+            shape-rendering: geometricPrecision;
+            fill: none !important;
+            stroke: #777;
+            stroke-width: 1px;
+        }
+
+        .axis path, .axis line {
+            fill: none;
+            stroke: #000;
+            stroke-width: 1px;
+            color-rendering: optimizeQuality !important;
+            shape-rendering: crispEdges !important;
+            text-rendering: geometricPrecision !important;
+
+        }
+
+        /* end of violin plots specific CSS*/
 
     </style>
 </head>
@@ -220,6 +268,9 @@
         </div>
     </div>
 </div>
+<!-- Add a tooltip div to use as a mouse-over info div for the beeswarm charts-->
+
+<div id="beeSwarmTooltip" class="tooltip" style="opacity: 0;"></div>
 
 
 <script language="JavaScript">

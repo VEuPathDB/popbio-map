@@ -1323,27 +1323,11 @@
             <str name="df">text</str>
             <str name="wt">json</str>
             <str name="json.nl">map</str>
-            <str name="pgaps">0.1</str>
-            <str name="json.facet">{
-                pmean: "avg(phenotype_value_f)",
-                pperc: "percentile(phenotype_value_f,5,25,50,75,95)",
-                pmin: "min(phenotype_value_f)",
-                pmax: "max(phenotype_value_f)",
-                denplot : {
-                type : range,
-                field : phenotype_value_f,
-                gap: ${PGAP:0.1},
-                start: ${PSTART:0},
-                end: ${PEND:1}
-                }
-                }
-            </str>
         </lst>
         <lst name="appends">
             <str name="fq">bundle:pop_sample_phenotype</str>
             <str name="fq">phenotype_type_s:"insecticide resistance"</str>
             <str name="fq">has_geodata:true</str>
-            <str name="fq">phenotype_value_type_s:${PFIELD:"mortality rate"}</str>
 
         </lst>
         <lst name="invariants">
