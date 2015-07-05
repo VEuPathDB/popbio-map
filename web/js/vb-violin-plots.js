@@ -2,11 +2,11 @@
  * Created by Ioannis on 18/6/2015.
  */
 // Class: Violin --------------------------------------------- //
-function addViolin(svg, results, range, width, domain, resolution, interpolation, log) {
+function addViolin(svg, results, yRange, width, yDomain, resolution, interpolation, log) {
 
     "use strict";
 
-    var dx = (domain[1] / resolution) / 2;
+    var x, dx = ((yDomain[1] - yDomain[0]) / resolution) / 2;
     // for x axis
     var y = d3.scale.linear()
         .range([width / 2, 0])
@@ -16,16 +16,16 @@ function addViolin(svg, results, range, width, domain, resolution, interpolation
 
 
     if (log) {
-        var x = d3.scale.log()
-            .range(range)
-            .domain(domain)
+        x = d3.scale.log()
+            .range(yRange)
+            .domain(yDomain)
             .nice();
         console.log('Printing log in violin');
     } else {
         // for y axis
-        var x = d3.scale.linear()
-            .range(range)
-            .domain(domain)
+        x = d3.scale.linear()
+            .range(yRange)
+            .domain(yDomain)
             .nice();
     }
 
@@ -34,12 +34,7 @@ function addViolin(svg, results, range, width, domain, resolution, interpolation
     var area = d3.svg.area()
         .interpolate(interpolation)
         .x(function (d) {
-            if (interpolation == "step-before") {
-                //console.log(x(d.x + d.dx / 2));
-                return x(d.val + dx)
-            }
-            console.log('*' + d.val + ':' + x(d.val));
-            return x(d.val);
+            return x(d.val + dx)
         })
         .y0(width / 2)
         .y1(function (d) {
@@ -49,9 +44,7 @@ function addViolin(svg, results, range, width, domain, resolution, interpolation
     var line = d3.svg.line()
         .interpolate(interpolation)
         .x(function (d) {
-            if (interpolation == "step-before")
-                return x(d.val + dx);
-            return x(d.val);
+            return x(d.val + dx);
         })
         .y(function (d) {
             return y(d.count);
@@ -81,7 +74,6 @@ function addViolin(svg, results, range, width, domain, resolution, interpolation
         .attr("class", "violin")
         .attr("d", line);
 
-    var x = width;
 
     gPlus.attr("transform", "rotate(90,0,0)  translate(0,-" + width + ")");//translate(0,-200)");
     gMinus.attr("transform", "rotate(90,0,0) scale(1,-1)");
@@ -89,22 +81,22 @@ function addViolin(svg, results, range, width, domain, resolution, interpolation
 
 }
 
-function addBoxPlot(svg, elmProbs, elmMean, range, width, domain, boxPlotWidth, log) {
+function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth, log) {
 
     "use strict";
 
     if (log) {
         var y = d3.scale.log()
-            .range(range)
-            .domain(domain)
+            .range(yRange)
+            .domain(yDomain)
             .nice();
         console.log('Printing log in boxplot');
 
     } else {
 
         var y = d3.scale.linear()
-            .range(range)
-            .domain(domain)
+            .range(yRange)
+            .domain(yDomain)
             .nice();
     }
 
@@ -119,7 +111,7 @@ function addBoxPlot(svg, elmProbs, elmMean, range, width, domain, boxPlotWidth, 
         probs[i] = y(elmProbs[i]);
     }
 
-    var gBoxPlot = svg.append("g")
+    var gBoxPlot = svg.append("g");
 
 
     gBoxPlot.append("rect")
@@ -172,28 +164,28 @@ function addBoxPlot(svg, elmProbs, elmMean, range, width, domain, boxPlotWidth, 
 
 }
 
-function addBeeswarm(svg, points, range, width, yDomain, xDomain, log) {
+function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
 
     "use strict";
 
-    var tooltip = d3.select('#beeSwarmTooltip');
+    var y, tooltip = d3.select('#beeSwarmTooltip');
 
     if (log) {
-        var y = d3.scale.log()
-            .range(range)
+        y = d3.scale.log()
+            .range(yRange)
             .domain(yDomain)
             .nice();
 
     } else {
 
-        var y = d3.scale.linear()
-            .range(range)
+        y = d3.scale.linear()
+            .range(yRange)
             .domain(yDomain)
             .nice();
     }
 
     var x = d3.scale.linear()
-        .range([0, width])
+        .range(xRange)
         .domain(xDomain)
         .nice();
 
@@ -240,19 +232,25 @@ function createBeeViolinPlot(divid, BBox, count) {
     if ($('#view-mode').val() === 'smpl') return;
 
     var self = this;
-    var width = 280;
-    var height = 300;
     var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolinStats?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
+    //var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolinStats?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
 
     //console.log(BBox);
     //console.log(count);
+    $(divid).empty();
+
 
     $.getJSON(url)
         .done(function (json) {
             // make sure the parent div is empty
-            $(divid).empty();
 
             if (json.facets.count && json.facets.count > 0) {
+
+                var bs = $('<select />').attr('id', 'bgPlotType');
+                $('<option/>', {text: 'Phenotypes matching search', value: 1}).appendTo(bs);
+                $('<option/>', {text: 'Phenotypes visible on map', value: 2}).appendTo(bs);
+                $('<option/>', {text: 'All phenotypes', value: 3}).appendTo(bs);
+                bs.appendTo($(divid));
 
                 // let's create and populate a drop down
                 var s = $('<select />').attr('id', 'plotType');
@@ -282,10 +280,16 @@ function createBeeViolinPlot(divid, BBox, count) {
 
                 // build the graph using the first option in the drop-down
                 var selectionData = s.find(':selected').data();
+
+                //buildBackgroundPlot(divid, BBox, selectionData);
                 buildPlot(divid, BBox, selectionData);
 
                 // build a new graph whenever selection is changed
                 s.change(function () {
+                    selectionData = s.find(':selected').data();
+                    buildPlot(divid, BBox, selectionData);
+                });
+                bs.change(function () {
                     selectionData = s.find(':selected').data();
                     buildPlot(divid, BBox, selectionData);
                 });
@@ -305,46 +309,309 @@ function buildPlot(divid, BBox, selection) {
 
     var pCount = selection.count, pMin = selection.min, pMax = selection.max,
         pType = selection.phenotype_value_type_s, pUnit = selection.phenotype_value_unit_s;
-    var width = 250, height = 300;
+    var width = 380, height = 300;
     var plotDiv = d3.select(divid);
+    var resolution = 25, interpolation = 'basis';
 
-    if (pUnit === 'percent') {
-        pMin = 0;
-        pMax = 100;
-    }
     if (d3.select('#beeViolinPlot')) d3.select('#beeViolinPlot').remove();
     var svg = plotDiv.append("svg")
-        .attr("style", 'width: 400px; height: 500px; border: 0; padding-top:20px')
+        .attr("style", 'width: 380px; height: 500px; border: 0; padding-top:20px')
         .attr("id", "beeViolinPlot");
 
-    var yDomain, boxWidth = 100, boxSpacing = 10;
+    var boxWidth = 150, boxSpacing = 10;
     var margin = {top: 30, bottom: 30, left: 30, right: 20};
 
     var vlJsonFacet = {
         pmean: "avg(phenotype_value_f)",
         pperc: "percentile(phenotype_value_f,5,25,50,75,95)",
-        //pmin: "min(phenotype_value_f)",
-        //pmax: "max(phenotype_value_f)",
+        pmin: "min(phenotype_value_f)",
+        pmax: "max(phenotype_value_f)",
         denplot: {
             type: "range",
             field: "phenotype_value_f",
-            gap: (pMax - pMin) / 20,
+            gap: (pMax - pMin) / resolution,
             start: pMin,
             end: pMax
         }
     };
 
-    var bsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
-        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + BBox + '&json.wrf=?&callback=?';
+    // Initialize background urls and promises
+    var bgrBsUrl, bgrVlUrl;
 
-    var vlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
-        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + BBox + '&json.wrf=?&callback=?';
+    switch ($('#bgPlotType').val()) {
+        // Phenotypes matching search terms
+        case "1":
+            bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
+            bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
+            break;
+        // Phenotypes visible on map
+        case "2":
+            bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + BBox + '&fq=phenotype_value_type_s:"' + pType
+                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
+            bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + BBox + '&fq=phenotype_value_type_s:"' + pType
+                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
+            break;
+        // All phenotypes
+        case "3":
+            bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + 'q=*' + '&fq=phenotype_value_type_s:"' + pType
+                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
+            bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + 'q=*' + '&fq=phenotype_value_type_s:"' + pType
+                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
+            break;
+        default:
+            break;
+    }
+
+    var bgrVlPromise = $.getJSON(bgrVlUrl);
+
+    // build background plot
+    bgrVlPromise.done(function (bgrVlJson) {
+
+        var gb = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
+
+        var bgrCount = bgrVlJson.response.numFound, bgrMin = bgrVlJson.facets.pmin, bgrMax = bgrVlJson.facets.pmax;
+        if (pUnit === 'percent') {
+            bgrMin = 0;
+            bgrMax = 100;
+        }
+        var bgrYDomain = [bgrMin, bgrMax];
+        var dataset, // store the points to be plotted
+            firstResult, beeswarm, xaxis = boxWidth / 2, scaledRadius, xRange;
+        var vlHist, vlMean, vlPerc, vlCount;
+
+        addAxis(bgrYDomain);
+
+        if (bgrCount > 50) {
+
+            if (bgrVlJson.facets.count > 0) {
+
+                vlHist = bgrVlJson.facets.denplot.buckets;
+                vlMean = bgrVlJson.facets.pmean;
+                vlPerc = bgrVlJson.facets.pperc;
+                vlCount = bgrVlJson.facets.count;
+
+                //addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, yDomain, resolution, interpolation, false);
+                addViolin(gb, vlHist, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, resolution, interpolation, false);
+
+                addBoxPlot(gb, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+            }
+
+        } else if (bgrCount >= 10 && bgrCount <= 50) {
+            // Manageable data-points, just do a beeswarm with a box-plot
+            var bgrBsPromise = $.getJSON(bgrBsUrl);
+            bgrBsPromise.fail(function () {
+                console.log('Failed while loading irBeeswarm')
+            });
+
+            // generate the beeswarm
+            bgrBsPromise.done(function (bgrBsJson) {
+
+                if (bgrBsJson.grouped.phenotype_value_type_s.matches > 0) {
+                    firstResult = bgrBsJson.grouped.phenotype_value_type_s.groups[0];
+
+                    xaxis = boxWidth / 2;
+                    dataset = [];
+
+                    scaledRadius = 4 * (pMax - pMin) / boxWidth;
+                    firstResult.doclist.docs.forEach(function (element, index) {
+
+                        dataset.push({
+                            x: undefined,
+                            y: element.phenotype_value_f,
+                            species: element.species_category[0],
+                            insecticide: element.insecticide_s
+                        });
+
+                    });
+
+                    beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                    // make sure the beeswarm points are plotted next to each other
+                    xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
+                    // unless there are to many, then let them overlap
+                    if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+
+                    addBeeswarm(gb, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                }
+                if (bgrVlJson.facets.count > 0) {
+
+                    vlHist = bgrVlJson.facets.denplot.buckets;
+                    vlMean = bgrVlJson.facets.pmean;
+                    vlPerc = bgrVlJson.facets.pperc;
+                    vlCount = bgrVlJson.facets.count;
+
+                    addBoxPlot(gb, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+                }
+
+            });
+
+        } else {
+            // Very few data-points, just do a beeswarm
+            var bgrBsPromise = $.getJSON(bgrBsUrl);
+            bgrBsPromise.fail(function () {
+                console.log('Failed while loading irBeeswarm')
+            });
+
+            // generate the beeswarm
+            bgrBsPromise.done(function (bgrBsJson) {
+                // generate the beeswarm
+                if (bgrBsJson.grouped.phenotype_value_type_s.matches > 0) {
+                    firstResult = bgrBsJson.grouped.phenotype_value_type_s.groups[0];
+
+                    dataset = [];
+
+                    scaledRadius = 4 * (pMax - pMin) / boxWidth;
+                    firstResult.doclist.docs.forEach(function (element, index) {
+
+                        dataset.push({
+                            x: undefined,
+                            y: element.phenotype_value_f,
+                            species: element.species_category[0],
+                            insecticide: element.insecticide_s
+                        });
+
+                    });
+
+                    beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                    // make sure the beeswarm points are plotted next to each other
+                    xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
+                    // unless there are to many, then let them overlap
+                    if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+
+                    addBeeswarm(gb, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                }
+            });
+
+        }
+        // Initialize selection urls and promises
+        var selBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+            + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + BBox + '&json.wrf=?&callback=?';
+
+        var selVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+            + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + BBox + '&json.wrf=?&callback=?';
+        var selBsPromise = $.getJSON(selBsUrl),
+            selVlPromise = $.getJSON(selVlUrl);
 
 
-    //console.log(vlUrl);
-    var g = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
+        //addAxis();
 
-    function addAxis() {
+        $.when(selBsPromise, selVlPromise).done(function (bsJson, vlJson) {
+            // background graph
+            // selection graph
+            var gs = svg.append("g").attr("transform", "translate(" + (1 * (boxWidth + boxSpacing) + margin.left) + ",0)");
+
+            var dataset, // store the points to be plotted
+                firstResult, beeswarm, xaxis = boxWidth / 2, scaledRadius, xRange;
+            var vlHist, vlMean, vlPerc, vlCount;
+
+            if (pCount > 50) {
+
+                if (vlJson[0].facets.count > 0) {
+
+                    vlHist = vlJson[0].facets.denplot.buckets;
+                    vlMean = vlJson[0].facets.pmean;
+                    vlPerc = vlJson[0].facets.pperc;
+                    vlCount = vlJson[0].facets.count;
+
+                    //addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, yDomain, resolution, interpolation, false);
+                    addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, resolution, interpolation, false);
+
+                    addBoxPlot(gs, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+                }
+
+            } else if (pCount >= 10 && pCount <= 50) {
+                // Manageable data-points, just do a beeswarm with a box-plot
+
+                // generate the beeswarm
+
+                if (bsJson[0].grouped.phenotype_value_type_s.matches > 0) {
+                    firstResult = bsJson[0].grouped.phenotype_value_type_s.groups[0];
+
+                    xaxis = boxWidth / 2;
+                    dataset = [];
+
+                    scaledRadius = 4 * (pMax - pMin) / boxWidth;
+                    firstResult.doclist.docs.forEach(function (element, index) {
+
+                        dataset.push({
+                            x: undefined,
+                            y: element.phenotype_value_f,
+                            species: element.species_category[0],
+                            insecticide: element.insecticide_s
+                        });
+
+                    });
+
+                    beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                    // make sure the beeswarm points are plotted next to each other
+                    xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
+                    // unless there are to many, then let them overlap
+                    if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+
+                    addBeeswarm(gs, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                }
+                if (vlJson[0].facets.count > 0) {
+
+                    vlHist = vlJson[0].facets.denplot.buckets;
+                    vlMean = vlJson[0].facets.pmean;
+                    vlPerc = vlJson[0].facets.pperc;
+                    vlCount = vlJson[0].facets.count;
+
+                    addBoxPlot(gs, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+                }
+
+
+            } else {
+                // Very few data-points, just do a beeswarm
+
+                // generate the beeswarm
+                if (bsJson[0].grouped.phenotype_value_type_s.matches > 0) {
+                    firstResult = bsJson[0].grouped.phenotype_value_type_s.groups[0];
+
+                    dataset = [];
+
+                    scaledRadius = 4 * (pMax - pMin) / boxWidth;
+                    firstResult.doclist.docs.forEach(function (element, index) {
+
+                        dataset.push({
+                            x: undefined,
+                            y: element.phenotype_value_f,
+                            species: element.species_category[0],
+                            insecticide: element.insecticide_s
+                        });
+
+                    });
+
+                    beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                    // make sure the beeswarm points are plotted next to each other
+                    xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
+                    // unless there are to many, then let them overlap
+                    if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+
+                    addBeeswarm(gs, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                }
+
+
+            }
+        });
+
+        selBsPromise.fail(function () {
+            console.log('Failed while loading irBeeswarm')
+        });
+
+        selVlPromise.fail(function () {
+            console.log('Failed while loading irViolin')
+        });
+    });
+
+
+    bgrVlPromise.fail(function () {
+        console.log('Failed while loading irViolin')
+    });
+
+
+    function addAxis(yDomain) {
         var yIR = d3.scale.linear()
             .range([height - margin.bottom, margin.top])
             .domain(yDomain)
@@ -367,367 +634,17 @@ function buildPlot(divid, BBox, selection) {
 
         svg.append("text")
             .attr("x", margin.left + boxWidth / 2)
-            .attr("y", 290)
+            .attr("y", height - margin.bottom / 2)
             .style("text-anchor", "middle")
             .text("Background");
 
         svg.append("text")
             .attr("x", margin.left + boxWidth + boxSpacing + boxWidth / 2)
-            .attr("y", 290)
+            .attr("y", height - margin.bottom / 2)
             .style("text-anchor", "middle")
             .text("Selection");
 
-        // add the global chart
     }
-
-    if (pCount > 1000) {
-        // Lot's of data, do a violin box-plot
-        yDomain = [pMin, pMax]
-        //
-        //} else if (pCount > 10) {
-        //    // Manageable amounts of data, do a beeswarm box-plot
-        //    domain = [pMin, pMax]
-
-    } else {
-        // Few data-points, just do a beeswarm skipping the box-plot
-        yDomain = [pMin, pMax];
-
-        // generate the beeswarm
-        var bsPromise = $.getJSON(bsUrl),
-            vlPromise = $.getJSON(vlUrl);
-        $.when(bsPromise, vlPromise).done(function (bsJson, vlJson) {
-
-            var sayhello;
-            if (bsJson[0].grouped.phenotype_value_type_s.matches > 0) {
-                var firstResult = bsJson[0].grouped.phenotype_value_type_s.groups[0];
-                //console.log(firstResult.groupValue);
-                var beeswarm, xaxis = boxWidth / 2
-                    dataset = [];
-
-                var scaledRadius = 10 * (pMax - pMin) / 240;
-                firstResult.doclist.docs.forEach(function (element, index) {
-                    //console.log(element.phenotype_value_f);
-
-                    dataset.push({
-                        x: undefined,
-                        y: element.phenotype_value_f,
-                        species: element.species_category[0],
-                        insecticide: element.insecticide_s
-                    });
-
-                });
-
-                beeswarm = new Beeswarm(dataset, 0, scaledRadius);
-                //beeswarm = new Beeswarm(dataset, xaxis, radius, scaledRadius);
-                addAxis();
-                addBeeswarm(g, beeswarm, [270, 30], boxWidth, yDomain, beeswarm.domain, false);
-            }
-            if (vlJson[0].facets.count > 0) {
-
-                var vlHist = vlJson[0].facets.denplot.buckets,
-                    vlMean = vlJson[0].facets.pmean,
-                    vlPerc = vlJson[0].facets.pperc,
-                    vlCount = vlJson[0].facets.count;
-
-                addBoxPlot(g, vlPerc, vlMean, [270, 30], boxWidth, yDomain, .15, false);
-            }
-        });
-
-        bsPromise.fail(function () {
-            console.log('Failed while loading irBeeswarm')
-        });
-
-        vlPromise.fail(function () {
-            console.log('Failed while loading irViolin')
-        });
-    }
-
-    return;
-
-
-    // Test beeswarm
-
-    var beeswarm, num_data = 100,
-        min = 10, max = 300,
-        xaxis = boxWidth / 2, radius = 4,
-        dataset = [], i;
-
-    for (i = 0; i < num_data; ++i)
-        dataset.push({
-            'x': 1,
-            'y': Math.floor(Math.random() * (max - min + 1)) + min
-        });
-
-    beeswarm = new Beeswarm(dataset, xaxis, radius);
-
-    addBeeswarm(g, beeswarm.swarm, [270, 30], boxWidth, yDomain, beeswarm.domain, false);
 }
 
-function Violin(div, options) {
-    var self = this;
-    var width = 250;
-    var height = 300;
-
-    var evorHist, evorMean, evorPerc, duplHist, duplMean, duplPerc, univHist, univMean, univPerc;
-
-    this.divback = div.attr("class", "popup-back").attr("id", "violin-popup-back");
-    this.div = this.divback.append("div").attr("id", "violin-popup").attr("class", "popup").append("div").attr("class", "violin-div").attr("id", "violin");
-
-    var url = '/solr/ninjadata/select?q={!join from=member_ids to=id}analysis_id:"AnOrthoMap-v1.01"&rows=0&wt=json&json.nl=map&json.facet={' +
-        'evorMean:"avg(evo_rate_f)",' +
-        'evoPerc:"percentile(evo_rate_f,5,25,50,75,95)",' +
-        'duplMean:"avg(avg_para_count_f)",' +
-        'duplPerc:"percentile(avg_para_count_f,5,25,50,75,95)",' +
-        'univMean:"avg(frac_species_f)",' +
-        'univPerc:"percentile(frac_species_f,5,25,50,75,95)",' +
-        'evor: {range : {field:evo_rate_f, start:0, end:4, gap:0.13}},' +
-        'dupl: {range : {field:avg_para_count_f, start:1, end:31, gap:1.03}},' +
-        'univ: {range : {field:frac_species_f, start:0, end:1, gap:0.033}}' +
-        '}';
-    console.log(url);
-
-    d3.json(url,
-        function (error, json) {
-            if (error) return console.warn(error);
-
-            if (defined(json.facets.count) && json.facets.count > 0) {
-
-
-                evorHist = json.facets.evor.buckets;
-                evorMean = json.facets.evorMean;
-                evorPerc = json.facets.evoPerc;
-                duplHist = json.facets.dupl.buckets;
-                duplMean = json.facets.duplMean;
-                duplPerc = json.facets.duplPerc;
-                univHist = json.facets.univ.buckets;
-                univMean = json.facets.univMean;
-                univPerc = json.facets.univPerc;
-
-            }
-
-        });
-
-    this.comm.ready(this);
-
-    this.comm.on("violin.violin" + this.id, function (event) {
-        if (!event || !event.source || event.source == self || !event.object) return;
-
-        if (!/^MZ.+/.test(event.object.branchset[0].name)) return;
-
-        var nodeX = event.object.branchset[0].x,
-            nodeY = event.object.branchset[0].y;
-
-        console.log('lakis:' + event.object.branchset[0].x);
-        //
-
-        //console.dir(event.object);
-        // this is how we get all the needed statistics to build the global violin plots
-        var url = '/solr/ninjadata/select?rows=0&wt=json&json.nl=map' +
-            '&q={!join from=member_ids to=id} analysis_id:"AnOrthoMap-v1.01" AND type:cluster AND ' +
-            'x_coord_i:' + nodeX +
-            ' AND y_coord_i:' + nodeY +
-            '&json.facet={' +
-            'evorMean:"avg(evo_rate_f)",' +
-            'evoPerc:"percentile(evo_rate_f,5,25,50,75,95)",' +
-            'duplMean:"avg(avg_para_count_f)",' +
-            'duplPerc:"percentile(avg_para_count_f,5,25,50,75,95)",' +
-            'univMean:"avg(frac_species_f)",' +
-            'univPerc:"percentile(frac_species_f,5,25,50,75,95)",' +
-            'evor: {range : {field:evo_rate_f, start:0, end:4, gap:0.13}},' +
-            'dupl: {range : {field:avg_para_count_f, start:1, end:31, gap:1.03}},' +
-            'univ: {range : {field:frac_species_f, start:0, end:1, gap:0.033}}' +
-            '}';
-        console.log(url);
-        d3.json(url,
-            function (error, json) {
-                if (error) return console.warn(error);
-
-                if (defined(json.facets.count) && json.facets.count > 0) {
-                    //add a close button
-                    self.div.selectAll("*").remove();
-                    self.div.append("div").attr("class", "cancel")
-                        .on("click", function () {
-                            d3.select("#violin-popup-back").style("display", "none");
-                        });
-
-                    var margin = {top: 30, bottom: 30, left: 30, right: 20};
-                    var boxWidth = 100;
-                    var boxSpacing = 10;
-
-                    var domain = [0, 4];
-                    var resolution = 20;
-                    var d3ObjId = "violin";
-
-
-                    //var interpolation = 'step-before';
-                    var interpolation = 'basis';
-
-                    var yEvor = d3.scale.linear()
-                        .range([height - margin.bottom, margin.top])
-                        .domain(domain)
-                        .nice();
-
-                    var yAxisEvor = d3.svg.axis()
-                        .scale(yEvor)
-                        .orient("left");
-
-                    var svg = self.div.append("svg")
-                        .attr("style", 'width: 32%; height: 100%; border: 0');
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth + boxSpacing / 2)
-                        .attr("y", 10)
-                        .style("text-anchor", "middle")
-                        .text("Evolutionary Rate");
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth / 2)
-                        .attr("y", 290)
-                        .style("text-anchor", "middle")
-                        .text("All");
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth + boxSpacing + boxWidth / 2)
-                        .attr("y", 290)
-                        .style("text-anchor", "middle")
-                        .text("Cluster");
-
-
-                    // add the global chart
-                    var g = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
-
-                    addViolin(g, evorHist, [height - margin.bottom, margin.top], boxWidth, domain, resolution, interpolation, 0.25, false);
-                    addBoxPlot(g, evorPerc, evorMean, [height - margin.bottom, margin.top], boxWidth, domain, .15, false);
-
-                    // add the chart for the cluster
-                    g = svg.append("g").attr("transform", "translate(" + (1 * (boxWidth + boxSpacing) + margin.left) + ",0)");
-
-                    addViolin(g, json.facets.evor.buckets, [height - margin.bottom, margin.top], boxWidth, domain, resolution, interpolation, 0.25, false);
-                    addBoxPlot(g, json.facets.evoPerc, json.facets.evorMean, [height - margin.bottom, margin.top], boxWidth, domain, .15, false);
-
-
-                    svg.append("g")
-                        .attr('class', 'axis')
-                        .attr("transform", "translate(" + margin.left + ",0)")
-                        .call(yAxisEvor);
-
-
-                    // lets add a graph for duplicability
-                    domain = [1, 31];
-                    var yDupl = d3.scale.log()
-                        .range([height - margin.bottom, margin.top])
-                        //.range([height - margin.bottom, margin.top])
-                        .domain(domain)
-                        .nice();
-
-
-                    var yAxisDupl = d3.svg.axis()
-                        .scale(yDupl)
-                        .orient("left")
-                        .ticks(3, ",.1s")
-                        .tickSize(6, 0);
-
-
-                    svg = self.div.append("svg")
-                        .attr("style", 'width: 32%; height: 100%; border: 0');
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth + boxSpacing / 2)
-                        .attr("y", 10)
-                        .style("text-anchor", "middle")
-                        .text("Duplicability");
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth / 2)
-                        .attr("y", 290)
-                        .style("text-anchor", "middle")
-                        .text("All");
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth + boxSpacing + boxWidth / 2)
-                        .attr("y", 290)
-                        .style("text-anchor", "middle")
-                        .text("Cluster");
-
-
-                    g = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
-                    //var g = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",-" + margin.top + ")");
-
-                    addViolin(g, duplHist, [height - margin.bottom, margin.top], boxWidth, domain, resolution, interpolation, 0.25, true);
-                    addBoxPlot(g, duplPerc, duplMean, [height - margin.bottom, margin.top], boxWidth, domain, .15, true);
-
-                    // add the chart for the cluster
-                    g = svg.append("g").attr("transform", "translate(" + (1 * (boxWidth + boxSpacing) + margin.left) + ",0)");
-
-                    addViolin(g, json.facets.dupl.buckets, [height - margin.bottom, margin.top], boxWidth, domain, resolution, interpolation, 0.25, true);
-                    addBoxPlot(g, json.facets.duplPerc, json.facets.duplMean, [height - margin.bottom, margin.top], boxWidth, domain, .15, true);
-
-
-                    svg.append("g")
-                        .attr('class', 'axis')
-                        .attr("transform", "translate(" + margin.left + ",0)")
-                        .call(yAxisDupl);
-
-                    // lets add a graph for universality
-                    domain = [0, 1];
-                    var yUniv = d3.scale.linear()
-                        .range([height - margin.bottom, margin.top])
-                        .domain(domain)
-                        .nice();
-
-                    var yAxisUniv = d3.svg.axis()
-                        .scale(yUniv)
-                        .orient("left");
-
-
-                    svg = self.div.append("svg")
-                        .attr("style", 'width: 32%; height: 100%; border: 0');
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth + boxSpacing / 2)
-                        .attr("y", 10)
-                        .style("text-anchor", "middle")
-                        .text("Universality");
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth / 2)
-                        .attr("y", 290)
-                        .style("text-anchor", "middle")
-                        .text("All");
-
-                    svg.append("text")
-                        .attr("x", margin.left + boxWidth + boxSpacing + boxWidth / 2)
-                        .attr("y", 290)
-                        .style("text-anchor", "middle")
-                        .text("Cluster");
-
-
-                    g = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
-                    //var g = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",-" + margin.top + ")");
-
-                    addViolin(g, univHist, [height - margin.bottom, margin.top], boxWidth, domain, resolution, interpolation, 0.25, false);
-                    addBoxPlot(g, univPerc, univMean, [height - margin.bottom, margin.top], boxWidth, domain, .15, false);
-
-                    // add the chart for the cluster
-                    g = svg.append("g").attr("transform", "translate(" + (1 * (boxWidth + boxSpacing) + margin.left) + ",0)");
-
-                    addViolin(g, json.facets.univ.buckets, [height - margin.bottom, margin.top], boxWidth, domain, resolution, interpolation, 0.25, false);
-                    addBoxPlot(g, json.facets.univPerc, json.facets.univMean, [height - margin.bottom, margin.top], boxWidth, domain, .15, false);
-
-
-                    svg.append("g")
-                        .attr('class', 'axis')
-                        .attr("transform", "translate(" + margin.left + ",0)")
-                        .call(yAxisUniv);
-
-                    d3.select("#violin-popup-back").style("display", "block");
-                }
-
-                //self.text += JSON.stringify(json.response.docs, null, 2);
-                //self.text += "</table>";
-                //self.div.node().innerHTML = self.text;
-            });
-    });
-}
-// --------------------------------------------------------- //
 
