@@ -312,6 +312,12 @@ function buildPlot(divid, BBox, selection) {
     var width = 380, height = 300;
     var plotDiv = d3.select(divid);
     var resolution = 25, interpolation = 'basis';
+    var vlJsonFacet = {
+        pmin: "min(phenotype_value_f)",
+        pmax: "max(phenotype_value_f)"
+    };
+
+    var mapBounds = buildBbox(map.getBounds());
 
     if (d3.select('#beeViolinPlot')) d3.select('#beeViolinPlot').remove();
     var svg = plotDiv.append("svg")
@@ -321,19 +327,6 @@ function buildPlot(divid, BBox, selection) {
     var boxWidth = 150, boxSpacing = 10;
     var margin = {top: 30, bottom: 30, left: 30, right: 20};
 
-    var vlJsonFacet = {
-        pmean: "avg(phenotype_value_f)",
-        pperc: "percentile(phenotype_value_f,5,25,50,75,95)",
-        pmin: "min(phenotype_value_f)",
-        pmax: "max(phenotype_value_f)",
-        denplot: {
-            type: "range",
-            field: "phenotype_value_f",
-            gap: (pMax - pMin) / resolution,
-            start: pMin,
-            end: pMax
-        }
-    };
 
     // Initialize background urls and promises
     var bgrBsUrl, bgrVlUrl;
@@ -341,22 +334,16 @@ function buildPlot(divid, BBox, selection) {
     switch ($('#bgPlotType').val()) {
         // Phenotypes matching search terms
         case "1":
-            bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
-                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
             bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
                 + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
             break;
         // Phenotypes visible on map
         case "2":
-            bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + BBox + '&fq=phenotype_value_type_s:"' + pType
-                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
-            bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + BBox + '&fq=phenotype_value_type_s:"' + pType
+            bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + mapBounds + '&fq=phenotype_value_type_s:"' + pType
                 + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
             break;
         // All phenotypes
         case "3":
-            bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + 'q=*' + '&fq=phenotype_value_type_s:"' + pType
-                + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
             bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + 'q=*' + '&fq=phenotype_value_type_s:"' + pType
                 + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
             break;
@@ -364,252 +351,304 @@ function buildPlot(divid, BBox, selection) {
             break;
     }
 
-    var bgrVlPromise = $.getJSON(bgrVlUrl);
-
-    // build background plot
-    bgrVlPromise.done(function (bgrVlJson) {
-
-        var gb = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
-
-        var bgrCount = bgrVlJson.response.numFound, bgrMin = bgrVlJson.facets.pmin, bgrMax = bgrVlJson.facets.pmax;
-        if (pUnit === 'percent') {
-            bgrMin = 0;
-            bgrMax = 100;
-        }
-        var bgrYDomain = [bgrMin, bgrMax];
-        var dataset, // store the points to be plotted
-            firstResult, beeswarm, xaxis = boxWidth / 2, scaledRadius, xRange;
-        var vlHist, vlMean, vlPerc, vlCount;
-
-        addAxis(bgrYDomain);
-
-        if (bgrCount > 50) {
-
-            if (bgrVlJson.facets.count > 0) {
-
-                vlHist = bgrVlJson.facets.denplot.buckets;
-                vlMean = bgrVlJson.facets.pmean;
-                vlPerc = bgrVlJson.facets.pperc;
-                vlCount = bgrVlJson.facets.count;
-
-                //addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, yDomain, resolution, interpolation, false);
-                addViolin(gb, vlHist, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, resolution, interpolation, false);
-
-                addBoxPlot(gb, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+    $.getJSON(bgrVlUrl)
+        .done(function (bgrVlJson) {
+            var bgrCount = bgrVlJson.response.numFound, bgrMin = bgrVlJson.facets.pmin, bgrMax = bgrVlJson.facets.pmax;
+            if (pUnit === 'percent') {
+                bgrMin = 0;
+                bgrMax = 100;
+            }
+            vlJsonFacet = {
+                pmean: "avg(phenotype_value_f)",
+                pperc: "percentile(phenotype_value_f,5,25,50,75,95)",
+                pmin: "min(phenotype_value_f)",
+                pmax: "max(phenotype_value_f)",
+                denplot: {
+                    type: "range",
+                    field: "phenotype_value_f",
+                    gap: (bgrMax - bgrMin) / resolution,
+                    start: bgrMin,
+                    end: bgrMax
+                }
+            };
+            // rebuild the urls now that we have the min and max values
+            switch ($('#bgPlotType').val()) {
+                // Phenotypes matching search terms
+                case "1":
+                    bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+                        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
+                    bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+                        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
+                    break;
+                // Phenotypes visible on map
+                case "2":
+                    bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + mapBounds + '&fq=phenotype_value_type_s:"' + pType
+                        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
+                    bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + mapBounds + '&fq=phenotype_value_type_s:"' + pType
+                        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
+                    break;
+                // All phenotypes
+                case "3":
+                    bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + 'q=*' + '&fq=phenotype_value_type_s:"' + pType
+                        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
+                    bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + 'q=*' + '&fq=phenotype_value_type_s:"' + pType
+                        + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
+                    break;
+                default:
+                    break;
             }
 
-        } else if (bgrCount >= 10 && bgrCount <= 50) {
-            // Manageable data-points, just do a beeswarm with a box-plot
-            var bgrBsPromise = $.getJSON(bgrBsUrl);
-            bgrBsPromise.fail(function () {
-                console.log('Failed while loading irBeeswarm')
-            });
+            // build background plot
+            var bgrVlPromise = $.getJSON(bgrVlUrl);
+            bgrVlPromise.done(function (bgrVlJson) {
 
-            // generate the beeswarm
-            bgrBsPromise.done(function (bgrBsJson) {
+                var gb = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
 
-                if (bgrBsJson.grouped.phenotype_value_type_s.matches > 0) {
-                    firstResult = bgrBsJson.grouped.phenotype_value_type_s.groups[0];
+                var bgrCount = bgrVlJson.response.numFound, bgrMin = bgrVlJson.facets.pmin, bgrMax = bgrVlJson.facets.pmax;
+                if (pUnit === 'percent') {
+                    bgrMin = 0;
+                    bgrMax = 100;
+                }
 
-                    xaxis = boxWidth / 2;
-                    dataset = [];
 
-                    scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                    firstResult.doclist.docs.forEach(function (element, index) {
+                var bgrYDomain = [bgrMin, bgrMax];
 
-                        dataset.push({
-                            x: undefined,
-                            y: element.phenotype_value_f,
-                            species: element.species_category[0],
-                            insecticide: element.insecticide_s
-                        });
+                var dataset, // store the points to be plotted
+                    firstResult, beeswarm, xaxis = boxWidth / 2, scaledRadius, xRange;
+                var vlHist, vlMean, vlPerc, vlCount;
+
+                addAxis(bgrYDomain);
+
+                if (bgrCount > 50) {
+
+                    if (bgrVlJson.facets.count > 0) {
+
+                        vlHist = bgrVlJson.facets.denplot.buckets;
+                        vlMean = bgrVlJson.facets.pmean;
+                        vlPerc = bgrVlJson.facets.pperc;
+                        vlCount = bgrVlJson.facets.count;
+
+                        //addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, yDomain, resolution, interpolation, false);
+                        addViolin(gb, vlHist, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, resolution, interpolation, false);
+
+                        addBoxPlot(gb, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+                    }
+
+                } else if (bgrCount >= 10 && bgrCount <= 50) {
+                    // Manageable data-points, just do a beeswarm with a box-plot
+                    var bgrBsPromise = $.getJSON(bgrBsUrl);
+                    bgrBsPromise.fail(function () {
+                        console.log('Failed while loading irBeeswarm')
+                    });
+
+                    // generate the beeswarm
+                    bgrBsPromise.done(function (bgrBsJson) {
+
+                        if (bgrBsJson.grouped.phenotype_value_type_s.matches > 0) {
+                            firstResult = bgrBsJson.grouped.phenotype_value_type_s.groups[0];
+
+                            xaxis = boxWidth / 2;
+                            dataset = [];
+
+                            scaledRadius = 4 * (pMax - pMin) / boxWidth;
+                            firstResult.doclist.docs.forEach(function (element, index) {
+
+                                dataset.push({
+                                    x: undefined,
+                                    y: element.phenotype_value_f,
+                                    species: element.species_category[0],
+                                    insecticide: element.insecticide_s
+                                });
+
+                            });
+
+                            beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            // make sure the beeswarm points are plotted next to each other
+                            xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
+                            // unless there are to many, then let them overlap
+                            if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+
+                            addBeeswarm(gb, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                        }
+                        if (bgrVlJson.facets.count > 0) {
+
+                            vlHist = bgrVlJson.facets.denplot.buckets;
+                            vlMean = bgrVlJson.facets.pmean;
+                            vlPerc = bgrVlJson.facets.pperc;
+                            vlCount = bgrVlJson.facets.count;
+
+                            addBoxPlot(gb, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+                        }
 
                     });
 
-                    beeswarm = new Beeswarm(dataset, 0, scaledRadius);
-                    // make sure the beeswarm points are plotted next to each other
-                    xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
-                    // unless there are to many, then let them overlap
-                    if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
-
-                    addBeeswarm(gb, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
-                }
-                if (bgrVlJson.facets.count > 0) {
-
-                    vlHist = bgrVlJson.facets.denplot.buckets;
-                    vlMean = bgrVlJson.facets.pmean;
-                    vlPerc = bgrVlJson.facets.pperc;
-                    vlCount = bgrVlJson.facets.count;
-
-                    addBoxPlot(gb, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
-                }
-
-            });
-
-        } else {
-            // Very few data-points, just do a beeswarm
-            var bgrBsPromise = $.getJSON(bgrBsUrl);
-            bgrBsPromise.fail(function () {
-                console.log('Failed while loading irBeeswarm')
-            });
-
-            // generate the beeswarm
-            bgrBsPromise.done(function (bgrBsJson) {
-                // generate the beeswarm
-                if (bgrBsJson.grouped.phenotype_value_type_s.matches > 0) {
-                    firstResult = bgrBsJson.grouped.phenotype_value_type_s.groups[0];
-
-                    dataset = [];
-
-                    scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                    firstResult.doclist.docs.forEach(function (element, index) {
-
-                        dataset.push({
-                            x: undefined,
-                            y: element.phenotype_value_f,
-                            species: element.species_category[0],
-                            insecticide: element.insecticide_s
-                        });
-
+                } else {
+                    // Very few data-points, just do a beeswarm
+                    var bgrBsPromise = $.getJSON(bgrBsUrl);
+                    bgrBsPromise.fail(function () {
+                        console.log('Failed while loading irBeeswarm')
                     });
 
-                    beeswarm = new Beeswarm(dataset, 0, scaledRadius);
-                    // make sure the beeswarm points are plotted next to each other
-                    xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
-                    // unless there are to many, then let them overlap
-                    if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+                    // generate the beeswarm
+                    bgrBsPromise.done(function (bgrBsJson) {
+                        // generate the beeswarm
+                        if (bgrBsJson.grouped.phenotype_value_type_s.matches > 0) {
+                            firstResult = bgrBsJson.grouped.phenotype_value_type_s.groups[0];
 
-                    addBeeswarm(gb, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                            dataset = [];
+
+                            scaledRadius = 4 * (pMax - pMin) / boxWidth;
+                            firstResult.doclist.docs.forEach(function (element, index) {
+
+                                dataset.push({
+                                    x: undefined,
+                                    y: element.phenotype_value_f,
+                                    species: element.species_category[0],
+                                    insecticide: element.insecticide_s
+                                });
+
+                            });
+
+                            beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            // make sure the beeswarm points are plotted next to each other
+                            xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
+                            // unless there are to many, then let them overlap
+                            if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+
+                            addBeeswarm(gb, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                        }
+                    });
+
                 }
+                // Initialize selection urls and promises
+                var selBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+                    + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + BBox + '&json.wrf=?&callback=?';
+
+                var selVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
+                    + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + BBox + '&json.wrf=?&callback=?';
+                var selBsPromise = $.getJSON(selBsUrl),
+                    selVlPromise = $.getJSON(selVlUrl);
+
+
+                //addAxis();
+
+                $.when(selBsPromise, selVlPromise).done(function (bsJson, vlJson) {
+                    // background graph
+                    // selection graph
+                    var gs = svg.append("g").attr("transform", "translate(" + (1 * (boxWidth + boxSpacing) + margin.left) + ",0)");
+
+                    var dataset, // store the points to be plotted
+                        firstResult, beeswarm, xaxis = boxWidth / 2, scaledRadius, xRange;
+                    var vlHist, vlMean, vlPerc, vlCount;
+
+                    if (pCount > 50) {
+
+                        if (vlJson[0].facets.count > 0) {
+
+                            vlHist = vlJson[0].facets.denplot.buckets;
+                            vlMean = vlJson[0].facets.pmean;
+                            vlPerc = vlJson[0].facets.pperc;
+                            vlCount = vlJson[0].facets.count;
+
+                            //addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, yDomain, resolution, interpolation, false);
+                            addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, resolution, interpolation, false);
+
+                            addBoxPlot(gs, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+                        }
+
+                    } else if (pCount >= 10 && pCount <= 50) {
+                        // Manageable data-points, just do a beeswarm with a box-plot
+
+                        // generate the beeswarm
+
+                        if (bsJson[0].grouped.phenotype_value_type_s.matches > 0) {
+                            firstResult = bsJson[0].grouped.phenotype_value_type_s.groups[0];
+
+                            xaxis = boxWidth / 2;
+                            dataset = [];
+
+                            scaledRadius = 4 * (pMax - pMin) / boxWidth;
+                            firstResult.doclist.docs.forEach(function (element, index) {
+
+                                dataset.push({
+                                    x: undefined,
+                                    y: element.phenotype_value_f,
+                                    species: element.species_category[0],
+                                    insecticide: element.insecticide_s
+                                });
+
+                            });
+
+                            beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            // make sure the beeswarm points are plotted next to each other
+                            xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
+                            // unless there are to many, then let them overlap
+                            if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+
+                            addBeeswarm(gs, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                        }
+                        if (vlJson[0].facets.count > 0) {
+
+                            vlHist = vlJson[0].facets.denplot.buckets;
+                            vlMean = vlJson[0].facets.pmean;
+                            vlPerc = vlJson[0].facets.pperc;
+                            vlCount = vlJson[0].facets.count;
+
+                            addBoxPlot(gs, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
+                        }
+
+
+                    } else {
+                        // Very few data-points, just do a beeswarm
+
+                        // generate the beeswarm
+                        if (bsJson[0].grouped.phenotype_value_type_s.matches > 0) {
+                            firstResult = bsJson[0].grouped.phenotype_value_type_s.groups[0];
+
+                            dataset = [];
+
+                            scaledRadius = 4 * (pMax - pMin) / boxWidth;
+                            firstResult.doclist.docs.forEach(function (element, index) {
+
+                                dataset.push({
+                                    x: undefined,
+                                    y: element.phenotype_value_f,
+                                    species: element.species_category[0],
+                                    insecticide: element.insecticide_s
+                                });
+
+                            });
+
+                            beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            // make sure the beeswarm points are plotted next to each other
+                            xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
+                            // unless there are to many, then let them overlap
+                            if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
+
+                            addBeeswarm(gs, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
+                        }
+
+
+                    }
+                });
+
+                selBsPromise.fail(function () {
+                    console.log('Failed while loading irBeeswarm')
+                });
+
+                selVlPromise.fail(function () {
+                    console.log('Failed while loading irViolin')
+                });
             });
 
-        }
-        // Initialize selection urls and promises
-        var selBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
-            + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + BBox + '&json.wrf=?&callback=?';
 
-        var selVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + '&fq=phenotype_value_type_s:"' + pType
-            + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' + JSON.stringify(vlJsonFacet) + BBox + '&json.wrf=?&callback=?';
-        var selBsPromise = $.getJSON(selBsUrl),
-            selVlPromise = $.getJSON(selVlUrl);
-
-
-        //addAxis();
-
-        $.when(selBsPromise, selVlPromise).done(function (bsJson, vlJson) {
-            // background graph
-            // selection graph
-            var gs = svg.append("g").attr("transform", "translate(" + (1 * (boxWidth + boxSpacing) + margin.left) + ",0)");
-
-            var dataset, // store the points to be plotted
-                firstResult, beeswarm, xaxis = boxWidth / 2, scaledRadius, xRange;
-            var vlHist, vlMean, vlPerc, vlCount;
-
-            if (pCount > 50) {
-
-                if (vlJson[0].facets.count > 0) {
-
-                    vlHist = vlJson[0].facets.denplot.buckets;
-                    vlMean = vlJson[0].facets.pmean;
-                    vlPerc = vlJson[0].facets.pperc;
-                    vlCount = vlJson[0].facets.count;
-
-                    //addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, yDomain, resolution, interpolation, false);
-                    addViolin(gs, vlHist, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, resolution, interpolation, false);
-
-                    addBoxPlot(gs, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
-                }
-
-            } else if (pCount >= 10 && pCount <= 50) {
-                // Manageable data-points, just do a beeswarm with a box-plot
-
-                // generate the beeswarm
-
-                if (bsJson[0].grouped.phenotype_value_type_s.matches > 0) {
-                    firstResult = bsJson[0].grouped.phenotype_value_type_s.groups[0];
-
-                    xaxis = boxWidth / 2;
-                    dataset = [];
-
-                    scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                    firstResult.doclist.docs.forEach(function (element, index) {
-
-                        dataset.push({
-                            x: undefined,
-                            y: element.phenotype_value_f,
-                            species: element.species_category[0],
-                            insecticide: element.insecticide_s
-                        });
-
-                    });
-
-                    beeswarm = new Beeswarm(dataset, 0, scaledRadius);
-                    // make sure the beeswarm points are plotted next to each other
-                    xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
-                    // unless there are to many, then let them overlap
-                    if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
-
-                    addBeeswarm(gs, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
-                }
-                if (vlJson[0].facets.count > 0) {
-
-                    vlHist = vlJson[0].facets.denplot.buckets;
-                    vlMean = vlJson[0].facets.pmean;
-                    vlPerc = vlJson[0].facets.pperc;
-                    vlCount = vlJson[0].facets.count;
-
-                    addBoxPlot(gs, vlPerc, vlMean, [height - margin.bottom, margin.top], boxWidth, bgrYDomain, .15, false);
-                }
-
-
-            } else {
-                // Very few data-points, just do a beeswarm
-
-                // generate the beeswarm
-                if (bsJson[0].grouped.phenotype_value_type_s.matches > 0) {
-                    firstResult = bsJson[0].grouped.phenotype_value_type_s.groups[0];
-
-                    dataset = [];
-
-                    scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                    firstResult.doclist.docs.forEach(function (element, index) {
-
-                        dataset.push({
-                            x: undefined,
-                            y: element.phenotype_value_f,
-                            species: element.species_category[0],
-                            insecticide: element.insecticide_s
-                        });
-
-                    });
-
-                    beeswarm = new Beeswarm(dataset, 0, scaledRadius);
-                    // make sure the beeswarm points are plotted next to each other
-                    xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
-                    // unless there are to many, then let them overlap
-                    if (8 * beeswarm.maxPoints > boxWidth) xRange = [0, boxWidth];
-
-                    addBeeswarm(gs, beeswarm, [height - margin.bottom, margin.top], xRange, bgrYDomain, beeswarm.domain, false);
-                }
-
-
-            }
-        });
-
-        selBsPromise.fail(function () {
-            console.log('Failed while loading irBeeswarm')
-        });
-
-        selVlPromise.fail(function () {
+            bgrVlPromise.fail(function () {
+                console.log('Failed while loading irViolin')
+            });
+        })
+        .fail(function () {
             console.log('Failed while loading irViolin')
         });
-    });
-
-
-    bgrVlPromise.fail(function () {
-        console.log('Failed while loading irViolin')
-    });
-
 
     function addAxis(yDomain) {
         var yIR = d3.scale.linear()
