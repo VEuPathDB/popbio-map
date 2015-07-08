@@ -136,16 +136,16 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
                 index = bisect(d, xx);
             var length = d.length - 1;
             if (index === 0) {
-                var bin = 'Values ' + d[index].val.roundDecimals(4) + '-' + (d[index].val + dx).roundDecimals(4);
+                var bin = 'Range: ' + d[index].val.roundDecimals(4) + '-' + (d[index].val + dx).roundDecimals(4);
                 var count = d[index].count;
             } else if (index < length) {
-                var bin = 'Values ' + d[index - 1].val.roundDecimals(4) + '-' + (d[index - 1].val + dx).roundDecimals(4);
+                var bin = 'Range: ' + d[index - 1].val.roundDecimals(4) + '-' + (d[index - 1].val + dx).roundDecimals(4);
                 var count = d[index - 1].count;
             } else {
-                var bin = 'Values ' + d[length - 1].val.roundDecimals(4) + '-' + (d[length - 1].val + dx).roundDecimals(4);
+                var bin = 'Range: ' + d[length - 1].val.roundDecimals(4) + '-' + (d[length - 1].val + dx).roundDecimals(4);
                 var count = d[length - 1].count;
             }
-            var tooltipHtml = '<h3 style="background-color: #CCCCCC;"><font color="white">Count of phenotypes</font></h3><p>%BIN: %COUNT</p>'
+            var tooltipHtml = '<h3 style="background-color: #CCCCCC;"><font color="white">Count of phenotypes</font></h3><p>%BIN</p><p><b>%COUNT</b></p>'
                 .replace('%BIN', bin).replace('%COUNT', count);
             tooltip.html(tooltipHtml)
                 .style("left", (d3.event.pageX + 5) + "px")
