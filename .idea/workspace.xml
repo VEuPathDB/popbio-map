@@ -7,16 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Add first prototype of Beeswarm/Violin Plots&#10;&#10;So far it's just a demonstration that it can be done. Data displayed &#10;is randomly generated.&#10;&#10;Next step is to actually grab data from SOLR" />
-    <list default="true" id="88e3272f-a0b2-4367-9eb6-c783ed60c977" name="VB-3798 Create Violin/Beeswarm Box Plot for selected IR markers" comment="VB-3798 Fix a bug in y axis domain calculation&#10;&#10;Background min and max values for the y axis domain are now requested&#10; prior to any other requests. As a results y axis is now properly set.&#10;&#10;Also, selecting only visible markers as background now uses the&#10;correct BBox.&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/beeswarm" afterPath="$PROJECT_DIR$/web/libs/beeswarm" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.js" afterPath="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.min.js" afterPath="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-violin-plots.js" afterPath="$PROJECT_DIR$/web/js/vb-violin-plots.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" afterPath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+    <list default="true" id="88e3272f-a0b2-4367-9eb6-c783ed60c977" name="VB-3798 Create Violin/Beeswarm Box Plot for selected IR markers" comment="Merge remote-tracking branch 'origin/master'&#10;">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="321cbd63-70fe-4ea7-a233-d3e20db45332" name="VB-3800 SOLR 5.2 not working with marcro expansion when used within solrconfig.xml" comment="VB-3800 SOLR 5.2 not working with marcro expansion when used within solrconfig.xml&#10;&#10;Tried to solve the issue by upgrading vb_popbio schema files to the 5.2 format. The issue still remains but I will keep the upgraded solr schema files.&#10;I also made some minor changes to the JS code to align with the new schema" />
@@ -59,8 +51,8 @@
       <file leaf-file-name="vb-violin-plots.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="104" column="148" selection-start-line="104" selection-start-column="148" selection-end-line="104" selection-end-column="148" />
+            <state vertical-scroll-proportion="1.351682">
+              <caret line="130" column="37" selection-start-line="130" selection-start-column="37" selection-end-line="130" selection-end-column="37" />
               <folding>
                 <marker date="1436377477083" expanded="true" signature="3306:3332" placeholder="..." />
                 <marker date="1436377477083" expanded="true" signature="5022:5048" placeholder="..." />
@@ -102,9 +94,9 @@
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-                <marker date="1436377196936" expanded="true" signature="10947:10962" placeholder="..." />
-                <marker date="1436377196936" expanded="true" signature="11073:11093" placeholder="..." />
-                <marker date="1436377196936" expanded="true" signature="11524:11539" placeholder="..." />
+                <marker date="1436393532538" expanded="true" signature="10947:10962" placeholder="..." />
+                <marker date="1436393532538" expanded="true" signature="11073:11093" placeholder="..." />
+                <marker date="1436393532538" expanded="true" signature="11524:11539" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -127,6 +119,7 @@
       </list>
     </option>
     <option name="UPDATE_TYPE" value="MERGE" />
+    <option name="PUSH_UPDATE_ALL_ROOTS" value="false" />
     <option name="ROOT_SYNC" value="SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -789,7 +782,7 @@
       <option name="issue" value="true" />
       <option name="number" value="3798" />
       <option name="project" value="VB" />
-      <updated>1436393438551</updated>
+      <updated>1436393600319</updated>
     </task>
     <task id="VB-3800" summary="SOLR 5.2 not working with marcro expansion when used within solrconfig.xml">
       <changelist id="321cbd63-70fe-4ea7-a233-d3e20db45332" name="VB-3800 SOLR 5.2 not working with marcro expansion when used within solrconfig.xml" comment="" />
@@ -858,30 +851,30 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14459103" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33602422" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32798165" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24016145" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16306068" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2045977" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23995407" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32694247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14459103" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Issues - JIRA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37313432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Atlassian " active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.58668196" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16306068" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36722487" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2048436" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32694247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Issues - JIRA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37436932" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32516703" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36722487" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
     </layout>
     <layout-to-restore>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -921,8 +914,6 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="USE_COMMIT_MESSAGE_MARGIN" value="true" />
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
-    <MESSAGE value="* Trying a new setup&#10;** All markers now are computed on SOLR unless&#10;*** It is a single-sample marker&#10;*** All samples in the marker are from the exact same location" />
-    <MESSAGE value="* Finetuned markers clustering&#10;* Added support for synonyms in auto-complete" />
     <MESSAGE value="* Code cleanup and re-arrangement" />
     <MESSAGE value="* Refined the starting location of the map&#10;* Added vb-violin-plots.(js|css). Still no working violin plots though&#10;* Re-built minified versions of most js and css files" />
     <MESSAGE value="* Switched to a new project structure&#10;** Libs are now repos" />
@@ -946,7 +937,9 @@
     <MESSAGE value="VB-3798 Fix a bug in y axis domain calculation&#10;&#10;Background min and max values for the y axis domain are now requested&#10; prior to any other requests. As a results y axis is now properly set.&#10; &#10;Also, selecting only visible markers as background now uses the &#10;correct BBox." />
     <MESSAGE value="VB-3798 Fix a bug in y axis domain calculation&#10;&#10;Background min and max values for the y axis domain are now requested&#10; prior to any other requests. As a results y axis is now properly set.&#10;&#10;Also, selecting only visible markers as background now uses the&#10;correct BBox.&#10;" />
     <MESSAGE value="VB-3798 Resized h3 heading for plots" />
-    <option name="LAST_COMMIT_MESSAGE" value="VB-3798 Resized h3 heading for plots" />
+    <MESSAGE value="VB-3798 Add features and fix numerous bugs of the Beeswarm/Violin plots&#10;        &#10;        New features:&#10;        &#9;Background plots and options&#10;        &#9;Y-axis tick labels now draw properly&#10;        &#9;Violin plots now include edge values&#10;        &#9;General aesthetic changes&#10;        &#9;User is now notified that data is loading using a spinner&#10;        &#9;All plot types now have proper hover popups&#10;        &#9;Beeswarm popups also include concentration and duration if &#10;        &#9;data exists&#10;        &#9;User is now notified than the need to click on an IR marker &#10;        &#9;to trigger plotting&#10;        &#9;X-axis labels also include phenotype counts now&#10;        &#9;&#10;        &#9;&#10;        Bug fixes:&#10;        &#9;BBox is now set properly when selecting &quot;Markers visible on &#10;        &#9;map&quot; as the background data&#10;        &#9;Pie charts now always display with the proper size&#10;        &#9;All the markers now have onClick event listeners that &#10;        &#9;trigger plots generation&#10;        &#9;Better handling of demical points in the Beeswarm/Violin &#10;        &#9;plots&#10;        &#9;Various other bug fixes" />
+    <MESSAGE value="VB-3798 Add features and fix numerous bugs of the Beeswarm/Violin plots&#10;&#10;        New features:&#10;        &#9;Background plots and options&#10;        &#9;Y-axis tick labels now draw properly&#10;        &#9;Violin plots now include edge values&#10;        &#9;General aesthetic changes&#10;        &#9;User is now notified that data is loading using a spinner&#10;        &#9;All plot types now have proper hover popups&#10;        &#9;Beeswarm popups also include concentration and duration if&#10;        &#9;data exists&#10;        &#9;User is now notified than the need to click on an IR marker&#10;        &#9;to trigger plotting&#10;        &#9;X-axis labels also include phenotype counts now&#10;&#10;        Bug fixes:&#10;        &#9;BBox is now set properly when selecting &quot;Markers visible on&#10;        &#9;map&quot; as the background data&#10;        &#9;Pie charts now always display with the proper size&#10;        &#9;All the markers now have onClick event listeners that&#10;        &#9;trigger plots generation&#10;        &#9;Better handling of demical points in the Beeswarm/Violin&#10;        &#9;plots&#10;        &#9;Various other bug fixes&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="VB-3798 Add features and fix numerous bugs of the Beeswarm/Violin plots&#10;&#10;        New features:&#10;        &#9;Background plots and options&#10;        &#9;Y-axis tick labels now draw properly&#10;        &#9;Violin plots now include edge values&#10;        &#9;General aesthetic changes&#10;        &#9;User is now notified that data is loading using a spinner&#10;        &#9;All plot types now have proper hover popups&#10;        &#9;Beeswarm popups also include concentration and duration if&#10;        &#9;data exists&#10;        &#9;User is now notified than the need to click on an IR marker&#10;        &#9;to trigger plotting&#10;        &#9;X-axis labels also include phenotype counts now&#10;&#10;        Bug fixes:&#10;        &#9;BBox is now set properly when selecting &quot;Markers visible on&#10;        &#9;map&quot; as the background data&#10;        &#9;Pie charts now always display with the proper size&#10;        &#9;All the markers now have onClick event listeners that&#10;        &#9;trigger plots generation&#10;        &#9;Better handling of demical points in the Beeswarm/Violin&#10;        &#9;plots&#10;        &#9;Various other bug fixes&#10;" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -990,7 +983,7 @@
       <ActiveJiraIssueBean>
         <option name="issueKey" value="VB-3798" />
         <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3798" />
-        <option name="secondsSpent" value="197038" />
+        <option name="secondsSpent" value="198586" />
         <option name="serverId">
           <ServerIdImpl>
             <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
@@ -1106,8 +1099,8 @@
     <option name="recentlyOpenIssuess">
       <list>
         <IssueRecentlyOpenBean>
-          <option name="issueKey" value="VB-3798" />
-          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3798" />
+          <option name="issueKey" value="VB-3795" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3795" />
           <option name="serverId">
             <ServerIdImpl>
               <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
@@ -1115,8 +1108,8 @@
           </option>
         </IssueRecentlyOpenBean>
         <IssueRecentlyOpenBean>
-          <option name="issueKey" value="VB-3800" />
-          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3800" />
+          <option name="issueKey" value="VB-3844" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3844" />
           <option name="serverId">
             <ServerIdImpl>
               <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
@@ -1133,8 +1126,35 @@
           </option>
         </IssueRecentlyOpenBean>
         <IssueRecentlyOpenBean>
-          <option name="issueKey" value="VB-3795" />
-          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3795" />
+          <option name="issueKey" value="VB-3842" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3842" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3838" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3838" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3798" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3798" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3800" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3800" />
           <option name="serverId">
             <ServerIdImpl>
               <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
@@ -1168,7 +1188,7 @@
             </entry>
           </map>
         </option>
-        <option name="viewFilterId" value="com.atlassian.theplugin.jira.model.presetfilters.AssignedToMePresetFilter" />
+        <option name="viewFilterId" value="com.atlassian.theplugin.jira.model.presetfilters.ReportedByMePresetFilter" />
         <option name="viewFilterType" value="presetFilter" />
         <option name="viewServerIdd">
           <ServerIdImpl>
@@ -1201,9 +1221,9 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <marker date="1436377196936" expanded="true" signature="10947:10962" placeholder="..." />
-            <marker date="1436377196936" expanded="true" signature="11073:11093" placeholder="..." />
-            <marker date="1436377196936" expanded="true" signature="11524:11539" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="10947:10962" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="11073:11093" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="11524:11539" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1230,9 +1250,9 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <marker date="1436377196936" expanded="true" signature="10947:10962" placeholder="..." />
-            <marker date="1436377196936" expanded="true" signature="11073:11093" placeholder="..." />
-            <marker date="1436377196936" expanded="true" signature="11524:11539" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="10947:10962" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="11073:11093" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="11524:11539" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1516,6 +1536,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4308094">
           <caret line="38" column="31" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1572,9 +1593,9 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="n#!!block;n#sortHashByValue#0" expanded="false" />
-            <marker date="1436377196936" expanded="true" signature="10947:10962" placeholder="..." />
-            <marker date="1436377196936" expanded="true" signature="11073:11093" placeholder="..." />
-            <marker date="1436377196936" expanded="true" signature="11524:11539" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="10947:10962" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="11073:11093" placeholder="..." />
+            <marker date="1436393532538" expanded="true" signature="11524:11539" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1596,8 +1617,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="104" column="148" selection-start-line="104" selection-start-column="148" selection-end-line="104" selection-end-column="148" />
+        <state vertical-scroll-proportion="1.351682">
+          <caret line="130" column="37" selection-start-line="130" selection-start-column="37" selection-end-line="130" selection-end-column="37" />
           <folding>
             <marker date="1436377477083" expanded="true" signature="3306:3332" placeholder="..." />
             <marker date="1436377477083" expanded="true" signature="5022:5048" placeholder="..." />
