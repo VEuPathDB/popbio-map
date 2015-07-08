@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="vb-dev" uploadOnCheckin="0fa0d3d7-0e3c-4416-ad26-e0966d27a9eb" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;.gitignore">
+  <component name="PublishConfigData" serverName="vb-dev" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;.gitignore">
     <serverData>
       <paths name="vb-dev">
         <serverdata>
@@ -12,6 +12,5 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myUploadOnCheckinName" value="vb-dev" />
   </component>
 </project>

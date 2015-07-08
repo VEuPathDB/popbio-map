@@ -479,46 +479,6 @@ function loadSolr(parameters) {
                     continue;
                 }
 
-                //if (zoomLevel === 3 && count < 6) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-                //if (zoomLevel === 4 && count < 11) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-                //if (zoomLevel === 5 && count < 21) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-                //if (zoomLevel === 6 && count < 31) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-                //if (zoomLevel === 7 && count < 41) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-                //if (zoomLevel === 8 && count < 51) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-                //if (zoomLevel === 9 && count < 61) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-                //if (zoomLevel > 9 && count < 71) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-
-                //add to small clusters geohashes with all landmarks from the same location
-                //if (docLat[key].min === docLat[key].max && docLng[key].min === docLng[key].max) {
-                //    smallClusters.push(key);
-                //    continue;
-                //}
-
-
                 // go over the facet pivots and save the population and statistics
                 docSpc.forEach(function (element, array) {
                     populations[element.value] = element.count;
@@ -607,7 +567,7 @@ function loadSolr(parameters) {
                 layer.on("click", function () {
                     updatePieChart(record.population, record.fullstats);
                     var recBounds = L.latLngBounds(record.bounds);
-                    createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds), record.count);
+                    createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
 
                 });
                 layer.on("mouseover", function (e) {
@@ -672,6 +632,61 @@ function loadSmall(mode, zoomLevel) {
         return e;
     };
 
+    // Override PrepareLeafletMarker to add event listeners
+
+    pruneCluster.PrepareLeafletMarker = function (marker, data, category) {
+        marker.on("dblclick", function () {
+            // Zoom-in to marker
+            if (map.getZoom() < 11) map.setView(marker._latlng, 11, {animate: true});
+
+
+        });
+        marker.on("click", function () {
+            //do click stuff here
+            // first we need a list of all categories
+            var fullElStats = [];
+
+            fullElStats.push({
+                "label": category.replace(/sensu lato/, "sl")
+                    .replace(/chromosomal form/, "cf"),
+                "value": 1,
+                "color": (palette[category] ? palette[category] : "#000000")
+            });
+
+            updatePieChart(1, fullElStats);
+
+            //var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
+            //var b = pruneCluster.Cluster.ComputeBounds(markersArea);
+            //
+            //if (b) {
+            //    var bounds = new L.LatLngBounds(
+            //        new L.LatLng(b.minLat, b.maxLng),
+            //        new L.LatLng(b.maxLat, b.minLng));
+            //
+            //}
+
+            var bounds = L.latLngBounds(marker._latlng, marker._latlng);
+            createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
+        });
+
+        if (data.icon) {
+            if (typeof data.icon === 'function') {
+                marker.setIcon(data.icon(data, category));
+            }
+            else {
+                marker.setIcon(data.icon);
+            }
+        }
+        if (data.popup) {
+            var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
+            if (marker.getPopup()) {
+                marker.setPopupContent(content, data.popupOptions);
+            }
+            else {
+                marker.bindPopup(content, data.popupOptions);
+            }
+        }
+    };
 
     L.Icon.MarkerCluster = L.Icon.extend({
         options: {
@@ -786,7 +801,7 @@ function loadSmall(mode, zoomLevel) {
             // first we need a list of all categories
             var fullElStats = [];
 
-//FixMe: Remove these replacements when proper names are returned from the popbio API
+            //FixMe: Remove these replacements when proper names are returned from the popbio API
             var stats = cluster.stats;
             for (var key in stats) {
                 fullElStats.push({
@@ -799,6 +814,18 @@ function loadSmall(mode, zoomLevel) {
             }
 
             updatePieChart(cluster.population, fullElStats);
+
+            var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
+            var b = pruneCluster.Cluster.ComputeBounds(markersArea);
+
+            if (b) {
+                var bounds = new L.LatLngBounds(
+                    new L.LatLng(b.minLat, b.maxLng),
+                    new L.LatLng(b.maxLat, b.minLng));
+
+            }
+
+            createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
         });
 
         m.on("mouseover", function (e) {
@@ -853,11 +880,6 @@ function loadSmall(mode, zoomLevel) {
                 icon: 'circle',
                 markerColor: palette[species] ? palette[species] : "red"
             });
-            //    gradient: true,
-            //    dropShadow: true,
-            //    radius: Math.random() * 20,
-            //    fillColor: 'hsl(' + Math.random() * 360 + ',100%,50%)'
-            //});
 
             pruneCluster.RegisterMarker(marker);
         }
@@ -1075,9 +1097,11 @@ function sortHashByValue(hash) {
 function updatePieChart(population, stats) {
     if (stats) {
 
-        var height = 500;
-        //var width = $("#graphs").width();
-        var width = 300;
+
+        $('#pie-chart-header').empty();
+
+        d3.select("#pie-chart-area svg")
+            .style({'width': '380', 'height': '500'});
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
@@ -1094,25 +1118,17 @@ function updatePieChart(population, stats) {
                 .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
                 .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
                 .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
-                .donutRatio(0.5)     //Configure how big you want the donut hole size to be.
+                .donutRatio(0.5)     //Configure h ow big you want the donut hole size to be.
                 .growOnHover(false);
 
-            d3.select("#piechart")
+
+            d3.select("#pie-chart-area svg")
                 .datum(stats)
                 .transition().duration(800)
-                .attr('width', width)
-                .attr('height', height)
                 .call(chart);
 
-            //
-            //nv.utils.windowResize(              //Updates the window resize event callback.
-            //    function () {
-            //        chart.update();         //Renders the chart when window is resized.
-            //    }
-            //);
+            nv.utils.windowResize(chart.update);         //Renders the chart when window is resized.
 
-
-            //nv.utils.windowResize(chart.update());
             return chart;
         });
 
@@ -1403,4 +1419,32 @@ function generatePalette(result) {
 
 String.prototype.capitalizeFirstLetter = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+function PaneSpin(divid, command) {
+
+    var target = document.getElementById(divid);
+
+    if (command === "start") {
+        if (PaneSpinner == null) {
+            PaneSpinner = new Spinner().spin(target);
+        } else {
+            PaneSpinner.spin(target)
+        }
+
+    } else {
+        PaneSpinner.stop(target);
+    }
 }
+
+Number.prototype.roundDecimals = function (decimals) {
+    if (Math.floor(this.valueOf()) === this.valueOf()) return this.valueOf();
+    var noDecimals = this.toString().split(".")[1].length;
+
+    if (noDecimals < decimals) {
+        return this.valueOf()
+    } else {
+        return this.valueOf().toFixed(decimals)
+    }
+
+};
