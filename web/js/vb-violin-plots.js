@@ -6,7 +6,13 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
 
     "use strict";
 
-    var x, dx = ((yDomain[1] - yDomain[0]) / resolution) / 2;
+    // add an extra (duplicated) value to the end of the results array, for a better visual pepresentation of the violin
+    // plot
+
+    var resLen = results.length - 1;
+    var lastCount = results[resLen].count, lastVal = results[resLen].val;
+    var x, dx = (yDomain[1] - yDomain[0]) / resolution;
+    results.push({val: lastVal + dx, count: lastCount});
     // for x axis
     var y = d3.scale.linear()
         .range([width / 2, 0])
@@ -14,13 +20,13 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
             return d.count * 1.5;
         }))]); //0 -  max probability
 
+    var tooltip = d3.select('#beeSwarmTooltip');
 
     if (log) {
         x = d3.scale.log()
             .range(yRange)
             .domain(yDomain)
             .nice();
-        console.log('Printing log in violin');
     } else {
         // for y axis
         x = d3.scale.linear()
@@ -29,12 +35,25 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
             .nice();
     }
 
+// Append marker
+    var marker = svg.append('circle')
+        .attr('r', 7)
+        .style('display', 'none')
+        .style('fill', '#FFFFFF')
+        .style('pointer-events', 'none')
+        .style('stroke', '#FB5050')
+        .style('stroke-width', '3px');
 
-    console.log("Now printing scaled violin area data");
+// Create custom bisector
+    var bisect = d3.bisector(function (datum) {
+        return datum.val;
+    }).left;
+
     var area = d3.svg.area()
         .interpolate(interpolation)
         .x(function (d) {
-            return x(d.val + dx)
+            return x(d.val)
+            //return x(d.val + dx)
         })
         .y0(width / 2)
         .y1(function (d) {
@@ -44,7 +63,8 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
     var line = d3.svg.line()
         .interpolate(interpolation)
         .x(function (d) {
-            return x(d.val + dx);
+            return x(d.val);
+            //return x(d.val + dx);
         })
         .y(function (d) {
             return y(d.count);
@@ -56,7 +76,39 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
     gPlus.append("path")
         .datum(results)
         .attr("class", "area")
-        .attr("d", area);
+        .attr("d", area)
+        .on('mouseover', function () {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", 1)
+        })
+        .on("mouseout", function (d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        })
+        .on('mousemove', function (d) {
+            var mouse = d3.mouse(this);
+            var xx = x.invert(mouse[0]),
+                index = bisect(d, xx);
+            var length = d.length - 1;
+            if (index === 0) {
+                var bin = 'Range: ' + d[index].val.roundDecimals(4) + '-' + (d[index].val + dx).roundDecimals(4);
+                var count = d[index].count;
+            } else if (index < length) {
+                var bin = 'Range: ' + d[index - 1].val.roundDecimals(4) + '-' + (d[index - 1].val + dx).roundDecimals(4);
+                var count = d[index - 1].count;
+            } else {
+                var bin = 'Range: ' + d[length - 1].val.roundDecimals(4) + '-' + (d[length - 1].val + dx).roundDecimals(4);
+                var count = d[length - 1].count;
+            }
+            var tooltipHtml = '<h3 style="background-color: #CCCCCC;"><font color="white">Count of phenotypes</font></h3><p>%BIN</p><p><b>%COUNT</b></p>'
+                .replace('%BIN', bin).replace('%COUNT', count);
+            tooltip.html(tooltipHtml)
+                .style("left", (d3.event.pageX + 5) + "px")
+                .style("top", (d3.event.pageY - 28) + "px")
+        });
+
 
     gPlus.append("path")
         .datum(results)
@@ -67,13 +119,43 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
     gMinus.append("path")
         .datum(results)
         .attr("class", "area")
-        .attr("d", area);
+        .attr("d", area)
+        .on('mouseover', function () {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", 1)
+        })
+        .on("mouseout", function (d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        })
+        .on('mousemove', function (d) {
+            var mouse = d3.mouse(this);
+            var xx = x.invert(mouse[0]),
+                index = bisect(d, xx);
+            var length = d.length - 1;
+            if (index === 0) {
+                var bin = 'Values ' + d[index].val.roundDecimals(4) + '-' + (d[index].val + dx).roundDecimals(4);
+                var count = d[index].count;
+            } else if (index < length) {
+                var bin = 'Values ' + d[index - 1].val.roundDecimals(4) + '-' + (d[index - 1].val + dx).roundDecimals(4);
+                var count = d[index - 1].count;
+            } else {
+                var bin = 'Values ' + d[length - 1].val.roundDecimals(4) + '-' + (d[length - 1].val + dx).roundDecimals(4);
+                var count = d[length - 1].count;
+            }
+            var tooltipHtml = '<h3 style="background-color: #CCCCCC;"><font color="white">Count of phenotypes</font></h3><p>%BIN: %COUNT</p>'
+                .replace('%BIN', bin).replace('%COUNT', count);
+            tooltip.html(tooltipHtml)
+                .style("left", (d3.event.pageX + 5) + "px")
+                .style("top", (d3.event.pageY - 28) + "px")
+        });
 
     gMinus.append("path")
         .datum(results)
         .attr("class", "violin")
         .attr("d", line);
-
 
     gPlus.attr("transform", "rotate(90,0,0)  translate(0,-" + width + ")");//translate(0,-200)");
     gMinus.attr("transform", "rotate(90,0,0) scale(1,-1)");
@@ -84,7 +166,7 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
 function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth, log) {
 
     "use strict";
-
+    var tooltip = d3.select('#beeSwarmTooltip');
     if (log) {
         var y = d3.scale.log()
             .range(yRange)
@@ -121,18 +203,16 @@ function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth
         .attr("y", probs[3])
         .attr("height", -probs[3] + probs[1]);
 
-    var iS = [0, 2, 4];
-    var iSclass = ["", "median", ""];
-    for (var i = 0; i < iS.length; i++) {
-        gBoxPlot.append("line")
-            .attr("class", "boxplot " + iSclass[i])
-            .attr("x1", x(left))
-            .attr("x2", x(right))
-            .attr("y1", probs[iS[i]])
-            .attr("y2", probs[iS[i]])
-    }
 
-    iS = [[0, 1], [3, 4]];
+    gBoxPlot.append("rect")
+        .attr("class", "boxplot")
+        .attr("x", x(left))
+        .attr("width", x(right) - x(left))
+        .attr("y", probs[3])
+        .attr("height", -probs[3] + probs[1]);
+
+
+    var iS = [[0, 1], [3, 4]];
     for (i = 0; i < iS.length; i++) {
         gBoxPlot.append("line")
             .attr("class", "boxplot")
@@ -142,24 +222,69 @@ function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth
             .attr("y2", probs[iS[i][1]]);
     }
 
-    gBoxPlot.append("rect")
-        .attr("class", "boxplot")
-        .attr("x", x(left))
-        .attr("width", x(right) - x(left))
-        .attr("y", probs[3])
-        .attr("height", -probs[3] + probs[1]);
+    iS = [0, 1, 2, 3, 4];
+    var iSclass = ["", "", "median", "", ""];
+    var iStooltips = [
+        '<h3 style="background-color: #000000"><font color="white">5th percentile</font></h3><p><b>%VALUE</b></p>',
+        '<h3 style="background-color: #000000"><font color="white">25th percentile</font></h3><p><b>%VALUE</b></p>',
+        '<h3 style="background-color: #ff0000"><font color="white">Median</font></h3><p><b>%VALUE</b></p>',
+        '<h3 style="background-color: #000000"><font color="white">75th percentile</font></h3><p><b>%VALUE</b></p>',
+        '<h3 style="background-color: #000000"><font color="white">95th percentile</font></h3><p><b>%VALUE</b></p>'
+    ];
 
+    function constructHTML(elm, html) {
+        return html;
+    }
+
+    for (var i = 0; i < iS.length; i++) {
+        (function (e) {
+            var html = iStooltips[i].replace("%VALUE", elmProbs[iS[i]].roundDecimals(4));
+            gBoxPlot.append("line")
+                .attr("class", "boxplot " + iSclass[i])
+                .attr("x1", x(left))
+                .attr("x2", x(right))
+                .attr("y1", probs[iS[i]])
+                .attr("y2", probs[iS[i]])
+                .on("mouseover", function () {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", 1);
+                    tooltip.html(html)
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px")
+
+                })
+                .on("mouseout", function (d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+
+        })(i);
+
+    }
+
+
+    var tooltipHtml = '<h3 style="background-color: #ff0000"><font color="white">Mean</font></h3><p><b>' + elmMean.roundDecimals(4) + '</b></p>';
     gBoxPlot.append("circle")
         .attr("class", "boxplot mean")
         .attr("cx", x(0.5))
         .attr("cy", y(elmMean))
-        .attr("r", x(boxPlotWidth / 5));
+        .attr("r", x(boxPlotWidth / 5))
+        .on("mouseover", function () {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", 1);
+            tooltip.html(tooltipHtml)
+                .style("left", (d3.event.pageX + 5) + "px")
+                .style("top", (d3.event.pageY - 28) + "px")
 
-    //gBoxPlot.append("circle")
-    //    .attr("class", "boxplot mean")
-    //    .attr("cx", x(0.5))
-    //    .attr("cy", y(elmMean))
-    //    .attr("r", x(boxPlotWidth / 10));
+        })
+        .on("mouseout", function (d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
 
 
 }
@@ -195,20 +320,27 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
 
     points.swarm.forEach(function (p, i) {
 
-        var species = points.data[i].species, insecticide = points.data[i].insecticide;
+        var point = points.data[i];
+        var species = point.species, insecticide = point.insecticide, color = palette[species], value = point.y,
+            concentration = point.concentration, concentration_unit = point.concentration_unit, duration = point.duration,
+            duration_unit = point.duration_unit;
+
+        var strConcentration = (concentration && concentration_unit) ? '<p>Concentration: ' + concentration + ' ' + concentration_unit + '</p>' : '',
+            strDuration = (duration && duration_unit) ? '<p>Duration: ' + duration + ' ' + duration_unit + '</p>' : '';
+        var tooltipHtml = '<h3 style="background-color: %COLOR"><font color="white">%SPECIES</font></h3><p><b>%VALUE</b></p><p>%INSCT</p>'
+            .replace('%COLOR', color).replace('%SPECIES', species).replace('%INSCT', insecticide).replace('%VALUE', value)
+            .concat(strConcentration).concat(strDuration);
 
         gSwarmPlot.append("circle")
             .attr("cx", x(p.x))
             .attr("cy", y(p.y))
             .attr("r", 4)
-            .style("fill", palette[species])
-            //ToDo: Make mouseovers stylistically similar with the donut charts
+            .style("fill", color)
             .on("mouseover", function (d) {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", 1);
-                tooltip.html(species + "<br/> ("
-                    + insecticide + ": " + points.data[i].y + ")")
+                tooltip.html(tooltipHtml)
                     .style("left", (d3.event.pageX + 5) + "px")
                     .style("top", (d3.event.pageY - 28) + "px")
 
@@ -224,12 +356,25 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
 
 }
 
-function createBeeViolinPlot(divid, BBox, count) {
+function createBeeViolinPlot(divid, BBox) {
 
     "use strict";
 
-    // Only proceed if in IR mode
-    if ($('#view-mode').val() === 'smpl') return;
+    // Only proceed if in IR mode, otherwise clear the graph
+    if ($('#view-mode').val() === 'smpl') {
+
+        $(divid).html(
+            '<div style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-area-chart" style="color: #C3312D; font-size: 12em"></i>' +
+            '<h1>Ooops</h1>' +
+            '<h3>this plot type only works with Insecticide Resistance data</h3>' +
+            '<h4>switch to IR phenotypes view and try again</h4>' +
+            '</div>'
+        );
+        return;
+    }
+
+    PaneSpin('swarm-plots', 'start');
 
     var self = this;
     var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolinStats?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
@@ -246,14 +391,19 @@ function createBeeViolinPlot(divid, BBox, count) {
 
             if (json.facets.count && json.facets.count > 0) {
 
-                var bs = $('<select />').attr('id', 'bgPlotType');
-                $('<option/>', {text: 'Phenotypes matching search', value: 1}).appendTo(bs);
-                $('<option/>', {text: 'Phenotypes visible on map', value: 2}).appendTo(bs);
-                $('<option/>', {text: 'All phenotypes', value: 3}).appendTo(bs);
+                var label = $('<label>').text('Phenotypes included in background: ');
+                var bs = $('<select />').attr('id', 'bgPlotType')
+                    .attr('class', "form-control");
+                $('<option/>', {text: 'phenotypes matching search', value: 1}).appendTo(bs);
+                $('<option/>', {text: 'phenotypes visible on map', value: 2}).appendTo(bs);
+                $('<option/>', {text: 'all phenotypes', value: 3}).appendTo(bs);
+                label.appendTo($(divid));
                 bs.appendTo($(divid));
 
                 // let's create and populate a drop down
-                var s = $('<select />').attr('id', 'plotType');
+                label = $('<label>').text('Measurement type: ');
+                var s = $('<select />').attr('id', 'plotType')
+                    .attr('class', "form-control");
 
                 // add options to the selection box, store additional info into data
                 json.facets.vtypes.buckets.forEach(function (element) {
@@ -276,6 +426,7 @@ function createBeeViolinPlot(divid, BBox, count) {
                 )
                 ;
 
+                label.appendTo($(divid));
                 s.appendTo($(divid));
 
                 // build the graph using the first option in the drop-down
@@ -286,18 +437,23 @@ function createBeeViolinPlot(divid, BBox, count) {
 
                 // build a new graph whenever selection is changed
                 s.change(function () {
+                    PaneSpin('swarm-plots', 'start');
                     selectionData = s.find(':selected').data();
                     buildPlot(divid, BBox, selectionData);
                 });
                 bs.change(function () {
+                    PaneSpin('swarm-plots', 'start');
                     selectionData = s.find(':selected').data();
                     buildPlot(divid, BBox, selectionData);
                 });
 
 
             }
+
         })
         .fail(function () {
+            PaneSpin('swarm-plots', 'stop');
+
             console.log('Failed while loading irViolinStats')
         });
 
@@ -307,9 +463,9 @@ function createBeeViolinPlot(divid, BBox, count) {
 function buildPlot(divid, BBox, selection) {
     "use strict";
 
-    var pCount = selection.count, pMin = selection.min, pMax = selection.max,
+    var bgrCount, pCount = selection.count, pMin = selection.min, pMax = selection.max,
         pType = selection.phenotype_value_type_s, pUnit = selection.phenotype_value_unit_s;
-    var width = 380, height = 300;
+    var width = 380, height = 500;
     var plotDiv = d3.select(divid);
     var resolution = 25, interpolation = 'basis';
     var vlJsonFacet = {
@@ -321,11 +477,14 @@ function buildPlot(divid, BBox, selection) {
 
     if (d3.select('#beeViolinPlot')) d3.select('#beeViolinPlot').remove();
     var svg = plotDiv.append("svg")
-        .attr("style", 'width: 380px; height: 500px; border: 0; padding-top:20px')
+        //.attr('width', width)
+        //.attr('height', height)
+        .attr("style", 'width: 380px; height: 500px; border: 0; padding-top:10px')
+        //.attr("style", 'padding-top:20px')
         .attr("id", "beeViolinPlot");
 
     var boxWidth = 150, boxSpacing = 10;
-    var margin = {top: 30, bottom: 30, left: 30, right: 20};
+    var margin = {top: 25, bottom: 50, left: 40, right: 20};
 
 
     // Initialize background urls and promises
@@ -353,7 +512,8 @@ function buildPlot(divid, BBox, selection) {
 
     $.getJSON(bgrVlUrl)
         .done(function (bgrVlJson) {
-            var bgrCount = bgrVlJson.response.numFound, bgrMin = bgrVlJson.facets.pmin, bgrMax = bgrVlJson.facets.pmax;
+            bgrCount = bgrVlJson.response.numFound;
+            var bgrMin = bgrVlJson.facets.pmin, bgrMax = bgrVlJson.facets.pmax;
             if (pUnit === 'percent') {
                 bgrMin = 0;
                 bgrMax = 100;
@@ -368,7 +528,8 @@ function buildPlot(divid, BBox, selection) {
                     field: "phenotype_value_f",
                     gap: (bgrMax - bgrMin) / resolution,
                     start: bgrMin,
-                    end: bgrMax
+                    end: bgrMax,
+                    include: 'edge'
                 }
             };
             // rebuild the urls now that we have the min and max values
@@ -417,7 +578,7 @@ function buildPlot(divid, BBox, selection) {
                     firstResult, beeswarm, xaxis = boxWidth / 2, scaledRadius, xRange;
                 var vlHist, vlMean, vlPerc, vlCount;
 
-                addAxis(bgrYDomain);
+                addAxis(bgrYDomain, bgrCount, pCount);
 
                 if (bgrCount > 50) {
 
@@ -457,7 +618,11 @@ function buildPlot(divid, BBox, selection) {
                                     x: undefined,
                                     y: element.phenotype_value_f,
                                     species: element.species_category[0],
-                                    insecticide: element.insecticide_s
+                                    insecticide: element.insecticide_s,
+                                    concentration: element.concentration_f,
+                                    concentration_unit: element.concentration_unit_s,
+                                    duration: element.duration_f,
+                                    duration_unit: element.duration_unit_s
                                 });
 
                             });
@@ -498,13 +663,17 @@ function buildPlot(divid, BBox, selection) {
                             dataset = [];
 
                             scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                            firstResult.doclist.docs.forEach(function (element, index) {
 
+                            firstResult.doclist.docs.forEach(function (element, index) {
                                 dataset.push({
                                     x: undefined,
                                     y: element.phenotype_value_f,
                                     species: element.species_category[0],
-                                    insecticide: element.insecticide_s
+                                    insecticide: element.insecticide_s,
+                                    concentration: element.concentration_f,
+                                    concentration_unit: element.concentration_unit_s,
+                                    duration: element.duration_f,
+                                    duration_unit: element.duration_unit_s
                                 });
 
                             });
@@ -574,7 +743,11 @@ function buildPlot(divid, BBox, selection) {
                                     x: undefined,
                                     y: element.phenotype_value_f,
                                     species: element.species_category[0],
-                                    insecticide: element.insecticide_s
+                                    insecticide: element.insecticide_s,
+                                    concentration: element.concentration_f,
+                                    concentration_unit: element.concentration_unit_s,
+                                    duration: element.duration_f,
+                                    duration_unit: element.duration_unit_s
                                 });
 
                             });
@@ -614,7 +787,11 @@ function buildPlot(divid, BBox, selection) {
                                     x: undefined,
                                     y: element.phenotype_value_f,
                                     species: element.species_category[0],
-                                    insecticide: element.insecticide_s
+                                    insecticide: element.insecticide_s,
+                                    concentration: element.concentration_f,
+                                    concentration_unit: element.concentration_unit_s,
+                                    duration: element.duration_f,
+                                    duration_unit: element.duration_unit_s
                                 });
 
                             });
@@ -630,6 +807,9 @@ function buildPlot(divid, BBox, selection) {
 
 
                     }
+                    // stop spinner
+                    PaneSpin('swarm-plots', 'stop');
+
                 });
 
                 selBsPromise.fail(function () {
@@ -650,7 +830,7 @@ function buildPlot(divid, BBox, selection) {
             console.log('Failed while loading irViolin')
         });
 
-    function addAxis(yDomain) {
+    function addAxis(yDomain, bgrCount, selCount) {
         var yIR = d3.scale.linear()
             .range([height - margin.bottom, margin.top])
             .domain(yDomain)
@@ -673,17 +853,30 @@ function buildPlot(divid, BBox, selection) {
 
         svg.append("text")
             .attr("x", margin.left + boxWidth / 2)
-            .attr("y", height - margin.bottom / 2)
+            .attr("y", height - 6 - margin.bottom / 2)
             .style("text-anchor", "middle")
             .text("Background");
 
         svg.append("text")
+            .attr("x", margin.left + boxWidth / 2)
+            .attr("y", height - 12)
+            .style("text-anchor", "middle")
+            .text("(n=" + bgrCount + ")");
+
+        svg.append("text")
             .attr("x", margin.left + boxWidth + boxSpacing + boxWidth / 2)
-            .attr("y", height - margin.bottom / 2)
+            .attr("y", height - 6 - margin.bottom / 2)
             .style("text-anchor", "middle")
             .text("Selection");
 
+        svg.append("text")
+            .attr("x", margin.left + boxWidth + boxSpacing + boxWidth / 2)
+            .attr("y", height - 12)
+            .style("text-anchor", "middle")
+            .text("(n=" + selCount + ")");
+
     }
 }
+
 
 

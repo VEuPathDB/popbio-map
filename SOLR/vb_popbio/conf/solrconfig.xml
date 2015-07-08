@@ -1266,7 +1266,9 @@
             <str name="group">true</str>
             <str name="group.field">phenotype_value_type_s</str>
             <str name="group.limit">100</str>
-            <str name="fl">species_category,phenotype_value_f,phenotype_value_unit_s, insecticide_s</str>
+            <str name="fl">species_category,phenotype_value_f, insecticide_s, concentration_f,
+                concentration_unit_s, duration_f, duration_unit_f
+            </str>
         </lst>
     </requestHandler>
 
