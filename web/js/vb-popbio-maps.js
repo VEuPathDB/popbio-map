@@ -564,9 +564,12 @@ function loadSolr(parameters) {
                 layer.on("dblclick", function () {
                     map.fitBounds(record.bounds);
                 });
-                layer.on("click", function () {
+                layer.on("click", function (e) {
+                    removeHighlight(layer);
+                    highlightMarker(layer);
                     updatePieChart(record.population, record.fullstats);
                     var recBounds = L.latLngBounds(record.bounds);
+                    //e.target.options.riseOnHover = true;
                     createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
 
                 });
@@ -644,6 +647,9 @@ function loadSmall(mode, zoomLevel) {
         marker.on("click", function () {
             //do click stuff here
             // first we need a list of all categories
+            removeHighlight(marker);
+            highlightMarker(marker);
+
             var fullElStats = [];
 
             fullElStats.push({
@@ -654,17 +660,6 @@ function loadSmall(mode, zoomLevel) {
             });
 
             updatePieChart(1, fullElStats);
-
-            //var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
-            //var b = pruneCluster.Cluster.ComputeBounds(markersArea);
-            //
-            //if (b) {
-            //    var bounds = new L.LatLngBounds(
-            //        new L.LatLng(b.minLat, b.maxLng),
-            //        new L.LatLng(b.maxLat, b.minLng));
-            //
-            //}
-
             var bounds = L.latLngBounds(marker._latlng, marker._latlng);
             createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
         });
@@ -799,6 +794,8 @@ function loadSmall(mode, zoomLevel) {
         m.on("click", function () {
             //do click stuff here
             // first we need a list of all categories
+            removeHighlight(m);
+            highlightMarker(m);
             var fullElStats = [];
 
             //FixMe: Remove these replacements when proper names are returned from the popbio API
@@ -1448,3 +1445,16 @@ Number.prototype.roundDecimals = function (decimals) {
     }
 
 };
+
+function highlightMarker(marker) {
+    $(marker._icon).addClass("highlight-marker");
+    highlight = marker;
+}
+
+function removeHighlight(marker) {
+    // check for highlight
+    if (highlight !== null) {
+        $(highlight._icon).removeClass("highlight-marker");
+        marker ? highlight = marker : highlight = null;
+    }
+}

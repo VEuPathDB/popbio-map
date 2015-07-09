@@ -57,6 +57,9 @@
     <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
     <style>
 
+        .highlight-marker {
+            box-shadow: 0px 0px 0px 5px rgba(255, 255, 0, 1);
+        }
 
         /* for the violin plots */
         .tooltip {
@@ -366,6 +369,7 @@
     var legend;
     var legendDiv;
     var PaneSpinner = null;
+    var highlight = null;
 
     initializeMap();
     initializeSearch();
