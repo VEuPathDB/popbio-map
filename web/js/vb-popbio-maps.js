@@ -92,7 +92,6 @@ function initializeMap() {
 
 }
 
-
 /*
  function initializeSearch
  date: 18/6/2015
@@ -562,16 +561,24 @@ function loadSolr(parameters) {
             },
             onEachRecord: function (layer, record) {
                 layer.on("dblclick", function () {
+                    clearTimeout(timer);
+                    prevent = true;
                     map.fitBounds(record.bounds);
+                    resetPlots();
                 });
-                layer.on("click", function (e) {
+                layer.on("click", function () {
                     removeHighlight(layer);
                     highlightMarker(layer);
-                    updatePieChart(record.population, record.fullstats);
-                    var recBounds = L.latLngBounds(record.bounds);
-                    //e.target.options.riseOnHover = true;
-                    createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                    timer = setTimeout(function () {
+                        if (!prevent) {
 
+                            updatePieChart(record.population, record.fullstats);
+                            var recBounds = L.latLngBounds(record.bounds);
+                            //e.target.options.riseOnHover = true;
+                            createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                        }
+                    }, delay);
+                    prevent = false;
                 });
                 layer.on("mouseover", function (e) {
                     //console.log(e.target);
@@ -639,29 +646,38 @@ function loadSmall(mode, zoomLevel) {
 
     pruneCluster.PrepareLeafletMarker = function (marker, data, category) {
         marker.on("dblclick", function () {
+            clearTimeout(timer);
+            prevent = true;
+            resetPlots()
             // Zoom-in to marker
             if (map.getZoom() < 11) map.setView(marker._latlng, 11, {animate: true});
 
 
         });
         marker.on("click", function () {
-            //do click stuff here
-            // first we need a list of all categories
             removeHighlight(marker);
             highlightMarker(marker);
+            timer = setTimeout(function () {
+                if (!prevent) {
 
-            var fullElStats = [];
+                    //do click stuff here
+                    // first we need a list of all categories
 
-            fullElStats.push({
-                "label": category.replace(/sensu lato/, "sl")
-                    .replace(/chromosomal form/, "cf"),
-                "value": 1,
-                "color": (palette[category] ? palette[category] : "#000000")
-            });
+                    var fullElStats = [];
 
-            updatePieChart(1, fullElStats);
-            var bounds = L.latLngBounds(marker._latlng, marker._latlng);
-            createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
+                    fullElStats.push({
+                        "label": category.replace(/sensu lato/, "sl")
+                            .replace(/chromosomal form/, "cf"),
+                        "value": 1,
+                        "color": (palette[category] ? palette[category] : "#000000")
+                    });
+
+                    updatePieChart(1, fullElStats);
+                    var bounds = L.latLngBounds(marker._latlng, marker._latlng);
+                    createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
+                }
+                prevent = false;
+            }, delay);
         });
 
         if (data.icon) {
@@ -763,6 +779,9 @@ function loadSmall(mode, zoomLevel) {
 
 
         m.on("dblclick", function () {
+            clearTimeout(timer);
+            prevent = true;
+            resetPlots();
             // Compute the  cluster bounds (it"s slow : O(n))
             var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
             var b = pruneCluster.Cluster.ComputeBounds(markersArea);
@@ -792,37 +811,44 @@ function loadSmall(mode, zoomLevel) {
             }
         });
         m.on("click", function () {
-            //do click stuff here
-            // first we need a list of all categories
             removeHighlight(m);
             highlightMarker(m);
-            var fullElStats = [];
+            timer = setTimeout(function () {
+                if (!prevent) {
 
-            //FixMe: Remove these replacements when proper names are returned from the popbio API
-            var stats = cluster.stats;
-            for (var key in stats) {
-                fullElStats.push({
-                    //"label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
-                    "label": key.replace(/sensu lato/, "sl")
-                        .replace(/chromosomal form/, "cf"),
-                    "value": stats[key],
-                    "color": (palette[key] ? palette[key] : "#000000")
-                });
-            }
+                    //do click stuff here
+                    // first we need a list of all categories
+                    var fullElStats = [];
 
-            updatePieChart(cluster.population, fullElStats);
+                    //FixMe: Remove these replacements when proper names are returned from the popbio API
+                    var stats = cluster.stats;
+                    for (var key in stats) {
+                        fullElStats.push({
+                            //"label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
+                            "label": key.replace(/sensu lato/, "sl")
+                                .replace(/chromosomal form/, "cf"),
+                            "value": stats[key],
+                            "color": (palette[key] ? palette[key] : "#000000")
+                        });
+                    }
 
-            var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
-            var b = pruneCluster.Cluster.ComputeBounds(markersArea);
+                    updatePieChart(cluster.population, fullElStats);
 
-            if (b) {
-                var bounds = new L.LatLngBounds(
-                    new L.LatLng(b.minLat, b.maxLng),
-                    new L.LatLng(b.maxLat, b.minLng));
+                    var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
+                    var b = pruneCluster.Cluster.ComputeBounds(markersArea);
 
-            }
+                    if (b) {
+                        var bounds = new L.LatLngBounds(
+                            new L.LatLng(b.minLat, b.maxLng),
+                            new L.LatLng(b.maxLat, b.minLng));
 
-            createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
+                    }
+
+                    createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
+                }
+            }, delay);
+            prevent = false;
+
         });
 
         m.on("mouseover", function (e) {
@@ -1098,7 +1124,9 @@ function updatePieChart(population, stats) {
         $('#pie-chart-header').empty();
 
         d3.select("#pie-chart-area svg")
-            .style({'width': '380', 'height': '500'});
+            .attr("width", 380)
+            .attr("height", 500);
+        //.style({'width': '380', 'height': '500'});
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
@@ -1414,10 +1442,6 @@ function generatePalette(result) {
 //        filterMarkers('');
 }
 
-String.prototype.capitalizeFirstLetter = function () {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
 function PaneSpin(divid, command) {
 
     var target = document.getElementById(divid);
@@ -1434,18 +1458,6 @@ function PaneSpin(divid, command) {
     }
 }
 
-Number.prototype.roundDecimals = function (decimals) {
-    if (Math.floor(this.valueOf()) === this.valueOf()) return this.valueOf();
-    var noDecimals = this.toString().split(".")[1].length;
-
-    if (noDecimals < decimals) {
-        return this.valueOf()
-    } else {
-        return this.valueOf().toFixed(decimals)
-    }
-
-};
-
 function highlightMarker(marker) {
     $(marker._icon).addClass("highlight-marker");
     highlight = marker;
@@ -1458,3 +1470,40 @@ function removeHighlight(marker) {
         marker ? highlight = marker : highlight = null;
     }
 }
+
+function resetPlots() {
+
+    var pieHTML =
+        '<h3>Sample summary data</h3>' +
+        '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
+        '<i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>' +
+        '<h3>click a marker</h3>' +
+        '</div>' +
+        '<div id="pie-chart-area">' +
+        '<svg></svg>' +
+        '</div>';
+    var violinHTML =
+        '<div style="text-align: center; margin-top: 30px">' +
+        '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
+        '<h3>click a marker</h3>' +
+        '</div>';
+
+    $('#graphs').html(pieHTML);
+    $('#swarm-chart-area').html(violinHTML);
+
+
+}
+String.prototype.capitalizeFirstLetter = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+Number.prototype.roundDecimals = function (decimals) {
+    if (Math.floor(this.valueOf()) === this.valueOf()) return this.valueOf();
+    var noDecimals = this.toString().split(".")[1].length;
+
+    if (noDecimals < decimals) {
+        return this.valueOf()
+    } else {
+        return this.valueOf().toFixed(decimals)
+    }
+
+};

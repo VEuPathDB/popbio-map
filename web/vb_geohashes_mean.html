@@ -59,6 +59,7 @@
 
         .highlight-marker {
             box-shadow: 0px 0px 0px 5px rgba(255, 255, 0, 1);
+            z-index: 2147483647 !important;
         }
 
         /* for the violin plots */
@@ -71,7 +72,7 @@
             border: 1px solid rgba(0, 0, 0, .2);
             border: 1px solid rgba(0, 0, 0, 0.5);
             border-radius: 4px;
-            z-index: 10000;
+            z-index: 300001;
             display: block;
 
             font-family: Arial;
@@ -371,6 +372,11 @@
     var PaneSpinner = null;
     var highlight = null;
 
+    // Hack to prevent single click events firing when double clicking
+    var timer = 0;
+    var delay = 400;
+    var prevent = false;
+
     initializeMap();
     initializeSearch();
 
@@ -388,6 +394,7 @@
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
+        resetPlots();
     });
 
 

@@ -98,7 +98,7 @@ BODY {
     text-align: center;
     background: rgba(255, 255, 255, 0.7);
     /*max-width: 500px;*/
-    z-index: 314159;
+    z-index: 300000;
 }
 
 /*keep the curson inline with the tags if the space left is more than width*/
