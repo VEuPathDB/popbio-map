@@ -1133,8 +1133,9 @@
         <lst name="invariants">
             <int name="rows">0</int>
             <str name="stats">true</str>
-            <str name="stats.field">geo_coords_ll_0_coordinate</str>
-            <str name="stats.field">geo_coords_ll_1_coordinate</str>
+            <str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_0_coordinate</str>
+            <str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_1_coordinate</str>
+            <str name="stats.field">{!count=true mean=true}phenotype_rescaled_value_f</str>
             <str name="facet">true</str>
             <int name="facet.limit">-1</int>
             <str name="facet.sort">count</str>
@@ -1240,7 +1241,7 @@
             <str name="fq">has_geodata:true</str>
         </lst>
         <lst name="invariants">
-            <str name="fl">geo_coords,species_category</str>
+            <str name="fl">geo_coords,species_category,phenotype_rescaled_value_f</str>
             <str name="q.op">OR</str>
         </lst>
 

@@ -6,6 +6,7 @@
         <item url="file://$PROJECT_DIR$/web/js/Icon.Canvas.min.js" />
         <item url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
         <item url="file://$PROJECT_DIR$/web/js/nv.d3.pie.min.js" />
+        <item url="file://$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.markers.min.js" />
         <item url="file://$PROJECT_DIR$/web/js/vb-violin-plots.min.js" />
       </sourceFilesUrls>
     </properties>

@@ -64,13 +64,26 @@ L.Icon.Canvas = L.Icon.extend({
 
         }
 
+
         canvas.beginPath();
         canvas.fillStyle = 'white';
         canvas.arc(iconSize2, iconSize2, iconSize3, 0, Math.PI * 2);
         canvas.fill();
         canvas.closePath();
 
-        canvas.fillStyle = '#555';
+        var colors = markerColor(this.options.trafficlight);
+
+        if ($('#view-mode').val() === 'ir') {
+
+            canvas.beginPath();
+            canvas.fillStyle = colors[0];
+            canvas.arc(iconSize2, iconSize2, iconSize2-7, 0, Math.PI * 2);
+            canvas.fill();
+            canvas.closePath();
+        }
+
+        canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
+
         canvas.textAlign = 'center';
         canvas.textBaseline = 'middle';
         canvas.font = 'bold 12px sans-serif';

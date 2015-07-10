@@ -373,7 +373,6 @@ function loadSolr(parameters) {
 
     //ToDo: Add AJAX error and timeout handling
     //FixMe: Missing values from species_category field messing up pie charts.
-    // http://vb-dev.bio.ic.ac.uk:7997/solr/vb_popbio/select?q=*:*&fq=bundle_name:Sample&fq=has_geodata:true&wt=json&indent=true&stats=true&stats.field=species_category&rows=0
     "use strict";
     var clear = parameters.clear;
     var zoomLevel = parameters.zoomLevel;
@@ -408,12 +407,12 @@ function loadSolr(parameters) {
             return;
         }
 
-        var docLat;
-        var docLng;
-        var docSpc;
+        var docLat, docLng, docSpc, docPhe;
 
         var statFields = result.stats.stats_fields;
         var facetCounts = result.facet_counts;
+
+        var viewMode = $('#view-mode').val();
 
         // process the correct geohashes based on the zoom level
         switch (zoomLevel) {
@@ -421,6 +420,7 @@ function loadSolr(parameters) {
             case 2:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_1;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_1;
+                docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_1 : null;
                 docSpc = facetCounts.facet_pivot["geohash_1,species_category"];
                 break;
             case 3:
@@ -428,29 +428,34 @@ function loadSolr(parameters) {
             case 5:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_2;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_2;
+                docPhe = ((viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_2 : null);
                 docSpc = facetCounts.facet_pivot["geohash_2,species_category"];
                 break;
             case 6:
             case 7:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_3;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_3;
+                docPhe = ((viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_3 : null);
                 docSpc = facetCounts.facet_pivot["geohash_3,species_category"];
                 break;
             case 8:
             case 9:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_4;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_4;
+                docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_4 : null;
                 docSpc = facetCounts.facet_pivot["geohash_4,species_category"];
                 break;
             case 10:
             case 11:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_5;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_5;
+                docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_5 : null;
                 docSpc = facetCounts.facet_pivot["geohash_5,species_category"];
                 break;
             default:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_6;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_6;
+                docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_6 : null;
                 docSpc = facetCounts.facet_pivot["geohash_6,species_category"];
                 break;
 
@@ -518,10 +523,9 @@ function loadSolr(parameters) {
                 arr.latLng = [docLat[key].mean, docLng[key].mean];
                 arr.bounds = [[docLat[key].min, docLng[key].min], [docLat[key].max, docLng[key].max]];
                 arr.population = populations[key];
+                arr.trafficlight = (viewMode === 'ir') ? docPhe[key].mean : -1;
                 arr.stats = statistics[key];
                 arr.fullstats = fullStatistics[key];
-                //arr.colors = colors;
-                //console.log('see:' + arr.stats);
                 terms.push(arr);
             }
         }
@@ -553,9 +557,9 @@ function loadSolr(parameters) {
                 var size = 40;
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
-                    //className: "prunecluster leaflet-markercluster-icon",
                     className: "marker-cluster",
                     population: record.population,
+                    trafficlight: record.trafficlight,
                     stats: record.stats
                 });
             },
@@ -615,7 +619,6 @@ function loadSolr(parameters) {
     };
 
 
-    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplGeoclust?" + qryUrl + buildBbox(map.getBounds()) + "&stats.facet=" + geoLevel + "&facet.pivot=" + geoLevel + ",species_category&json.wrf=?&callback=?";
     var url = solrPopbioUrl + $('#view-mode').val() + 'Geoclust?' + qryUrl + buildBbox(map.getBounds()) + "&stats.facet=" + geoLevel + "&facet.pivot=" + geoLevel + ",species_category&json.wrf=?&callback=?";
 
     //console.log(url);
@@ -639,6 +642,7 @@ function loadSmall(mode, zoomLevel) {
 
         e.stats = cluster.stats;
         e.population = cluster.population;
+        e.trafficlight = cluster.totalWeight / cluster.population;
         return e;
     };
 
@@ -763,7 +767,18 @@ function loadSmall(mode, zoomLevel) {
             canvas.fill();
             canvas.closePath();
 
-            canvas.fillStyle = '#555';
+            var colors = markerColor(this.trafficlight);
+
+            if ($('#view-mode').val() === 'ir') {
+
+                canvas.beginPath();
+                canvas.fillStyle = colors[0];
+                canvas.arc(iconSize2, iconSize2, iconSize2 - 7, 0, Math.PI * 2);
+                canvas.fill();
+                canvas.closePath();
+            }
+
+            canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
             canvas.textAlign = 'center';
             canvas.textBaseline = 'middle';
             canvas.font = 'bold 12px sans-serif';
@@ -890,10 +905,13 @@ function loadSmall(mode, zoomLevel) {
 
         for (var key in doc) if (doc.hasOwnProperty(key)) {
             var coords = doc[key].geo_coords.split(",");
+            var pheVal = ($('#view-mode').val() === 'ir') ? doc[key].phenotype_rescaled_value_f : -1;
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
             if (doc[key].hasOwnProperty("species_category")) {
                 var species = doc[key].species_category[0];
                 marker.category = doc[key].species_category[0];
+                // store trafficlight value as weights
+                marker.weight = pheVal;
                 //console.log(doc[key].species_category[0]);
             } else {
                 console.log(key + ": no species defined")
@@ -901,7 +919,8 @@ function loadSmall(mode, zoomLevel) {
             marker.data.icon = L.VectorMarkers.icon({
                 prefix: 'fa',
                 icon: 'circle',
-                markerColor: palette[species] ? palette[species] : "red"
+                markerColor: palette[species] ? palette[species] : "red",
+                iconColor: markerColor(pheVal)[0]
             });
 
             pruneCluster.RegisterMarker(marker);
@@ -1423,6 +1442,21 @@ function generatePalette(result) {
         cntLegend++;
     }
 
+    if ($('#view-mode').val() === 'ir') {
+
+        inHtml += '<div class="data-layer-legend" style="border: 0">';
+        inHtml += '<p>Resistance</p>';
+        inHtml += '<div class="min-value" style="border: 0">Low</div>';
+        inHtml += '<div class="scale-bars">';
+        $.each(L.ColorBrewer.Diverging.RdYlBu[7].reverse(), function (index, value) {
+            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10px; background-color: ' + value + ' ;"></i>';
+        });
+
+        inHtml += '</div><div class="max-value" style="border: 0">High</div>' +
+            '</div>' +
+            '<p style="font-size: smaller; word-wrap: break-word; width: 200px; margin-top: 20px">Values have been rescaled globally and only give a relative indication of resistance/susceptibility</p>';
+
+    }
 
     // Populate legend when added to map
     legend.onAdd = function (map) {
@@ -1493,6 +1527,29 @@ function resetPlots() {
 
 
 }
+
+function markerColor(value) {
+    var fillColor, textColor;
+
+    if (value < 0) {
+        return ["white", '#555'];
+    } else {
+        fillColor = trafficLight.evaluate(value);
+        if (value < 0.2) {
+            textColor = "#fff";
+        } else if (value > 0.8) {
+            textColor = "#fff";
+
+        } else {
+            textColor = "#555";
+
+        }
+        //textColor = (value <= 0.5) ? markerText.evaluate(value): markerText.evaluate(1 - value);
+        return [fillColor, textColor];
+    }
+
+}
+
 String.prototype.capitalizeFirstLetter = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
