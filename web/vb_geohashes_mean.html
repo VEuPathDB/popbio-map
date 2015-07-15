@@ -51,6 +51,7 @@
     <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
     <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
     <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
+    <script type="text/javascript" src="libs/jsrender/jsrender.min.js"></script>
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
 
 
@@ -62,20 +63,91 @@
             z-index: 2147483647 !important;
         }
 
+        /* for the table */
+        .row.no-pad {
+            margin-right: 10px;
+            margin-left: -5px;
+        }
+
+        .row.no-pad > [class*='col-'] {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .marker-row {
+            background-color: rgba(255, 255, 255, 1.0);
+            color: rgba(0, 0, 0, 1.0);
+            padding: 1px;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            z-index: 100;
+            display: block;
+            margin-bottom: 10px;
+            margin-right: 10px;
+
+            font-family: Arial;
+            font-size: 13px;
+            text-align: left;
+
+            white-space: nowrap;
+        }
+
+        .marker-row h3 {
+            margin: 0;
+            padding: 4px 14px;
+            line-height: 18px;
+            font-weight: normal;
+            font-size: large;
+            background-color: rgba(247, 247, 247, 0.75);
+            color: rgba(0, 0, 0, 1.0);
+            text-align: center;
+
+            border-bottom: 1px solid #ebebeb;
+
+            -webkit-border-radius: 5px 5px 0 0;
+            -moz-border-radius: 5px 5px 0 0;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .marker-row p {
+            margin: 0;
+            padding: 3px 10px;
+            text-align: left;
+        }
+
+        .marker-row span {
+            display: inline-block;
+            margin: 2px 0;
+        }
+
+        .marker-row ul {
+            padding: 3px 10px;
+        }
+
+        .marker-row ul li {
+            display: table-row;
+        }
+
+        .marker-row ul li:last-child:after {
+            content: "";
+        }
+
+        .marker-row ul li:after {
+            content: ", ";
+        }
+
         /* for the violin plots */
         .tooltip {
             position: absolute;
-            background-color: rgba(255, 255, 255, 1.0);
             background: rgba(255, 255, 255, 0.8);
             color: rgba(0, 0, 0, 1.0);
             padding: 1px;
-            border: 1px solid rgba(0, 0, 0, .2);
             border: 1px solid rgba(0, 0, 0, 0.5);
-            border-radius: 4px;
+            border-radius: 5px;
             z-index: 300001;
             display: block;
 
-            font-family: Arial;
+            font-family: Arial, sans-serif;
             font-size: 13px;
             text-align: left;
             pointer-events: none;
@@ -270,7 +342,7 @@
             <ul class="sidebar-tabs" role="tablist">
                 <li><a href="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
                 <li><a href="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
-                <li><a href="#tablegend" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>
                 <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
             </ul>
 
@@ -311,7 +383,21 @@
                     </div>
                 </div>
 
-                <div class="sidebar-pane" id="tablegend">
+                <div class="sidebar-pane" id="marker-table">
+                    <h3>Marker details</h3>
+
+                    <div id="table-contents-header" style="text-align: center; margin-top: 30px">
+
+                        <i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>
+
+                        <h1>Go on!</h1>
+
+                        <h3>click a marker</h3>
+
+                        <h3>to get some real data</h3>
+                    </div>
+                    <div id="table-contents">
+                    </div>
 
                 </div>
 
@@ -350,6 +436,54 @@
 
 <div id="beeSwarmTooltip" class="tooltip" style="opacity: 0;"></div>
 
+
+<script type="text/x-jsrender" id="rowTemplate">
+    <div class="row no-pad marker-row">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+            <i> {{html:species}}</i></h3>
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a> ({{html:sampleType}})</p>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+            {{for collectionDate}}
+                {{>#data}}
+            {{else}}
+                No date
+            {{/for}}
+            </p>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i> Project(s)</p>
+            <ul>
+            {{for projects}}
+                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+            {{/for}}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i> Collection Protocol(s)</p>
+            <ul>
+            {{for collectionProtocols}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</script>
+
 <script language="JavaScript">
 
     "use strict";
@@ -383,10 +517,12 @@
     initializeSearch();
 
     $('#search_ac').on('itemAdded', function () {
-        filterMarkers($("#search_ac").tagsinput('items'))
+        filterMarkers($("#search_ac").tagsinput('items'));
+        resetPlots();
     });
     $('#search_ac').on('itemRemoved', function () {
-        filterMarkers($("#search_ac").tagsinput('items'))
+        filterMarkers($("#search_ac").tagsinput('items'));
+        resetPlots();
     });
 
     //            .append("div").attr("id", "violin-popup").attr("class", "popup").append("div").attr("id", "violin"));

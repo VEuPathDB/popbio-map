@@ -104,6 +104,7 @@ function initializeSearch() {
     // Reset search "button"
     $('#reset-search').click(function () {
         $('#search_ac').tagsinput('removeAll');
+        resetPlots();
         filterMarkers('');
     });
 
@@ -353,6 +354,7 @@ function initializeSearch() {
         }
         var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
 
+        resetPlots();
         $.getJSON(url, generatePalette);
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
@@ -578,8 +580,8 @@ function loadSolr(parameters) {
 
                             updatePieChart(record.population, record.fullstats);
                             var recBounds = L.latLngBounds(record.bounds);
-                            //e.target.options.riseOnHover = true;
                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                            updateTable("#table-contents", buildBbox(recBounds));
                         }
                     }, delay);
                     prevent = false;
@@ -679,6 +681,8 @@ function loadSmall(mode, zoomLevel) {
                     updatePieChart(1, fullElStats);
                     var bounds = L.latLngBounds(marker._latlng, marker._latlng);
                     createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
+                    updateTable("#table-contents", buildBbox(bounds));
+
                 }
                 prevent = false;
             }, delay);
@@ -860,6 +864,8 @@ function loadSmall(mode, zoomLevel) {
                     }
 
                     createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
+                    updateTable("#table-contents", buildBbox(bounds));
+
                 }
             }, delay);
             prevent = false;
@@ -1144,8 +1150,8 @@ function updatePieChart(population, stats) {
 
         d3.select("#pie-chart-area svg")
             .attr("width", 380)
-            .attr("height", 500);
-        //.style({'width': '380', 'height': '500'});
+            .attr("height", 500)
+            .style({'width': '380', 'height': '500'});
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
@@ -1195,6 +1201,91 @@ $.fn.redraw = function () {
         var redraw = this.offsetHeight;
     });
 };
+
+
+function updateTable(divid, BBox) {
+    "use strict";
+
+    var header = divid + '-header';
+    $(header).empty();
+
+    if ($('#view-mode').val() === 'smpl') {
+        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplTable?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
+
+    } else {
+
+        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irTable?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
+    }
+
+    PaneSpin('marker-table', 'start');
+
+    var self = this;
+
+    $(divid).empty();
+
+
+    $.getJSON(url)
+        .done(function (json) {
+            // make sure the parent div is empty
+            if (json.response.numFound && json.response.numFound > 0) {
+                var docs = json.response.docs;
+
+                tableHtml(divid, docs);
+            }
+
+
+        })
+        .fail(function () {
+            PaneSpin('marker-table', 'stop');
+
+            console.log('Failed while loading smplTable')
+        });
+
+
+}
+
+function tableHtml(divid, results) {
+
+
+    results.forEach(function (element) {
+        var dates = element.collection_date;
+        var frmDate;
+
+        // convert a pair of dates (date range) to a string
+        if (dates && dates.length > 1) {
+
+            var startDate = new Date(dates[0]), endDate = new Date(dates[1]);
+            frmDate = startDate.toDateString() + '-' + endDate.toDateString();
+        } else if (dates && dates.length > 0) {
+            var date = new Date(dates[0]);
+            frmDate = date.toDateString();
+        }
+
+        var row = {
+            accession: element.accession,
+            bundleName: element.bundle_name,
+            url: element.url,
+            sampleType: element.sample_type,
+            geoCoords: element.geo_coords,
+            geolocation: element.geolocations[0],
+            species: element.species_category[0],
+            bgColor: palette[element.species_category[0]],
+            textColor: getContrastYIQ(palette[element.species_category[0]]),
+            collectionDate: frmDate,
+            projects: element.projects,
+            collectionProtocols: element.collection_protocols
+        };
+
+        var template = $.templates("#rowTemplate");
+        var htmlOutput = template.render(row);
+        $(divid).append(htmlOutput);
+
+
+    });
+
+    PaneSpin('marker-table', 'stop');
+}
+
 
 function colorLuminance(hex, lum) {
     /*
@@ -1521,9 +1612,16 @@ function resetPlots() {
         '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
         '<h3>click a marker</h3>' +
         '</div>';
+    var tableHTML =
+        '<div style="text-align: center; margin-top: 30px">' +
+        '<i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>' +
+        '<h3>click a marker</h3>' +
+        '</div>';
 
     $('#graphs').html(pieHTML);
     $('#swarm-chart-area').html(violinHTML);
+    $('#table-contents-header').html(tableHTML);
+    $('#table-contents').empty();
 
 
 }
@@ -1548,6 +1646,14 @@ function markerColor(value) {
         return [fillColor, textColor];
     }
 
+}
+
+function getContrastYIQ(hexcolor) {
+    var r = parseInt(hexcolor.substr(0, 2), 16);
+    var g = parseInt(hexcolor.substr(2, 2), 16);
+    var b = parseInt(hexcolor.substr(4, 2), 16);
+    var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? 'black' : 'white';
 }
 
 String.prototype.capitalizeFirstLetter = function () {

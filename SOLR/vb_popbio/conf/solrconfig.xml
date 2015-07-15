@@ -1338,6 +1338,32 @@
 
     </requestHandler>
 
+    <!-- A request handler to display markers for geohashes (limited to samples)-->
+
+    <requestHandler name="/smplTable" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="df">text</str>
+            <int name="rows">20</int>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <str name="fl">accession, bundle_name, sample_type url, collection_protocol, geolocations, geo_coords,
+                species_category, collection_protocols, collection_date, projects
+            </str>
+            <str name="q.op">OR</str>
+        </lst>
+
+    </requestHandler>
+
     <!-- Search Components
 
          Search components are registered to SolrCore and used by
