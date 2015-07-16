@@ -1129,6 +1129,7 @@ function buildPalette(items, nmColors, paletteType) {
     }
 
     newPalette["others"] = "radial-gradient(" + colorLuminance("#FFFFFF", -0.7) + ", " + colorLuminance("#FFFFFF", -lum) + ")";
+    newPalette["Unknown"] = "black";
 
     return newPalette;
 }
@@ -1210,29 +1211,74 @@ function updateTable(divid, BBox) {
     $(header).empty();
 
     if ($('#view-mode').val() === 'smpl') {
-        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplTable?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
+        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplTable?&' + qryUrl + BBox + '&sort=id asc&json.wrf=?&callback=?';
 
     } else {
 
-        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irTable?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
+        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irTable?&' + qryUrl + BBox + '&sort=id asc&json.wrf=?&callback=?';
     }
 
+
+    // generate a url with cursorMark
+    var cursorUrl = url + '&cursorMark=*', cursorMark = '*', nextCursorMark;
+
+    // start spinning
     PaneSpin('marker-table', 'start');
 
     var self = this;
 
     $(divid).empty();
 
+    // turn off previous scroll event listeners
+    $('#marker-table').off("scroll");
 
-    $.getJSON(url)
+    $.getJSON(cursorUrl)
         .done(function (json) {
             // make sure the parent div is empty
             if (json.response.numFound && json.response.numFound > 0) {
                 var docs = json.response.docs;
 
+                // set the next cursorMark
+                nextCursorMark = json.nextCursorMark;
+                cursorUrl = url + '&cursorMark=' + nextCursorMark;
+
                 tableHtml(divid, docs);
             }
+            PaneSpin('marker-table', 'stop');
 
+            var pageCount;
+
+            // Append a scroll event handler to the container
+            $("#marker-table").scroll(function () {
+                // We check if we're at the bottom of the scrollcontainer
+                //console.log(cursorMark, nextCursorMark);
+                if (($(this)[0].scrollHeight - $(this).scrollTop() === $(this).outerHeight(true)) && (cursorMark !== nextCursorMark)) {
+
+                    PaneSpin('marker-table', 'start');
+
+                    $.getJSON(cursorUrl)
+                        .done(function (json) {
+
+                            if (json.response.numFound && json.response.numFound > 0) {
+                                var docs = json.response.docs;
+
+                                cursorMark = nextCursorMark;
+                                nextCursorMark = json.nextCursorMark;
+                                cursorUrl = url + '&cursorMark=' + nextCursorMark;
+
+                                tableHtml(divid, docs);
+                            }
+                            PaneSpin('marker-table', 'stop');
+
+                        })
+                        .fail(function () {
+                            PaneSpin('marker-table', 'stop');
+
+                            console.log('Failed while loading smplTable')
+                        });
+
+                }
+            });
 
         })
         .fail(function () {
@@ -1261,29 +1307,62 @@ function tableHtml(divid, results) {
             frmDate = date.toDateString();
         }
 
-        var row = {
-            accession: element.accession,
-            bundleName: element.bundle_name,
-            url: element.url,
-            sampleType: element.sample_type,
-            geoCoords: element.geo_coords,
-            geolocation: element.geolocations[0],
-            species: element.species_category[0],
-            bgColor: palette[element.species_category[0]],
-            textColor: getContrastYIQ(palette[element.species_category[0]]),
-            collectionDate: frmDate,
-            projects: element.projects,
-            collectionProtocols: element.collection_protocols
-        };
+        var species = element.species_category ? element.species_category[0] : 'Unknown';
 
-        var template = $.templates("#rowTemplate");
+        if ($('#view-mode').val() === 'smpl') {
+
+            var row = {
+                accession: element.accession,
+                bundleName: element.bundle_name,
+                url: element.url,
+                sampleType: element.sample_type,
+                geoCoords: element.geo_coords,
+                geolocation: element.geolocations[0],
+                species: species,
+                bgColor: palette[species],
+                textColor: getContrastYIQ(palette[species]),
+                collectionDate: frmDate,
+                projects: element.projects,
+                collectionProtocols: element.collection_protocols
+            };
+
+            var template = $.templates("#smplRowTemplate");
+        } else {
+
+            var row = {
+                accession: element.accession,
+                bundleName: element.bundle_name,
+                url: element.url,
+                sampleType: element.sample_type,
+                geoCoords: element.geo_coords,
+                geolocation: element.geolocations[0],
+                species: species,
+                bgColor: palette[species],
+                textColor: getContrastYIQ(palette[species]),
+                collectionDate: frmDate,
+                projects: element.projects,
+                collectionProtocols: element.collection_protocols,
+                protocols: element.protocols,
+                phenotypeValue: element.phenotype_value_f,
+                phenotypeValueType: element.phenotype_value_type_s,
+                phenotypeValueUnit: element.phenotype_value_unit_s,
+                insecticide: element.insecticide_s,
+                sampleSize: element.sample_size_i,
+                concentration: element.concentration_f,
+                concentrationUnit: element.concentration_unit_s,
+                duration: element.duration_f,
+                durationUnit: element.duration_unit_s
+
+            };
+
+            var template = $.templates("#irRowTemplate");
+        }
         var htmlOutput = template.render(row);
         $(divid).append(htmlOutput);
 
 
     });
 
-    PaneSpin('marker-table', 'stop');
 }
 
 
@@ -1620,6 +1699,7 @@ function resetPlots() {
 
     $('#graphs').html(pieHTML);
     $('#swarm-chart-area').html(violinHTML);
+    $('#marker-table').off("scroll");
     $('#table-contents-header').html(tableHTML);
     $('#table-contents').empty();
 
