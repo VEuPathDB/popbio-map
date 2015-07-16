@@ -1230,7 +1230,8 @@ function updateTable(divid, BBox) {
     $(divid).empty();
 
     // turn off previous scroll event listeners
-    $('#marker-table').off("scroll");
+    //$('#marker-table').off("scroll");
+    $('#marker-table').infiniteScrollHelper('destroy');
 
     $.getJSON(cursorUrl)
         .done(function (json) {
@@ -1248,11 +1249,9 @@ function updateTable(divid, BBox) {
 
             var pageCount;
 
-            // Append a scroll event handler to the container
-            $("#marker-table").scroll(function () {
-                // We check if we're at the bottom of the scrollcontainer
-                //console.log(cursorMark, nextCursorMark);
-                if (($(this)[0].scrollHeight - $(this).scrollTop() === $(this).outerHeight(true)) && (cursorMark !== nextCursorMark)) {
+            $('#marker-table').infiniteScrollHelper({
+                bottomBuffer: 80,
+                loadMore: function (page, done) {
 
                     PaneSpin('marker-table', 'start');
 
@@ -1269,16 +1268,48 @@ function updateTable(divid, BBox) {
                                 tableHtml(divid, docs);
                             }
                             PaneSpin('marker-table', 'stop');
-
+                            done();
                         })
                         .fail(function () {
                             PaneSpin('marker-table', 'stop');
 
-                            console.log('Failed while loading smplTable')
+                            console.log('Failed while loading smplTable');
+                            done()
                         });
-
                 }
             });
+
+            // Append a scroll event handler to the container
+            //$("#marker-table").scroll(function () {
+            //    // We check if we're at the bottom of the scrollcontainer
+            //    //console.log(cursorMark, nextCursorMark);
+            //    if (($(this)[0].scrollHeight - $(this).scrollTop() === $(this).outerHeight(true)) && (cursorMark !== nextCursorMark)) {
+            //
+            //        PaneSpin('marker-table', 'start');
+            //
+            //        $.getJSON(cursorUrl)
+            //            .done(function (json) {
+            //
+            //                if (json.response.numFound && json.response.numFound > 0) {
+            //                    var docs = json.response.docs;
+            //
+            //                    cursorMark = nextCursorMark;
+            //                    nextCursorMark = json.nextCursorMark;
+            //                    cursorUrl = url + '&cursorMark=' + nextCursorMark;
+            //
+            //                    tableHtml(divid, docs);
+            //                }
+            //                PaneSpin('marker-table', 'stop');
+            //
+            //            })
+            //            .fail(function () {
+            //                PaneSpin('marker-table', 'stop');
+            //
+            //                console.log('Failed while loading smplTable')
+            //            });
+            //
+            //    }
+            //});
 
         })
         .fail(function () {
