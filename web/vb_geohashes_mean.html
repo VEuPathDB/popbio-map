@@ -492,7 +492,12 @@
         <div class="col-md-12" >
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
             <i> {{html:species}}</i></h3>
-            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a> ({{html:sampleType}})</p>
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a>
+            {{if sampleSize}}
+                ({{html:sampleType}} of {{>sampleSize}} individuals)</p>
+            {{else}}
+                ({{html:sampleType}})</p>
+            {{/if}}
         </div>
         <div class="col-md-6">
             <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
