@@ -374,7 +374,6 @@ function createBeeViolinPlot(divid, BBox) {
         return;
     }
 
-    PaneSpin('swarm-plots', 'start');
 
     var self = this;
     var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolinStats?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
@@ -431,6 +430,7 @@ function createBeeViolinPlot(divid, BBox) {
                 var selectionData = s.find(':selected').data();
 
                 //buildBackgroundPlot(divid, BBox, selectionData);
+                PaneSpin('swarm-plots', 'start');
                 buildPlot(divid, BBox, selectionData);
 
                 // build a new graph whenever selection is changed
@@ -828,19 +828,21 @@ function buildPlot(divid, BBox, selection) {
 
 
                     }
-                    // stop spinner
                     addAxis(bgrYDomain, fltBgrCount, bgrCount - fltBgrCount, fltPCount, pCount - fltPCount);
 
+                    // stop spinner
                     PaneSpin('swarm-plots', 'stop');
 
                 });
 
                 selBsPromise.fail(function () {
                     console.log('Failed while loading irBeeswarm')
+                    PaneSpin('swarm-plots', 'stop');
                 });
 
                 selVlPromise.fail(function () {
                     console.log('Failed while loading irViolin')
+                    PaneSpin('swarm-plots', 'stop');
                 });
             });
 

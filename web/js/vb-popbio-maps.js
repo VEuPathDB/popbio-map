@@ -629,6 +629,7 @@ function loadSolr(parameters) {
     map.spin(true);
     $.getJSON(url, buildMap).fail(function () {
         console.log("Ahhh");
+        map.spin(false);
 
     });
 
@@ -1278,38 +1279,6 @@ function updateTable(divid, BBox) {
                         });
                 }
             });
-
-            // Append a scroll event handler to the container
-            //$("#marker-table").scroll(function () {
-            //    // We check if we're at the bottom of the scrollcontainer
-            //    //console.log(cursorMark, nextCursorMark);
-            //    if (($(this)[0].scrollHeight - $(this).scrollTop() === $(this).outerHeight(true)) && (cursorMark !== nextCursorMark)) {
-            //
-            //        PaneSpin('marker-table', 'start');
-            //
-            //        $.getJSON(cursorUrl)
-            //            .done(function (json) {
-            //
-            //                if (json.response.numFound && json.response.numFound > 0) {
-            //                    var docs = json.response.docs;
-            //
-            //                    cursorMark = nextCursorMark;
-            //                    nextCursorMark = json.nextCursorMark;
-            //                    cursorUrl = url + '&cursorMark=' + nextCursorMark;
-            //
-            //                    tableHtml(divid, docs);
-            //                }
-            //                PaneSpin('marker-table', 'stop');
-            //
-            //            })
-            //            .fail(function () {
-            //                PaneSpin('marker-table', 'stop');
-            //
-            //                console.log('Failed while loading smplTable')
-            //            });
-            //
-            //    }
-            //});
 
         })
         .fail(function () {
