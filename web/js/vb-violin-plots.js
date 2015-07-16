@@ -469,8 +469,11 @@ function buildPlot(divid, BBox, selection) {
     var plotDiv = d3.select(divid);
     var resolution = 25, interpolation = 'basis';
     var vlJsonFacet = {
-        pmin: "min(phenotype_value_f)",
-        pmax: "max(phenotype_value_f)"
+        //pmin: "min(phenotype_value_f)",
+        //pmax: "max(phenotype_value_f)"
+        pmin: "percentile(phenotype_value_f,1)",
+        pmax: "percentile(phenotype_value_f,99)"
+
     };
 
     var mapBounds = buildBbox(map.getBounds());
@@ -514,15 +517,17 @@ function buildPlot(divid, BBox, selection) {
         .done(function (bgrVlJson) {
             bgrCount = bgrVlJson.response.numFound;
             var bgrMin = bgrVlJson.facets.pmin, bgrMax = bgrVlJson.facets.pmax;
-            if (pUnit === 'percent') {
+            if (pUnit === 'percent' && pType === 'mortality rate') {
                 bgrMin = 0;
                 bgrMax = 100;
             }
             vlJsonFacet = {
                 pmean: "avg(phenotype_value_f)",
                 pperc: "percentile(phenotype_value_f,5,25,50,75,95)",
-                pmin: "min(phenotype_value_f)",
-                pmax: "max(phenotype_value_f)",
+                //pmin: "min(phenotype_value_f)",
+                //pmax: "max(phenotype_value_f)",
+                pmin: "percentile(phenotype_value_f,1)",
+                pmax: "percentile(phenotype_value_f,99)",
                 denplot: {
                     type: "range",
                     field: "phenotype_value_f",
@@ -566,7 +571,7 @@ function buildPlot(divid, BBox, selection) {
                 var gb = svg.append("g").attr("transform", "translate(" + (0 * (boxWidth + boxSpacing) + margin.left) + ",0)");
 
                 var bgrCount = bgrVlJson.response.numFound, bgrMin = bgrVlJson.facets.pmin, bgrMax = bgrVlJson.facets.pmax;
-                if (pUnit === 'percent') {
+                if (pUnit === 'percent' && pType === 'mortality rate') {
                     bgrMin = 0;
                     bgrMax = 100;
                 }
