@@ -629,8 +629,10 @@ function buildPlot(divid, BBox, selection) {
                             xaxis = boxWidth / 2;
                             dataset = [];
 
-                            //scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                            scaledRadius = 4 * (bgrMax - bgrMin) / boxWidth;
+                            scaledRadius = (4 * (bgrMax - bgrMin) / boxWidth).toFixed(6);
+                            var scaleFactor = getScaleFactor(scaledRadius);
+                            var factoredRadius = scaledRadius * scaleFactor;
+
                             firstResult.doclist.docs.forEach(function (element, index) {
 
                                 dataset.push({
@@ -646,7 +648,8 @@ function buildPlot(divid, BBox, selection) {
 
                             });
 
-                            beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            //beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            beeswarm = new Beeswarm(dataset, 0, factoredRadius, scaleFactor);
                             // make sure the beeswarm points are plotted next to each other
                             xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
                             // unless there are to many, then let them overlap
@@ -681,8 +684,10 @@ function buildPlot(divid, BBox, selection) {
 
                             dataset = [];
 
-                            //scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                            scaledRadius = 4 * (bgrMax - bgrMin) / boxWidth;
+                            //scaledRadius = 4 * (bgrMax - bgrMin) / boxWidth;
+                            scaledRadius = (4 * (bgrMax - bgrMin) / boxWidth).toFixed(6);
+                            var scaleFactor = getScaleFactor(scaledRadius);
+                            var factoredRadius = scaledRadius * scaleFactor;
 
                             firstResult.doclist.docs.forEach(function (element, index) {
                                 dataset.push({
@@ -698,7 +703,7 @@ function buildPlot(divid, BBox, selection) {
 
                             });
 
-                            beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            beeswarm = new Beeswarm(dataset, 0, factoredRadius, scaleFactor);
                             // make sure the beeswarm points are plotted next to each other
                             xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
                             // unless there are to many, then let them overlap
@@ -755,8 +760,11 @@ function buildPlot(divid, BBox, selection) {
                             xaxis = boxWidth / 2;
                             dataset = [];
 
-                            //scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                            scaledRadius = 4 * (fltPMax - fltPMin) / boxWidth;
+                            //scaledRadius = 4 * (bgrMax - bgrMin) / boxWidth;
+                            scaledRadius = (4 * (bgrMax - bgrMin) / boxWidth).toFixed(6);
+                            var scaleFactor = getScaleFactor(scaledRadius);
+                            var factoredRadius = scaledRadius * scaleFactor;
+
                             firstResult.doclist.docs.forEach(function (element, index) {
 
                                 dataset.push({
@@ -772,7 +780,7 @@ function buildPlot(divid, BBox, selection) {
 
                             });
 
-                            beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            beeswarm = new Beeswarm(dataset, 0, factoredRadius, scaleFactor);
                             // make sure the beeswarm points are plotted next to each other
                             xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
                             // unless there are to many, then let them overlap
@@ -800,8 +808,12 @@ function buildPlot(divid, BBox, selection) {
 
                             dataset = [];
 
-                            //scaledRadius = 4 * (pMax - pMin) / boxWidth;
-                            scaledRadius = 4 * (fltPMax - fltPMin) / boxWidth;
+                            //scaledRadius = 4 * (bgrMax - bgrMin) / boxWidth;
+
+                            scaledRadius = (4 * (bgrMax - bgrMin) / boxWidth).toFixed(6);
+                            var scaleFactor = getScaleFactor(scaledRadius);
+                            var factoredRadius = scaledRadius * scaleFactor;
+
                             firstResult.doclist.docs.forEach(function (element, index) {
 
                                 dataset.push({
@@ -817,7 +829,7 @@ function buildPlot(divid, BBox, selection) {
 
                             });
 
-                            beeswarm = new Beeswarm(dataset, 0, scaledRadius);
+                            beeswarm = new Beeswarm(dataset, 0, factoredRadius, scaleFactor);
                             // make sure the beeswarm points are plotted next to each other
                             xRange = [(boxWidth - 8 * beeswarm.maxPoints) / 2, (boxWidth - 8 * beeswarm.maxPoints) / 2 + 8 * beeswarm.maxPoints];
                             // unless there are to many, then let them overlap
@@ -922,4 +934,9 @@ function buildPlot(divid, BBox, selection) {
 }
 
 
-
+function getScaleFactor(x) {
+    x = parseFloat(x) + "";
+    var scale = x.indexOf(".");
+    if (scale == -1) return 1;
+    return Math.pow(10, (x.length - scale - 1));
+}
