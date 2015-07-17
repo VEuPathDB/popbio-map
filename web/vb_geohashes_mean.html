@@ -119,37 +119,37 @@
             border-radius: 5px 5px 0 0;
         }
 
-        .marker-row p {
+        .marker-row p, .tooltip-bs p {
             margin: 0;
             padding: 3px 10px;
             text-align: left;
         }
 
-        .marker-row span {
+        .marker-row span, .tooltip-bs span {
             display: inline-block;
             margin: 2px 0;
         }
 
-        .marker-row ul {
+        .marker-row ul, .tooltip-bs ul {
             padding: 3px 10px;
         }
 
-        .marker-row ul li {
+        .marker-row ul li, .tooltip-bs ul li {
             display: table-row;
         }
 
-        .marker-row ul li:last-child:after {
+        .marker-row ul li:last-child:after, .tooltip-bs ul li:last-child:after {
             content: "";
         }
 
-        .marker-row ul li:after {
+        .marker-row ul li:after, .tooltip-bs ul li:after {
             content: ", ";
         }
 
         /* for the violin plots */
-        .tooltip {
+        .tooltip, .tooltip-bs {
             position: absolute;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             color: rgba(0, 0, 0, 1.0);
             padding: 1px;
             border: 1px solid rgba(0, 0, 0, 0.5);
@@ -173,7 +173,7 @@
 
         }
 
-        .tooltip h3 {
+        .tooltip h3, .tooltip-bs h3 {
             margin: 0;
             padding: 4px 14px;
             line-height: 18px;
@@ -444,7 +444,8 @@
 </div>
 <!-- Add a tooltip div to use as a mouse-over info div for the beeswarm charts-->
 
-<div id="beeSwarmTooltip" class="tooltip" style="opacity: 0;"></div>
+<div id="plotTooltip" class="tooltip" style="opacity: 0;"></div>
+<div id="beeswarmPointTooltip" class="tooltip-bs" style="opacity: 0;"></div>
 
 
 <script type="text/x-jsrender" id="smplRowTemplate">
@@ -556,6 +557,77 @@
             </ul>
         </div>
     </div>
+
+</script>
+
+<script type="text/x-jsrender" id="irBsPointTemplate">
+    <div class="row no-pad" style="width: 400px;">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}}; margin: 0 -9px 0 5px;">
+            <i> {{>species}}</i></h3>
+            <p>{{>bundleName}} {{>accession}}
+            {{if sampleSize}}
+                ({{>sampleType}} of {{>sampleSize}} individuals)</p>
+            {{else}}
+                ({{>sampleType}})</p>
+            {{/if}}
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+            {{for collectionDate}}
+                {{>#data}}
+            {{else}}
+                No date
+            {{/for}}
+            </p>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-map-marker" title="Coordinates: {{>geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
+            <ul>
+            {{for projects}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
+            <ul>
+            {{for collectionProtocols}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+        <div class="col-md-12" >
+            <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+            Insecticide Resistance data</h5>
+        </div>
+        <div class="col-md-12" >
+            <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i> {{>insecticide}}</p>
+            {{if concentration && concentrationUnit}}
+                <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{>concentration}} {{>concentrationUnit}}</p>
+            {{/if}}
+            {{if duration && durationUnit}}
+                <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{>duration}} {{>durationUnit}}</p>
+            {{/if}}
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+            <ul>
+            {{for protocols}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+    </div>
+
 
 </script>
 

@@ -1267,7 +1267,9 @@
             <str name="group">true</str>
             <str name="group.field">phenotype_value_type_s</str>
             <str name="group.limit">100</str>
-            <str name="fl">species_category,phenotype_value_f, insecticide_s, concentration_f,
+            <str name="fl">accession, bundle_name, sample_type url, collection_protocol, geolocations, geo_coords,
+                species_category, collection_protocols, collection_date, projects, protocols, phenotype_value_f,
+                phenotype_value_type_s, phenotype_value_unit_s, insecticide_s, sample_size_i, concentration_f,
                 concentration_unit_s, duration_f, duration_unit_s
             </str>
         </lst>

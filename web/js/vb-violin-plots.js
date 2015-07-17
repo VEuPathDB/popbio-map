@@ -20,7 +20,7 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
             return d.count * 1.5;
         }))]); //0 -  max probability
 
-    var tooltip = d3.select('#beeSwarmTooltip');
+    var tooltip = d3.select('#plotTooltip');
 
     if (log) {
         x = d3.scale.log()
@@ -79,7 +79,7 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
         .attr("d", area)
         .on('mouseover', function () {
             tooltip.transition()
-                .duration(200)
+                .duration(100)
                 .style("opacity", 1)
         })
         .on("mouseout", function (d) {
@@ -122,7 +122,7 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
         .attr("d", area)
         .on('mouseover', function () {
             tooltip.transition()
-                .duration(200)
+                .duration(100)
                 .style("opacity", 1)
         })
         .on("mouseout", function (d) {
@@ -166,7 +166,7 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
 function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth, log) {
 
     "use strict";
-    var tooltip = d3.select('#beeSwarmTooltip');
+    var tooltip = d3.select('#plotTooltip');
     if (log) {
         var y = d3.scale.log()
             .range(yRange)
@@ -247,7 +247,7 @@ function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth
                 .attr("y2", probs[iS[i]])
                 .on("mouseover", function () {
                     tooltip.transition()
-                        .duration(200)
+                        .duration(100)
                         .style("opacity", 1);
                     tooltip.html(html)
                         .style("left", (d3.event.pageX + 5) + "px")
@@ -273,7 +273,7 @@ function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth
         .attr("r", x(boxPlotWidth / 5))
         .on("mouseover", function () {
             tooltip.transition()
-                .duration(200)
+                .duration(100)
                 .style("opacity", 1);
             tooltip.html(tooltipHtml)
                 .style("left", (d3.event.pageX + 5) + "px")
@@ -293,7 +293,7 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
 
     "use strict";
 
-    var y, tooltip = d3.select('#beeSwarmTooltip');
+    var y, tooltip = d3.select('#beeswarmPointTooltip');
 
     if (log) {
         y = d3.scale.log()
@@ -321,15 +321,36 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
     points.swarm.forEach(function (p, i) {
 
         var point = points.data[i];
-        var species = point.species, insecticide = point.insecticide, color = palette[species], value = point.y,
-            concentration = point.concentration, concentration_unit = point.concentration_unit, duration = point.duration,
-            duration_unit = point.duration_unit;
+        var color = point.bgColor, value = point.y;
 
-        var strConcentration = (concentration && concentration_unit) ? '<p>Concentration: ' + concentration + ' ' + concentration_unit + '</p>' : '',
-            strDuration = (duration && duration_unit) ? '<p>Duration: ' + duration + ' ' + duration_unit + '</p>' : '';
-        var tooltipHtml = '<h3 style="background-color: %COLOR"><font color="white">%SPECIES</font></h3><p><b>%VALUE</b></p><p>%INSCT</p>'
-            .replace('%COLOR', color).replace('%SPECIES', species).replace('%INSCT', insecticide).replace('%VALUE', value)
-            .concat(strConcentration).concat(strDuration);
+        var dates = point.collectionDate;
+        var frmDate;
+
+        // convert a pair of dates (date range) to a string
+        if (dates && dates.length > 1) {
+
+            var startDate = new Date(dates[0]), endDate = new Date(dates[1]);
+            frmDate = startDate.toDateString() + '-' + endDate.toDateString();
+        } else if (dates && dates.length > 0) {
+            var date = new Date(dates[0]);
+            frmDate = date.toDateString();
+        }
+
+        point.collectionDate = frmDate;
+
+        var species = point.species ? point.species : 'Unknown';
+
+        point.species = species;
+
+        var template = $.templates("#irBsPointTemplate");
+        var tooltipHtml = template.render(point);
+
+
+        //var strConcentration = (concentration && concentration_unit) ? '<p>Concentration: ' + concentration + ' ' + concentration_unit + '</p>' : '',
+        //    strDuration = (duration && duration_unit) ? '<p>Duration: ' + duration + ' ' + duration_unit + '</p>' : '';
+        //var tooltipHtml = '<h3 style="background-color: %COLOR"><font color="white">%SPECIES</font></h3><p><b>%VALUE</b></p><p>%INSCT</p>'
+        //    .replace('%COLOR', color).replace('%SPECIES', species).replace('%INSCT', insecticide).replace('%VALUE', value)
+        //    .concat(strConcentration).concat(strDuration);
 
         gSwarmPlot.append("circle")
             .attr("cx", x(p.x))
@@ -338,11 +359,22 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
             .style("fill", color)
             .on("mouseover", function (d) {
                 tooltip.transition()
-                    .duration(200)
+                    .duration(100)
                     .style("opacity", 1);
-                tooltip.html(tooltipHtml)
-                    .style("left", (d3.event.pageX + 5) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px")
+
+                tooltip.html(tooltipHtml);
+                var winHeight = window.innerHeight;
+                var tooltipHeight = tooltip.node().getBoundingClientRect().height;
+                var tooltipY;
+
+                if (d3.event.pageY - 8 + tooltipHeight > winHeight) {
+                    tooltipY = d3.event.pageY - tooltipHeight + 28;
+                } else {
+                    tooltipY = d3.event.pageY - 28;
+                }
+
+                tooltip.style("left", (d3.event.pageX + 5) + "px")
+                    .style("top", (tooltipY) + "px")
 
             })
             .on("mouseout", function (d) {
@@ -635,15 +667,32 @@ function buildPlot(divid, BBox, selection) {
 
                             firstResult.doclist.docs.forEach(function (element, index) {
 
+
                                 dataset.push({
                                     x: undefined,
                                     y: element.phenotype_value_f,
-                                    species: element.species_category[0],
+                                    species: element.species_category,
                                     insecticide: element.insecticide_s,
                                     concentration: element.concentration_f,
-                                    concentration_unit: element.concentration_unit_s,
                                     duration: element.duration_f,
-                                    duration_unit: element.duration_unit_s
+                                    accession: element.accession,
+                                    bundleName: element.bundle_name,
+                                    url: element.url,
+                                    sampleType: element.sample_type,
+                                    geoCoords: element.geo_coords,
+                                    geolocation: element.geolocations[0],
+                                    bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
+                                    textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
+                                    collectionDate: element.collection_date,
+                                    projects: element.projects,
+                                    collectionProtocols: element.collection_protocols,
+                                    protocols: element.protocols,
+                                    phenotypeValue: element.phenotype_value_f,
+                                    phenotypeValueType: element.phenotype_value_type_s,
+                                    phenotypeValueUnit: element.phenotype_value_unit_s,
+                                    sampleSize: element.sample_size_i,
+                                    concentrationUnit: element.concentration_unit_s,
+                                    durationUnit: element.duration_unit_s
                                 });
 
                             });
@@ -693,12 +742,28 @@ function buildPlot(divid, BBox, selection) {
                                 dataset.push({
                                     x: undefined,
                                     y: element.phenotype_value_f,
-                                    species: element.species_category[0],
+                                    species: element.species_category,
                                     insecticide: element.insecticide_s,
                                     concentration: element.concentration_f,
-                                    concentration_unit: element.concentration_unit_s,
                                     duration: element.duration_f,
-                                    duration_unit: element.duration_unit_s
+                                    accession: element.accession,
+                                    bundleName: element.bundle_name,
+                                    url: element.url,
+                                    sampleType: element.sample_type,
+                                    geoCoords: element.geo_coords,
+                                    geolocation: element.geolocations[0],
+                                    bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
+                                    textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
+                                    collectionDate: element.collection_date,
+                                    projects: element.projects,
+                                    collectionProtocols: element.collection_protocols,
+                                    protocols: element.protocols,
+                                    phenotypeValue: element.phenotype_value_f,
+                                    phenotypeValueType: element.phenotype_value_type_s,
+                                    phenotypeValueUnit: element.phenotype_value_unit_s,
+                                    sampleSize: element.sample_size_i,
+                                    concentrationUnit: element.concentration_unit_s,
+                                    durationUnit: element.duration_unit_s
                                 });
 
                             });
@@ -770,12 +835,28 @@ function buildPlot(divid, BBox, selection) {
                                 dataset.push({
                                     x: undefined,
                                     y: element.phenotype_value_f,
-                                    species: element.species_category[0],
+                                    species: element.species_category,
                                     insecticide: element.insecticide_s,
                                     concentration: element.concentration_f,
-                                    concentration_unit: element.concentration_unit_s,
                                     duration: element.duration_f,
-                                    duration_unit: element.duration_unit_s
+                                    accession: element.accession,
+                                    bundleName: element.bundle_name,
+                                    url: element.url,
+                                    sampleType: element.sample_type,
+                                    geoCoords: element.geo_coords,
+                                    geolocation: element.geolocations[0],
+                                    bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
+                                    textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
+                                    collectionDate: element.collection_date,
+                                    projects: element.projects,
+                                    collectionProtocols: element.collection_protocols,
+                                    protocols: element.protocols,
+                                    phenotypeValue: element.phenotype_value_f,
+                                    phenotypeValueType: element.phenotype_value_type_s,
+                                    phenotypeValueUnit: element.phenotype_value_unit_s,
+                                    sampleSize: element.sample_size_i,
+                                    concentrationUnit: element.concentration_unit_s,
+                                    durationUnit: element.duration_unit_s
                                 });
 
                             });
@@ -819,12 +900,28 @@ function buildPlot(divid, BBox, selection) {
                                 dataset.push({
                                     x: undefined,
                                     y: element.phenotype_value_f,
-                                    species: element.species_category[0],
+                                    species: element.species_category,
                                     insecticide: element.insecticide_s,
                                     concentration: element.concentration_f,
-                                    concentration_unit: element.concentration_unit_s,
                                     duration: element.duration_f,
-                                    duration_unit: element.duration_unit_s
+                                    accession: element.accession,
+                                    bundleName: element.bundle_name,
+                                    url: element.url,
+                                    sampleType: element.sample_type,
+                                    geoCoords: element.geo_coords,
+                                    geolocation: element.geolocations[0],
+                                    bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
+                                    textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
+                                    collectionDate: element.collection_date,
+                                    projects: element.projects,
+                                    collectionProtocols: element.collection_protocols,
+                                    protocols: element.protocols,
+                                    phenotypeValue: element.phenotype_value_f,
+                                    phenotypeValueType: element.phenotype_value_type_s,
+                                    phenotypeValueUnit: element.phenotype_value_unit_s,
+                                    sampleSize: element.sample_size_i,
+                                    concentrationUnit: element.concentration_unit_s,
+                                    durationUnit: element.duration_unit_s
                                 });
 
                             });
