@@ -426,7 +426,10 @@ function createBeeViolinPlot(divid, filter) {
                 $('<option/>', {text: 'phenotypes visible on map', value: 2}).appendTo(bs);
                 $('<option/>', {text: 'all phenotypes', value: 3}).appendTo(bs);
                 label.appendTo($(divid));
-                bs.appendTo($(divid));
+                // set to selected value
+                bs.val(bgPlotType)
+                    .appendTo($(divid));
+
 
                 // let's create and populate a drop down
                 label = $('<label>').text('Measurement type: ');
@@ -473,6 +476,8 @@ function createBeeViolinPlot(divid, filter) {
                 bs.change(function () {
                     PaneSpin('swarm-plots', 'start');
                     selectionData = s.find(':selected').data();
+                    // remember selection
+                    bgPlotType = bs.find(':selected').val();
                     buildPlot(divid, filter, selectionData);
                 });
 
