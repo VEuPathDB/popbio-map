@@ -342,7 +342,6 @@ function initializeSearch() {
     });
 
     // Set current view
-    //    FixMe: Firefox loads the last view after refresh
     $("#SelectView").find("li a").click(function () {
         var selText = $(this).text();
         if (selText === "Samples view") {
