@@ -388,7 +388,7 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
 
 }
 
-function createBeeViolinPlot(divid, BBox) {
+function createBeeViolinPlot(divid, filter) {
 
     "use strict";
 
@@ -406,9 +406,8 @@ function createBeeViolinPlot(divid, BBox) {
         return;
     }
 
-
     var self = this;
-    var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolinStats?&' + qryUrl + BBox + '&json.wrf=?&callback=?';
+    var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolinStats?&' + qryUrl + filter + '&json.wrf=?&callback=?';
 
     // Empty the div
     $(divid).empty();
@@ -461,20 +460,20 @@ function createBeeViolinPlot(divid, BBox) {
                 // build the graph using the first option in the drop-down
                 var selectionData = s.find(':selected').data();
 
-                //buildBackgroundPlot(divid, BBox, selectionData);
+                //buildBackgroundPlot(divid, filter, selectionData);
                 PaneSpin('swarm-plots', 'start');
-                buildPlot(divid, BBox, selectionData);
+                buildPlot(divid, filter, selectionData);
 
                 // build a new graph whenever selection is changed
                 s.change(function () {
                     PaneSpin('swarm-plots', 'start');
                     selectionData = s.find(':selected').data();
-                    buildPlot(divid, BBox, selectionData);
+                    buildPlot(divid, filter, selectionData);
                 });
                 bs.change(function () {
                     PaneSpin('swarm-plots', 'start');
                     selectionData = s.find(':selected').data();
-                    buildPlot(divid, BBox, selectionData);
+                    buildPlot(divid, filter, selectionData);
                 });
 
 
@@ -490,7 +489,7 @@ function createBeeViolinPlot(divid, BBox) {
 
 }
 
-function buildPlot(divid, BBox, selection) {
+function buildPlot(divid, filter, selection) {
     "use strict";
 
     var bgrCount, pCount = selection.count, pMin = selection.min, pMax = selection.max,
@@ -781,11 +780,11 @@ function buildPlot(divid, BBox, selection) {
                 }
                 // Initialize selection urls and promises
                 var selBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + rangeFq +
-                    '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + BBox + '&json.wrf=?&callback=?';
+                    '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + filter + '&json.wrf=?&callback=?';
 
                 var selVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + rangeFq +
                     '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' +
-                    JSON.stringify(vlJsonFacet) + BBox + '&json.wrf=?&callback=?';
+                    JSON.stringify(vlJsonFacet) + filter + '&json.wrf=?&callback=?';
                 var selBsPromise = $.getJSON(selBsUrl),
                     selVlPromise = $.getJSON(selVlUrl);
 

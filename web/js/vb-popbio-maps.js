@@ -680,9 +680,12 @@ function loadSmall(mode, zoomLevel) {
                     });
 
                     updatePieChart(1, fullElStats);
-                    var bounds = L.latLngBounds(marker._latlng, marker._latlng);
-                    createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
-                    updateTable("#table-contents", buildBbox(bounds));
+                    //var bounds = L.latLngBounds(marker._latlng, marker._latlng);
+                    //createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
+                    var filter = '&fq=id:' + data.id;
+                    createBeeViolinPlot("#swarm-chart-area", filter);
+                    //updateTable("#table-contents", buildBbox(bounds));
+                    updateTable("#table-contents", filter);
 
                 }
                 prevent = false;
@@ -914,6 +917,7 @@ function loadSmall(mode, zoomLevel) {
             var coords = doc[key].geo_coords.split(",");
             var pheVal = ($('#view-mode').val() === 'ir') ? doc[key].phenotype_rescaled_value_f : -1;
             var marker = new PruneCluster.Marker(coords[0], coords[1]);
+            marker.data.id = doc[key].id;
             if (doc[key].hasOwnProperty("species_category")) {
                 var species = doc[key].species_category[0];
                 marker.category = doc[key].species_category[0];
@@ -1205,18 +1209,18 @@ $.fn.redraw = function () {
 };
 
 
-function updateTable(divid, BBox) {
+function updateTable(divid, filter, singleMarker) {
     "use strict";
 
     var header = divid + '-header';
     $(header).empty();
 
     if ($('#view-mode').val() === 'smpl') {
-        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplTable?&' + qryUrl + BBox + '&sort=id asc&json.wrf=?&callback=?';
+        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplTable?&' + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
 
     } else {
 
-        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irTable?&' + qryUrl + BBox + '&sort=id asc&json.wrf=?&callback=?';
+        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irTable?&' + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
     }
 
 
