@@ -1515,8 +1515,9 @@ function filterMarkers(items) {
 
         //console.log('lakis' + qryUrl);
     }
-    //return;
-    // process each type
+
+    // url encode the query string
+    qryUrl = encodeURI(qryUrl);
 
     loadSolr({clear: 1, zoomLevel: map.getZoom()})
 }
