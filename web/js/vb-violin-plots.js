@@ -423,7 +423,10 @@ function createBeeViolinPlot(divid, filter) {
                 var bs = $('<select />').attr('id', 'bgPlotType')
                     .attr('class', "form-control");
                 $('<option/>', {text: 'phenotypes matching search', value: 1}).appendTo(bs);
-                $('<option/>', {text: 'phenotypes visible on map', value: 2}).appendTo(bs);
+                $('<option/>', {
+                    text: 'phenotypes visible on map (including the ones behind this panel)',
+                    value: 2
+                }).appendTo(bs);
                 $('<option/>', {text: 'all phenotypes', value: 3}).appendTo(bs);
                 label.appendTo($(divid));
                 // set to selected value
