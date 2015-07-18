@@ -1681,26 +1681,57 @@ function removeHighlight(marker) {
 }
 
 function resetPlots() {
+    "use strict";
 
-    var pieHTML =
-        '<h3>Sample summary data</h3>' +
-        '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
-        '<i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>' +
-        '<h3>click a marker</h3>' +
-        '</div>' +
-        '<div id="pie-chart-area">' +
-        '<svg></svg>' +
-        '</div>';
-    var violinHTML =
-        '<div style="text-align: center; margin-top: 30px">' +
-        '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
-        '<h3>click a marker</h3>' +
-        '</div>';
-    var tableHTML =
-        '<div style="text-align: center; margin-top: 30px">' +
-        '<i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>' +
-        '<h3>click a marker</h3>' +
-        '</div>';
+    var pieHTML, violinHTML, tableHTML;
+    if (highlight !== null) {
+
+        pieHTML =
+            '<h3>Sample summary data</h3>' +
+            '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h3>click a marker</h3>' +
+            '</div>' +
+            '<div id="pie-chart-area">' +
+            '<svg></svg>' +
+            '</div>';
+        violinHTML =
+            '<div style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h3>click a marker</h3>' +
+            '</div>';
+        tableHTML =
+            '<div style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h3>click a marker</h3>' +
+            '</div>';
+    } else {
+        pieHTML =
+            '<h3>Sample summary data</h3>' +
+            '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h1>Go on!</h1>' +
+            '<h3>click a marker</h3>' +
+            '<h3>to plot some real data</h3> ' +
+            '</div>' +
+            '<div id="pie-chart-area">' +
+            '<svg></svg>' +
+            '</div>';
+        violinHTML =
+            '<div style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h1>Go on!</h1>' +
+            '<h3>click a marker</h3>' +
+            '<h3>to plot some real data</h3> ' +
+            '</div>';
+        tableHTML =
+            '<div style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h1>Go on!</h1>' +
+            '<h3>click a marker</h3>' +
+            '<h3>to see some real data</h3> ' +
+            '</div>';
+    }
 
     $('#graphs').html(pieHTML);
     $('#swarm-chart-area').html(violinHTML);
