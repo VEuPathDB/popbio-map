@@ -58,8 +58,8 @@
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
 
 
-    <!--<script type="text/javascript" src="./js/vb-popbio-maps.js"></script>-->
-    <script type="text/javascript" src="./js/vb-popbio-maps.min.js"></script>
+    <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
+    <!--<script type="text/javascript" src="./js/vb-popbio-maps.min.js"></script>-->
     <style>
 
         .highlight-marker {
@@ -381,7 +381,7 @@
 
             <!-- Tab panes -->
             <div class="sidebar-content active" id="active-pane">
-                <div class="sidebar-pane" id="graphs">
+                <div class="sidebar-pane active" id="graphs">
                     <h3>Sample summary data</h3>
 
                     <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
@@ -684,7 +684,7 @@
 
     var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
     var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
-    var map;
+    var map, sidebar;
     var assetLayerGroup;
     var smallClusters = [];
     var palette;

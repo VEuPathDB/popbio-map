@@ -7,6 +7,8 @@
  */
 
 function initializeMap() {
+    "use strict";
+
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
         center: [23.079, 3.515],
@@ -22,7 +24,7 @@ function initializeMap() {
     }));
 
     map.addControl(new L.Control.ZoomMin({position: "topright"}));
-    var sidebar = L.control.sidebar('sidebar').addTo(map);
+    sidebar = L.control.sidebar('sidebar').addTo(map);
 
 
     var mp1 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png", {
@@ -572,6 +574,7 @@ function loadSolr(parameters) {
                     resetPlots();
                 });
                 layer.on("click", function () {
+
                     removeHighlight(layer);
                     highlightMarker(layer);
                     timer = setTimeout(function () {
@@ -581,18 +584,10 @@ function loadSolr(parameters) {
                             var recBounds = L.latLngBounds(record.bounds);
                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                             updateTable("#table-contents", buildBbox(recBounds));
+                            if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
                         }
                     }, delay);
                     prevent = false;
-                });
-                layer.on("mouseover", function (e) {
-                    //console.log(e.target);
-                    //var elem = L.DomUtil.get(e.target);
-                    //L.DomUtil.addClass(elem, 'marker-cluster-selected')
-                    //this.options.icon.options.className = 'marker-cluster-selected';
-                });
-                layer.on("mouseout", function () {
-                    //updatePieChart()
                 });
             }
 
@@ -683,8 +678,8 @@ function loadSmall(mode, zoomLevel) {
                     //createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
                     var filter = '&fq=id:' + data.id;
                     createBeeViolinPlot("#swarm-chart-area", filter);
-                    //updateTable("#table-contents", buildBbox(bounds));
                     updateTable("#table-contents", filter);
+                    if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
 
                 }
                 prevent = false;
@@ -868,6 +863,7 @@ function loadSmall(mode, zoomLevel) {
 
                     createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
                     updateTable("#table-contents", buildBbox(bounds));
+                    if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
 
                 }
             }, delay);
