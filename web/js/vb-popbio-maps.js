@@ -779,6 +779,7 @@ function loadSmall(mode, zoomLevel) {
             }
 
             canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
+            //canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
             canvas.textAlign = 'center';
             canvas.textBaseline = 'middle';
             canvas.font = 'bold 12px sans-serif';
@@ -1743,9 +1744,10 @@ function markerColor(value) {
         return ["white", '#555'];
     } else {
         fillColor = trafficLight.evaluate(value);
-        if (value < 0.2) {
+        //textColor = getContrastYIQ(fillColor);
+        if (value < 0.3) {
             textColor = "#fff";
-        } else if (value > 0.8) {
+        } else if (value > 0.7) {
             textColor = "#fff";
 
         } else {
