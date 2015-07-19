@@ -358,9 +358,12 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
             .attr("r", 4)
             .style("fill", color)
             .on("mouseover", function (d) {
+                if (stickyHover) return;
+                $('#cancel-hover').css("display", "none");
                 tooltip.transition()
                     .duration(100)
-                    .style("opacity", 1);
+                    .style("opacity", 1)
+                    .style("z-index", 1000000);
 
                 tooltip.html(tooltipHtml);
                 var winHeight = window.innerHeight;
@@ -378,9 +381,30 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
 
             })
             .on("mouseout", function (d) {
+                if (stickyHover) return;
                 tooltip.transition()
                     .duration(500)
-                    .style("opacity", 0);
+                    .style("opacity", 0)
+                    .style("z-index", -1000000);
+            })
+            .on("click", function () {
+                tooltip.transition()
+                    .duration(100)
+                    .style("opacity", 1);
+                stickyHover = true;
+                $('#map_container').css("pointer-events", "none");
+
+                $('#cancel-hover').css("display", "inline")
+                    .on("click", function () {
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0)
+                            .style("z-index", -1000000);
+                        $('#map_container').css("pointer-events", "auto");
+                        stickyHover = false;
+
+
+                    });
             });
 
     });

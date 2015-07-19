@@ -99,7 +99,7 @@
             font-size: 13px;
             text-align: left;
 
-            white-space: nowrap;
+            white-space: normal;
         }
 
         .marker-row h3 {
@@ -147,6 +147,23 @@
         }
 
         /* for the violin plots */
+        .cancel {
+            position: relative;
+            cursor: pointer;
+            margin: 4px -5px 0 0;;
+            float: right;
+            height: 15px;
+            width: 14px;
+            background-color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 11px;
+            color: white;
+            border-radius: 3px;
+            z-index: 100000000000000;
+            display: none;
+        }
+
         .tooltip, .tooltip-bs {
             position: absolute;
             background: rgba(255, 255, 255, 0.9);
@@ -162,14 +179,20 @@
             text-align: left;
             pointer-events: none;
 
-            white-space: nowrap;
+            white-space: normal;
 
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            /*-webkit-touch-callout: none;*/
+            /*-webkit-user-select: none;*/
+            /*-khtml-user-select: none;*/
+            /*-moz-user-select: none;*/
+            /*-ms-user-select: none;*/
             user-select: none;
+
+        }
+
+        .tooltip-bs {
+            pointer-events: auto;
+            user-select: text;
 
         }
 
@@ -488,6 +511,12 @@
     </div>
 
 
+
+
+
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -558,16 +587,22 @@
         </div>
     </div>
 
+
+
+
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="irBsPointTemplate">
-    <div class="row no-pad" style="width: 400px;">
-
+    <div class="row no-pad" style="width: 370px;">
 
         <div class="col-md-12" >
+            <div class="cancel" id="cancel-hover"><i class="fa fa-times" style="color: red;"></i></div>
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}}; margin: 0 -9px 0 5px;">
             <i> {{>species}}</i></h3>
-            <p>{{>bundleName}} {{>accession}}
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a>
             {{if sampleSize}}
                 ({{>sampleType}} of {{>sampleSize}} individuals)</p>
             {{else}}
@@ -590,7 +625,7 @@
             <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
             <ul>
             {{for projects}}
-                <li>{{>#data}}</li>
+                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
             {{/for}}
             </ul>
         </div>
@@ -626,7 +661,16 @@
             {{/for}}
             </ul>
         </div>
+         <div class="col-md-12" >
+            <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
+        </div>
     </div>
+
+
+
+
+
+
 
 
 </script>
@@ -658,7 +702,7 @@
     // Hack to prevent single click events firing when double clicking
     var timer = 0;
     var delay = 400;
-    var prevent = false;
+    var prevent = false, stickyHover = false;
 
     // force viewMode value to smpl
     $('#view-mode').val('smpl');
@@ -678,9 +722,6 @@
         resetPlots();
     });
 
-    //            .append("div").attr("id", "violin-popup").attr("class", "popup").append("div").attr("id", "violin"));
-
-    //    createBeeViolinPlot($('#swarm-plot'));
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
