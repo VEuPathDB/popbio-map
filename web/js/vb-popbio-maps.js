@@ -570,6 +570,10 @@ function loadSolr(parameters) {
                 layer.on("dblclick", function () {
                     clearTimeout(timer);
                     prevent = true;
+                    // remove the boundaries rectangle
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                    rectHighlight = null;
+
                     map.fitBounds(record.bounds);
                     resetPlots();
                 });
@@ -588,6 +592,23 @@ function loadSolr(parameters) {
                         }
                     }, delay);
                     prevent = false;
+                });
+                layer.on("mouseover", function () {
+                    moveTopMarker(layer);
+                    var recBounds = L.latLngBounds(record.bounds);
+                    rectHighlight = L.rectangle(recBounds, {
+                        color: "#cyan",
+                        weight: 5,
+                        fill: true,
+                        clickable: false
+                    }).addTo(map);
+
+                });
+                layer.on("mouseout", function () {
+                    removeTopMarker(layer);
+                    map.removeLayer(rectHighlight);
+                    rectHighlight = null;
+
                 });
             }
 
@@ -609,6 +630,8 @@ function loadSolr(parameters) {
             loadSmall(0, zoomLevel);
 
         }
+
+
         // inform the user that data is loaded
         map.spin(false);
 
@@ -649,7 +672,11 @@ function loadSmall(mode, zoomLevel) {
         marker.on("dblclick", function () {
             clearTimeout(timer);
             prevent = true;
-            resetPlots()
+            // remove the boundaries rectangle
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+            rectHighlight = null;
+
+            resetPlots();
             // Zoom-in to marker
             if (map.getZoom() < 11) map.setView(marker._latlng, 11, {animate: true});
 
@@ -661,7 +688,6 @@ function loadSmall(mode, zoomLevel) {
             timer = setTimeout(function () {
                 if (!prevent) {
 
-                    //do click stuff here
                     // first we need a list of all categories
 
                     var fullElStats = [];
@@ -683,6 +709,7 @@ function loadSmall(mode, zoomLevel) {
                 prevent = false;
             }, delay);
         });
+
 
         if (data.icon) {
             if (typeof data.icon === 'function') {
@@ -797,6 +824,11 @@ function loadSmall(mode, zoomLevel) {
         m.on("dblclick", function () {
             clearTimeout(timer);
             prevent = true;
+
+            // remove the boundaries rectangle
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+            rectHighlight = null;
+
             resetPlots();
             // Compute the  cluster bounds (it"s slow : O(n))
             var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
@@ -870,8 +902,30 @@ function loadSmall(mode, zoomLevel) {
 
         });
 
-        m.on("mouseover", function (e) {
+        m.on("mouseover", function () {
+            moveTopMarker(m);
+            var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
+            var b = pruneCluster.Cluster.ComputeBounds(markersArea);
 
+            if (b) {
+                var recBounds = new L.LatLngBounds(
+                    new L.LatLng(b.minLat, b.maxLng),
+                    new L.LatLng(b.maxLat, b.minLng));
+
+            }
+
+            rectHighlight = L.rectangle(recBounds, {
+                color: "#cyan",
+                weight: 5,
+                fill: true,
+                clickable: false
+            }).addTo(map);
+
+        });
+        m.on("mouseout", function () {
+            removeTopMarker(m);
+            map.removeLayer(rectHighlight);
+            rectHighlight = null;
 
         });
         return m;
@@ -1665,6 +1719,15 @@ function PaneSpin(divid, command) {
 function highlightMarker(marker) {
     $(marker._icon).addClass("highlight-marker");
     highlight = marker;
+}
+
+function moveTopMarker(marker) {
+    $(marker._icon).addClass("top-marker");
+}
+
+function removeTopMarker(marker) {
+    // check for highlight
+    $(marker._icon).removeClass("top-marker");
 }
 
 function removeHighlight(marker) {

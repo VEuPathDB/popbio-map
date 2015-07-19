@@ -64,8 +64,13 @@
 
         .highlight-marker {
             box-shadow: 0px 0px 0px 5px rgba(255, 255, 0, 1);
-            z-index: 2147483647 !important;
+            z-index: 2147483646 !important;
         }
+
+        .top-marker {
+            z-index: 2147483646 !important;
+        }
+
 
         /* for the table */
         #marker-table {
@@ -694,7 +699,7 @@
     var legend;
     var legendDiv;
     var PaneSpinner = null;
-    var highlight = null;
+    var highlight = null, rectHighlight = null;
     // map scaled values from 0-1 to colors green to red
     //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
     var trafficLight = new L.CustomColorFunction(0, 1, L.ColorBrewer.Diverging.RdYlBu[10]);
@@ -725,6 +730,10 @@
 
     // detect when user changes zoom or pans around the map
     map.on("moveend", function () {
+        // remove the boundaries rectangle
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
+
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
         resetPlots();
     });
