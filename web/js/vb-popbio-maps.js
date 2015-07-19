@@ -580,11 +580,11 @@ function loadSolr(parameters) {
                     timer = setTimeout(function () {
                         if (!prevent) {
 
+                            if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
                             updatePieChart(record.population, record.fullstats);
                             var recBounds = L.latLngBounds(record.bounds);
                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                             updateTable("#table-contents", buildBbox(recBounds));
-                            if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
                         }
                     }, delay);
                     prevent = false;
@@ -673,13 +673,11 @@ function loadSmall(mode, zoomLevel) {
                         "color": (palette[category] ? palette[category] : "#000000")
                     });
 
+                    if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
                     updatePieChart(1, fullElStats);
-                    //var bounds = L.latLngBounds(marker._latlng, marker._latlng);
-                    //createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
                     var filter = '&fq=id:' + data.id;
                     createBeeViolinPlot("#swarm-chart-area", filter);
                     updateTable("#table-contents", filter);
-                    if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
 
                 }
                 prevent = false;
@@ -849,6 +847,7 @@ function loadSmall(mode, zoomLevel) {
                         });
                     }
 
+                    if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
                     updatePieChart(cluster.population, fullElStats);
 
                     var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
@@ -863,7 +862,6 @@ function loadSmall(mode, zoomLevel) {
 
                     createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
                     updateTable("#table-contents", buildBbox(bounds));
-                    if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
 
                 }
             }, delay);
@@ -1150,9 +1148,9 @@ function updatePieChart(population, stats) {
         $('#pie-chart-header').empty();
 
         d3.select("#pie-chart-area svg")
-            .attr("width", 380)
-            .attr("height", 500)
-            .style({'width': '380', 'height': '500'});
+            .attr("width", "380px")
+            .attr("height", "500px")
+            .style({width: "380px", height: "500px"});
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
