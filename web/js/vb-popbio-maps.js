@@ -1616,7 +1616,7 @@ function generatePalette(result) {
         inHtml += '<p>Resistance</p>';
         inHtml += '<div class="min-value" style="border: 0">Low</div>';
         inHtml += '<div class="scale-bars">';
-        var colorsArr = L.ColorBrewer.Diverging.RdYlBu[7].slice(); //copy array by value
+        var colorsArr = L.ColorBrewer.Diverging.RdYlBu[10].slice(); //copy array by value
         $.each(colorsArr.reverse(), function (index, value) {
             inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10px; background-color: ' + value + ' ;"></i>';
         });
