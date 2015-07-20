@@ -759,7 +759,7 @@
 
 
     // detect when user changes zoom or pans around the map
-    map.on("moveend", function () {
+    map.on("movestart", function () {
         // remove the boundaries rectangle
         if (rectHighlight !== null) map.removeLayer(rectHighlight);
         rectHighlight = null;
@@ -768,6 +768,9 @@
         setTimeout(function () {
             resetPlots()
         }, delay);
+    })
+            .on("moveend", function () {
+
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
     })
             .on("click", function () {

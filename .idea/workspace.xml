@@ -8,14 +8,7 @@
     <bookmark url="file://$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.js" line="153" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Add a white stoke to the circle of single markers&#10;&#10;This improves appearance and readability of traffic light values in &#10;single markers">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/PruneCluster" afterPath="$PROJECT_DIR$/web/libs/PruneCluster" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/sidebar-v2" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.js" afterPath="$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.min.js" afterPath="$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" afterPath="$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Fix an issue with single markers having a traffic-light value of 0&#10;&#10;">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -100,8 +93,8 @@
       <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.840836">
-              <caret line="649" column="20" selection-start-line="649" selection-start-column="20" selection-end-line="649" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.30508474">
+              <caret line="761" column="37" selection-start-line="761" selection-start-column="37" selection-end-line="761" selection-end-column="37" />
               <folding>
                 <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -482,12 +475,6 @@
       <option name="number" value="Default" />
       <updated>1437405702983</updated>
     </task>
-    <task id="LOCAL-00063" summary="* If a field has an accompanying _cvterms field then search will be done using the _cvterms field&#10;** This is because in many cases, upper level terms (e.g. Brazil for Geography) may actually be the in the lowest level field (geolocations) instead in the _cvterms&#10;** Only exception for now is species, since it seems to be more accurately defined&#10;* Fixed a couple of bugs in type to field mapping">
-      <created>1434405572640</created>
-      <option name="number" value="00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1434405572640</updated>
-    </task>
     <task id="LOCAL-00064" summary="* Replace &quot;More results&quot; with &quot;More suggestions&quot; at auto-complete&#10;* More suggestions counts have a &quot;~&quot; indicator now&#10;** This is until I solve why for some types suggestion and result counts don't match">
       <created>1434406873994</created>
       <option name="number" value="00064" />
@@ -815,7 +802,13 @@
       <option name="project" value="VB" />
       <updated>1437405702813</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="Fix an issue with single markers having a traffic-light value of 0&#10;&#10;">
+      <created>1437410370537</created>
+      <option name="number" value="00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1437410370539</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <option name="clearContext" value="false" />
     <option name="createBranch" value="false" />
     <servers>
@@ -848,27 +841,27 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15173867" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6232727" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32514736" sideWeight="0.5021075" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3366045" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1935167" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3366045" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32694247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12329636" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15173867" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6232727" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12329636" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40039253" sideWeight="0.49789253" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1935167" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Issues - JIRA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.51375246" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -913,7 +906,6 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="USE_COMMIT_MESSAGE_MARGIN" value="true" />
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
-    <MESSAGE value="VB-3798 Add background graphs for BeeViolin Plots&#10;&#10;Almost completed the BeeViolin plots. Few bugs still remain" />
     <MESSAGE value="VB-3798 Clean-up code" />
     <MESSAGE value="VB-3798 Fix a bug in y axis domain calculation&#10;&#10;Background min and max values for the y axis domain are now requested&#10; prior to any other requests. As a results y axis is now properly set.&#10; &#10;Also, selecting only visible markers as background now uses the &#10;correct BBox." />
     <MESSAGE value="VB-3798 Fix a bug in y axis domain calculation&#10;&#10;Background min and max values for the y axis domain are now requested&#10; prior to any other requests. As a results y axis is now properly set.&#10;&#10;Also, selecting only visible markers as background now uses the&#10;correct BBox.&#10;" />
@@ -938,7 +930,8 @@
     <MESSAGE value="Fix VB-3875 Show boundaries of cluster markers on mouse over" />
     <MESSAGE value="Add a white stoke to the circle of single markers&#10;&#10;This improves appearance and readability of traffic light values in &#10;single markers" />
     <MESSAGE value="Fix VB-3877 Improve the interactions model of the plots panel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix VB-3877 Improve the interactions model of the plots panel" />
+    <MESSAGE value="Fix an issue with single markers having a traffic-light value of 0&#10;&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix an issue with single markers having a traffic-light value of 0&#10;&#10;" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1637,8 +1630,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.840836">
-          <caret line="649" column="20" selection-start-line="649" selection-start-column="20" selection-end-line="649" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.30508474">
+          <caret line="761" column="37" selection-start-line="761" selection-start-column="37" selection-end-line="761" selection-end-column="37" />
           <folding>
             <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
