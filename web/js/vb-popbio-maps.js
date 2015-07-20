@@ -579,10 +579,21 @@ function loadSolr(parameters) {
                 });
                 layer.on("click", function () {
 
+                    var wasHighlighted = false;
+                    if (layer === highlight) wasHighlighted = true;
                     removeHighlight(layer);
                     highlightMarker(layer);
                     timer = setTimeout(function () {
                         if (!prevent) {
+
+                            if (wasHighlighted) {
+                                removeHighlight();
+                                sidebar.close();
+                                setTimeout(function () {
+                                    resetPlots()
+                                }, delay);
+                                return;
+                            }
 
                             if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
                             updatePieChart(record.population, record.fullstats);
@@ -683,9 +694,20 @@ function loadSmall(mode, zoomLevel) {
 
         });
         marker.on("click", function () {
+
+            var wasHighlighted = false;
+            if (marker === highlight) wasHighlighted = true;
             removeHighlight(marker);
             highlightMarker(marker);
             timer = setTimeout(function () {
+                if (wasHighlighted) {
+                    removeHighlight();
+                    sidebar.close();
+                    setTimeout(function () {
+                        resetPlots()
+                    }, delay);
+                    return;
+                }
                 if (!prevent) {
 
                     // first we need a list of all categories
@@ -859,11 +881,23 @@ function loadSmall(mode, zoomLevel) {
             }
         });
         m.on("click", function () {
+
+            var wasHighlighted = false;
+            if (m === highlight) wasHighlighted = true;
+
             removeHighlight(m);
             highlightMarker(m);
             timer = setTimeout(function () {
                 if (!prevent) {
-
+                    // is this marker already active?
+                    if (wasHighlighted) {
+                        removeHighlight();
+                        sidebar.close();
+                        setTimeout(function () {
+                            resetPlots()
+                        }, delay);
+                        return;
+                    }
                     //do click stuff here
                     // first we need a list of all categories
                     var fullElStats = [];
@@ -1720,6 +1754,7 @@ function PaneSpin(divid, command) {
 function highlightMarker(marker) {
     $(marker._icon).addClass("highlight-marker");
     highlight = marker;
+    if (firstClick) firstClick = false;
 }
 
 function moveTopMarker(marker) {
@@ -1743,28 +1778,7 @@ function resetPlots() {
     "use strict";
 
     var pieHTML, violinHTML, tableHTML;
-    if (highlight !== null) {
-
-        pieHTML =
-            '<h3>Sample summary data</h3>' +
-            '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>' +
-            '<h3>click a marker</h3>' +
-            '</div>' +
-            '<div id="pie-chart-area">' +
-            '<svg></svg>' +
-            '</div>';
-        violinHTML =
-            '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
-            '<h3>click a marker</h3>' +
-            '</div>';
-        tableHTML =
-            '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>' +
-            '<h3>click a marker</h3>' +
-            '</div>';
-    } else {
+    if (firstClick) {
         pieHTML =
             '<h3>Sample summary data</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
@@ -1789,6 +1803,27 @@ function resetPlots() {
             '<h1>Go on!</h1>' +
             '<h3>click a marker</h3>' +
             '<h3>to see some real data</h3> ' +
+            '</div>';
+    } else {
+
+        pieHTML =
+            '<h3>Sample summary data</h3>' +
+            '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h3>click a marker</h3>' +
+            '</div>' +
+            '<div id="pie-chart-area">' +
+            '<svg></svg>' +
+            '</div>';
+        violinHTML =
+            '<div style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h3>click a marker</h3>' +
+            '</div>';
+        tableHTML =
+            '<div style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>' +
+            '<h3>click a marker</h3>' +
             '</div>';
     }
 

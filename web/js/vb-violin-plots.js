@@ -392,7 +392,18 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
                     .duration(100)
                     .style("opacity", 1);
                 stickyHover = true;
-                $('#map_container').css("pointer-events", "none");
+
+                $('#no-interactions').addClass("foreground")
+                    .on("click", function () {
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0)
+                            .style("z-index", -1000000);
+                        $('#no-interactions').removeClass("foreground");
+                        stickyHover = false;
+
+
+                    });
 
                 $('#cancel-hover').css("display", "inline")
                     .on("click", function () {
@@ -400,7 +411,7 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
                             .duration(500)
                             .style("opacity", 0)
                             .style("z-index", -1000000);
-                        $('#map_container').css("pointer-events", "auto");
+                        $('#no-interactions').removeClass("foreground");
                         stickyHover = false;
 
 

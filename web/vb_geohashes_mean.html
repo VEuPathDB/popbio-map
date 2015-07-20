@@ -284,10 +284,25 @@
 
         /* end of violin plots specific CSS*/
 
+        .no-interactions {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 100%;
+            z-index: -1000001;
+        }
+
+        .foreground {
+            z-index: 1000000;
+        }
+
     </style>
 </head>
 
 <body class="no_tabs static fuelux">
+
+<div class="no-interactions" id="no-interactions"></div>
 
 <div id="min_width_container">
     <!-- Vectorbase stuff-->
@@ -529,6 +544,8 @@
 
 
 
+
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -598,6 +615,8 @@
             </ul>
         </div>
     </div>
+
+
 
 
 
@@ -687,6 +706,8 @@
 
 
 
+
+
 </script>
 
 <script language="JavaScript">
@@ -708,7 +729,7 @@
     var legend;
     var legendDiv;
     var PaneSpinner = null;
-    var highlight = null, rectHighlight = null;
+    var highlight = null, rectHighlight = null, firstClick = true;
     // map scaled values from 0-1 to colors green to red
     //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
     var trafficLight = new L.CustomColorFunction(0, 1, L.ColorBrewer.Diverging.RdYlBu[10]);
@@ -745,7 +766,14 @@
 
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
         resetPlots();
-    });
+    })
+            .on("click", function () {
+                removeHighlight();
+                sidebar.close();
+                setTimeout(function () {
+                    resetPlots()
+                }, delay);
+            });
 
 
 </script>
