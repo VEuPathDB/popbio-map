@@ -763,9 +763,12 @@
         // remove the boundaries rectangle
         if (rectHighlight !== null) map.removeLayer(rectHighlight);
         rectHighlight = null;
-
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
-        resetPlots();
     })
             .on("click", function () {
                 removeHighlight();

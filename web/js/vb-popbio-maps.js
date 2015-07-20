@@ -666,7 +666,7 @@ function loadSolr(parameters) {
 
 function loadSmall(mode, zoomLevel) {
     "use strict";
-    var pruneCluster = new PruneClusterForLeaflet(100);
+    var pruneCluster = new PruneClusterForLeaflet(120);
 
     pruneCluster.BuildLeafletClusterIcon = function (cluster) {
         var e = new L.Icon.MarkerCluster();
@@ -1005,6 +1005,7 @@ function loadSmall(mode, zoomLevel) {
                 marker.category = doc[key].species_category[0];
                 // store trafficlight value as weights
                 marker.weight = pheVal;
+                marker.data.trafficlight = pheVal;
                 //console.log(doc[key].species_category[0]);
             } else {
                 console.log(key + ": no species defined")

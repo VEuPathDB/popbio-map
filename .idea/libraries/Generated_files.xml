@@ -8,10 +8,8 @@
         <item url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
         <item url="file://$PROJECT_DIR$/web/js/nv.d3.pie.min.js" />
         <item url="file://$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.markers.min.js" />
-        <item url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.min.js" />
+        <item url="file://$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.min.js" />
         <item url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.js" />
-        <item url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/lib/jquery-1.8.2.min.min.js" />
-        <item url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/Gruntfile.min.js" />
         <item url="file://$PROJECT_DIR$/web/js/vb-violin-plots.min.js" />
       </sourceFilesUrls>
     </properties>
@@ -297,6 +295,10 @@
       <root url="file://$PROJECT_DIR$/web/libs/jsrender/test/unit-tests/tests-jsrender-no-jquery.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/jsrender/test/unit-tests/tests-jsrender-with-jquery.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/jsrender/jsrender.min.min.js" />
+      <root url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.min.js" />
+      <root url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/jquery-1.8.2.min.min.js" />
+      <root url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/Gruntfile.min.js" />
+      <root url="file://$PROJECT_DIR$/web/libs/Leaflet.Spin/leaflet.spin.min.js" />
       <root url="file://$PROJECT_DIR$/web/js/Icon.Canvas.min.js" />
       <root url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/typeahead.js/dist/bloodhound.min.js" />
@@ -306,9 +308,11 @@
       <root url="file://$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/typeahead.js/dist/typeahead.bundle.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/nvd3/nv.d3.min.js" />
+      <root url="file://$PROJECT_DIR$/web/libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.js" />
       <root url="file://$PROJECT_DIR$/web/js/vb-violin-plots.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/leaflet.fullscreen/Control.FullScreen.min.js" />
+      <root url="file://$PROJECT_DIR$/web/libs/leaflet-zoom-min/L.Control.ZoomMin.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/beeswarm/beeswarm.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/jsrender/jsrender.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/spin.js/spin.min.js" />
@@ -316,12 +320,6 @@
       <root url="file://$PROJECT_DIR$/web/libs/Leaflet.EasyButton/easy-button.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.js" />
       <root url="file://$PROJECT_DIR$/web/libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js" />
-      <root url="file://$PROJECT_DIR$/web/libs/Leaflet.Spin/leaflet.spin.min.js" />
-      <root url="file://$PROJECT_DIR$/web/libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js" />
-      <root url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.min.js" />
-      <root url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/jquery-1.8.2.min.min.js" />
-      <root url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/Gruntfile.min.js" />
-      <root url="file://$PROJECT_DIR$/web/libs/leaflet-zoom-min/L.Control.ZoomMin.min.js" />
     </CLASSES>
     <SOURCES />
   </library>
