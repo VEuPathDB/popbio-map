@@ -1,1 +1,322 @@
-BODY{margin:0;padding:0}#min_width_container{position:absolute;top:0;right:0;left:0;bottom:0;padding-top:110px}#masthead{height:118px;position:absolute;top:0;left:0;right:0}#map_container{height:95%}#map{border-top:3px solid #154b6f;border-bottom:3px solid #154b6f;height:100%;background:#cae9fe}.label{font-weight:normal;font-size:100%}.sidebar{top:123px;bottom:50px}.info{padding:6px 8px;font-size:small;background:white;background:rgba(255,255,255,0.95);border-radius:5px}.info h4{margin:0 0 5px;color:#777}.legend{text-align:left;line-height:16px;color:#555}.legend i{width:14px;height:14px;float:left;margin-right:8px;opacity:1;border-radius:10px}.mapbox{position:relative;margin-left:80px;margin-right:80px}.mapbox .overlaytop{position:absolute;top:11px;left:396px;width:56%;min-width:250px;z-index:314159}.mapbox .overlaybottom{position:absolute;bottom:3px;left:40%;width:20%;min-width:200px;text-align:center;background:rgba(255,255,255,0.7);z-index:300000}.more-results{margin:0 20px 5px 20px;padding:3px 0;border-bottom:1px solid #ccc}.dropdown-menu li{list-style-type:none;list-style-image:none}
+BODY {
+    margin: 0;
+    padding: 0
+}
+
+#min_width_container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding-top: 110px
+}
+
+#masthead {
+    height: 118px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0
+}
+
+#map_container {
+    height: 95%
+}
+
+#map {
+    border-top: 3px solid #154b6f;
+    border-bottom: 3px solid #154b6f;
+    height: 100%;
+    background: #cae9fe
+}
+
+.label {
+    font-weight: normal;
+    font-size: 100%
+}
+
+.sidebar {
+    top: 123px;
+    bottom: 50px
+}
+
+.info {
+    padding: 6px 8px;
+    font-size: small;
+    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 5px
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777
+}
+
+.legend {
+    text-align: left;
+    line-height: 16px;
+    color: #555
+}
+
+.legend i {
+    width: 14px;
+    height: 14px;
+    float: left;
+    margin-right: 8px;
+    opacity: 1;
+    border-radius: 10px
+}
+
+.mapbox {
+    position: relative;
+    margin-left: 80px;
+    margin-right: 80px
+}
+
+.mapbox .overlaytop {
+    position: absolute;
+    top: 11px;
+    left: 396px;
+    width: 56%;
+    min-width: 250px;
+    z-index: 314159
+}
+
+.mapbox .overlaybottom {
+    position: absolute;
+    bottom: 3px;
+    left: 40%;
+    width: 20%;
+    min-width: 200px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 300000
+}
+
+.more-results {
+    margin: 0 20px 5px 20px;
+    padding: 3px 0;
+    border-bottom: 1px solid #ccc
+}
+
+.dropdown-menu li {
+    list-style-type: none;
+    list-style-image: none
+}
+
+.single-marker-icon {
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff
+}
+
+.highlight-marker {
+    box-shadow: 0 0 0 5px rgba(255, 255, 0, 1);
+    z-index: 2147483646 !important
+}
+
+.top-marker {
+    z-index: 2147483646 !important
+}
+
+#marker-table {
+    overflow-y: auto;
+    height: 100%;
+    padding-right: 0
+}
+
+.row.no-pad {
+    margin-right: 10px;
+    margin-left: -5px
+}
+
+.row.no-pad > [class*='col-'] {
+    padding-right: 0;
+    padding-left: 0
+}
+
+.marker-row {
+    background-color: rgba(255, 255, 255, 1.0);
+    color: rgba(0, 0, 0, 1.0);
+    padding: 1px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    z-index: 100;
+    display: block;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    font-family: Arial;
+    font-size: 13px;
+    text-align: left;
+    white-space: normal
+}
+
+.marker-row h3 {
+    margin: 0;
+    padding: 4px 14px;
+    line-height: 18px;
+    font-weight: normal;
+    font-size: large;
+    background-color: rgba(247, 247, 247, 0.75);
+    color: rgba(0, 0, 0, 1.0);
+    text-align: center;
+    border-bottom: 1px solid #ebebeb;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0
+}
+
+.marker-row p, .tooltip-bs p {
+    margin: 0;
+    padding: 3px 10px;
+    text-align: left
+}
+
+.marker-row span, .tooltip-bs span {
+    display: inline-block;
+    margin: 2px 0
+}
+
+.marker-row ul, .tooltip-bs ul {
+    padding: 3px 10px
+}
+
+.marker-row ul li, .tooltip-bs ul li {
+    display: table-row
+}
+
+.marker-row ul li:last-child:after, .tooltip-bs ul li:last-child:after {
+    content: ""
+}
+
+.marker-row ul li:after, .tooltip-bs ul li:after {
+    content: ", "
+}
+
+.cancel {
+    position: relative;
+    cursor: pointer;
+    margin: 4px -5px 0 0;
+    float: right;
+    height: 15px;
+    width: 14px;
+    background-color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 11px;
+    color: white;
+    border-radius: 3px;
+    z-index: 100000000000000;
+    display: none
+}
+
+.tooltip, .tooltip-bs {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 1.0);
+    padding: 1px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    z-index: 300001;
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    text-align: left;
+    pointer-events: none;
+    white-space: normal;
+    user-select: none
+}
+
+.tooltip-bs {
+    pointer-events: auto;
+    user-select: text
+}
+
+.tooltip h3, .tooltip-bs h3 {
+    margin: 0;
+    padding: 4px 14px;
+    line-height: 18px;
+    font-weight: normal;
+    font-size: large;
+    background-color: rgba(247, 247, 247, 0.75);
+    color: rgba(0, 0, 0, 1.0);
+    text-align: center;
+    border-bottom: 1px solid #ebebeb;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0
+}
+
+.tooltip p {
+    margin: 0;
+    padding: 5px 14px;
+    text-align: center
+}
+
+.tooltip span {
+    display: inline-block;
+    margin: 2px 0
+}
+
+.area {
+    shape-rendering: geometricPrecision;
+    fill: #ccc !important
+}
+
+.boxplot {
+    shape-rendering: crispEdges;
+    fill: none;
+    stroke: black;
+    stroke-width: 2px
+}
+
+.boxplot.fill {
+    fill: none
+}
+
+.boxplot.mean, .boxplot.median {
+    fill: white;
+    stroke: red
+}
+
+.boxplot.mean {
+    shape-rendering: geometricPrecision
+}
+
+.violin {
+    shape-rendering: geometricPrecision;
+    fill: none !important;
+    stroke: #777;
+    stroke-width: 1px
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1px;
+    color-rendering: optimizeQuality !important;
+    shape-rendering: crispEdges !important;
+    text-rendering: geometricPrecision !important
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px
+}
+
+.xy-tooltip {
+    z-index: 100000
+}
+
+.no-interactions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1000001
+}
+
+.foreground {
+    z-index: 1000000
+}
