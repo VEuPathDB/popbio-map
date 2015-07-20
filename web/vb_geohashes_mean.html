@@ -311,6 +311,7 @@
 
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -380,6 +381,7 @@
             </ul>
         </div>
     </div>
+
 
 
 
@@ -473,6 +475,7 @@
 
 
 
+
 </script>
 
 <script language="JavaScript">
@@ -514,12 +517,28 @@
     initializeSearch();
 
     $('#search_ac').on('itemAdded', function () {
+        // remove the boundaries rectangle
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+
         filterMarkers($("#search_ac").tagsinput('items'));
-        resetPlots();
     });
     $('#search_ac').on('itemRemoved', function () {
+        // remove the boundaries rectangle
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+
         filterMarkers($("#search_ac").tagsinput('items'));
-        resetPlots();
     });
 
 
@@ -536,8 +555,8 @@
     })
             .on("moveend", function () {
 
-        loadSolr({clear: 1, zoomLevel: map.getZoom()});
-    })
+                loadSolr({clear: 1, zoomLevel: map.getZoom()});
+            })
             .on("click", function () {
                 removeHighlight();
                 sidebar.close();

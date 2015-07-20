@@ -106,7 +106,14 @@ function initializeSearch() {
     // Reset search "button"
     $('#reset-search').click(function () {
         $('#search_ac').tagsinput('removeAll');
-        resetPlots();
+        // remove the boundaries rectangle
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
         filterMarkers('');
     });
 
@@ -355,7 +362,14 @@ function initializeSearch() {
         }
         var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
 
-        resetPlots();
+        // remove the boundaries rectangle
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
         $.getJSON(url, generatePalette);
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
@@ -575,7 +589,7 @@ function loadSolr(parameters) {
                     rectHighlight = null;
 
                     map.fitBounds(record.bounds);
-                    resetPlots();
+                    //resetPlots();
                 });
                 layer.on("click", function () {
 
@@ -687,9 +701,20 @@ function loadSmall(mode, zoomLevel) {
             if (rectHighlight !== null) map.removeLayer(rectHighlight);
             rectHighlight = null;
 
-            resetPlots();
+            //resetPlots();
             // Zoom-in to marker
-            if (map.getZoom() < 11) map.setView(marker._latlng, 11, {animate: true});
+            if (map.getZoom() < 11) {
+                map.setView(marker._latlng, 11, {animate: true});
+            } else {
+                // remove the boundaries rectangle
+                if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                rectHighlight = null;
+                removeHighlight();
+                sidebar.close();
+                setTimeout(function () {
+                    resetPlots()
+                }, delay);
+            }
 
 
         });
@@ -851,7 +876,6 @@ function loadSmall(mode, zoomLevel) {
             if (rectHighlight !== null) map.removeLayer(rectHighlight);
             rectHighlight = null;
 
-            resetPlots();
             // Compute the  cluster bounds (it"s slow : O(n))
             var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
             var b = pruneCluster.Cluster.ComputeBounds(markersArea);
@@ -866,6 +890,15 @@ function loadSmall(mode, zoomLevel) {
 
                 // If the zoom level doesn't change
                 if (zoomLevelAfter === zoomLevelBefore) {
+                    // remove the boundaries rectangle
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                    rectHighlight = null;
+                    removeHighlight();
+                    sidebar.close();
+                    setTimeout(function () {
+                        resetPlots()
+                    }, delay);
+
                     // Send an event for the LeafletSpiderfier
                     pruneCluster._map.fire("overlappingmarkers", {
                         cluster: pruneCluster,
