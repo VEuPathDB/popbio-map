@@ -606,7 +606,7 @@ function loadSolr(parameters) {
                 });
                 layer.on("mouseout", function () {
                     removeTopMarker(layer);
-                    map.removeLayer(rectHighlight);
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
                     rectHighlight = null;
 
                 });
@@ -924,7 +924,7 @@ function loadSmall(mode, zoomLevel) {
         });
         m.on("mouseout", function () {
             removeTopMarker(m);
-            map.removeLayer(rectHighlight);
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
             rectHighlight = null;
 
         });
@@ -979,7 +979,8 @@ function loadSmall(mode, zoomLevel) {
                 prefix: 'fa',
                 icon: 'circle',
                 markerColor: palette[species] ? palette[species] : "red",
-                iconColor: markerColor(pheVal)[0]
+                iconColor: markerColor(pheVal)[0],
+                extraClasses: 'single-marker-icon'
             });
 
             pruneCluster.RegisterMarker(marker);

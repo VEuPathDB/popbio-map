@@ -62,6 +62,13 @@
     <!--<script type="text/javascript" src="./js/vb-popbio-maps.min.js"></script>-->
     <style>
 
+        .single-marker-icon {
+            text-shadow: -1px -1px 0 #ffffff,
+            1px -1px 0 #ffffff,
+            -1px 1px 0 #ffffff,
+            1px 1px 0 #ffffff;
+        }
+
         .highlight-marker {
             box-shadow: 0px 0px 0px 5px rgba(255, 255, 0, 1);
             z-index: 2147483646 !important;
@@ -70,7 +77,6 @@
         .top-marker {
             z-index: 2147483646 !important;
         }
-
 
         /* for the table */
         #marker-table {
@@ -522,6 +528,7 @@
 
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -591,6 +598,7 @@
             </ul>
         </div>
     </div>
+
 
 
 
@@ -670,6 +678,7 @@
             <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
         </div>
     </div>
+
 
 
 
