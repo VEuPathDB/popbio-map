@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js" line="858" mnemonic="B" />
-    <bookmark url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js" line="694" />
+    <bookmark url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js" line="882" mnemonic="B" />
+    <bookmark url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js" line="719" />
     <bookmark url="file://$PROJECT_DIR$/web/js/vb-violin-plots.js" line="659" />
-    <bookmark url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js" line="781" />
+    <bookmark url="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js" line="806" />
     <bookmark url="file://$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.js" line="153" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Fix an issue with single markers having a traffic-light value of 0&#10;&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/vb_geohashes_mean.html" afterPath="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+    <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Hide the plots panel on maps movestart instead of moveend&#10;">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" afterPath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="88e3272f-a0b2-4367-9eb6-c783ed60c977" name="VB-3798 Create Violin/Beeswarm Box Plot for selected IR markers" comment="Merge remote-tracking branch 'origin/master'&#10;" />
@@ -36,67 +38,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vb-popbio-maps.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-45.482758">
-              <caret line="1884" column="0" selection-start-line="1884" selection-start-column="0" selection-end-line="1884" selection-end-column="0" />
-              <folding>
-                <element signature="e#2908#2987#0" expanded="false" />
-                <marker date="1437409972222" expanded="true" signature="10983:10998" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="11109:11129" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="11560:11575" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="59007:59016" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="59109:59118" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="59548:59557" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="59619:59692" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="61395:61431" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="61484:61515" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="61807:61843" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="61897:61928" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="62126:62162" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="62213:62244" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="62520:62556" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="62609:62640" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="62851:62887" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="62941:62972" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="63089:63125" placeholder="..." />
-                <marker date="1437409972222" expanded="true" signature="63176:63207" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vb-violin-plots.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="vb-violin-plots.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="371" column="0" selection-start-line="371" selection-start-column="0" selection-end-line="371" selection-end-column="0" />
+              <caret line="1000" column="43" selection-start-line="1000" selection-start-column="43" selection-end-line="1000" selection-end-column="43" />
               <folding>
                 <element signature="n#!!block;n#addViolin#0" expanded="false" />
                 <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
-                <marker date="1437405503945" expanded="true" signature="3302:3328" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="5018:5044" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="7241:7266" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="7357:7382" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="7474:7499" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="7582:7607" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="7699:7724" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="8898:8923" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="14278:14314" placeholder="..." />
-                <marker date="1437405503945" expanded="true" signature="14368:14399" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vb_geohashes_mean.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.30508474">
-              <caret line="761" column="37" selection-start-line="761" selection-start-column="37" selection-end-line="761" selection-end-column="37" />
-              <folding>
-                <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#!!block;n#addBeeswarm#0" expanded="false" />
+                <marker date="1439976837129" expanded="true" signature="3302:3328" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="5018:5044" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="7241:7266" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="7357:7382" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="7474:7499" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="7582:7607" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="7699:7724" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="8898:8923" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="14278:14314" placeholder="..." />
+                <marker date="1439976837129" expanded="true" signature="14368:14399" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -171,7 +131,6 @@
         <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/schema.xml" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/web/libs/nvd3/nv.d3.css" />
-        <option value="$PROJECT_DIR$/web/css/vb-popbio-maps.css" />
         <option value="$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.markers.js" />
         <option value="$PROJECT_DIR$/web/js/Icon.Canvas.js" />
         <option value="$PROJECT_DIR$/web/libs/jquery-endless-scroll/jquery.endless-scroll.js" />
@@ -180,12 +139,13 @@
         <option value="$PROJECT_DIR$/web/libs/jquery-template/jquery-loadTemplate/jquery.loadTemplate-1.4.5.js" />
         <option value="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.js" />
         <option value="vm:397" />
-        <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
         <option value="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.css" />
-        <option value="$PROJECT_DIR$/web/js/vb-violin-plots.js" />
-        <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.js" />
+        <option value="$PROJECT_DIR$/web/css/vb-popbio-maps.css" />
+        <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
         <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+        <option value="$PROJECT_DIR$/web/js/vb-violin-plots.js" />
+        <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
       </list>
     </option>
   </component>
@@ -269,7 +229,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -317,52 +276,71 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="libs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PruneCluster" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SOLR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SOLR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vb_ta" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="conf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SOLR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vb_popbio" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="conf" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -370,7 +348,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/libs" />
+    <property name="last_opened_file_path" value="C:/Program Files/Git/bin/git.exe" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="FullScreen" value="false" />
     <property name="LayoutCode.rearrangeEntriesHTML" value="true" />
@@ -396,7 +374,7 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="LayoutCode.rearrangeEntriesJavaScript 1.5" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/web/js/leaflet-dvf.js" />
     <property name="ignore_missing_gitignore" value="true" />
@@ -473,25 +451,7 @@
       <changelist id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="" />
       <created>1425910081753</created>
       <option name="number" value="Default" />
-      <updated>1437405702983</updated>
-    </task>
-    <task id="LOCAL-00064" summary="* Replace &quot;More results&quot; with &quot;More suggestions&quot; at auto-complete&#10;* More suggestions counts have a &quot;~&quot; indicator now&#10;** This is until I solve why for some types suggestion and result counts don't match">
-      <created>1434406873994</created>
-      <option name="number" value="00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1434406873994</updated>
-    </task>
-    <task id="LOCAL-00065" summary="* Added &quot;Insecticide Resistance Phenotypes&quot; view&#10;** Fine tuned behavior when switching views&#10;** Added auto-update for the legend as well">
-      <created>1434477188155</created>
-      <option name="number" value="00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1434477188156</updated>
-    </task>
-    <task id="LOCAL-00066" summary="* Fixed typo for Palette (was Pallete) throughout the project">
-      <created>1434477597981</created>
-      <option name="number" value="00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1434477597981</updated>
+      <updated>1437426360806</updated>
     </task>
     <task id="LOCAL-00067" summary="* Type-ahead query URLs are now set properly when changing views">
       <created>1434488819541</created>
@@ -808,7 +768,27 @@
       <option name="project" value="LOCAL" />
       <updated>1437410370539</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="Hide the plots panel on maps movestart instead of moveend&#10;">
+      <created>1437410663710</created>
+      <option name="number" value="00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1437410663710</updated>
+    </task>
+    <task id="VB-3876" summary="Hover pop-ups of pie charts sometimes stop appearing until you refresh the page">
+      <created>1437351992000</created>
+      <option name="issue" value="true" />
+      <option name="number" value="3876" />
+      <option name="project" value="VB" />
+      <option name="type" value="BUG" />
+      <updated>1437426360764</updated>
+    </task>
+    <task id="LOCAL-00096" summary="Improve plots panel auto-closing behaviour">
+      <created>1437426349547</created>
+      <option name="number" value="00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1437426349547</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <option name="clearContext" value="false" />
     <option name="createBranch" value="false" />
     <servers>
@@ -841,32 +821,32 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1512118" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Issues - JIRA" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31403336" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5358194" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32514736" sideWeight="0.5021075" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1935167" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3366045" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32694247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15173867" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6232727" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33575583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12329636" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40039253" sideWeight="0.49789253" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19345455" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32694247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Issues - JIRA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.51375246" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32416502" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3241279" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40039253" sideWeight="0.49789253" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
     </layout>
     <layout-to-restore>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -906,9 +886,6 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="USE_COMMIT_MESSAGE_MARGIN" value="true" />
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
-    <MESSAGE value="VB-3798 Clean-up code" />
-    <MESSAGE value="VB-3798 Fix a bug in y axis domain calculation&#10;&#10;Background min and max values for the y axis domain are now requested&#10; prior to any other requests. As a results y axis is now properly set.&#10; &#10;Also, selecting only visible markers as background now uses the &#10;correct BBox." />
-    <MESSAGE value="VB-3798 Fix a bug in y axis domain calculation&#10;&#10;Background min and max values for the y axis domain are now requested&#10; prior to any other requests. As a results y axis is now properly set.&#10;&#10;Also, selecting only visible markers as background now uses the&#10;correct BBox.&#10;" />
     <MESSAGE value="VB-3798 Resized h3 heading for plots" />
     <MESSAGE value="VB-3798 Add features and fix numerous bugs of the Beeswarm/Violin plots&#10;        &#10;        New features:&#10;        &#9;Background plots and options&#10;        &#9;Y-axis tick labels now draw properly&#10;        &#9;Violin plots now include edge values&#10;        &#9;General aesthetic changes&#10;        &#9;User is now notified that data is loading using a spinner&#10;        &#9;All plot types now have proper hover popups&#10;        &#9;Beeswarm popups also include concentration and duration if &#10;        &#9;data exists&#10;        &#9;User is now notified than the need to click on an IR marker &#10;        &#9;to trigger plotting&#10;        &#9;X-axis labels also include phenotype counts now&#10;        &#9;&#10;        &#9;&#10;        Bug fixes:&#10;        &#9;BBox is now set properly when selecting &quot;Markers visible on &#10;        &#9;map&quot; as the background data&#10;        &#9;Pie charts now always display with the proper size&#10;        &#9;All the markers now have onClick event listeners that &#10;        &#9;trigger plots generation&#10;        &#9;Better handling of demical points in the Beeswarm/Violin &#10;        &#9;plots&#10;        &#9;Various other bug fixes" />
     <MESSAGE value="VB-3798 Add features and fix numerous bugs of the Beeswarm/Violin plots&#10;&#10;        New features:&#10;        &#9;Background plots and options&#10;        &#9;Y-axis tick labels now draw properly&#10;        &#9;Violin plots now include edge values&#10;        &#9;General aesthetic changes&#10;        &#9;User is now notified that data is loading using a spinner&#10;        &#9;All plot types now have proper hover popups&#10;        &#9;Beeswarm popups also include concentration and duration if&#10;        &#9;data exists&#10;        &#9;User is now notified than the need to click on an IR marker&#10;        &#9;to trigger plotting&#10;        &#9;X-axis labels also include phenotype counts now&#10;&#10;        Bug fixes:&#10;        &#9;BBox is now set properly when selecting &quot;Markers visible on&#10;        &#9;map&quot; as the background data&#10;        &#9;Pie charts now always display with the proper size&#10;        &#9;All the markers now have onClick event listeners that&#10;        &#9;trigger plots generation&#10;        &#9;Better handling of demical points in the Beeswarm/Violin&#10;        &#9;plots&#10;        &#9;Various other bug fixes&#10;" />
@@ -931,7 +908,10 @@
     <MESSAGE value="Add a white stoke to the circle of single markers&#10;&#10;This improves appearance and readability of traffic light values in &#10;single markers" />
     <MESSAGE value="Fix VB-3877 Improve the interactions model of the plots panel" />
     <MESSAGE value="Fix an issue with single markers having a traffic-light value of 0&#10;&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix an issue with single markers having a traffic-light value of 0&#10;&#10;" />
+    <MESSAGE value="Hide the plots panel on maps movestart instead of moveend&#10;" />
+    <MESSAGE value="Fix VB-3876 Hover pop-ups of pie charts sometimes stop appearing ..." />
+    <MESSAGE value="Improve plots panel auto-closing behaviour" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve plots panel auto-closing behaviour" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1075,6 +1055,24 @@
     <option name="recentlyOpenIssuess">
       <list>
         <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3935" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3935" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3876" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3876" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
           <option name="issueKey" value="VB-3877" />
           <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3877" />
           <option name="serverId">
@@ -1146,24 +1144,6 @@
             </ServerIdImpl>
           </option>
         </IssueRecentlyOpenBean>
-        <IssueRecentlyOpenBean>
-          <option name="issueKey" value="VB-3872" />
-          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3872" />
-          <option name="serverId">
-            <ServerIdImpl>
-              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
-            </ServerIdImpl>
-          </option>
-        </IssueRecentlyOpenBean>
-        <IssueRecentlyOpenBean>
-          <option name="issueKey" value="VB-3861" />
-          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3861" />
-          <option name="serverId">
-            <ServerIdImpl>
-              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
-            </ServerIdImpl>
-          </option>
-        </IssueRecentlyOpenBean>
       </list>
     </option>
     <option name="selectedWorkflowAction" value="5" />
@@ -1206,9 +1186,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="443" column="108" selection-start-line="443" selection-start-column="108" selection-end-line="443" selection-end-column="108" />
-          <folding>
-            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1217,26 +1194,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="n#!!doc" expanded="false" />
             <element signature="e#2908#2987#0" expanded="false" />
-            <marker date="1437409972222" expanded="true" signature="10983:10998" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="11109:11129" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="11560:11575" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="59007:59016" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="59109:59118" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="59548:59557" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="59619:59692" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="61395:61431" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="61484:61515" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="61807:61843" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="61897:61928" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62126:62162" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62213:62244" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62520:62556" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62609:62640" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62851:62887" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62941:62972" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="63089:63125" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="63176:63207" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1245,9 +1204,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1255,9 +1211,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1457,21 +1410,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/libs/nvd3/nv.d3.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14497042">
-          <caret line="580" column="0" selection-start-line="580" selection-start-column="0" selection-end-line="580" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/libs/Leaflet.Spin/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28587443">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/libs/Leaflet.Spin/leaflet.spin.js">
@@ -1485,13 +1431,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33716077">
           <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/css/vb-popbio-maps.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55636746">
-          <caret line="100" column="19" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -1520,14 +1459,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.45535713">
           <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1219" column="30" selection-start-line="1219" selection-start-column="30" selection-end-line="1219" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -1535,7 +1466,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="74" column="14" selection-start-line="74" selection-start-column="14" selection-end-line="74" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1543,7 +1473,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="2057" column="20" selection-start-line="2057" selection-start-column="20" selection-end-line="2057" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1558,7 +1487,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1566,28 +1494,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.3448277">
           <caret line="156" column="13" selection-start-line="156" selection-start-column="8" selection-end-line="156" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="371" column="0" selection-start-line="371" selection-start-column="0" selection-end-line="371" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!block;n#addViolin#0" expanded="false" />
-            <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
-            <marker date="1437405503945" expanded="true" signature="3302:3328" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="5018:5044" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="7241:7266" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="7357:7382" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="7474:7499" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="7582:7607" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="7699:7724" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="8898:8923" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="14278:14314" placeholder="..." />
-            <marker date="1437405503945" expanded="true" signature="14368:14399" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1599,41 +1505,64 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/vb-popbio-maps.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.95026374">
+          <caret line="357" column="1" selection-start-line="357" selection-start-column="1" selection-end-line="357" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/libs/nvd3/nv.d3.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.026086956">
+          <caret line="1" column="12" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-45.482758">
-          <caret line="1884" column="0" selection-start-line="1884" selection-start-column="0" selection-end-line="1884" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.25474682">
+          <caret line="603" column="31" selection-start-line="603" selection-start-column="31" selection-end-line="603" selection-end-column="31" />
           <folding>
+            <element signature="n#!!doc" expanded="false" />
             <element signature="e#2908#2987#0" expanded="false" />
-            <marker date="1437409972222" expanded="true" signature="10983:10998" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="11109:11129" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="11560:11575" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="59007:59016" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="59109:59118" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="59548:59557" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="59619:59692" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="61395:61431" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="61484:61515" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="61807:61843" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="61897:61928" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62126:62162" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62213:62244" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62520:62556" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62609:62640" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62851:62887" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="62941:62972" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="63089:63125" placeholder="..." />
-            <marker date="1437409972222" expanded="true" signature="63176:63207" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30508474">
-          <caret line="761" column="37" selection-start-line="761" selection-start-column="37" selection-end-line="761" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.79361373">
+          <caret line="540" column="8" selection-start-line="540" selection-start-column="8" selection-end-line="540" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33264032">
+          <caret line="856" column="32" selection-start-line="856" selection-start-column="22" selection-end-line="856" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1000" column="43" selection-start-line="1000" selection-start-column="43" selection-end-line="1000" selection-end-column="43" />
           <folding>
-            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#!!block;n#addViolin#0" expanded="false" />
+            <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
+            <element signature="n#!!block;n#addBeeswarm#0" expanded="false" />
+            <marker date="1439976837129" expanded="true" signature="3302:3328" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="5018:5044" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="7241:7266" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="7357:7382" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="7474:7499" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="7582:7607" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="7699:7724" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="8898:8923" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="14278:14314" placeholder="..." />
+            <marker date="1439976837129" expanded="true" signature="14368:14399" placeholder="..." />
           </folding>
         </state>
       </provider>
