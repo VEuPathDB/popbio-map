@@ -9,9 +9,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="Hide the plots panel on maps movestart instead of moveend&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" afterPath="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" afterPath="$PROJECT_DIR$/web/js/vb-violin-plots.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/sidebar-v2" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.js" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.css" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.js" afterPath="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="88e3272f-a0b2-4367-9eb6-c783ed60c977" name="VB-3798 Create Violin/Beeswarm Box Plot for selected IR markers" comment="Merge remote-tracking branch 'origin/master'&#10;" />
@@ -19,6 +20,8 @@
     <list id="16928ebb-bdb7-4e36-8c6b-9165dd63b726" name="VB-3873 Clicking a data-point in beeswarm plots makes the pop-up sticky" comment="Resolve VB-3873 Clicking a data-point in beeswarm plots makes the ...&#10;&#10;Also, this fixes some word-wrapping and alignment issues in the &#10;beeswarm pop-ups" />
     <list id="a71a5b7d-13b1-4a7f-82ea-baf22e890757" name="VB-3875 Show boundaries of cluster markers on mouse over" comment="Fix VB-3875 Show boundaries of cluster markers on mouse over" />
     <list id="24d760a5-70e3-4aab-9280-8f792f037d41" name="VB-3877 Improve the interactions model of the plots panel" comment="Fix VB-3877 Improve the interactions model of the plots panel" />
+    <list id="a5d531ed-df4e-41a9-91cf-230a817397d4" name="VB-3951 Search by date/date range" comment="" />
+    <list id="26aa6aee-c503-4bac-985e-46973a6a6fe8" name="VB-3978 Add a &quot;beta&quot; or &quot;preview&quot; badge on popbio map" comment="" />
     <ignored path="untitled.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,26 +41,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vb-violin-plots.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
+      <file leaf-file-name="leaflet-sidebar.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.css">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="1000" column="43" selection-start-line="1000" selection-start-column="43" selection-end-line="1000" selection-end-column="43" />
-              <folding>
-                <element signature="n#!!block;n#addViolin#0" expanded="false" />
-                <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
-                <element signature="n#!!block;n#addBeeswarm#0" expanded="false" />
-                <marker date="1439976837129" expanded="true" signature="3302:3328" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="5018:5044" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="7241:7266" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="7357:7382" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="7474:7499" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="7582:7607" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="7699:7724" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="8898:8923" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="14278:14314" placeholder="..." />
-                <marker date="1439976837129" expanded="true" signature="14368:14399" placeholder="..." />
-              </folding>
+              <caret line="101" column="1" selection-start-line="101" selection-start-column="1" selection-end-line="101" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="leaflet-sidebar.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6491647">
+              <caret line="105" column="1" selection-start-line="105" selection-start-column="1" selection-end-line="105" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -81,7 +80,7 @@
     <option name="UPDATE_TYPE" value="MERGE" />
     <option name="PUSH_UPDATE_ALL_ROOTS" value="false" />
     <option name="ROOT_SYNC" value="SYNC" />
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/web/libs/sidebar-v2" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="master" />
@@ -95,7 +94,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web/css/typeaheadjs.css" />
         <option value="$PROJECT_DIR$/web/js/Control.FullScreen.js" />
         <option value="$PROJECT_DIR$/web/js/leaflet.spin.js" />
         <option value="$PROJECT_DIR$/web/js/leaflet-sidebar.js" />
@@ -139,13 +137,14 @@
         <option value="$PROJECT_DIR$/web/libs/jquery-template/jquery-loadTemplate/jquery.loadTemplate-1.4.5.js" />
         <option value="$PROJECT_DIR$/web/libs/beeswarm/beeswarm.js" />
         <option value="vm:397" />
-        <option value="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.css" />
         <option value="$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.js" />
         <option value="$PROJECT_DIR$/web/css/vb-popbio-maps.css" />
         <option value="$PROJECT_DIR$/web/js/vb-popbio-maps.js" />
-        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
         <option value="$PROJECT_DIR$/web/js/vb-violin-plots.js" />
         <option value="$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml" />
+        <option value="$PROJECT_DIR$/web/vb_geohashes_mean.html" />
+        <option value="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.css" />
+        <option value="$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.js" />
       </list>
     </option>
   </component>
@@ -157,10 +156,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1176" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -229,7 +228,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -276,6 +274,98 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sidebar-v2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sidebar-v2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="leaflet-sidebar.js" />
+              <option name="myItemType" value="com.intellij.plugins.watcher.projectView.NestingTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sidebar-v2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="leaflet-sidebar.css" />
+              <option name="myItemType" value="com.intellij.plugins.watcher.projectView.NestingTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="popbio_map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -294,52 +384,9 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SOLR" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vb_ta" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="conf" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="popbio_map" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SOLR" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vb_popbio" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="conf" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -374,7 +421,7 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="LayoutCode.rearrangeEntriesJavaScript 1.5" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="project.propDebugger" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/web/js/leaflet-dvf.js" />
     <property name="ignore_missing_gitignore" value="true" />
@@ -451,25 +498,7 @@
       <changelist id="81c50503-7f3d-4f5e-afe4-d0e4779cc6b8" name="Default" comment="" />
       <created>1425910081753</created>
       <option name="number" value="Default" />
-      <updated>1437426360806</updated>
-    </task>
-    <task id="LOCAL-00067" summary="* Type-ahead query URLs are now set properly when changing views">
-      <created>1434488819541</created>
-      <option name="number" value="00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1434488819542</updated>
-    </task>
-    <task id="LOCAL-00068" summary="* Updated SOLR configs to 5.x &#10;* smplGeoclust now returns only min, max, count and mean statistics. This should speed up geoclusters calculations">
-      <created>1434577008032</created>
-      <option name="number" value="00068" />
-      <option name="project" value="LOCAL" />
-      <updated>1434577008033</updated>
-    </task>
-    <task id="LOCAL-00069" summary="* Trying a new setup&#10;** All markers now are computed on SOLR unless&#10;*** It is a single-sample marker&#10;*** All samples in the marker are from the exact same location">
-      <created>1434583426563</created>
-      <option name="number" value="00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1434583426564</updated>
+      <updated>1440595052336</updated>
     </task>
     <task id="LOCAL-00070" summary="* Finetuned markers clustering&#10;* Added support for synonyms in auto-complete">
       <created>1434637308178</created>
@@ -788,6 +817,31 @@
       <option name="project" value="LOCAL" />
       <updated>1437426349547</updated>
     </task>
+    <task id="VB-3935" summary="PopBio map: possible bug/issue with species legend (IR mode)">
+      <created>1439803421000</created>
+      <option name="issue" value="true" />
+      <option name="number" value="3935" />
+      <option name="project" value="VB" />
+      <option name="type" value="BUG" />
+      <updated>1440170048017</updated>
+    </task>
+    <task id="VB-3951" summary="Search by date/date range">
+      <changelist id="a5d531ed-df4e-41a9-91cf-230a817397d4" name="VB-3951 Search by date/date range" comment="" />
+      <created>1440170557000</created>
+      <option name="issue" value="true" />
+      <option name="number" value="3951" />
+      <option name="project" value="VB" />
+      <option name="type" value="FEATURE" />
+      <updated>1440595052305</updated>
+    </task>
+    <task id="VB-3978" summary="Add a &quot;beta&quot; or &quot;preview&quot; badge on popbio map">
+      <changelist id="26aa6aee-c503-4bac-985e-46973a6a6fe8" name="VB-3978 Add a &quot;beta&quot; or &quot;preview&quot; badge on popbio map" comment="" />
+      <created>1440508053000</created>
+      <option name="issue" value="true" />
+      <option name="number" value="3978" />
+      <option name="project" value="VB" />
+      <updated>1440593684083</updated>
+    </task>
     <option name="localTasksCounter" value="97" />
     <option name="clearContext" value="false" />
     <option name="createBranch" value="false" />
@@ -820,19 +874,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
-    <editor active="false" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1512118" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15039578" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Issues - JIRA" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31403336" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5358194" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6002928" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32514736" sideWeight="0.5021075" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33575583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33497053" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32694247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12329636" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32912844" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="193" width="1280" height="662" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40039253" sideWeight="0.49789253" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -840,13 +895,12 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="968" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19345455" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32694247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19180088" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Issues - JIRA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31335953" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3241279" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40039253" sideWeight="0.49789253" order="3" side_tool="false" content_ui="tabs" x="6" y="102" width="1415" height="668" />
     </layout>
     <layout-to-restore>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32780084" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -945,6 +999,7 @@
     <option name="defaultCredentialsAsked" value="true" />
   </component>
   <component name="atlassian-ide-plugin-workspace-issues">
+    <option name="activeIssueCommitChanges" value="true" />
     <option name="activeIssueLogWork" value="true" />
     <option name="activeIssueProgressWorkflowAction" value="true" />
     <option name="filtersMap">
@@ -1055,6 +1110,24 @@
     <option name="recentlyOpenIssuess">
       <list>
         <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3951" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3951" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="VB-3978" />
+          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3978" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
           <option name="issueKey" value="VB-3935" />
           <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3935" />
           <option name="serverId">
@@ -1126,24 +1199,6 @@
             </ServerIdImpl>
           </option>
         </IssueRecentlyOpenBean>
-        <IssueRecentlyOpenBean>
-          <option name="issueKey" value="VB-3854" />
-          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3854" />
-          <option name="serverId">
-            <ServerIdImpl>
-              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
-            </ServerIdImpl>
-          </option>
-        </IssueRecentlyOpenBean>
-        <IssueRecentlyOpenBean>
-          <option name="issueKey" value="VB-3838" />
-          <option name="issueUrl" value="https://www.ebi.ac.uk/panda/jira/browse/VB-3838" />
-          <option name="serverId">
-            <ServerIdImpl>
-              <option name="id" value="f0e520c6-58c8-40cb-a4a7-551bdecf9a87" />
-            </ServerIdImpl>
-          </option>
-        </IssueRecentlyOpenBean>
       </list>
     </option>
     <option name="selectedWorkflowAction" value="5" />
@@ -1182,24 +1237,6 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="443" column="108" selection-start-line="443" selection-start-column="108" selection-end-line="443" selection-end-column="108" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/vb-popbio-maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#2908#2987#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1375,27 +1412,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema_extra_types.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5062631">
-          <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema_extra_fields.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="80" selection-start-line="32" selection-start-column="69" selection-end-line="32" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="65" column="14" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33298537">
@@ -1462,13 +1478,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="74" column="14" selection-start-line="74" selection-start-column="14" selection-end-line="74" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1487,13 +1496,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.3448277">
-          <caret line="156" column="13" selection-start-line="156" selection-start-column="8" selection-end-line="156" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -1530,40 +1532,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
+    <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79361373">
-          <caret line="540" column="8" selection-start-line="540" selection-start-column="8" selection-end-line="540" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.4282116">
+          <caret line="1020" column="63" selection-start-line="1020" selection-start-column="63" selection-end-line="1020" selection-end-column="63" />
+          <folding>
+            <element signature="n#!!block;n#addViolin#0" expanded="false" />
+            <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
+            <element signature="n#!!block;n#addBeeswarm#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/solrconfig.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33264032">
-          <caret line="856" column="32" selection-start-line="856" selection-start-column="22" selection-end-line="856" selection-end-column="32" />
+          <caret line="1839" column="39" selection-start-line="1839" selection-start-column="36" selection-end-line="1839" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema_extra_types.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33264032">
+          <caret line="78" column="45" selection-start-line="78" selection-start-column="43" selection-end-line="78" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/vb_geohashes_mean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41566265">
+          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema_extra_fields.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="186" column="78" selection-start-line="186" selection-start-column="78" selection-end-line="186" selection-end-column="78" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/vb-violin-plots.js">
+    <entry file="file://$PROJECT_DIR$/SOLR/vb_popbio/conf/schema.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="1000" column="43" selection-start-line="1000" selection-start-column="43" selection-end-line="1000" selection-end-column="43" />
-          <folding>
-            <element signature="n#!!block;n#addViolin#0" expanded="false" />
-            <element signature="n#!!block;n#addBoxPlot#0" expanded="false" />
-            <element signature="n#!!block;n#addBeeswarm#0" expanded="false" />
-            <marker date="1439976837129" expanded="true" signature="3302:3328" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="5018:5044" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="7241:7266" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="7357:7382" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="7474:7499" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="7582:7607" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="7699:7724" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="8898:8923" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="14278:14314" placeholder="..." />
-            <marker date="1439976837129" expanded="true" signature="14368:14399" placeholder="..." />
-          </folding>
+          <caret line="163" column="39" selection-start-line="163" selection-start-column="35" selection-end-line="163" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="101" column="1" selection-start-line="101" selection-start-column="1" selection-end-line="101" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/libs/sidebar-v2/leaflet-sidebar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6491647">
+          <caret line="105" column="1" selection-start-line="105" selection-start-column="1" selection-end-line="105" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
