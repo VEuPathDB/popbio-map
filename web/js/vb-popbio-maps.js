@@ -190,6 +190,7 @@ function initializeSearch() {
                             id: data['id'],
                             type: data['type'],
                             field: data['field'],
+                            is_synonym: data['is_synonym'],
                             qtype: 'partial'
 
                         };
