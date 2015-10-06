@@ -12,11 +12,11 @@
 
     <!--<link rel="stylesheet" type="text/css" media="all"-->
     <!--href="https://www.vectorbase.org/minified/c6a48c3adcbeafed959ece477ab7a8e5.css"/>-->
-    <link rel="stylesheet" href="./css/vectorbase.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/vectorbase.min.css" type="text/css" media="screen"/>
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.min.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="./css/MarkerCluster.Default.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/MarkerCluster.Default.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.min.css" type="text/css" media="screen"/>
@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="./css/vb-popbio-maps.min.css">
 
 
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
@@ -39,12 +39,12 @@
     <script type="text/javascript" src="libs/leaflet.fullscreen/Control.FullScreen.min.js"></script>
     <script type="text/javascript" src="libs/spin.js/spin.min.js"></script>
     <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.min.js"></script>
-    <script type="text/javascript" src="./js/Icon.Canvas.min.js"></script>
+    <script type="text/javascript" src="js/Icon.Canvas.min.js"></script>
     <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
     <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
     <script type="text/javascript" src="libs/PruneCluster/PruneCluster.min.js"></script>
 
-    <script type="text/javascript" src="./js/nv.d3.pie.min.js"></script>
+    <script type="text/javascript" src="js/nv.d3.pie.min.js"></script>
     <script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js"></script>
     <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.min.js"></script>
 
@@ -58,7 +58,7 @@
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
 
 
-    <script type="text/javascript" src="./js/vb-popbio-maps.js"></script>
+    <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
     <!--<script type="text/javascript" src="./js/vb-popbio-maps.min.js"></script>-->
     <style>
 
@@ -124,7 +124,7 @@
 
 
     </div>
-    <div id="map_container">
+    <!--<div id="map_container">-->
 
         <!-- Map stuff -->
         <!-- Place a floating div above the map for the search controls -->
@@ -169,10 +169,14 @@
         <div id="sidebar" class="sidebar collapsed">
             <!-- Nav tabs -->
             <ul class="sidebar-tabs" role="tablist">
-                <li><a href="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
-                <li><a href="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
-                <li><a href="#marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>
-                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+                <li><a id="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
+                <!--<li><a href="?graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>-->
+                <li><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
+                <!--<li><a href="?swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>-->
+                <li><a id="#marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>
+                <!--<li><a href="?marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>-->
+                <li><a id="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+                <!--<li><a href="?settings" role="tab"><i class="fa fa-gear"></i></a></li>-->
             </ul>
 
             <!-- Tab panes -->
@@ -260,7 +264,7 @@
             </div>
         </div>
     </div>
-</div>
+<!--</div>-->
 <!-- Add a tooltip div to use as a mouse-over info div for the beeswarm charts-->
 
 <div id="plotTooltip" class="tooltip" style="opacity: 0;"></div>
@@ -305,17 +309,6 @@
             </ul>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
 
 </script>
 
@@ -386,16 +379,6 @@
             </ul>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
 
 </script>
 
@@ -490,8 +473,12 @@
     // Global vars
     // Should minimize them
 
+    //    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
+    //    var solrTaUrl = 'asolr/solr/vb_ta/';
     var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
+    //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
     var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
+    //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
     var map, sidebar;
     var assetLayerGroup;
     var smallClusters = [];

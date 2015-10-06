@@ -21,7 +21,10 @@ BODY {
 }
 
 #map_container {
-    height: 95%;
+    position: relative;
+    height: 598px;
+    margin-left: -10px;
+    margin-right: -10px;
 
 }
 
@@ -33,15 +36,15 @@ BODY {
 
 }
 
-/*Overwrite boostrap's label font size*/
+#content-inner {
+    margin-top: -26px;
+    margin-bottom: -26px;
+}
+
+/*Overwrite bootstrap's label font size*/
 .label {
     font-weight: normal;
     font-size: 100%;
-}
-
-.sidebar {
-    top: 123px;
-    bottom: 50px;
 }
 
 .info {
@@ -101,10 +104,29 @@ BODY {
     z-index: 300000;
 }
 
+.sidebar-pane h1, .sidebar-pane h2, .sidebar-pane h3, .sidebar-pane h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.sidebar-pane h3 {
+    font-size: 24px;
+    color: #666;
+}
+
+.sidebar-pane h1 {
+    font-size: 36px;
+    color: #333;
+}
+
 /*keep the curson inline with the tags if the space left is more than width*/
 /*span.twitter-typeahead {*/
 /*width: 250px;*/
 /*}*/
+
+.tt-suggestion p {
+    margin: 0 0 0 0;
+}
 
 /*typeahead more results header*/
 .more-results {
@@ -355,4 +377,8 @@ BODY {
 
 .foreground {
     z-index: 1000000;
+}
+
+html {
+    font-size: 100%;
 }

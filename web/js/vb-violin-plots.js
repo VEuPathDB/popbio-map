@@ -442,7 +442,7 @@ function createBeeViolinPlot(divid, filter) {
     }
 
     var self = this;
-    var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolinStats?&' + qryUrl + filter + '&json.wrf=?&callback=?';
+    var url = solrPopbioUrl + 'irViolinStats?&' + qryUrl + filter + '&json.wrf=?&callback=?';
 
     // Empty the div
     $(divid).empty();
@@ -572,20 +572,20 @@ function buildPlot(divid, filter, selection) {
     switch ($('#bgPlotType').val()) {
         // Phenotypes matching search terms
         case "1":
-            bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl +
+            bgrVlUrl = solrPopbioUrl + 'irViolin?&' + qryUrl +
                 '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' +
                 JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
 
             break;
         // Phenotypes visible on map
         case "2":
-            bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl +
+            bgrVlUrl = solrPopbioUrl + 'irViolin?&' + qryUrl +
                 mapBounds + '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' +
                 JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
             break;
         // All phenotypes
         case "3":
-            bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + 'q=*' +
+            bgrVlUrl = solrPopbioUrl + 'irViolin?&' + 'q=*' +
                 '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' +
                 JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
             break;
@@ -624,26 +624,26 @@ function buildPlot(divid, filter, selection) {
             switch ($('#bgPlotType').val()) {
                 // Phenotypes matching search terms
                 case "1":
-                    bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + rangeFq +
+                    bgrBsUrl = solrPopbioUrl + 'irBeeswarm?&' + qryUrl + rangeFq +
                         '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
-                    bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + rangeFq +
+                    bgrVlUrl = solrPopbioUrl + 'irViolin?&' + qryUrl + rangeFq +
                         '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' +
                         JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
                     break;
                 // Phenotypes visible on map
                 case "2":
-                    bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + rangeFq +
+                    bgrBsUrl = solrPopbioUrl + 'irBeeswarm?&' + qryUrl + rangeFq +
                         mapBounds + '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' +
                         '&json.wrf=?&callback=?';
-                    bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + rangeFq +
+                    bgrVlUrl = solrPopbioUrl + 'irViolin?&' + qryUrl + rangeFq +
                         mapBounds + '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit +
                         '"&json.facet=' + JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
                     break;
                 // All phenotypes
                 case "3":
-                    bgrBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + 'q=*' + rangeFq +
+                    bgrBsUrl = solrPopbioUrl + 'irBeeswarm?&' + 'q=*' + rangeFq +
                         '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + '&json.wrf=?&callback=?';
-                    bgrVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + 'q=*' + rangeFq +
+                    bgrVlUrl = solrPopbioUrl + 'irViolin?&' + 'q=*' + rangeFq +
                         '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' +
                         JSON.stringify(vlJsonFacet) + '&json.wrf=?&callback=?';
                     break;
@@ -822,10 +822,10 @@ function buildPlot(divid, filter, selection) {
 
                 }
                 // Initialize selection urls and promises
-                var selBsUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irBeeswarm?&' + qryUrl + rangeFq +
+                var selBsUrl = solrPopbioUrl + 'irBeeswarm?&' + qryUrl + rangeFq +
                     '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"' + filter + '&json.wrf=?&callback=?';
 
-                var selVlUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irViolin?&' + qryUrl + rangeFq +
+                var selVlUrl = solrPopbioUrl + 'irViolin?&' + qryUrl + rangeFq +
                     '&fq=phenotype_value_type_s:"' + pType + '"&fq=phenotype_value_unit_s:"' + pUnit + '"&json.facet=' +
                     JSON.stringify(vlJsonFacet) + filter + '&json.wrf=?&callback=?';
                 var selBsPromise = $.getJSON(selBsUrl),

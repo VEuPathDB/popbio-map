@@ -1,0 +1,466 @@
+<div id="map_container">
+
+    <!-- Map stuff -->
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <ul class="sidebar-tabs" role="tablist">
+            <li><a id="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
+            <li><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
+            <li><a id="#marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>
+            <li><a id="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content active" id="active-pane">
+            <div class="sidebar-pane active" id="graphs">
+                <h3>Sample summary data</h3>
+
+                <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
+
+                    <i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>
+
+                    <h1>Go on!</h1>
+
+                    <h3>click a marker</h3>
+
+                    <h3>to plot some real data</h3>
+                </div>
+                <div id="pie-chart-area" style="width: 390px;">
+                    <svg></svg>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="swarm-plots">
+                <h3>Insecticide Resistance phenotypes statistics</h3>
+
+                <div id="swarm-chart-area">
+                    <div style="text-align: center; margin-top: 30px">
+                        <i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>
+
+                        <h1>Go on!</h1>
+
+                        <h3>click a marker</h3>
+
+                        <h3>to plot some real data</h3>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="marker-table">
+                <h3>Marker details</h3>
+
+                <div id="table-contents-header" style="text-align: center; margin-top: 30px">
+
+                    <i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>
+
+                    <h1>Go on!</h1>
+
+                    <h3>click a marker</h3>
+
+                    <h3>to get some real data</h3>
+                </div>
+                <div id="table-contents">
+                </div>
+
+            </div>
+
+
+            <div class="sidebar-pane" id="settings">
+                <h3>Settings</h3></div>
+        </div>
+    </div>
+
+    <!-- Place a floating div above the map for the search controls -->
+    <div class="mapbox">
+        <div class="overlaytop">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+
+                <input type="text" class="form-control" placeholder="Search..." id="search_ac"
+                       data-role="tagsinput"/>
+
+                    <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"
+                          title="Reset search"><i
+                            class="fa fa-times fa-fw"
+                            style="color: white"></i></span>
+
+                    <span id="toggle-world" class="input-group-addon btn-primary" style="cursor: pointer"
+                          title="Limit search suggestions to current view">
+                        <i class="fa fa-globe fa-fw"
+                           id="world-icon"
+                           style="color: white"></i></span>
+
+
+                <div class="input-group-addon dropdown btn-default" id="SelectView" style="cursor: pointer">
+                        <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                           Samples view
+                            <span class="caret"></span>
+                        </span>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="Select view">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Samples view</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Insecticide resistance
+                            phenotypes view</a></li>
+                    </ul>
+                </div>
+            </div>
+            <input type="hidden" id="world-search" name="world-search" value="1">
+            <input type="hidden" id="view-mode" name="view-mode" value="smpl">
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="mapbox">
+        <div class="overlaybottom" id="markersCount">
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Add a tooltip div to use as a mouse-over info div for the beeswarm charts-->
+
+<div id="plotTooltip" class="tooltip" style="opacity: 0;"></div>
+<div id="beeswarmPointTooltip" class="tooltip-bs" style="opacity: 0;"></div>
+
+
+<script type="text/x-jsrender" id="smplRowTemplate">
+    <div class="row no-pad marker-row">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+            <i> {{html:species}}</i></h3>
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a> ({{html:sampleType}})</p>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+            {{for collectionDate}}
+                {{>#data}}
+            {{else}}
+                No date
+            {{/for}}
+            </p>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
+            <ul>
+            {{for projects}}
+                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+            {{/for}}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
+            <ul>
+            {{for collectionProtocols}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+</script>
+
+<script type="text/x-jsrender" id="irRowTemplate">
+    <div class="row no-pad marker-row">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+            <i> {{html:species}}</i></h3>
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a>
+            {{if sampleSize}}
+                ({{html:sampleType}} of {{>sampleSize}} individuals)</p>
+            {{else}}
+                ({{html:sampleType}})</p>
+            {{/if}}
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+            {{for collectionDate}}
+                {{>#data}}
+            {{else}}
+                No date
+            {{/for}}
+            </p>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
+            <ul>
+            {{for projects}}
+                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+            {{/for}}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
+            <ul>
+            {{for collectionProtocols}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+        <div class="col-md-12" >
+            <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+            Insecticide Resistance data</h5>
+        </div>
+        <div class="col-md-12" >
+            <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i> {{html:insecticide}}</p>
+            {{if concentration && concentrationUnit}}
+                <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
+            {{/if}}
+            {{if duration && durationUnit}}
+                <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
+            {{/if}}
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+            <ul>
+            {{for protocols}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+</script>
+
+<script type="text/x-jsrender" id="irBsPointTemplate">
+    <div class="row no-pad" style="width: 370px;">
+
+        <div class="col-md-12" >
+            <div class="cancel" id="cancel-hover"><i class="fa fa-times" style="color: red;"></i></div>
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}}; margin: 0 -9px 0 5px;">
+            <i> {{>species}}</i></h3>
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a>
+            {{if sampleSize}}
+                ({{>sampleType}} of {{>sampleSize}} individuals)</p>
+            {{else}}
+                ({{>sampleType}})</p>
+            {{/if}}
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+            {{for collectionDate}}
+                {{>#data}}
+            {{else}}
+                No date
+            {{/for}}
+            </p>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-map-marker" title="Coordinates: {{>geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
+            <ul>
+            {{for projects}}
+                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+            {{/for}}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
+            <ul>
+            {{for collectionProtocols}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+        <div class="col-md-12" >
+            <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+            Insecticide Resistance data</h5>
+        </div>
+        <div class="col-md-12" >
+            <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
+        </div>
+        <div class="col-md-6">
+            <p><i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i> {{>insecticide}}</p>
+            {{if concentration && concentrationUnit}}
+                <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{>concentration}} {{>concentrationUnit}}</p>
+            {{/if}}
+            {{if duration && durationUnit}}
+                <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{>duration}} {{>durationUnit}}</p>
+            {{/if}}
+        </div>
+        <div class="col-md-6">
+            <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+            <ul>
+            {{for protocols}}
+                <li>{{>#data}}</li>
+            {{/for}}
+            </ul>
+        </div>
+         <div class="col-md-12" >
+            <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+<script language="JavaScript">
+
+    "use strict";
+
+    // Global vars
+    // Should minimize them
+
+    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
+    var solrTaUrl = 'asolr/solr/vb_ta/';
+    //    var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
+    //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
+    //    var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
+    //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
+    var map, sidebar;
+    var assetLayerGroup;
+    var smallClusters = [];
+    var palette;
+    var legendSpecies = 20;
+    var qryUrl = 'q=*';
+    var partSearch = false;
+    var legend;
+    var legendDiv;
+    var PaneSpinner = null;
+    var highlight = null, rectHighlight = null, firstClick = true;
+    // map scaled values from 0-1 to colors green to red
+    //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
+    var trafficLight = new L.CustomColorFunction(0, 1, L.ColorBrewer.Diverging.RdYlBu[10]);
+
+    // Hack to prevent single click events firing when double clicking
+    var timer = 0;
+    var delay = 400;
+    var prevent = false, stickyHover = false;
+    // this is to remember background type selection between markers
+    var bgPlotType = 1;
+
+    initializeSearch();
+    $('#search_ac').on('itemAdded', function () {
+        // remove the boundaries rectangle
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+
+        filterMarkers($("#search_ac").tagsinput('items'));
+    });
+
+    $('#search_ac').on('itemRemoved', function () {
+        // remove the boundaries rectangle
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+
+        filterMarkers($("#search_ac").tagsinput('items'));
+    });
+
+    // force viewMode value to smpl
+    $('#view-mode').val('smpl');
+
+    // Set current view
+    $("#SelectView").find("li a").click(function () {
+        var selText = $(this).text();
+        if (selText === "Samples view") {
+            $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
+            $('#view-mode').val('smpl');
+        } else {
+            $(this).parents(".dropdown").find(".dropdown-toggle").html('IR phenotypes view' + ' <span class="caret"></span>');
+            $('#view-mode').val('ir');
+        }
+        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+
+        // remove the boundaries rectangle
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+        $.getJSON(url, generatePalette);
+        acSuggestions.initialize(true);
+        acOtherResults.initialize(true);
+
+    });
+
+    $(window).load(function () {
+
+        var windowHeight = $(window).height();
+        $('#map_container').height(windowHeight - 166 - 55);
+
+        initializeMap();
+        // detect when user changes zoom or pans around the map
+        map.on("movestart", function () {
+            // remove the boundaries rectangle
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+            rectHighlight = null;
+            removeHighlight();
+            sidebar.close();
+            setTimeout(function () {
+                resetPlots()
+            }, delay);
+        })
+                .on("moveend", function () {
+
+                    loadSolr({clear: 1, zoomLevel: map.getZoom()});
+                })
+                .on("click", function () {
+                    removeHighlight();
+                    sidebar.close();
+                    setTimeout(function () {
+                        resetPlots()
+                    }, delay);
+                });
+
+
+    });
+
+</script>
+
+
+
+
+
+
+
+

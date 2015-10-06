@@ -87,6 +87,7 @@ function initializeMap() {
     // Now generate the legend and .
 
     var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+    console.log('requesting url ' + url);
     $.getJSON(url, generatePalette);
 
 
@@ -222,7 +223,6 @@ function initializeSearch() {
         minLength: 3,
 
         remote: {
-//            url: 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/smplAcgrouped?q=',
             url: solrTaUrl + $('#view-mode').val() + 'Acgrouped?q=',
             ajax: {
                 dataType: 'jsonp',
@@ -376,7 +376,6 @@ function initializeSearch() {
         acOtherResults.initialize(true);
 
     });
-
 
 }
 
@@ -1066,7 +1065,6 @@ function loadSmall(mode, zoomLevel) {
     };
 
 
-    //var url = "http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplMarkers?" + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
     var url = solrPopbioUrl + $('#view-mode').val() + 'Markers?' + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
 
     // inform the user that data is loading
@@ -1334,11 +1332,11 @@ function updateTable(divid, filter, singleMarker) {
     $(header).empty();
 
     if ($('#view-mode').val() === 'smpl') {
-        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/smplTable?&' + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
+        var url = solrPopbioUrl + 'smplTable?&' + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
 
     } else {
 
-        var url = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/irTable?&' + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
+        var url = solrPopbioUrl + 'irTable?&' + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
     }
 
 

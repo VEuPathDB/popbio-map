@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="vb-dev" uploadOnCheckin="0fa0d3d7-0e3c-4416-ad26-e0966d27a9eb" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;.gitignore">
+  <component name="PublishConfigData" serverName="adama 3333" uploadOnCheckin="0fa0d3d7-0e3c-4416-ad26-e0966d27a9eb" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;.gitignore" showNewOnTargetInSync="false">
     <serverData>
+      <paths name="adama 3333">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/htdocs/map" local="$PROJECT_DIR$/web" web="/" />
+            <mapping deploy="/htdocs/libs" local="$PROJECT_DIR$/web/libs" />
+            <mapping deploy="/htdocs/js" local="$PROJECT_DIR$/web/js" />
+            <mapping deploy="/htdocs/css" local="$PROJECT_DIR$/web/css" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/SOLR" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
       <paths name="vb-dev">
         <serverdata>
           <mappings>
