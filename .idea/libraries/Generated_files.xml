@@ -11,7 +11,7 @@
         <item url="file://$PROJECT_DIR$/web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.js" />
         <item url="file://$PROJECT_DIR$/web/libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js" />
         <item url="file://$PROJECT_DIR$/web/libs/typeahead.js/dist/typeahead.bundle.min.js" />
-        <item url="file://$PROJECT_DIR$/web/libs/boostrap/bootstrap_3.3.4.min.js" />
+        <item url="file://$PROJECT_DIR$/web/libs/bootstrap/bootstrap_3.3.4.min.js" />
         <item url="file://$PROJECT_DIR$/web/libs/PruneCluster/PruneCluster.min.js" />
         <item url="file://$PROJECT_DIR$/web/libs/leaflet-dvf/leaflet-dvf.markers.min.js" />
         <item url="file://$PROJECT_DIR$/web/libs/typeahead.js/dist/typeahead.jquery.min.js" />
