@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{Node.js v0.12.0 Core Modules, bootstrap, d3, jquery-1.10.2, jquery-1.9.1, leaflet}" />
-  </component>
-</project>
