@@ -168,6 +168,7 @@
 
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -237,6 +238,7 @@
             </ul>
         </div>
     </div>
+
 
 
 
@@ -330,6 +332,7 @@
 
 
 
+
 </script>
 
 <script language="JavaScript">
@@ -366,6 +369,8 @@
     var prevent = false, stickyHover = false;
     // this is to remember background type selection between markers
     var bgPlotType = 1;
+    var resizeId, previousWindowHeight;
+
 
     initializeSearch();
     $('#search_ac').on('itemAdded', function () {
@@ -427,6 +432,7 @@
 
         var windowHeight = $(window).height();
         $('#map_container').height(windowHeight - 166 - 55);
+        previousWindowHeight = windowHeight;
 
         initializeMap();
         // detect when user changes zoom or pans around the map
@@ -454,6 +460,22 @@
 
 
     });
+
+    $(window).resize(function () {
+        clearTimeout(resizeId);
+        resizeId = setTimeout(doneResizing, 500);
+    });
+
+
+    function doneResizing() {
+        //whatever we want to do
+        var windowHeight = $(window).height();
+        if (windowHeight != previousWindowHeight) {
+            $('#map_container').height(windowHeight - 166 - 55);
+            previousWindowHeight = windowHeight;
+
+        }
+    }
 
 </script>
 

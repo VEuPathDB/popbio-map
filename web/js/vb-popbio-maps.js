@@ -1717,6 +1717,7 @@ function generatePalette(result) {
         }
     }
 
+    // this is where the legend items are sorted
     var sortedItems = sortHashByValue(items);
     palette = buildPalette(sortedItems, legendSpecies, 1);
 
