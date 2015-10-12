@@ -67,7 +67,8 @@
 
 <body class="no_tabs static fuelux">
 <map name="ribbon">
-    <area shape="poly" coords="0,0,100,100,0,100" title="This resource is currently under development. It may occasionally be unavailable. Please send all feedback to info@vectorbase.org">
+    <area shape="poly" coords="0,0,100,100,0,100"
+          title="This resource is currently under development. It may occasionally be unavailable. Please send all feedback to info@vectorbase.org">
 </map>
 <img src="ribbon.png" usemap="#ribbon" alt="beta"
      style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
@@ -126,15 +127,15 @@
     </div>
     <!--<div id="map_container">-->
 
-        <!-- Map stuff -->
-        <!-- Place a floating div above the map for the search controls -->
-        <div class="mapbox">
-            <div class="overlaytop">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+    <!-- Map stuff -->
+    <!-- Place a floating div above the map for the search controls -->
+    <div class="mapbox">
+        <div class="overlaytop">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
 
-                    <input type="text" class="form-control" placeholder="Search..." id="search_ac"
-                           data-role="tagsinput"/>
+                <input type="text" class="form-control" placeholder="Search..." id="search_ac"
+                       data-role="tagsinput"/>
 
                     <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"
                           title="Reset search"><i
@@ -148,122 +149,236 @@
                            style="color: white"></i></span>
 
 
-                    <div class="input-group-addon dropdown btn-default" id="SelectView" style="cursor: pointer">
+                <div class="input-group-addon dropdown btn-default" id="SelectView" style="cursor: pointer">
                         <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                            Samples view
                             <span class="caret"></span>
                         </span>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="Select view">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Samples view</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Insecticide resistance
-                                phenotypes view</a></li>
-                        </ul>
-                    </div>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="Select view">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Samples view</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Insecticide resistance
+                            phenotypes view</a></li>
+                    </ul>
                 </div>
-                <input type="hidden" id="world-search" name="world-search" value="1">
-                <input type="hidden" id="view-mode" name="view-mode" value="smpl">
             </div>
+            <input type="hidden" id="world-search" name="world-search" value="1">
+            <input type="hidden" id="view-mode" name="view-mode" value="smpl">
         </div>
+    </div>
 
 
-        <div id="sidebar" class="sidebar collapsed">
-            <!-- Nav tabs -->
-            <ul class="sidebar-tabs" role="tablist">
-                <li><a id="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
-                <!--<li><a href="?graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>-->
-                <li><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
-                <!--<li><a href="?swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>-->
-                <li><a id="#marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>
-                <!--<li><a href="?marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>-->
-                <li><a id="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-                <!--<li><a href="?settings" role="tab"><i class="fa fa-gear"></i></a></li>-->
-            </ul>
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <ul class="sidebar-tabs" role="tablist">
+            <li><a id="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
+            <li><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
+            <li><a id="#marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>
+            <li><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
+        </ul>
 
-            <!-- Tab panes -->
-            <div class="sidebar-content active" id="active-pane">
-                <div class="sidebar-pane active" id="graphs">
-                    <h3>Sample summary data</h3>
+        <!-- Tab panes -->
+        <div class="sidebar-content active" id="active-pane">
+            <div class="sidebar-pane active" id="graphs">
+                <h3>Sample summary data</h3>
 
-                    <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
+                <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
 
-                        <i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>
+                    <i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>
+
+                    <h1>Go on!</h1>
+
+                    <h3>click a marker</h3>
+
+                    <h3>to plot some real data</h3>
+                </div>
+                <div id="pie-chart-area" style="width: 390px;">
+                    <svg></svg>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="swarm-plots">
+                <h3>Insecticide Resistance phenotypes statistics</h3>
+
+                <div id="swarm-chart-area">
+                    <div style="text-align: center; margin-top: 30px">
+                        <i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>
 
                         <h1>Go on!</h1>
 
                         <h3>click a marker</h3>
 
                         <h3>to plot some real data</h3>
+
                     </div>
-                    <div id="pie-chart-area" style="width: 390px;">
-                        <svg></svg>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="marker-table">
+                <h3>Marker details</h3>
+
+                <div id="table-contents-header" style="text-align: center; margin-top: 30px">
+
+                    <i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>
+
+                    <h1>Go on!</h1>
+
+                    <h3>click a marker</h3>
+
+                    <h3>to get some real data</h3>
+                </div>
+                <div id="table-contents">
+                </div>
+
+            </div>
+
+
+            <div class="sidebar-pane" id="help">
+                <h3>Usage tips</h3>
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                    <span class="leaflet-bar leaflet-control">
+                        <i class="leaflet-control-zoom-fullscreen fullscreen-icon"></i>
+                    </span>
+                    </div>
+                    <div class="col-md-10">
+                        Toggle Fullscreen mode
                     </div>
                 </div>
 
-                <div class="sidebar-pane" id="swarm-plots">
-                    <h3>Insecticide Resistance phenotypes statistics</h3>
+                <div class="row">
 
-                    <div id="swarm-chart-area">
-                        <div style="text-align: center; margin-top: 30px">
-                            <i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>
-
-                            <h1>Go on!</h1>
-
-                            <h3>click a marker</h3>
-
-                            <h3>to plot some real data</h3>
-
-                        </div>
+                    <div class="col-md-2">
+                    <span class="leaflet-control-zoom leaflet-bar leaflet-control">
+                        <i class="leaflet-control-zoom-in">+</i>
+                    </span>
+                    </div>
+                    <div class="col-md-10">
+                        Zoom in
                     </div>
                 </div>
 
-                <div class="sidebar-pane" id="marker-table">
-                    <h3>Marker details</h3>
+                <div class="row">
 
-                    <div id="table-contents-header" style="text-align: center; margin-top: 30px">
-
-                        <i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>
-
-                        <h1>Go on!</h1>
-
-                        <h3>click a marker</h3>
-
-                        <h3>to get some real data</h3>
+                    <div class="col-md-2">
+                     <span class="leaflet-control-zoom leaflet-bar leaflet-control">
+                        <i class="leaflet-control-zoom-out">-</i>
+                    </span>
                     </div>
-                    <div id="table-contents">
+                    <div class="col-md-10">
+                        Zoom out
                     </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                    <span class="leaflet-control-zoom leaflet-bar leaflet-control">
+                        <i class="leaflet-control-zoom-min">Zoom min</i>
+                    </span>
+                    </div>
+                    <div class="col-md-10">
+                        Restore zoom
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                            <span class="input-group-addon btn-danger" style="cursor: default">
+                                <i class="fa fa-times fa-fw"
+                                   style="color: white"></i>
+                            </span>
+                    </div>
+                    <div class="col-md-10">
+                        Reset search
+                    </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                            <span class="input-group-addon btn-primary" style="cursor: default">
+                                <i class="fa fa-globe fa-fw"
+                                   style="color: white"></i>
+                            </span>
+                    </div>
+                    <div class="col-md-10">
+                        Limit search suggestions to current view
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <span class="input-group-addon" style="cursor: default">
+                            <i class="fa fa-globe fa-fw"
+                               style="color: rgb(38, 90, 136);"></i>
+                        </span>
+                    </div>
+                    <div class="col-md-10">
+                        Enable global search suggestions
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-5">
+                        <i class="input-group-addon dropdown btn-default">
+                        <span class="dropdown-toggle" aria-expanded="true" style="cursor: default">
+                           Samples view
+                            <span class="caret"></span>
+                        </span>
+                            <ul class="dropdown-menu">
+                                <li role="presentation">Samples view</li>
+                                <li role="presentation">Insecticide resistance
+                                    phenotypes view
+                                </li>
+                            </ul>
+                        </i>
+                    </div>
+                    <div class="col-md-7">
+                        Select View
+                    </div>
+                </div>
+
+
+                <div>
+
 
                 </div>
 
 
-                <div class="sidebar-pane" id="settings">
-                    <h3>Settings</h3></div>
             </div>
         </div>
+    </div>
 
-        <div id="map"></div>
+    <div id="map"></div>
 
-        <div class="mapbox">
-            <div class="overlaybottom" id="markersCount">
-            </div>
-
+    <div class="mapbox">
+        <div class="overlaybottom" id="markersCount">
         </div>
 
     </div>
 
-    <div id="footer">
-        <div class="column-wrapper">
-            <div class="twocol-left left">VectorBase release 1502 - February 2015
-                © <span class="print_hide"><a href="https://www.vectorbase.org" class="nowrap">VectorBase</a></span>
-                <span class="screen_hide_inline">VectorBase</span>
-            </div>
+</div>
 
-            <div class="twocol-right right">
-                <a href="https://www.vectorbase.org/about">About&nbsp;VectorBase</a> |
-                <a href="https://www.vectorbase.org/contact">Contact&nbsp;Us</a> |
-                <a href="https://www.vectorbase.org/navigation/help">Help</a>
-            </div>
+<div id="footer">
+    <div class="column-wrapper">
+        <div class="twocol-left left">VectorBase release 1502 - February 2015
+            © <span class="print_hide"><a href="https://www.vectorbase.org" class="nowrap">VectorBase</a></span>
+            <span class="screen_hide_inline">VectorBase</span>
+        </div>
+
+        <div class="twocol-right right">
+            <a href="https://www.vectorbase.org/about">About&nbsp;VectorBase</a> |
+            <a href="https://www.vectorbase.org/contact">Contact&nbsp;Us</a> |
+            <a href="https://www.vectorbase.org/navigation/help">Help</a>
         </div>
     </div>
+</div>
 <!--</div>-->
 <!-- Add a tooltip div to use as a mouse-over info div for the beeswarm charts-->
 
@@ -309,6 +424,34 @@
             </ul>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 
@@ -379,6 +522,34 @@
             </ul>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 
@@ -452,6 +623,34 @@
             <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

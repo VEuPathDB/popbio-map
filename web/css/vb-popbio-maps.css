@@ -385,3 +385,40 @@ BODY {
 html {
     font-size: 100%;
 }
+
+.tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: none;
+}
+
+.tg td {
+    padding: 10px 5px;
+    border-style: solid;
+    border-width: 0px;
+    overflow: hidden;
+    word-break: normal;
+}
+
+.tg th {
+    font-weight: normal;
+    padding: 10px 5px;
+    border-style: solid;
+    border-width: 0px;
+    overflow: hidden;
+    word-break: normal;
+}
+
+.leaflet-bar i {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    display: block;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
