@@ -609,7 +609,13 @@ function loadSolr(parameters) {
                                 return;
                             }
 
-                            if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
+                            if ($('#sidebar').hasClass('collapsed')) {
+                                if ($('.sidebar-pane.active').attr('id') === 'help') {
+                                    sidebar.open('graphs');
+                                } else {
+                                    sidebar.open($('.sidebar-pane.active').attr('id'));
+                                }
+                            }
                             updatePieChart(record.population, record.fullstats);
                             var recBounds = L.latLngBounds(record.bounds);
                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -746,7 +752,13 @@ function loadSmall(mode, zoomLevel) {
                         "color": (palette[category] ? palette[category] : "#000000")
                     });
 
-                    if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
+                    if ($('#sidebar').hasClass('collapsed')) {
+                        if ($('.sidebar-pane.active').attr('id') === 'help') {
+                            sidebar.open('graphs');
+                        } else {
+                            sidebar.open($('.sidebar-pane.active').attr('id'));
+                        }
+                    }
                     updatePieChart(1, fullElStats);
                     var filter = '&fq=id:' + data.id;
                     createBeeViolinPlot("#swarm-chart-area", filter);
@@ -947,7 +959,13 @@ function loadSmall(mode, zoomLevel) {
                         });
                     }
 
-                    if ($('#sidebar').hasClass('collapsed')) sidebar.open($('.sidebar-pane.active').attr('id'));
+                    if ($('#sidebar').hasClass('collapsed')) {
+                        if ($('.sidebar-pane.active').attr('id') === 'help') {
+                            sidebar.open('graphs');
+                        } else {
+                            sidebar.open($('.sidebar-pane.active').attr('id'));
+                        }
+                    }
                     updatePieChart(cluster.population, fullElStats);
 
                     var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
@@ -1833,7 +1851,7 @@ function resetPlots() {
             '</div>';
         tableHTML =
             '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>' +
+            '<i class="fa fa-table" style="color: #2c699e; font-size: 12em"></i>' +
             '<h1>Go on!</h1>' +
             '<h3>click a marker</h3>' +
             '<h3>to see some real data</h3> ' +
@@ -1856,7 +1874,7 @@ function resetPlots() {
             '</div>';
         tableHTML =
             '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>' +
+            '<i class="fa fa-table" style="color: #2c699e; font-size: 12em"></i>' +
             '<h3>click a marker</h3>' +
             '</div>';
     }

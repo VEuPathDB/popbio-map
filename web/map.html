@@ -8,14 +8,14 @@
         <ul class="sidebar-tabs" role="tablist">
             <li><a id="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
             <li><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
-            <li><a id="#marker-table" role="tab"><i class="fa fa-th-list"></i></a></li>
-            <li><a id="#settings" role="tab"><i class="fa fa-question"></i></a></li>
+            <li><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
+            <li><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="sidebar-content active" id="active-pane">
             <div class="sidebar-pane active" id="graphs">
-                <h3>Sample summary data</h3>
+                <h3>Marker summary data</h3>
 
                 <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
 
@@ -54,7 +54,7 @@
 
                 <div id="table-contents-header" style="text-align: center; margin-top: 30px">
 
-                    <i class="fa fa-th-list" style="color: #2c699e; font-size: 12em"></i>
+                    <i class="fa fa-table" style="color: #2c699e; font-size: 12em"></i>
 
                     <h1>Go on!</h1>
 
@@ -68,10 +68,162 @@
             </div>
 
 
-            <div class="sidebar-pane" id="settings">
-                <h3>Settings</h3></div>
+            <div class="sidebar-pane" id="help">
+                <h3>Usage tips</h3>
+
+                <div id="tips" class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr class="active">
+                            <th>Icon</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="leaflet-control-zoom-fullscreen fullscreen-icon"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Toggle Fullscreen mode
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-control-zoom leaflet-bar leaflet-control">
+                                    <i class="leaflet-control-zoom-in">+</i>
+                                </span>
+                            </td>
+                            <td>
+                                Zoom in
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                 <span class="leaflet-control-zoom leaflet-bar leaflet-control">
+                                    <i class="leaflet-control-zoom-out">-</i>
+                                </span>
+                            </td>
+                            <td>
+                                Zoom out
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="leaflet-control-zoom-min">Zoom min</i>
+                                </span>
+                            </td>
+                            <td>
+                                Restore zoom
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4x">
+                                <span class="leaflet-control-layers leaflet-control">
+                                    <i class="leaflet-control-layers-toggle"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Select source for map tiles
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4x">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa-info fa fa-fw"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Toggle legend On or Off
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="input-group-addon btn-danger" style="cursor: default; width: 40px;">
+                                    <i class="fa fa-times fa-fw" style="color: white"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Reset search / Clear results
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="input-group-addon btn-primary" style="cursor: default; width: 40px">
+                                    <i class="fa fa-globe fa-fw"
+                                       style="color: white"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Limit search suggestions to current view
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="input-group-addon" style="cursor: default; width: 40px">
+                                    <i class="fa fa-globe fa-fw"
+                                       style="color: rgb(38, 90, 136);"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Enable global search suggestions
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 110px">
+                                <i class="input-group-addon dropdown btn-default">
+                        <span class="dropdown-toggle" style="cursor: default; width: 150px;">
+                           Samples view
+                            <span class="caret"></span>
+                        </span>
+                                </i>
+                            </td>
+                            <td>
+                                Choose between <b>Samples</b> and <b>Insecticide Resistance</b> view
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa fa-pie-chart"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Marker summary view
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa fa-area-chart"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Marker phenotype statistics (available only in Insecticide Resistance view)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa fa-table"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Marker details
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
         </div>
     </div>
+
 
     <!-- Place a floating div above the map for the search controls -->
     <div class="mapbox">
@@ -165,12 +317,6 @@
             </ul>
         </div>
     </div>
-
-
-
-
-
-
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -240,12 +386,6 @@
             </ul>
         </div>
     </div>
-
-
-
-
-
-
 </script>
 
 <script type="text/x-jsrender" id="irBsPointTemplate">
@@ -318,23 +458,6 @@
             <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 <script language="JavaScript">
@@ -369,66 +492,18 @@
     var timer = 0;
     var delay = 400;
     var prevent = false, stickyHover = false;
+
     // this is to remember background type selection between markers
     var bgPlotType = 1;
     var resizeId, previousWindowHeight;
 
 
     initializeSearch();
-    $('#search_ac').on('itemAdded', function () {
-        // remove the boundaries rectangle
-        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-        rectHighlight = null;
-        removeHighlight();
-        sidebar.close();
-        setTimeout(function () {
-            resetPlots()
-        }, delay);
-
-        filterMarkers($("#search_ac").tagsinput('items'));
-    });
-
-    $('#search_ac').on('itemRemoved', function () {
-        // remove the boundaries rectangle
-        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-        rectHighlight = null;
-        removeHighlight();
-        sidebar.close();
-        setTimeout(function () {
-            resetPlots()
-        }, delay);
-
-        filterMarkers($("#search_ac").tagsinput('items'));
-    });
 
     // force viewMode value to smpl
     $('#view-mode').val('smpl');
 
-    // Set current view
-    $("#SelectView").find("li a").click(function () {
-        var selText = $(this).text();
-        if (selText === "Samples view") {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
-            $('#view-mode').val('smpl');
-        } else {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html('IR phenotypes view' + ' <span class="caret"></span>');
-            $('#view-mode').val('ir');
-        }
-        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
 
-        // remove the boundaries rectangle
-        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-        rectHighlight = null;
-        removeHighlight();
-        sidebar.close();
-        setTimeout(function () {
-            resetPlots()
-        }, delay);
-        $.getJSON(url, generatePalette);
-        acSuggestions.initialize(true);
-        acOtherResults.initialize(true);
-
-    });
 
     $(window).load(function () {
 
@@ -460,6 +535,32 @@
                     }, delay);
                 });
 
+        $('#search_ac').on('itemAdded', function () {
+            // remove the boundaries rectangle
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+            rectHighlight = null;
+            removeHighlight();
+            sidebar.close();
+            setTimeout(function () {
+                resetPlots()
+            }, delay);
+
+            filterMarkers($("#search_ac").tagsinput('items'));
+        });
+
+        $('#search_ac').on('itemRemoved', function () {
+            // remove the boundaries rectangle
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+            rectHighlight = null;
+            removeHighlight();
+            sidebar.close();
+            setTimeout(function () {
+                resetPlots()
+            }, delay);
+
+            filterMarkers($("#search_ac").tagsinput('items'));
+        });
+
 
     });
 
@@ -475,6 +576,8 @@
         if (windowHeight != previousWindowHeight) {
             $('#map_container').height(windowHeight - 166 - 55);
             previousWindowHeight = windowHeight;
+            map.invalidateSize();
+
 
         }
     }
