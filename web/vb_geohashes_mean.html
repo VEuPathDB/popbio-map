@@ -52,6 +52,7 @@
             src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.js"></script>
 
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
+    <script type="text/javascript" src="js/map.Legend.js"></script>
 
 
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
@@ -182,6 +183,7 @@
                 <h3>Usage tips</h3>
 
                 <div id="tips" class="table-responsive">
+                    <h4>Icons and toolbars</h4>
                     <table class="table table-condensed">
                         <thead>
                         <tr class="active">
@@ -330,6 +332,67 @@
                     </table>
 
                 </div>
+
+                <div id="shortcuts" class="table-responsive">
+                    <h4>Keyboard and Mouse Shortcuts</h4>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr class="active">
+                            <th>Shortcut</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-4">
+                                Click marker
+                            </td>
+                            <td>
+                                Toggle details pane
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                Double-click marker
+                            </td>
+                            <td>
+                                Zoom in and expand marker
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light"><i class="fa fa-arrow-left"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-up"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-down"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-right"></i></kbd>
+                            </td>
+                            <td>
+                                Pan around map
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light"><i class="fa fa-plus"></i></kbd> <kbd class="light"><i
+                                    class="fa fa-minus"></i></kbd>
+                            </td>
+                            <td>
+                                Zoom in or out
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light">Shift</kbd> + Drag
+
+                            </td>
+                            <td>
+                                Select region and zoom
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
             </div>
         </div>
     </div>
@@ -389,6 +452,10 @@
             </ul>
         </div>
     </div>
+
+
+
+
 
 
 </script>
@@ -460,6 +527,10 @@
             </ul>
         </div>
     </div>
+
+
+
+
 
 
 </script>
@@ -536,6 +607,10 @@
     </div>
 
 
+
+
+
+
 </script>
 
 <script language="JavaScript">
@@ -557,7 +632,7 @@
     var qryUrl = 'q=*';
     var partSearch = false;
     var legend;
-    var legendDiv;
+    //    var legendDiv;
     var PaneSpinner = null;
     var highlight = null, rectHighlight = null, firstClick = true;
     // map scaled values from 0-1 to colors green to red

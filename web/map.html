@@ -220,6 +220,65 @@
                     </table>
 
                 </div>
+                <div id="shortcuts" class="table-responsive">
+                    <h4>Keyboard and Mouse Shortcuts</h4>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr class="active">
+                            <th>Shortcut</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-4">
+                                Click marker
+                            </td>
+                            <td>
+                                Toggle details pane
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                Double-click marker
+                            </td>
+                            <td>
+                                Zoom in and expand marker
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light"><i class="fa fa-arrow-left"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-up"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-down"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-right"></i></kbd>
+                            </td>
+                            <td>
+                                Pan around map
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light"><i class="fa fa-plus"></i></kbd> <kbd class="light"><i
+                                    class="fa fa-minus"></i></kbd>
+                            </td>
+                            <td>
+                                Zoom in or out
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light">Shift</kbd> + Drag
+
+                            </td>
+                            <td>
+                                Select region and zoom
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
         </div>
     </div>
@@ -317,6 +376,7 @@
             </ul>
         </div>
     </div>
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -386,6 +446,7 @@
             </ul>
         </div>
     </div>
+
 </script>
 
 <script type="text/x-jsrender" id="irBsPointTemplate">
@@ -458,6 +519,7 @@
             <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
         </div>
     </div>
+
 </script>
 
 <script language="JavaScript">
@@ -502,7 +564,6 @@
 
     // force viewMode value to smpl
     $('#view-mode').val('smpl');
-
 
 
     $(window).load(function () {
