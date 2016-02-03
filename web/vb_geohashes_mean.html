@@ -74,7 +74,7 @@
 
 <div id="min_width_container">
 
-    <!-- Map stuff -->
+    <!-- Cut here for Map stuff -->
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
@@ -87,7 +87,7 @@
         <!-- Tab panes -->
         <div class="sidebar-content active" id="active-pane">
             <div class="sidebar-pane active" id="graphs">
-                <h3>Marker summary data</h3>
+                <h3>Summary view for selected samples</h3>
 
                 <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
 
@@ -95,9 +95,9 @@
 
                     <h1>Go on!</h1>
 
-                    <h3>click a marker</h3>
+                    <h4>click a marker on the map</h4>
 
-                    <h3>to plot some real data</h3>
+                    <h4>to plot some real data</h4>
                 </div>
                 <div id="pie-chart-area" style="width: 390px;">
                     <svg></svg>
@@ -105,7 +105,7 @@
             </div>
 
             <div class="sidebar-pane" id="swarm-plots">
-                <h3>Insecticide Resistance phenotypes statistics</h3>
+                <h3>Insecticide Resistance statistics for selected samples</h3>
 
                 <div id="swarm-chart-area">
                     <div style="text-align: center; margin-top: 30px">
@@ -113,16 +113,16 @@
 
                         <h1>Go on!</h1>
 
-                        <h3>click a marker</h3>
+                        <h4>click a marker on the map</h4>
 
-                        <h3>to plot some real data</h3>
+                        <h4>to plot some real data</h4>
 
                     </div>
                 </div>
             </div>
 
             <div class="sidebar-pane" id="marker-table">
-                <h3>Marker details</h3>
+                <h3>Details for selected samples</h3>
 
                 <div id="table-contents-header" style="text-align: center; margin-top: 30px">
 
@@ -130,9 +130,9 @@
 
                     <h1>Go on!</h1>
 
-                    <h3>click a marker</h3>
+                    <h4>click a marker on the map</h4>
 
-                    <h3>to get some real data</h3>
+                    <h4>to get some real data</h4>
                 </div>
                 <div id="table-contents">
                 </div>
@@ -266,7 +266,7 @@
                                 </span>
                             </td>
                             <td>
-                                Marker summary view
+                                Summary view
                             </td>
                         </tr>
                         <tr>
@@ -276,7 +276,7 @@
                                 </span>
                             </td>
                             <td>
-                                Marker phenotype statistics (available only in Insecticide Resistance view)
+                                Insecticide Resistance statistics view
                             </td>
                         </tr>
                         <tr>
@@ -286,7 +286,7 @@
                                 </span>
                             </td>
                             <td>
-                                Marker details
+                                Details view
                             </td>
                         </tr>
                         </tbody>
@@ -613,6 +613,7 @@
 
 </script>
 
+    <!-- Stop cutting here for Map stuff -->
 <script language="JavaScript">
 
     "use strict";
@@ -632,7 +633,6 @@
     var qryUrl = 'q=*';
     var partSearch = false;
     var legend;
-    //    var legendDiv;
     var PaneSpinner = null;
     var highlight = null, rectHighlight = null, firstClick = true;
     // map scaled values from 0-1 to colors green to red
@@ -642,6 +642,7 @@
     // Hack to prevent single click events firing when double clicking
     var timer = 0;
     var delay = 400;
+
     var prevent = false, stickyHover = false;
     // this is to remember background type selection between markers
     var bgPlotType = 1;

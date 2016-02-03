@@ -358,11 +358,8 @@ L.control.legend = function (url, options) {
     var newLegend = new L.Control.MapLegend(options);
 
     newLegend.addLegendIcon();
-    console.log('requesting url ' + url);
     $.getJSON(url, function (data) {
         newLegend.populateLegend(data, "species_category")
     });
-    console.log(newLegend);
-    console.dir(newLegend);
     return newLegend;
 };
