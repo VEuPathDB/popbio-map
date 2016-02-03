@@ -458,6 +458,7 @@
 
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -527,6 +528,7 @@
             </ul>
         </div>
     </div>
+
 
 
 
@@ -611,9 +613,10 @@
 
 
 
+
 </script>
 
-    <!-- Stop cutting here for Map stuff -->
+<!-- Stop cutting here for Map stuff -->
 <script language="JavaScript">
 
     "use strict";
@@ -649,23 +652,33 @@
 
     initializeSearch();
 
-    // force viewMode value to smpl
-    $('#view-mode').val('smpl');
+    // set view according to the value of the view url parameter. Otherwise default to smpl
+    var urlParams = $.parseParams();
+
+    //      FixMe: kind of an ugly hack to set the dropdown text.
+
+    if (urlParams.view === 'ir') {
+        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Insecticide Resistance Phenotypes View" + ' <span class="caret"></span>')
+        $('#view-mode').val('ir');
+    } else {
+        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Samples view" + ' <span class="caret"></span>')
+        $('#view-mode').val('smpl');
+    }
 
     $(window).load(function () {
         initializeMap();
 
         // detect when user changes zoom or pans around the map
         map.on("movestart", function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
-            removeHighlight();
-            sidebar.close();
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-        })
+                    // remove the boundaries rectangle
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                    rectHighlight = null;
+                    removeHighlight();
+                    sidebar.close();
+                    setTimeout(function () {
+                        resetPlots()
+                    }, delay);
+                })
                 .on("moveend", function () {
 
                     loadSolr({clear: 1, zoomLevel: map.getZoom()});
