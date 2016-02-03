@@ -72,6 +72,7 @@
                 <h3>Usage tips</h3>
 
                 <div id="tips" class="table-responsive">
+                    <h4>Icons and toolbars</h4>
                     <table class="table table-condensed">
                         <thead>
                         <tr class="active">
@@ -220,6 +221,7 @@
                     </table>
 
                 </div>
+
                 <div id="shortcuts" class="table-responsive">
                     <h4>Keyboard and Mouse Shortcuts</h4>
                     <table class="table table-condensed">
@@ -279,6 +281,7 @@
                     </table>
 
                 </div>
+
             </div>
         </div>
     </div>
@@ -332,6 +335,7 @@
 
 </div>
 
+<!--</div>-->
 <!-- Add a tooltip div to use as a mouse-over info div for the beeswarm charts-->
 
 <div id="plotTooltip" class="tooltip" style="opacity: 0;"></div>
@@ -345,7 +349,7 @@
         <div class="col-md-12" >
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
             <i> {{html:species}}</i></h3>
-            <p>{{html:bundleName}} <a href="{{url:url}}" target="_blank">{{html:accession}}</a> ({{html:sampleType}})</p>
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a> ({{html:sampleType}})</p>
         </div>
         <div class="col-md-6">
             <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
@@ -363,7 +367,7 @@
             <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
             <ul>
             {{for projects}}
-                <li><a href="/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
             {{/for}}
             </ul>
         </div>
@@ -377,6 +381,11 @@
         </div>
     </div>
 
+
+
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -386,7 +395,7 @@
         <div class="col-md-12" >
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
             <i> {{html:species}}</i></h3>
-            <p>{{html:bundleName}} <a href="{{url:url}}" target="_blank">{{html:accession}}</a>
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a>
             {{if sampleSize}}
                 ({{html:sampleType}} of {{>sampleSize}} individuals)</p>
             {{else}}
@@ -409,7 +418,7 @@
             <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
             <ul>
             {{for projects}}
-                <li><a href="/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
             {{/for}}
             </ul>
         </div>
@@ -447,6 +456,11 @@
         </div>
     </div>
 
+
+
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="irBsPointTemplate">
@@ -456,7 +470,7 @@
             <div class="cancel" id="cancel-hover"><i class="fa fa-times" style="color: red;"></i></div>
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}}; margin: 0 -9px 0 5px;">
             <i> {{>species}}</i></h3>
-            <p>{{html:bundleName}} <a href="{{url:url}}" target="_blank">{{html:accession}}</a>
+            <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a>
             {{if sampleSize}}
                 ({{>sampleType}} of {{>sampleSize}} individuals)</p>
             {{else}}
@@ -479,7 +493,7 @@
             <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
             <ul>
             {{for projects}}
-                <li><a href="/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
             {{/for}}
             </ul>
         </div>
@@ -519,6 +533,11 @@
             <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
         </div>
     </div>
+
+
+
+
+
 
 </script>
 

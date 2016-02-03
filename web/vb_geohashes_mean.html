@@ -32,16 +32,17 @@
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.min.js"></script>
+    <script type="text/javascript" src="js/map.Legend.js"></script>
     <script type="text/javascript" src="libs/leaflet.fullscreen/Control.FullScreen.min.js"></script>
     <script type="text/javascript" src="libs/spin.js/spin.min.js"></script>
     <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.min.js"></script>
-    <script type="text/javascript" src="js/Icon.Canvas.min.js"></script>
     <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
     <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
     <script type="text/javascript" src="libs/PruneCluster/PruneCluster.min.js"></script>
+    <script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js"></script>
+    <script type="text/javascript" src="js/Icon.Canvas.min.js"></script>
 
     <script type="text/javascript" src="js/nv.d3.pie.min.js"></script>
-    <script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js"></script>
     <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.min.js"></script>
 
     <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
@@ -52,7 +53,6 @@
             src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.js"></script>
 
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
-    <script type="text/javascript" src="js/map.Legend.js"></script>
 
 
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
@@ -75,45 +75,6 @@
 <div id="min_width_container">
 
     <!-- Map stuff -->
-    <!-- Place a floating div above the map for the search controls -->
-    <div class="mapbox">
-        <div class="overlaytop">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-
-                <input type="text" class="form-control" placeholder="Search..." id="search_ac"
-                       data-role="tagsinput"/>
-
-                    <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"
-                          title="Reset search"><i
-                            class="fa fa-times fa-fw"
-                            style="color: white"></i></span>
-
-                    <span id="toggle-world" class="input-group-addon btn-primary" style="cursor: pointer"
-                          title="Limit search suggestions to current view">
-                        <i class="fa fa-globe fa-fw"
-                           id="world-icon"
-                           style="color: white"></i></span>
-
-
-                <div class="input-group-addon dropdown btn-default" id="SelectView" style="cursor: pointer">
-                        <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                           Samples view
-                            <span class="caret"></span>
-                        </span>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="Select view">
-                        <li role="presentation"><a role="menuitem" tabindex="-1">Samples view</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1">Insecticide resistance
-                            phenotypes view</a></li>
-                    </ul>
-                </div>
-            </div>
-            <input type="hidden" id="world-search" name="world-search" value="1">
-            <input type="hidden" id="view-mode" name="view-mode" value="smpl">
-        </div>
-    </div>
-
-
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
@@ -394,6 +355,45 @@
                 </div>
 
             </div>
+        </div>
+    </div>
+
+
+    <!-- Place a floating div above the map for the search controls -->
+    <div class="mapbox">
+        <div class="overlaytop">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+
+                <input type="text" class="form-control" placeholder="Search..." id="search_ac"
+                       data-role="tagsinput"/>
+
+                    <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"
+                          title="Reset search"><i
+                            class="fa fa-times fa-fw"
+                            style="color: white"></i></span>
+
+                    <span id="toggle-world" class="input-group-addon btn-primary" style="cursor: pointer"
+                          title="Limit search suggestions to current view">
+                        <i class="fa fa-globe fa-fw"
+                           id="world-icon"
+                           style="color: white"></i></span>
+
+
+                <div class="input-group-addon dropdown btn-default" id="SelectView" style="cursor: pointer">
+                        <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                           Samples view
+                            <span class="caret"></span>
+                        </span>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="Select view">
+                        <li role="presentation"><a role="menuitem" tabindex="-1">Samples view</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1">Insecticide resistance
+                            phenotypes view</a></li>
+                    </ul>
+                </div>
+            </div>
+            <input type="hidden" id="world-search" name="world-search" value="1">
+            <input type="hidden" id="view-mode" name="view-mode" value="smpl">
         </div>
     </div>
 

@@ -88,10 +88,10 @@ function initializeMap() {
     // Now generate the legend and .
 
     var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
-    console.log('requesting url ' + url);
+    //console.log('requesting url ' + url);
     //$.getJSON(url, generatePalette);
     legend = new L.control.legend(url);
-
+    console.dir(legend);
 
     map.spin(false);
 
@@ -373,7 +373,9 @@ function initializeSearch() {
         setTimeout(function () {
             resetPlots()
         }, delay);
-        $.getJSON(url, generatePalette);
+        $.getJSON(url, function (data) {
+            legend.populateLegend(data, "species_category")
+        });
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
 
@@ -1610,9 +1612,9 @@ function mapTypeToIcon(type) {
 //        return tupleArray;
 //    };
 //
-//    var buildPalette = function (items, nmColors, paletteType) {
+//    var generatePalette = function (items, nmColors, paletteType) {
 //        /*
-//         function buildPalette
+//         function generatePalette
 //         date: 17/03/2015
 //         purpose:
 //         inputs: {items} a list of items to be associated with colors, {mColors} the number of colors in the palette
@@ -1792,7 +1794,7 @@ function mapTypeToIcon(type) {
 //
 //    };
 //
-//    var legendHTML = function (palette) {
+//    var generateHTML = function (palette) {
 //        var inHtml = "";
 //        var cntLegend = 1;
 //        for (var obj1 in palette) if (palette.hasOwnProperty(obj1)) {
@@ -1879,7 +1881,7 @@ function mapTypeToIcon(type) {
 //
 //    // this is where the legend items are sorted
 //    var sortedItems = sortHashByValue(items);
-//    palette = buildPalette(sortedItems, legendSpecies, 1);
+//    palette = generatePalette(sortedItems, legendSpecies, 1);
 //
 //    var sortedPalette;
 //    if (sortType === 'name') {
@@ -1890,7 +1892,7 @@ function mapTypeToIcon(type) {
 //        sortedPalette = outputColors(palette);
 //    }
 //
-//    legendHTML(sortedPalette);
+//    generateHTML(sortedPalette);
 //
 //
 //    // moved this here to avoid querying SOLR before the palette is done building

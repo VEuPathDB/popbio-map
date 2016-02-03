@@ -2,11 +2,12 @@ L.Control.MapLegend = L.Control.extend({
     options: {
         position: 'bottomright',
         numberOfColors: 20,
+        //sortType: 'name'
         sortType: 'color'
     },
 
-
-    createLegend: function () {
+    // add the legend to the DOM tree
+    addLegendIcon: function () {
         this._legendDiv = L.DomUtil.create('div', 'info legend');
         legendDiv = this._legendDiv;
 
@@ -40,7 +41,7 @@ L.Control.MapLegend = L.Control.extend({
 
 
     /*
-     function buildPalette
+     function generatePalette
      date: 17/03/2015
      purpose:
      inputs: {items} a list of items to be associated with colors,
@@ -48,10 +49,11 @@ L.Control.MapLegend = L.Control.extend({
      {paletteType} 1 for Kelly's 2 for Boytons'
      outputs: an associative array with items names as the keys and color as the values
      */
-    buildPalette: function (items, nmColors, paletteType) {
+    generatePalette: function (items) {
 
 
         var newPalette = [];
+        var limitedPalette = [];
 
         // from http://stackoverflow.com/questions/470690/how-to-automatically-generate-n-distinct-colors
         var kelly_colors_hex = [
@@ -102,7 +104,7 @@ L.Control.MapLegend = L.Control.extend({
         var noItems = items.length,
             stNoItems = noItems;
 
-        for (var i = 0; i < nmColors; i++) {
+        for (var i = 0; i < this.options.numberOfColors; i++) {
             if (typeof (items[i]) !== 'undefined') {
                 var item = items[i][0];
                 newPalette[item] = kelly_colors_hex[i];
@@ -112,6 +114,8 @@ L.Control.MapLegend = L.Control.extend({
             }
 
         }
+
+        limitedPalette = newPalette;
 
         var lumInterval = 0.5 / noItems,
             lum = 0.7;
@@ -126,9 +130,11 @@ L.Control.MapLegend = L.Control.extend({
         }
 
         newPalette["others"] = "radial-gradient(" + colorLuminance("#FFFFFF", -0.7) + ", " + colorLuminance("#FFFFFF", -lum) + ")";
+        limitedPalette["others"] = "radial-gradient(" + colorLuminance("#FFFFFF", -0.7) + ", " + colorLuminance("#FFFFFF", -lum) + ")";
         newPalette["Unknown"] = "black";
+        limitedPalette["Unknown"] = "black";
 
-        return newPalette;
+        return [newPalette, limitedPalette];
     },
 
 
@@ -222,20 +228,23 @@ L.Control.MapLegend = L.Control.extend({
 
     },
 
-    legendHTML: function (palette) {
-        var inHtml = "";
-        var cntLegend = 1;
+
+    // build the HTML for the legend node
+    generateHTML: function (palette) {
+        var inHtml = ""; // store HTML here
+        var cntLegend = 1; // store the number of the elements/entries in the legend
         for (var obj1 in palette) if (palette.hasOwnProperty(obj1)) {
             if (cntLegend > legendSpecies - 1) {
                 inHtml += '<i style="background:' + palette["others"] + ';"></i> ' + 'Others<br />';
                 $("#legend").html(inHtml);
                 break;
             }
-            var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2");
+            var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An. gambiae
             inHtml += '<i style="background:' + palette[obj1] + ';" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + abbrSpecies + '</em><br>' : '+');
-            cntLegend++;
+            cntLegend++; // update the counter of legend entries
         }
 
+        // if in IR mode add the IR resistance color scale
         if ($('#view-mode').val() === 'ir') {
 
             inHtml += '<div class="data-layer-legend" style="border: 0">';
@@ -267,22 +276,15 @@ L.Control.MapLegend = L.Control.extend({
             legend.addTo(map);
         }
 
-    }
+    },
 
-});
+    populateLegend: function (result, fieldName) {
+        var geohashLevel = "geohash_2";
+        if (!fieldName) fieldName = "species_category";
 
-L.control.legend = function (url, options) {
+        var pivotParams = geohashLevel + "," + fieldName;
 
-
-    var newLegend = new L.Control.MapLegend(options);
-
-    newLegend.createLegend();
-    $.getJSON(url, generatePalette);
-
-    function generatePalette(result) {
-
-
-        var doc = result.facet_counts.facet_pivot["geohash_2,species_category"];
+        var doc = result.facet_counts.facet_pivot[pivotParams];
         var items = [];
         for (var obj in doc) if (doc.hasOwnProperty(obj)) {
             var count = doc[obj].count;
@@ -319,28 +321,48 @@ L.control.legend = function (url, options) {
 
                 }
             }
+
         }
 
         // this is where the legend items are sorted
-        var sortedItems = newLegend.sortHashByValue(items);
+        var sortedItems = this.sortHashByValue(items);
         //this.sortHashByValue(items);
-        palette = newLegend.buildPalette(sortedItems, legendSpecies, 1);
+        var palettes = [];
+        var limitedPalette = [];
+        palettes = this.generatePalette(sortedItems, legendSpecies, 1);
+        palette = palettes[0];
+        limitedPalette = palettes[1];
 
         var sortedPalette;
-        if (this.sortType === 'name') {
-
+        if (this.options.sortType === 'name') {
+            sortedPalette = limitedPalette;
 
         } else {    // sort by color
 
-            sortedPalette = newLegend.outputColors(palette);
+            sortedPalette = this.outputColors(limitedPalette);
         }
 
-        newLegend.legendHTML(sortedPalette);
+        this.generateHTML(sortedPalette);
 
-
+//hello
         // moved this here to avoid querying SOLR before the palette is done building
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
+        //this.generatePalette(items);
     }
 
+});
+
+L.control.legend = function (url, options) {
+
+
+    var newLegend = new L.Control.MapLegend(options);
+
+    newLegend.addLegendIcon();
+    console.log('requesting url ' + url);
+    $.getJSON(url, function (data) {
+        newLegend.populateLegend(data, "species_category")
+    });
+    console.log(newLegend);
+    console.dir(newLegend);
     return newLegend;
 };
