@@ -70,9 +70,10 @@ function initializeMap() {
     // Now generate the legend
 
     var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
-    //console.log('requesting url ' + url);
+    //console.log('url: ' + url);
     //$.getJSON(url, generatePalette);
     legend = new L.control.legend(url);
+
 
     map.spin(false);
 
@@ -148,7 +149,7 @@ function initializeSearch() {
                     // match start: match.index
                     // capturing group n: match[n]
                     partSearch = match[1];
-                    console.log(url + encodeURI(match[1]));
+                    //console.log(url + encodeURI(match[1]));
                     if ($('#world-search').val() === '1') {
                         return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]);
                     } else {
@@ -380,6 +381,11 @@ function loadSolr(parameters) {
     var zoomLevel = parameters.zoomLevel;
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
+
+    // build a geohash grid
+    var mapBounds = map.getBounds();
+    var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
+    addGeohashes(map, South, West, North, East, geoLevel.slice(-1));
 
     //we are too deep in, just download the landmarks instead
 

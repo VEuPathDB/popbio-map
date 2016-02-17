@@ -40,6 +40,11 @@
     <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
     <script type="text/javascript" src="libs/PruneCluster/PruneCluster.min.js"></script>
     <script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js"></script>
+
+    <!-- Added js-combinatorics to enable geohashes layer-->
+    <script type="text/javascript" src="libs/geohash-js/geohash.js"></script>
+    <script type="text/javascript" src="libs/node-geohash/main.js"></script>
+
     <script type="text/javascript" src="js/Icon.Canvas.min.js"></script>
 
     <script type="text/javascript" src="js/nv.d3.pie.min.js"></script>
@@ -54,8 +59,9 @@
 
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
 
-
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
+    <!-- Added geohashes-layers.js to enable geohashes -->
+    <script type="text/javascript" src="js/geohashes-layer.js"></script>
     <!--<script type="text/javascript" src="./js/vb-popbio-maps.min.js"></script>-->
     <style>
 
@@ -638,6 +644,7 @@
     var legend;
     var PaneSpinner = null;
     var highlight = null, rectHighlight = null, firstClick = true;
+    var geohashesGrid = null;
     // map scaled values from 0-1 to colors green to red
     //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
     var trafficLight = new L.CustomColorFunction(0, 1, L.ColorBrewer.Diverging.RdYlBu[10]);
