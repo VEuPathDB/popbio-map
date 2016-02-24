@@ -13,7 +13,8 @@ function initializeMap() {
     map = L.map('map', {
         center: [23.079, 3.515],
         zoom: 3,
-        zoomControl: false
+        zoomControl: false,
+        worldCopyJump: true  //  the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
     });
 
     map.spin(true);
@@ -31,7 +32,7 @@ function initializeMap() {
         minZoom: 2,
         maxZoom: 15,
         subdomains: ["otile1", "otile2", "otile3", "otile4"],
-        noWrap: 1,
+        noWrap: 0,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
@@ -42,14 +43,14 @@ function initializeMap() {
         maxZoom: 15,
         maxNativeZoom: 11,
         subdomains: ["otile1", "otile2", "otile3", "otile4"],
-        noWrap: 1,
+        noWrap: 0,
         attribution: 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
     });
 
     var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: 15,
-        noWrap: 1,
+        noWrap: 0,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
@@ -74,7 +75,8 @@ function initializeMap() {
     //$.getJSON(url, generatePalette);
     legend = new L.control.legend(url);
 
-
+    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+    rectHighlight = null;
     map.spin(false);
 
 }
@@ -91,9 +93,7 @@ function initializeSearch() {
     // Reset search "button"
     $('#reset-search').click(function () {
         $('#search_ac').tagsinput('removeAll');
-        // remove the boundaries rectangle
-        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-        rectHighlight = null;
+
         removeHighlight();
         sidebar.close();
         setTimeout(function () {
@@ -347,9 +347,6 @@ function initializeSearch() {
         }
         var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
 
-        // remove the boundaries rectangle
-        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-        rectHighlight = null;
         removeHighlight();
         sidebar.close();
         setTimeout(function () {
@@ -385,7 +382,7 @@ function loadSolr(parameters) {
     // build a geohash grid
     var mapBounds = map.getBounds();
     var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
-    addGeohashes(map, South, West, North, East, geoLevel.slice(-1));
+    if (urlParams.grid === "true") addGeohashes(map, South, West, North, East, geoLevel.slice(-1));
 
     //we are too deep in, just download the landmarks instead
 
@@ -411,6 +408,8 @@ function loadSolr(parameters) {
             if (clear) {
                 assetLayerGroup.clearLayers();
             }
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+            rectHighlight = null;
             map.spin(false);
             return;
         }
@@ -575,9 +574,6 @@ function loadSolr(parameters) {
                 layer.on("dblclick", function () {
                     clearTimeout(timer);
                     prevent = true;
-                    // remove the boundaries rectangle
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                    rectHighlight = null;
 
                     map.fitBounds(record.bounds);
                     //resetPlots();
@@ -618,9 +614,11 @@ function loadSolr(parameters) {
                 layer.on("mouseover", function () {
                     moveTopMarker(layer);
                     var recBounds = L.latLngBounds(record.bounds);
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+
                     rectHighlight = L.rectangle(recBounds, {
-                        color: "#cyan",
-                        weight: 5,
+                        color: "grey",
+                        weight: 1,
                         fill: true,
                         clickable: false
                     }).addTo(map);
@@ -655,6 +653,8 @@ function loadSolr(parameters) {
 
 
         // inform the user that data is loaded
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
         map.spin(false);
 
     };
@@ -694,18 +694,11 @@ function loadSmall(mode, zoomLevel) {
         marker.on("dblclick", function () {
             clearTimeout(timer);
             prevent = true;
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
 
-            //resetPlots();
             // Zoom-in to marker
             if (map.getZoom() < 11) {
                 map.setView(marker._latlng, 11, {animate: true});
             } else {
-                // remove the boundaries rectangle
-                if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                rectHighlight = null;
                 removeHighlight();
                 sidebar.close();
                 setTimeout(function () {
@@ -875,10 +868,6 @@ function loadSmall(mode, zoomLevel) {
             clearTimeout(timer);
             prevent = true;
 
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
-
             // Compute the  cluster bounds (it"s slow : O(n))
             var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
             var b = pruneCluster.Cluster.ComputeBounds(markersArea);
@@ -893,9 +882,7 @@ function loadSmall(mode, zoomLevel) {
 
                 // If the zoom level doesn't change
                 if (zoomLevelAfter === zoomLevelBefore) {
-                    // remove the boundaries rectangle
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                    rectHighlight = null;
+
                     removeHighlight();
                     sidebar.close();
                     setTimeout(function () {
@@ -990,9 +977,11 @@ function loadSmall(mode, zoomLevel) {
 
             }
 
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+
             rectHighlight = L.rectangle(recBounds, {
-                color: "#cyan",
-                weight: 5,
+                color: "grey",
+                weight: 1,
                 fill: true,
                 clickable: false
             }).addTo(map);
@@ -1070,6 +1059,8 @@ function loadSmall(mode, zoomLevel) {
         }
         assetLayerGroup.addLayer(pruneCluster);
         //inform the user loading is done
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
         map.spin(false);
     };
 
@@ -1077,6 +1068,7 @@ function loadSmall(mode, zoomLevel) {
     var url = solrPopbioUrl + $('#view-mode').val() + 'Markers?' + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
 
     // inform the user that data is loading
+
     map.spin(true);
     $.getJSON(url, buildMap);
 

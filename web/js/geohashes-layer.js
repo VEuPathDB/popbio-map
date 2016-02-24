@@ -55,3 +55,89 @@ function addGeohashes(map, South, West, North, East, geolevel) {
 
 
 }
+
+//ToDo: Convert this to an object
+
+//L.GeohashGrid = L.GeohashDataLayer.extend({
+//    options: {
+//        recordsField: 'terms',
+//        geohashField: 'term',
+//        layerOptions: {
+//            fill: false,
+//            clickable: false,
+//            fillOpacity: 0,
+//            opacity: 0.3,
+//            weight: 1
+//            //color: "grey"
+//        },
+//        grid: false,
+//        geolevel: 2,
+//    },
+//
+//    data: {
+//        "_type": "terms",
+//        "terms": []
+//    },
+//
+//
+//    _fillGeohashes: function (parameters) {
+//
+//        if (!parameters.geolevel) parameters.geolevel = this.options.geolevel;
+//        var geohashes = geohash.bboxes(parameters.South, parameters.West, parameters.North, parameters.East, parameters.geolevel);
+//
+//        function fillHash (element) {
+//            this.terms.push(
+//                {
+//                    //"count": 1,
+//                    "term": element
+//                }
+//            )
+//        }
+//
+//        geohashes.forEach(fillHash, this.data);
+//
+//
+//    },
+//
+//    _addGrid: function (South, West, North, East, geolevel) {
+//        if (!geolevel) geolevel = this.geolevel;
+//        if (!this.options.grid) {
+//
+//            this._fillGeohashes({
+//                South: South,
+//                West: West,
+//                North: North,
+//                East: East,
+//                geolevel: geolevel
+//            });
+//            this.options.grid = true;
+//        }
+//    },
+//
+//    _removeGrid: function () {
+//        if (this.options.grid) {
+//            map.removeLayer(geohashesGrid); // find the proper name, from the variable
+//            this.options.grid = true;
+//
+//        }
+//    },
+//
+//    redrawGrid: function (parameters) {
+//        if (this.options.grid) {
+//           this._removeGrid(); // find the proper name, from the variable
+//
+//        }
+//
+//        this._addGrid(parameters.South, parameters.West, parameters.North, parameters.East, parameters.geolevel);
+//    }
+//
+//});
+//
+//L.geohashGrid = function (parameters) {
+//
+//
+//    var newGrid = new L.GeohashGrid();
+//
+//
+//    return newGrid;
+//};

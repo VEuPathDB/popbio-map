@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/vectorbase.min.css" type="text/css" media="screen"/>
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
+    <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css" />-->
     <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="css/MarkerCluster.Default.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.min.css" type="text/css" media="screen"/>
@@ -29,6 +30,7 @@
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <!--<script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"></script>-->
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.min.js"></script>
@@ -465,6 +467,7 @@
 
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -534,6 +537,7 @@
             </ul>
         </div>
     </div>
+
 
 
 
@@ -620,6 +624,7 @@
 
 
 
+
 </script>
 
 <!-- Stop cutting here for Map stuff -->
@@ -644,7 +649,8 @@
     var legend;
     var PaneSpinner = null;
     var highlight = null, rectHighlight = null, firstClick = true;
-    var geohashesGrid = null;
+    var geohashesGrid = null
+    //            , viewGrid = false;
     // map scaled values from 0-1 to colors green to red
     //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
     var trafficLight = new L.CustomColorFunction(0, 1, L.ColorBrewer.Diverging.RdYlBu[10]);
@@ -665,21 +671,21 @@
     //      FixMe: kind of an ugly hack to set the dropdown text.
 
     if (urlParams.view === 'ir') {
-        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Insecticide Resistance Phenotypes View" + ' <span class="caret"></span>')
+        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Insecticide Resistance Phenotypes View" + ' <span class="caret"></span>');
         $('#view-mode').val('ir');
     } else {
-        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Samples view" + ' <span class="caret"></span>')
+        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Samples view" + ' <span class="caret"></span>');
         $('#view-mode').val('smpl');
     }
+    ;
+
+
 
     $(window).load(function () {
         initializeMap();
 
         // detect when user changes zoom or pans around the map
         map.on("movestart", function () {
-                    // remove the boundaries rectangle
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                    rectHighlight = null;
                     removeHighlight();
                     sidebar.close();
                     setTimeout(function () {
@@ -699,9 +705,6 @@
                 });
 
         $('#search_ac').on('itemAdded', function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
             removeHighlight();
             sidebar.close();
             setTimeout(function () {
@@ -711,9 +714,6 @@
             filterMarkers($("#search_ac").tagsinput('items'));
         });
         $('#search_ac').on('itemRemoved', function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
             removeHighlight();
             sidebar.close();
             setTimeout(function () {
