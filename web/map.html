@@ -386,6 +386,7 @@
 
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -455,6 +456,7 @@
             </ul>
         </div>
     </div>
+
 
 
 
@@ -539,6 +541,7 @@
 
 
 
+
 </script>
 
 <!-- Stop cutting here for Map stuff -->
@@ -604,17 +607,17 @@
         initializeMap();
         // detect when user changes zoom or pans around the map
         map.on("movestart", function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
-            removeHighlight();
-            sidebar.close();
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-        })
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                    rectHighlight = null;
+                    removeHighlight();
+                    sidebar.close();
+                    setTimeout(function () {
+                        resetPlots()
+                    }, delay);
+                })
                 .on("moveend", function () {
-
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                    rectHighlight = null;
                     loadSolr({clear: 1, zoomLevel: map.getZoom()});
                 })
                 .on("click", function () {
@@ -626,9 +629,6 @@
                 });
 
         $('#search_ac').on('itemAdded', function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
             removeHighlight();
             sidebar.close();
             setTimeout(function () {
@@ -639,9 +639,6 @@
         });
 
         $('#search_ac').on('itemRemoved', function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
             removeHighlight();
             sidebar.close();
             setTimeout(function () {
