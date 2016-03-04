@@ -294,9 +294,9 @@ function initializeSearch() {
                         empty: function () {
                             var msg;
                             if ($('#world-search').val() === '1') {
-                                msg = 'No results found';
+                                msg = 'No suggestions found. Hit Enter to perform a free text search instead.';
                             } else {
-                                msg = 'No results found. Try enabling world search.';
+                                msg = 'No suggestions found. Try enabling world search or hit enter to perform a free text search instead.';
 
                             }
                             return [
