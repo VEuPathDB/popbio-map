@@ -296,16 +296,32 @@
                 <input type="text" class="form-control" placeholder="Search..." id="search_ac"
                        data-role="tagsinput"/>
 
+
+
+                <span id="date-select" class="input-group-addon btn-info"
+                      style="cursor: pointer"
+                      title="Search by date"
+                      data-toggle="collapse"
+                      data-target="#daterange">
+                        <i class="fa fa-calendar fa-fw"
+                           id="calendar-icon"
+                           style="color: white;"></i>
+                    </span>
+
+
+
+
                     <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"
                           title="Reset search"><i
                             class="fa fa-times fa-fw"
                             style="color: white"></i></span>
 
-                    <span id="toggle-world" class="input-group-addon btn-primary" style="cursor: pointer"
+                    <span id="toggle-world" class="input-group-addon btn-primary"
+                          style="cursor: pointer"
                           title="Limit search suggestions to current view">
                         <i class="fa fa-globe fa-fw"
                            id="world-icon"
-                           style="color: white"></i></span>
+                           style="color: white;"></i></span>
 
 
                 <div class="input-group-addon dropdown btn-default" id="SelectView" style="cursor: pointer">
@@ -319,6 +335,78 @@
                             phenotypes view</a></li>
                     </ul>
                 </div>
+            </div>
+
+            <div class="collapse" style="margin-top:7px;" id="daterange">
+
+                <div class="input-daterange input-group" id="datepicker">
+                    <span class="input-group-addon"
+                          title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>
+                    <input id="date-start" type="text" class="form-control" name="start"/>
+                    <span class="input-group-addon">to</span>
+                    <input id="date-end" type="text" class="form-control" name="end"/>
+                    <span class="input-group-btn">
+                        <button
+                                id="add-dates" type="button" class="btn btn-success"
+                                title="Add date filter"
+                                disabled
+                                data-toggle="collapse"
+                                data-target="#daterange">
+                            <i
+                                    class="fa fa-plus fa-fw"
+                                    style="color: white">
+
+                            </i>
+                        </button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button
+                                id="clear-dates" type="button" class="btn btn-danger"
+                                title="Cancel"
+                                data-toggle="collapse"
+                                data-target="#daterange">
+                            <i
+                                    class="fa fa-times fa-fw"
+                                    style="color: white">
+
+                            </i>
+                        </button>
+                    </span>
+
+
+                </div>
+
+                <!-- predefined date ranges-->
+
+                <div class="input-group" style="margin-top: 3px;">
+                    <span class="input-group-addon" title="Display most recently collected samples"><i
+                            class="fa fa-long-arrow-left"></i><i class="fa fa-dot-circle-o fa-fw"></i></span>
+
+                    <span class="btn-group btn-group-justified" role="group">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="50">50 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="40">40 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="30">30 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="20">20 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="15">15 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="10">10 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="5">5 years</button>
+                        </div>
+                    </span>
+                </div>
+
             </div>
             <input type="hidden" id="world-search" name="world-search" value="1">
             <input type="hidden" id="view-mode" name="view-mode" value="smpl">
@@ -380,11 +468,6 @@
             </ul>
         </div>
     </div>
-
-
-
-
-
 
 
 </script>
@@ -456,10 +539,6 @@
             </ul>
         </div>
     </div>
-
-
-
-
 
 
 
@@ -542,6 +621,29 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 <!-- Stop cutting here for Map stuff -->
@@ -553,12 +655,12 @@
     // Global vars
     // Should minimize them
 
-    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
-    var solrTaUrl = 'asolr/solr/vb_ta/';
+    //    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
+    //    var solrTaUrl = 'asolr/solr/vb_ta/';
+    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
     //    var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
-    //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
+    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
     //    var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
-    //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
     var map, sidebar;
     var assetLayerGroup;
     var smallClusters = [];
@@ -569,6 +671,8 @@
     var legend;
     var PaneSpinner = null;
     var highlight = null, rectHighlight = null, firstClick = true;
+    var geohashesGrid = null
+    //            , viewGrid = false;
     // map scaled values from 0-1 to colors green to red
     //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
     var trafficLight = new L.CustomColorFunction(0, 1, L.ColorBrewer.Diverging.RdYlBu[10]);
@@ -576,12 +680,10 @@
     // Hack to prevent single click events firing when double clicking
     var timer = 0;
     var delay = 400;
-    var prevent = false, stickyHover = false;
 
+    var prevent = false, stickyHover = false;
     // this is to remember background type selection between markers
     var bgPlotType = 1;
-    var resizeId, previousWindowHeight;
-
 
     initializeSearch();
 
@@ -591,24 +693,77 @@
     //      FixMe: kind of an ugly hack to set the dropdown text.
 
     if (urlParams.view === 'ir') {
-        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Insecticide Resistance Phenotypes View" + ' <span class="caret"></span>')
+        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Insecticide Resistance Phenotypes View" + ' <span class="caret"></span>');
         $('#view-mode').val('ir');
     } else {
-        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Samples view" + ' <span class="caret"></span>')
+        $("#SelectView").find("li a").parents(".dropdown").find(".dropdown-toggle").html("Samples view" + ' <span class="caret"></span>');
         $('#view-mode').val('smpl');
     }
 
+    //    bind the date range text fields to the datepicker
+    $('#daterange').find('.input-daterange').datepicker({
+//        language: "en-GB",
+        format: "dd/mm/yyyy",
+        startView: 2,
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true,
+        endDate: "Date.now()"
+    });
+
+    $("#date-start").datepicker()
+            .on('changeDate', function (e) {
+//                console.log(dateStart + ' ' + dateEnd );
+                $("#add-dates").prop('disabled', false);
+                $("#clear-dates").prop('disabled', false)
+            });
+
+    $("#add-dates").click(function () {
+        var dateStart = new Date($("#date-start").datepicker('getUTCDate'));
+        var dateEnd = new Date($("#date-end").datepicker('getUTCDate'));
+        var value;
+        if (dateStart.getTime() === dateEnd.getTime()) {
+            value = dateStart.toLocaleDateString('en-GB')
+        } else {
+            value = dateStart.toLocaleDateString('en-GB') + '-' + dateEnd.toLocaleDateString('en-GB')
+        }
+        $('#search_ac').tagsinput('add', {
+            value: value,
+            dateStart: dateStart,
+            dateEnd: dateEnd,
+            type: 'Date',
+            field: 'collection_date',
+//            field: 'collection_date_range',
+
+        });
+        $("#date-start").datepicker("clearDates");
+        $("#date-end").datepicker("clearDates");
+        setTimeout(function () {
+            $("#add-dates").prop('disabled', true);
+//            $("#clear-dates").prop('disabled', true)
+        }, delay);
+    });
+
+    $("#clear-dates").click(function () {
+        $("#date-start").datepicker("clearDates");
+        $("#date-end").datepicker("clearDates");
+        setTimeout(function () {
+            $("#add-dates").prop('disabled', true);
+//            $("#clear-dates").prop('disabled', true)
+        }, delay);
+    });
+
+    $('.date-shortcut').click(function () {
+        console.log(this.value);
+        setDateRange('#date-start', "#date-end", this.value);
+
+    });
+
     $(window).load(function () {
-
-        var windowHeight = $(window).height();
-        $('#map_container').height(windowHeight - 166 - 55);
-        previousWindowHeight = windowHeight;
-
         initializeMap();
+
         // detect when user changes zoom or pans around the map
         map.on("movestart", function () {
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                    rectHighlight = null;
                     removeHighlight();
                     sidebar.close();
                     setTimeout(function () {
@@ -616,8 +771,7 @@
                     }, delay);
                 })
                 .on("moveend", function () {
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                    rectHighlight = null;
+
                     loadSolr({clear: 1, zoomLevel: map.getZoom()});
                 })
                 .on("click", function () {
@@ -637,7 +791,6 @@
 
             filterMarkers($("#search_ac").tagsinput('items'));
         });
-
         $('#search_ac').on('itemRemoved', function () {
             removeHighlight();
             sidebar.close();
@@ -647,27 +800,8 @@
 
             filterMarkers($("#search_ac").tagsinput('items'));
         });
-
-
     });
 
-    $(window).resize(function () {
-        clearTimeout(resizeId);
-        resizeId = setTimeout(doneResizing, 500);
-    });
-
-
-    function doneResizing() {
-        //whatever we want to do
-        var windowHeight = $(window).height();
-        if (windowHeight != previousWindowHeight) {
-            $('#map_container').height(windowHeight - 166 - 55);
-            previousWindowHeight = windowHeight;
-            map.invalidateSize();
-
-
-        }
-    }
 
 </script>
 

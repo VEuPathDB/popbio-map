@@ -1,3 +1,192 @@
+function bindEvents() {
+    "use strict"
+
+    if (urlParams.view === 'ir') {
+        $("#SelectViewDropdown").find(".dropdown-menu li a").parents(".dropdown").find(".btn").html("<i class='fa fa-eye' id='view-icon'></i> Insecticide Resistance" + ' <span class="caret"></span>');
+        $('#view-mode').val('ir');
+    } else {
+        $("#SelectViewDropdown").find(".dropdown-menu li a").parents(".dropdown").find(".btn").html("<i class='fa fa-eye' id='view-icon'></i> Samples" + ' <span class="caret"></span>');
+        $('#view-mode').val('smpl');
+    }
+
+
+    // Toggle grid
+    $('#grid-toggle').change(function () {
+
+        if (!$(this).prop('checked')) {
+            map.removeLayer(geohashesGrid);
+        } else {
+            var geoLevel = geohashLevel(map.getZoom(), "geohash");
+            addGeohashes(map, geoLevel.slice(-1));
+        }
+    });
+
+    // collapse open panels
+
+    // clear the date selection panel once collapsed
+    $('#daterange').on('hidden.bs.collapse', function () {
+        $("#date-start").datepicker("clearDates");
+        $("#date-end").datepicker("clearDates");
+        $("#add-dates").prop('disabled', true);
+        $("#add-season").prop('disabled', true);
+    });
+
+    // clear the seasonal search panel once collapsed
+    $('#seasonal').on('hidden.bs.collapse', function () {
+        if (checkSeasonal()) return;
+
+        $('.season-toggle').each(function () {
+//                console.log($(this).prop('checked'));
+            if ($(this).prop('checked')) {
+                $(this).bootstrapToggle('off');
+            }
+        })
+
+    });
+
+
+    $('#date-select, #SelectViewDropdown').click(function () {
+        if ($('#seasonal').attr("aria-expanded") == 'true') {
+            $('#seasonal').collapse('hide');
+        }
+    });
+
+    $('#season-select, #SelectViewDropdown').click(function () {
+
+        if ($('#daterange').attr("aria-expanded") == 'true') {
+            $('#daterange').collapse('hide');
+        }
+    });
+
+
+    // bind the date range text fields to the datepicker
+    $('#daterange').find('.input-daterange').datepicker({
+        format: "dd/mm/yyyy",
+        startView: 2,
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true,
+        endDate: "Date.now()"
+    });
+
+    // collect the months to be included in the seasonal search
+    $('.season-toggle').change(function () {
+        var enable = false;
+        $('.season-toggle').each(function () {
+            var curMonth = $(this).val(), curMode = $(this).prop('checked');
+            months[curMonth] = curMode;
+            if (curMode) enable = true;
+        });
+
+        if (enable) {
+            $("#add-season").prop('disabled', false);
+        } else {
+            $("#add-season").prop('disabled', true);
+        }
+    });
+
+    // add the seasonal filter into search
+    $('#add-season').click(function () {
+        var objRanges = constructSeasonal(months);
+        // add the filter, by keeping the value the same ('seasonal') we ensure
+        // that there's only one seasonal filter enabled at any given point
+        if (checkSeasonal()) {
+
+            // adding the item with replace: true will prevent the map from updating
+            // it will update once we remove the old tag
+            $('#search_ac').tagsinput('add', {
+                value: objRanges.rangesText.toString(),
+                ranges: objRanges.ranges,
+                replace: true,
+                type: 'Seasonal',
+                field: 'collection_season'
+
+            });
+
+            $('#search_ac').tagsinput('remove', checkSeasonal());
+        } else {
+            $('#search_ac').tagsinput('add', {
+                value: objRanges.rangesText.toString(),
+                ranges: objRanges.ranges,
+                replace: false,
+                type: 'Seasonal',
+                field: 'collection_season'
+
+            });
+        }
+    });
+
+
+    // Enable the add dates button only if the date fields are populated
+    $("#date-start").datepicker()
+        .on('changeDate', function (e) {
+            $("#add-dates").prop('disabled', false);
+        });
+
+    // add the date filter into search
+    $("#add-dates").click(function () {
+        var dateStart = new Date($("#date-start").datepicker('getUTCDate'));
+        var dateEnd = new Date($("#date-end").datepicker('getUTCDate'));
+        var value;
+        if (dateStart.getTime() === dateEnd.getTime()) {
+            value = dateStart.toLocaleDateString('en-GB')
+        } else {
+            value = dateStart.toLocaleDateString('en-GB') + '-' + dateEnd.toLocaleDateString('en-GB')
+        }
+
+        $('#search_ac').tagsinput('add', {
+            value: value,
+            dateStart: dateStart,
+            dateEnd: dateEnd,
+            type: 'Date',
+//                field: 'collection_date',
+            field: 'collection_date_range'
+
+        });
+
+    });
+
+    $('.date-shortcut').click(function () {
+        console.log(this.value);
+        setDateRange('#date-start', "#date-end", this.value);
+
+    });
+
+
+    $('#search_ac').on('itemAdded', function (event) {
+        // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
+        if (event.item.replace) return;
+
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+
+        filterMarkers($("#search_ac").tagsinput('items'));
+    });
+    $('#search_ac').on('itemRemoved', function () {
+        // reset the seasonal search panel
+        if (!checkSeasonal()) {
+
+            $('.season-toggle').each(function () {
+                if ($(this).prop('checked')) {
+                    $(this).bootstrapToggle('off');
+                }
+            })
+        }
+
+
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+
+        filterMarkers($("#search_ac").tagsinput('items'));
+    });
+}
+
 /*
  function initialize_map
  date: 18/6/2015
@@ -94,6 +283,14 @@ function initializeSearch() {
     $('#reset-search').click(function () {
         $('#search_ac').tagsinput('removeAll');
 
+        // reset seasonal search panel
+        $('.season-toggle').each(function () {
+            if ($(this).prop('checked')) {
+                $(this).bootstrapToggle('off');
+            }
+        });
+
+
         removeHighlight();
         sidebar.close();
         setTimeout(function () {
@@ -103,20 +300,20 @@ function initializeSearch() {
     });
 
     // World search toggle
-    $('#toggle-world').click(function () {
-
-        if ($('#world-search').val() === '1') {
-            $('#toggle-world').toggleClass("btn-primary", false)
-                .attr('title', 'Enable global search suggestions');
-            $('#world-search').val('0');
-            $('#world-icon').css('color', '#265a88');
-        } else {
-            $('#toggle-world').toggleClass("btn-primary", true)
-                .attr('title', 'Limit search suggestions to current view');
-            $('#world-search').val('1');
-            $('#world-icon').css('color', 'white');
-        }
-    });
+    // $('#toggle-world').click(function () {
+    //
+    //     if ($('#world-search').val() === '1') {
+    //         $('#toggle-world').toggleClass("btn-primary", false)
+    //             .attr('title', 'Enable global search suggestions');
+    //         $('#world-search').val('0');
+    //         $('#world-icon').css('color', '#265a88');
+    //     } else {
+    //         $('#toggle-world').toggleClass("btn-primary", true)
+    //             .attr('title', 'Limit search suggestions to current view');
+    //         $('#world-search').val('1');
+    //         $('#world-icon').css('color', 'white');
+    //     }
+    // });
 
 
     //FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case handling
@@ -150,19 +347,19 @@ function initializeSearch() {
                     // capturing group n: match[n]
                     partSearch = match[1];
                     //console.log(url + encodeURI(match[1]));
-                    if ($('#world-search').val() === '1') {
-                        return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]);
-                    } else {
+                    if ($('#world-toggle').prop('checked')) {
                         return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
+                    } else {
+                        return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]);
                     }
                 } else {
                     // Match attempt failed
                     partSearch = false;
 
-                    if ($('#world-search').val() === '1') {
-                        return url + encodeURI(query);
-                    } else {
+                    if ($('#world-toggle').prop('checked')) {
                         return url + encodeURI(query) + buildBbox(map.getBounds());
+                    } else {
+                        return url + encodeURI(query);
                     }
                 }
 
@@ -220,7 +417,7 @@ function initializeSearch() {
             },
             replace: function (url, query) {
                 url = solrTaUrl + $('#view-mode').val() + 'Acgrouped?q=';
-                if ($('#world-search').val() === '1') {
+                if ($('#world-toggle').prop('checked')) {
                     return url + encodeURI(query) + '*';
                 } else {
                     return url + encodeURI(query) + '*' + buildBbox(map.getBounds());
@@ -270,6 +467,10 @@ function initializeSearch() {
                     return 'label label-success fa fa-eyedropper';
                 case 'Collection protocols' :
                     return 'label label-success fa fa-shopping-cart';
+                case 'Date' :
+                    return 'label label-info fa fa-calendar';
+                case 'Seasonal' :
+                    return 'label label-info fa fa-calendar-check-o';
                 default :
                     return 'label label-warning fa fa-search';   // orange
             }
@@ -293,11 +494,11 @@ function initializeSearch() {
                     templates: {
                         empty: function () {
                             var msg;
-                            if ($('#world-search').val() === '1') {
-                                msg = 'No suggestions found. Hit Enter to perform a free text search instead.';
-                            } else {
+                            if ($('#world-toggle').prop('checked')) {
                                 msg = 'No suggestions found. Try enabling world search or hit enter to perform a free text search instead.';
 
+                            } else {
+                                msg = 'No suggestions found. Hit Enter to perform a free text search instead.';
                             }
                             return [
                                 '<span class="tt-suggestions" style="display: block;">',
@@ -336,13 +537,14 @@ function initializeSearch() {
     });
 
     // Set current view
-    $("#SelectView").find("li a").click(function () {
+
+    $(".dropdown-menu li a").click(function () {
+        $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
+        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
         var selText = $(this).text();
-        if (selText === "Samples view") {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
+        if (selText === "Samples") {
             $('#view-mode').val('smpl');
         } else {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html('IR phenotypes view' + ' <span class="caret"></span>');
             $('#view-mode').val('ir');
         }
         var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
@@ -357,7 +559,28 @@ function initializeSearch() {
         });
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
+    });
 
+    $("#SelectViewDropdown").find(".dropdown-menu li a").click(function () {
+
+        var selText = $(this).text();
+        if (selText === "Samples") {
+            $('#view-mode').val('smpl');
+        } else {
+            $('#view-mode').val('ir');
+        }
+        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+        $.getJSON(url, function (data) {
+            legend.populateLegend(data, "species_category")
+        });
+        acSuggestions.initialize(true);
+        acOtherResults.initialize(true);
     });
 
 }
@@ -380,9 +603,10 @@ function loadSolr(parameters) {
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
     // build a geohash grid
-    var mapBounds = map.getBounds();
-    var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
-    if (urlParams.grid === "true") addGeohashes(map, South, West, North, East, geoLevel.slice(-1));
+    // var mapBounds = map.getBounds();
+    // var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
+    // if (urlParams.grid === "true") addGeohashes(map, South, West, North, East, geoLevel.slice(-1));
+    if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, geoLevel.slice(-1));
 
     //we are too deep in, just download the landmarks instead
 
@@ -674,6 +898,28 @@ function loadSolr(parameters) {
 
 
 }
+
+
+/*
+ function checkSeasonal
+ date: 6/4/2016
+ purpose: go through the search terms and check whether a seasonal tag already exits
+ inputs: none
+ outputs: the value of the seasonal tag if it exists, otherwise false
+ */
+
+function checkSeasonal() {
+    var activeTerms = $('#search_ac').tagsinput('items');
+
+    for (var i = 0; i < activeTerms.length; i++) {
+        var obj = activeTerms[i];
+        if (obj.type === 'Seasonal') return obj.value;
+
+    }
+
+    return false;
+}
+
 
 function loadSmall(mode, zoomLevel) {
     "use strict";
@@ -1316,17 +1562,27 @@ function tableHtml(divid, results) {
 
 
     results.forEach(function (element) {
-        var dates = element.collection_date;
+        var dates = element.collection_date_range;
         var frmDate;
 
-        // convert a pair of dates (date range) to a string
-        if (dates && dates.length > 1) {
+        if (dates && dates.length > 0) {
+            var dateString = dates[0];
+            if (/TO/.test(dateString)) {
+                // Successful match
+                var myregexp = /\[(\S+)\sTO\s(\S+)\]/;
+                var match = myregexp.exec(dateString);
+                var startDateString = match[1], endDateString = match[2];
+                frmDate = dateResolution(startDateString) + ' to ' + dateResolution(endDateString);
+                // dateResolution(match[2]);
 
-            var startDate = new Date(dates[0]), endDate = new Date(dates[1]);
-            frmDate = startDate.toDateString() + '-' + endDate.toDateString();
-        } else if (dates && dates.length > 0) {
-            var date = new Date(dates[0]);
-            frmDate = date.toDateString();
+
+            } else {
+                // Match attempt failed
+                var date = new Date(dateString);
+                frmDate = date.toDateString();
+
+            }
+
         }
 
         var species = element.species_category ? element.species_category[0] : 'Unknown';
@@ -1433,6 +1689,38 @@ function filterMarkers(items) {
     items.forEach(function (element) {
 
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
+
+        if (element.type === 'Date') {
+
+            var format = "YYYY-MM-DD";
+
+
+            var dateEnd = dateConvert(element.dateEnd, format);
+            var dateStart = dateConvert(element.dateStart, format);
+
+            terms[element.type].push({
+                "field": element.field, "value": '[' + dateStart + ' TO ' + dateEnd + ']'
+            });
+            return
+
+        }
+
+        if (element.type === 'Seasonal') {
+
+
+            for (var j = 0; j < element.ranges.length; j++) {
+                var range = element.ranges[j];
+                terms[element.type].push({
+                    "field": element.field, "value": '[' + range + ']'
+                });
+
+            }
+
+
+            return
+
+        }
+
 
         if (element.qtype == 'exact') {
             terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
@@ -1559,6 +1847,8 @@ function mapTypeToField(type) {
             return "id";
         case "Insecticides":
             return "insecticide_cvterms";
+        case "Collection date":
+            return "collection_date_range";
         default :
             return type.toLowerCase()
 
@@ -1725,6 +2015,158 @@ Number.prototype.roundDecimals = function (decimals) {
     }
 
 };
+
+function constructSeasonal(selectedMonths) {
+    // build ranges
+    var format = "YYYY-MM", formatText = "MMM";
+    var ranges = [], rangesText = [];
+    var range, rangeText, inRange = false;
+    var startDate = new Date(1600, 0, 1), endDate = new Date(1600, 0, 1);
+
+    for (var i = 1; i < 13; i++) {
+        var month = selectedMonths[i];
+        if (month) {
+            if (!inRange) {
+
+                startDate.setMonth(i - 1);
+                endDate.setMonth(i - 1);
+                inRange = true;
+            } else {
+                endDate.setMonth(i - 1);
+            }
+
+            if (i === 12) {
+
+                range = dateConvert(startDate, format) + ' TO ' + dateConvert(endDate, format);
+                ranges.push(range);
+
+                if (startDate.getTime() === endDate.getTime()) {
+
+                    rangeText = dateConvert(startDate, formatText);
+                } else {
+
+                    rangeText = dateConvert(startDate, formatText) + '-' + dateConvert(endDate, formatText);
+                }
+
+                rangesText.push(rangeText);
+                inRange = false;
+                // console.log(i + ': ' + month + ' ' + range);
+            }
+
+
+        } else {
+            if (inRange) {
+
+                range = dateConvert(startDate, format) + ' TO ' + dateConvert(endDate, format);
+                ranges.push(range);
+
+                if (startDate.getTime() === endDate.getTime()) {
+
+                    rangeText = dateConvert(startDate, formatText);
+                } else {
+
+                    rangeText = dateConvert(startDate, formatText) + '-' + dateConvert(endDate, formatText);
+                }
+
+                rangesText.push(rangeText);
+                inRange = false;
+            }
+
+        }
+    }
+
+    return {
+        ranges: ranges,
+        rangesText: rangesText
+    };
+}
+
+/*
+ function dateResolution
+ date: 7/4/2016
+ purpose: Given a SOLR date string return the proper date format based on the resolution of the string
+ inputs: dateString: a SOLR date string e.g. 2016-01 or 2016-01-03
+ outputs: a string e.g Jan 2016 or Mon Jan 3 2016
+ */
+
+function dateResolution(dateString) {
+    // very complex regex I got from https://gist.github.com/philipashlock/8830168
+    // could probably simplify it a lot for our needs but I'm leaving it like this for possible future use
+    // match[1] is year, match[5] is month, match[7] is day
+    var myregexp = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/g;
+    var match = myregexp.exec(dateString);
+    var year = match[1], month = match[5], day = match[7];
+
+    if (typeof day !== 'undefined') {
+        var date = new Date(dateString);
+        return date.toDateString();
+    }
+
+    if (typeof month !== 'undefined') {
+        var format = "MMM YYYY", date = new Date(dateString);
+        return dateConvert(date, format);
+    }
+
+    if (typeof year !== 'undefined') {
+        return dateString;
+    }
+
+    return false;
+    console.log(match[1] + '-' + match[5] + '-' + match[7]);
+
+
+}
+
+function setDateRange(elementStart, elementEnd, yearsAgo) {
+
+    var startingYear = new Date();
+    // When initialing the datepicker end date is limited to the current time,
+    // As a result we must set endDate to earlier tonight for "Today" to be allowed in the date-end field
+    var endDate = new Date(Date.UTC(startingYear.getUTCFullYear(), startingYear.getUTCMonth(), startingYear.getUTCDate()));
+
+    // Find the starting year
+    startingYear.setUTCFullYear(startingYear.getUTCFullYear() - yearsAgo);
+    // Set the start date as the January 1st of the starting year
+    var startDate = new Date(Date.UTC(startingYear.getUTCFullYear(), 0, 1));
+
+    // Udated the input fields
+    $(elementStart).datepicker('setUTCDate', startDate);
+    $(elementEnd).datepicker('setUTCDate', endDate);
+
+}
+
+function dateConvert(dateobj, format) {
+    var year = dateobj.getFullYear();
+    var month = ("0" + (dateobj.getMonth() + 1)).slice(-2);
+    var date = ("0" + dateobj.getDate()).slice(-2);
+    var hours = ("0" + dateobj.getHours()).slice(-2);
+    var minutes = ("0" + dateobj.getMinutes()).slice(-2);
+    var seconds = ("0" + dateobj.getSeconds()).slice(-2);
+    var day = dateobj.getDay();
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var dates = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var converted_date = "";
+
+    switch (format) {
+        case "YYYY-MM-DD":
+            converted_date = year + "-" + month + "-" + date;
+            break;
+        case "YYYY-MM":
+            converted_date = year + "-" + month;
+            break;
+        case "MMM YYYY":
+            converted_date = months[parseInt(month) - 1] + " " + year;
+            break;
+        case "YYYY-MMM-DD DDD":
+            converted_date = year + "-" + months[parseInt(month) - 1] + "-" + date + " " + dates[parseInt(day)];
+            break;
+        case "MMM":
+            converted_date = months[parseInt(month) - 1];
+            break;
+    }
+
+    return converted_date;
+}
 
 
 // Add an URL parser to JQuery that returns an object

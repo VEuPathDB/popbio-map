@@ -369,7 +369,7 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
                     tooltipY = d3.event.pageY - 28;
                 }
 
-                tooltip.style("left", (d3.event.pageX + 5) + "px")
+                tooltip.style("left", (d3.event.pageX + 20) + "px")
                     .style("top", (tooltipY) + "px")
 
             })

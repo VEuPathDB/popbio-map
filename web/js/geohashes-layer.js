@@ -3,10 +3,14 @@
  */
 
 
-function addGeohashes(map, South, West, North, East, geolevel) {
+function addGeohashes(objMap, geolevel) {
 
+    // var geolevel = geohashLevel(zoomLevel, "geohash").slice(-1);
+    var mapBounds = objMap.getBounds();
+    var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
+    
     if (geohashesGrid) {
-        map.removeLayer(geohashesGrid)
+        objMap.removeLayer(geohashesGrid)
     }
 
     var geohashData = {
@@ -17,7 +21,6 @@ function addGeohashes(map, South, West, North, East, geolevel) {
     var geohashes = geohash.bboxes(South, West, North, East, geolevel);
 
     function fillGeohashesCounts(element, index) {
-        //console.log(a.join(""))
         geohashData.terms.push(
             {
                 //"count": 1,
@@ -31,13 +34,6 @@ function addGeohashes(map, South, West, North, East, geolevel) {
     var options = {
         recordsField: 'terms',
         geohashField: 'term',
-        //showLegendTooltips: false,
-        //tooltipOptions: {
-        //    fillOpacity: 0,
-        //    opacity: 0.5,
-        //    weight: 1,
-        //    gradient: false
-        //},
         layerOptions: {
             fill: false,
             clickable: false,
@@ -51,7 +47,7 @@ function addGeohashes(map, South, West, North, East, geolevel) {
 
     geohashesGrid = new L.GeohashDataLayer(geohashData, options);
 
-    map.addLayer(geohashesGrid);
+    objMap.addLayer(geohashesGrid);
 
 
 }
