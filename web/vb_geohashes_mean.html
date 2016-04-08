@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 
-    <!--<link rel="stylesheet" type="text/css" media="all"-->
-    <!--href="https://www.vectorbase.org/minified/c6a48c3adcbeafed959ece477ab7a8e5.css"/>-->
+    <!-- CSS styles-->
     <link rel="stylesheet" href="css/vectorbase.min.css" type="text/css" media="screen"/>
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
@@ -17,45 +16,75 @@
     <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/nvd3/nv.d3.min.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">-->
+    <link rel="stylesheet" href="css/bootstrap-yeti.css">
     <link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.min.css">
-
-
     <link rel="stylesheet" href="./css/typeaheadjs.min.css">
+    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.min.css"/>
+    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.min.css"/>
+
     <link rel="stylesheet" href="./css/vb-popbio-maps.min.css">
 
+    <!-- Bootstrap toggles -->
+    <!--<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="libs/bootstrap-toggle/css/bootstrap-toggle.min.css"/>
 
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <!-- Javascript libraries -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
     <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.min.js"></script>
     <script type="text/javascript" src="libs/leaflet.fullscreen/Control.FullScreen.min.js"></script>
     <script type="text/javascript" src="libs/spin.js/spin.min.js"></script>
     <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.min.js"></script>
-    <script type="text/javascript" src="js/Icon.Canvas.min.js"></script>
     <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
     <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
     <script type="text/javascript" src="libs/PruneCluster/PruneCluster.min.js"></script>
-
-    <script type="text/javascript" src="js/nv.d3.pie.min.js"></script>
     <script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js"></script>
+
+    <!-- Bootstrap toggles -->
+    <!--<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>-->
+    <script type="text/javascript" src="libs/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+
+
+    <!-- Added geohash to enable geohashes layer -->
+    <script type="text/javascript" src="libs/geohash-js/geohash.js"></script>
+    <script type="text/javascript" src="libs/node-geohash/main.js"></script>
+
     <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.min.js"></script>
 
+    <!-- VB code -->
+    <script type="text/javascript" src="js/map.Legend.js"></script>
+    <script type="text/javascript" src="js/Icon.Canvas.min.js"></script>
+    <script type="text/javascript" src="js/nv.d3.pie.min.js"></script>
     <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
-    <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
     <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
     <script type="text/javascript" src="libs/jsrender/jsrender.min.js"></script>
     <script type="text/javascript"
             src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.js"></script>
-
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
-
-
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
-    <!--<script type="text/javascript" src="./js/vb-popbio-maps.min.js"></script>-->
+    <!-- Added geohashes-layers.js to enable geohashes -->
+    <script type="text/javascript" src="js/geohashes-layer.js"></script>
+
+
+    <!-- Date range search -->
+    <!-- Include Required Prerequisites -->
+    <!--<script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>-->
+    <!--<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>-->
+    <!--<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css" />-->
+
+    <!-- Include Date Range Picker -->
+    <!--<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
+
     <style>
 
     </style>
@@ -73,46 +102,7 @@
 
 <div id="min_width_container">
 
-    <!-- Map stuff -->
-    <!-- Place a floating div above the map for the search controls -->
-    <div class="mapbox">
-        <div class="overlaytop">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-
-                <input type="text" class="form-control" placeholder="Search..." id="search_ac"
-                       data-role="tagsinput"/>
-
-                    <span id="reset-search" class="input-group-addon btn-danger" style="cursor: pointer"
-                          title="Reset search"><i
-                            class="fa fa-times fa-fw"
-                            style="color: white"></i></span>
-
-                    <span id="toggle-world" class="input-group-addon btn-primary" style="cursor: pointer"
-                          title="Limit search suggestions to current view">
-                        <i class="fa fa-globe fa-fw"
-                           id="world-icon"
-                           style="color: white"></i></span>
-
-
-                <div class="input-group-addon dropdown btn-default" id="SelectView" style="cursor: pointer">
-                        <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                           Samples view
-                            <span class="caret"></span>
-                        </span>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="Select view">
-                        <li role="presentation"><a role="menuitem" tabindex="-1">Samples view</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1">Insecticide resistance
-                            phenotypes view</a></li>
-                    </ul>
-                </div>
-            </div>
-            <input type="hidden" id="world-search" name="world-search" value="1">
-            <input type="hidden" id="view-mode" name="view-mode" value="smpl">
-        </div>
-    </div>
-
-
+    <!-- Cut here for Map stuff -->
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
@@ -125,7 +115,7 @@
         <!-- Tab panes -->
         <div class="sidebar-content active" id="active-pane">
             <div class="sidebar-pane active" id="graphs">
-                <h3>Marker summary data</h3>
+                <h3>Summary view for selected samples</h3>
 
                 <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
 
@@ -133,9 +123,9 @@
 
                     <h1>Go on!</h1>
 
-                    <h3>click a marker</h3>
+                    <h4>click a marker on the map</h4>
 
-                    <h3>to plot some real data</h3>
+                    <h4>to plot some real data</h4>
                 </div>
                 <div id="pie-chart-area" style="width: 390px;">
                     <svg></svg>
@@ -143,7 +133,7 @@
             </div>
 
             <div class="sidebar-pane" id="swarm-plots">
-                <h3>Insecticide Resistance phenotypes statistics</h3>
+                <h3>Insecticide Resistance statistics for selected samples</h3>
 
                 <div id="swarm-chart-area">
                     <div style="text-align: center; margin-top: 30px">
@@ -151,16 +141,16 @@
 
                         <h1>Go on!</h1>
 
-                        <h3>click a marker</h3>
+                        <h4>click a marker on the map</h4>
 
-                        <h3>to plot some real data</h3>
+                        <h4>to plot some real data</h4>
 
                     </div>
                 </div>
             </div>
 
             <div class="sidebar-pane" id="marker-table">
-                <h3>Marker details</h3>
+                <h3>Details for selected samples</h3>
 
                 <div id="table-contents-header" style="text-align: center; margin-top: 30px">
 
@@ -168,9 +158,9 @@
 
                     <h1>Go on!</h1>
 
-                    <h3>click a marker</h3>
+                    <h4>click a marker on the map</h4>
 
-                    <h3>to get some real data</h3>
+                    <h4>to get some real data</h4>
                 </div>
                 <div id="table-contents">
                 </div>
@@ -182,6 +172,7 @@
                 <h3>Usage tips</h3>
 
                 <div id="tips" class="table-responsive">
+                    <h4>Icons and toolbars</h4>
                     <table class="table table-condensed">
                         <thead>
                         <tr class="active">
@@ -303,7 +294,7 @@
                                 </span>
                             </td>
                             <td>
-                                Marker summary view
+                                Summary view
                             </td>
                         </tr>
                         <tr>
@@ -313,7 +304,7 @@
                                 </span>
                             </td>
                             <td>
-                                Marker phenotype statistics (available only in Insecticide Resistance view)
+                                Insecticide Resistance statistics view
                             </td>
                         </tr>
                         <tr>
@@ -323,14 +314,290 @@
                                 </span>
                             </td>
                             <td>
-                                Marker details
+                                Details view
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
                 </div>
+
+                <div id="shortcuts" class="table-responsive">
+                    <h4>Keyboard and Mouse Shortcuts</h4>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr class="active">
+                            <th>Shortcut</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-4">
+                                Click marker
+                            </td>
+                            <td>
+                                Toggle details pane
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                Double-click marker
+                            </td>
+                            <td>
+                                Zoom in and expand marker
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light"><i class="fa fa-arrow-left"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-up"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-down"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-right"></i></kbd>
+                            </td>
+                            <td>
+                                Pan around map
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light"><i class="fa fa-plus"></i></kbd> <kbd class="light"><i
+                                    class="fa fa-minus"></i></kbd>
+                            </td>
+                            <td>
+                                Zoom in or out
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light">Shift</kbd> + Drag
+
+                            </td>
+                            <td>
+                                Select region and zoom
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
             </div>
+        </div>
+    </div>
+
+
+    <!-- Place a floating div above the map for the search controls -->
+    <div class="mapbox">
+        <div class="overlaytop">
+
+
+            <label class="sr-only" for="search_ac">Search...</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+                <input type="text" class="form-control" placeholder="Search..." id="search_ac"
+                       data-role="tagsinput"/>
+                <span id="reset-search" class="input-group-addon btn-danger"
+                      style="cursor: pointer"
+                      title="Reset search"><i
+                        class="fa fa-times fa-fw"></i>
+                </span>
+            </div>
+
+            <div class="btn-group btn-group-justified" data-toggle="buttons" role="group"
+                 style="margin-top:3px;">
+
+                <div class="btn-group dropdown" id="SelectViewDropdown" role="group">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="SelectView"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="fa fa-eye"
+                           id="view-icon"></i>
+                        Select View
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="SelectView">
+                        <li><a href="#" data-value="<i class='fa fa-eye' id='view-icon'></i> Samples">Samples</a></li>
+                        <li><a href="#" data-value="<i class='fa fa-eye' id='view-icon'></i> Insectide Resistance">Insecticide
+                            Resistance</a></li>
+                    </ul>
+                </div>
+
+                <span class="btn-group" role="group">
+                    <button type="button"
+                            id="date-select"
+                            class="btn btn-default"
+                            title="Search by date"
+                            data-toggle="collapse"
+                            data-target="#daterange"
+                    >
+                    <i class="rotate fa fa-calendar"
+                       id="calendar-icon"></i> Date search
+                    </button>
+                </span>
+
+                <span class="btn-group" role="group">
+                    <button type="button"
+                            id="season-select"
+                            class="btn btn-default"
+                            title="Seasonal search"
+                            data-toggle="collapse"
+                            data-target="#seasonal"
+                    >
+                    <i class="rotate fa fa-calendar-check-o"
+                       id="seasonal-icon"></i> Seasonal search
+                    </button>
+                </span>
+
+                <input id="grid-toggle" type="checkbox" data-toggle="toggle"
+                       data-on="<i class='fa fa-th'></i> Grid On"
+                       data-off="<i class='fa fa-th'></i> Grid Off">
+
+                <input id="world-toggle" type="checkbox" data-toggle="toggle"
+                       data-on="<i class='fa fa-globe'></i> Local suggestions"
+                       data-off="<i class='fa fa-globe'></i> Global suggestions">
+
+
+            </div>
+
+            <div class="input-group">
+
+
+            </div>
+
+            <div class="collapse" style="margin-top:0px;" id="daterange">
+
+                <div class="input-daterange input-group" id="datepicker" style="margin-top: 10px;">
+                    <span class="input-group-addon"
+                          title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>
+                    <input id="date-start" type="text" class="form-control" name="start"/>
+                    <span class="input-group-addon">to</span>
+                    <input id="date-end" type="text" class="form-control" name="end"/>
+                    <span class="input-group-btn">
+                        <button
+                                id="add-dates" type="button" class="btn btn-default"
+                                title="Add date filter"
+                                disabled
+                                data-toggle="collapse"
+                                data-target="#daterange">
+                            <i
+                                    class="fa fa-plus fa-fw">
+
+                            </i>
+                        </button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button
+                                id="clear-dates" type="button" class="btn btn-default"
+                                title="Cancel"
+                                data-toggle="collapse"
+                                data-target="#daterange">
+                            <i
+                                    class="fa fa-times fa-fw">
+
+                            </i>
+                        </button>
+                    </span>
+
+
+                </div>
+
+                <!-- predefined date ranges-->
+
+                <div class="input-group" style="margin-top: 3px;">
+                    <span class="input-group-addon" title="Display most recently collected samples"><i
+                            class="fa fa-long-arrow-left fa-fw"></i><i class="fa fa-dot-circle-o fa-fw"></i></span>
+
+                    <span class="btn-group btn-group-justified" role="group">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="50">50 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="40">40 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="30">30 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="20">20 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="15">15 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="10">10 years</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default date-shortcut" value="5">5 years</button>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="collapse" style="margin-top:0px;" id="seasonal">
+
+                <div id="date-seasonal" class="input-group" style="margin-top: 10px;">
+                    <span class="input-group-addon" title="Display samples collected during the following months">
+                        <i class="fa fa-repeat fa-fw"></i><i class="fa fa-calendar-check-o fa-fw"></i>
+                    </span>
+
+                    <span class="btn-group btn-group-justified" data-toggle="buttons" role="group"
+                          style="height: 30px;">
+                        <input type="checkbox" name="January" value="1" data-toggle="toggle"
+                               class="season-toggle" data-on="Jan" data-off="Jan">
+                        <input type="checkbox" name="February" value="2" data-toggle="toggle"
+                               class="season-toggle" data-on="Feb" data-off="Feb">
+                        <input type="checkbox" name="March" value="3" data-toggle="toggle"
+                               class="season-toggle" data-on="Mar" data-off="Mar">
+                        <input type="checkbox" name="April" value="4" data-toggle="toggle"
+                               class="season-toggle" data-on="Apr" data-off="Apr">
+                        <input type="checkbox" name="May" value="5" data-toggle="toggle"
+                               class="season-toggle" data-on="May" data-off="May">
+                        <input type="checkbox" name="June" value="6" data-toggle="toggle"
+                               class="season-toggle" data-on="Jun" data-off="Jun">
+                        <input type="checkbox" name="July" value="7" data-toggle="toggle"
+                               class="season-toggle" data-on="Jul" data-off="Jul">
+                        <input type="checkbox" name="August" value="8" data-toggle="toggle"
+                               class="season-toggle" data-on="Aug" data-off="Aug">
+                        <input type="checkbox" name="September" value="9" data-toggle="toggle"
+                               class="season-toggle" data-on="Sep" data-off="Sep">
+                        <input type="checkbox" name="October" value="10" data-toggle="toggle"
+                               class="season-toggle" data-on="Oct" data-off="Oct">
+                        <input type="checkbox" name="November" value="11" data-toggle="toggle"
+                               class="season-toggle" data-on="Nov" data-off="Nov">
+                        <input type="checkbox" name="December" value="12" data-toggle="toggle"
+                               class="season-toggle" data-on="Dec" data-off="Dec">
+
+                    </span>
+                    <span class="input-group-btn">
+                        <button
+                                id="add-season" type="button" class="btn btn-default"
+                                title="Apply seasonal filter"
+                                disabled
+                                data-toggle="collapse"
+                                data-target="#seasonal">
+                            <i
+                                    class="fa fa-check">
+
+                            </i>
+                        </button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button
+                                id="clear-season" type="button" class="btn btn-default"
+                                title="Cancel"
+                                data-toggle="collapse"
+                                data-target="#seasonal">
+                            <i
+                                    class="fa fa-times">
+
+                            </i>
+                        </button>
+                    </span>
+                </div>
+
+            </div>
+            <input type="hidden" id="world-search" name="world-search" value="1">
+            <input type="hidden" id="view-mode" name="view-mode" value="smpl">
         </div>
     </div>
 
@@ -360,35 +627,41 @@
             <i> {{html:species}}</i></h3>
             <p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a> ({{html:sampleType}})</p>
         </div>
-        <div class="col-md-6">
-            <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
-            {{for collectionDate}}
-                {{>#data}}
-            {{else}}
-                No date
-            {{/for}}
-            </p>
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                <i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+            </div>
         </div>
-        <div class="col-md-6">
-            <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
-        </div>
-        <div class="col-md-6">
-            <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
-            <ul>
-            {{for projects}}
-                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
-            {{/for}}
-            </ul>
-        </div>
-        <div class="col-md-6">
-            <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
-            <ul>
-            {{for collectionProtocols}}
-                <li>{{>#data}}</li>
-            {{/for}}
-            </ul>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
+                <ul>
+                {{for projects}}
+                    <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>{{>#data}}</li>
+                {{/for}}
+                </ul>
+            </div>
         </div>
     </div>
+
 
 
 </script>
@@ -407,57 +680,67 @@
                 ({{html:sampleType}})</p>
             {{/if}}
         </div>
-        <div class="col-md-6">
-            <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
-            {{for collectionDate}}
-                {{>#data}}
-            {{else}}
-                No date
-            {{/for}}
-            </p>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+            </div>
         </div>
-        <div class="col-md-6">
-            <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
+                <ul>
+                {{for projects}}
+                    <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>{{>#data}}</li>
+                {{/for}}
+                </ul>
+            </div>
         </div>
-        <div class="col-md-6">
-            <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
-            <ul>
-            {{for projects}}
-                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
-            {{/for}}
-            </ul>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Insecticide Resistance data</h5>
+            </div>
         </div>
-        <div class="col-md-6">
-            <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
-            <ul>
-            {{for collectionProtocols}}
-                <li>{{>#data}}</li>
-            {{/for}}
-            </ul>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
+            </div>
         </div>
-        <div class="col-md-12" >
-            <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
-            Insecticide Resistance data</h5>
-        </div>
-        <div class="col-md-12" >
-            <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
-        </div>
-        <div class="col-md-6">
-            <p><i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i> {{html:insecticide}}</p>
-            {{if concentration && concentrationUnit}}
-                <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
-            {{/if}}
-            {{if duration && durationUnit}}
-                <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
-            {{/if}}
-        </div>
-        <div class="col-md-6">
-            <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
-            <ul>
-            {{for protocols}}
-                <li>{{>#data}}</li>
-            {{/for}}
-            </ul>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i> {{html:insecticide}}</p>
+                {{if concentration && concentrationUnit}}
+                    <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
+                {{/if}}
+                {{if duration && durationUnit}}
+                    <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
+                {{/if}}
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>{{>#data}}</li>
+                {{/for}}
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -478,66 +761,80 @@
                 ({{>sampleType}})</p>
             {{/if}}
         </div>
-        <div class="col-md-6">
-            <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
-            {{for collectionDate}}
-                {{>#data}}
-            {{else}}
-                No date
-            {{/for}}
-            </p>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-map-marker" title="Coordinates: {{>geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+            </div>
         </div>
-        <div class="col-md-6">
-            <p><i class="fa fa-map-marker" title="Coordinates: {{>geoCoords}}" style="color: {{attr:bgColor}};"></i> {{html:geolocation}}</p>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
+                <ul>
+                {{for projects}}
+                    <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>{{>#data}}</li>
+                {{/for}}
+                </ul>
+            </div>
         </div>
-        <div class="col-md-6">
-            <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
-            <ul>
-            {{for projects}}
-                <li><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">{{>#data}}</a></li>
-            {{/for}}
-            </ul>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Insecticide Resistance data</h5>
+            </div>
         </div>
-        <div class="col-md-6">
-            <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Collection Protocol(s)</b></p>
-            <ul>
-            {{for collectionProtocols}}
-                <li>{{>#data}}</li>
-            {{/for}}
-            </ul>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
+            </div>
         </div>
-        <div class="col-md-12" >
-            <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
-            Insecticide Resistance data</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i> {{>insecticide}}</p>
+                {{if concentration && concentrationUnit}}
+                    <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{>concentration}} {{>concentrationUnit}}</p>
+                {{/if}}
+                {{if duration && durationUnit}}
+                    <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{>duration}} {{>durationUnit}}</p>
+                {{/if}}
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>{{>#data}}</li>
+                {{/for}}
+                </ul>
+            </div>
         </div>
-        <div class="col-md-12" >
-            <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
-        </div>
-        <div class="col-md-6">
-            <p><i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i> {{>insecticide}}</p>
-            {{if concentration && concentrationUnit}}
-                <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{>concentration}} {{>concentrationUnit}}</p>
-            {{/if}}
-            {{if duration && durationUnit}}
-                <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{>duration}} {{>durationUnit}}</p>
-            {{/if}}
-        </div>
-        <div class="col-md-6">
-            <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
-            <ul>
-            {{for protocols}}
-                <li>{{>#data}}</li>
-            {{/for}}
-            </ul>
-        </div>
-         <div class="col-md-12" >
-            <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
+            </div>
         </div>
     </div>
 
 
+
 </script>
 
+<!-- Stop cutting here for Map stuff -->
 <script language="JavaScript">
 
     "use strict";
@@ -545,21 +842,23 @@
     // Global vars
     // Should minimize them
 
-    //    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
-    //    var solrTaUrl = 'asolr/solr/vb_ta/';
+    //        var solrPopbioUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_popbio/';
+    //        var solrTaUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_ta/';
+    //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
     var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
+    //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
     var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
     var map, sidebar;
     var assetLayerGroup;
-    var smallClusters = [];
+    var smallClusters = [], months = [];
     var palette;
     var legendSpecies = 20;
     var qryUrl = 'q=*';
     var partSearch = false;
     var legend;
-    var legendDiv;
     var PaneSpinner = null;
     var highlight = null, rectHighlight = null, firstClick = true;
+    var geohashesGrid = null;
     // map scaled values from 0-1 to colors green to red
     //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
     var trafficLight = new L.CustomColorFunction(0, 1, L.ColorBrewer.Diverging.RdYlBu[10]);
@@ -567,29 +866,30 @@
     // Hack to prevent single click events firing when double clicking
     var timer = 0;
     var delay = 400;
+
     var prevent = false, stickyHover = false;
     // this is to remember background type selection between markers
     var bgPlotType = 1;
 
     initializeSearch();
 
-    // force viewMode value to smpl
-    $('#view-mode').val('smpl');
+
+    // set view according to the value of the view url parameter. Otherwise default to smpl
+    var urlParams = $.parseParams();
 
     $(window).load(function () {
+
+        bindEvents();
         initializeMap();
 
         // detect when user changes zoom or pans around the map
         map.on("movestart", function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
-            removeHighlight();
-            sidebar.close();
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-        })
+                    removeHighlight();
+                    sidebar.close();
+                    setTimeout(function () {
+                        resetPlots()
+                    }, delay);
+                })
                 .on("moveend", function () {
 
                     loadSolr({clear: 1, zoomLevel: map.getZoom()});
@@ -602,30 +902,6 @@
                     }, delay);
                 });
 
-        $('#search_ac').on('itemAdded', function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
-            removeHighlight();
-            sidebar.close();
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-
-            filterMarkers($("#search_ac").tagsinput('items'));
-        });
-        $('#search_ac').on('itemRemoved', function () {
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
-            removeHighlight();
-            sidebar.close();
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-
-            filterMarkers($("#search_ac").tagsinput('items'));
-        });
     });
 
 

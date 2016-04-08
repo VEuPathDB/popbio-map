@@ -187,8 +187,12 @@
     <field name="date" type="date" indexed="true" stored="true" multiValued="true"/>
     <copyField source="date" dest="text"/>
     <field name="collection_date" type="date" indexed="true" stored="true" multiValued="true"/>
-
     <copyField source="collection_date" dest="text"/>
+    <field name="collection_date_range" type="rdate" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="collection_date_range" dest="text"/>
+    <field name="collection_season" type="rdates" indexed="true" stored="true" multiValued="true"/>
+
+
     <field name="has_geodata" type="boolean" indexed="true" stored="true" multiValued="true"/>
     <field name="sample_type" type="text_ws_na" indexed="true" stored="true" multiValued="false"/>
     <copyField source="sample_type" dest="text"/>

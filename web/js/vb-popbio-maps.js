@@ -1,3 +1,192 @@
+function bindEvents() {
+    "use strict"
+
+    if (urlParams.view === 'ir') {
+        $("#SelectViewDropdown").find(".dropdown-menu li a").parents(".dropdown").find(".btn").html("<i class='fa fa-eye' id='view-icon'></i> Insecticide Resistance" + ' <span class="caret"></span>');
+        $('#view-mode').val('ir');
+    } else {
+        $("#SelectViewDropdown").find(".dropdown-menu li a").parents(".dropdown").find(".btn").html("<i class='fa fa-eye' id='view-icon'></i> Samples" + ' <span class="caret"></span>');
+        $('#view-mode').val('smpl');
+    }
+
+
+    // Toggle grid
+    $('#grid-toggle').change(function () {
+
+        if (!$(this).prop('checked')) {
+            map.removeLayer(geohashesGrid);
+        } else {
+            var geoLevel = geohashLevel(map.getZoom(), "geohash");
+            addGeohashes(map, geoLevel.slice(-1));
+        }
+    });
+
+    // collapse open panels
+
+    // clear the date selection panel once collapsed
+    $('#daterange').on('hidden.bs.collapse', function () {
+        $("#date-start").datepicker("clearDates");
+        $("#date-end").datepicker("clearDates");
+        $("#add-dates").prop('disabled', true);
+        $("#add-season").prop('disabled', true);
+    });
+
+    // clear the seasonal search panel once collapsed
+    $('#seasonal').on('hidden.bs.collapse', function () {
+        if (checkSeasonal()) return;
+
+        $('.season-toggle').each(function () {
+//                console.log($(this).prop('checked'));
+            if ($(this).prop('checked')) {
+                $(this).bootstrapToggle('off');
+            }
+        })
+
+    });
+
+
+    $('#date-select, #SelectViewDropdown').click(function () {
+        if ($('#seasonal').attr("aria-expanded") == 'true') {
+            $('#seasonal').collapse('hide');
+        }
+    });
+
+    $('#season-select, #SelectViewDropdown').click(function () {
+
+        if ($('#daterange').attr("aria-expanded") == 'true') {
+            $('#daterange').collapse('hide');
+        }
+    });
+
+
+    // bind the date range text fields to the datepicker
+    $('#daterange').find('.input-daterange').datepicker({
+        format: "dd/mm/yyyy",
+        startView: 2,
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true,
+        endDate: "Date.now()"
+    });
+
+    // collect the months to be included in the seasonal search
+    $('.season-toggle').change(function () {
+        var enable = false;
+        $('.season-toggle').each(function () {
+            var curMonth = $(this).val(), curMode = $(this).prop('checked');
+            months[curMonth] = curMode;
+            if (curMode) enable = true;
+        });
+
+        if (enable) {
+            $("#add-season").prop('disabled', false);
+        } else {
+            $("#add-season").prop('disabled', true);
+        }
+    });
+
+    // add the seasonal filter into search
+    $('#add-season').click(function () {
+        var objRanges = constructSeasonal(months);
+        // add the filter, by keeping the value the same ('seasonal') we ensure
+        // that there's only one seasonal filter enabled at any given point
+        if (checkSeasonal()) {
+
+            // adding the item with replace: true will prevent the map from updating
+            // it will update once we remove the old tag
+            $('#search_ac').tagsinput('add', {
+                value: objRanges.rangesText.toString(),
+                ranges: objRanges.ranges,
+                replace: true,
+                type: 'Seasonal',
+                field: 'collection_season'
+
+            });
+
+            $('#search_ac').tagsinput('remove', checkSeasonal());
+        } else {
+            $('#search_ac').tagsinput('add', {
+                value: objRanges.rangesText.toString(),
+                ranges: objRanges.ranges,
+                replace: false,
+                type: 'Seasonal',
+                field: 'collection_season'
+
+            });
+        }
+    });
+
+
+    // Enable the add dates button only if the date fields are populated
+    $("#date-start").datepicker()
+        .on('changeDate', function (e) {
+            $("#add-dates").prop('disabled', false);
+        });
+
+    // add the date filter into search
+    $("#add-dates").click(function () {
+        var dateStart = new Date($("#date-start").datepicker('getUTCDate'));
+        var dateEnd = new Date($("#date-end").datepicker('getUTCDate'));
+        var value;
+        if (dateStart.getTime() === dateEnd.getTime()) {
+            value = dateStart.toLocaleDateString('en-GB')
+        } else {
+            value = dateStart.toLocaleDateString('en-GB') + '-' + dateEnd.toLocaleDateString('en-GB')
+        }
+
+        $('#search_ac').tagsinput('add', {
+            value: value,
+            dateStart: dateStart,
+            dateEnd: dateEnd,
+            type: 'Date',
+//                field: 'collection_date',
+            field: 'collection_date_range'
+
+        });
+
+    });
+
+    $('.date-shortcut').click(function () {
+        console.log(this.value);
+        setDateRange('#date-start', "#date-end", this.value);
+
+    });
+
+
+    $('#search_ac').on('itemAdded', function (event) {
+        // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
+        if (event.item.replace) return;
+
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+
+        filterMarkers($("#search_ac").tagsinput('items'));
+    });
+    $('#search_ac').on('itemRemoved', function () {
+        // reset the seasonal search panel
+        if (!checkSeasonal()) {
+
+            $('.season-toggle').each(function () {
+                if ($(this).prop('checked')) {
+                    $(this).bootstrapToggle('off');
+                }
+            })
+        }
+
+
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+
+        filterMarkers($("#search_ac").tagsinput('items'));
+    });
+}
+
 /*
  function initialize_map
  date: 18/6/2015
@@ -13,7 +202,8 @@ function initializeMap() {
     map = L.map('map', {
         center: [23.079, 3.515],
         zoom: 3,
-        zoomControl: false
+        zoomControl: false,
+        worldCopyJump: true  //  the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
     });
 
     map.spin(true);
@@ -31,7 +221,7 @@ function initializeMap() {
         minZoom: 2,
         maxZoom: 15,
         subdomains: ["otile1", "otile2", "otile3", "otile4"],
-        noWrap: 1,
+        noWrap: 0,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
@@ -42,14 +232,14 @@ function initializeMap() {
         maxZoom: 15,
         maxNativeZoom: 11,
         subdomains: ["otile1", "otile2", "otile3", "otile4"],
-        noWrap: 1,
+        noWrap: 0,
         attribution: 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
     });
 
     var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: 15,
-        noWrap: 1,
+        noWrap: 0,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
@@ -66,31 +256,16 @@ function initializeMap() {
     layerCtl.setPosition('topright');
     layerCtl.addTo(map);
 
-    //    Add a legend control on the bottom right but don't show it just yet
-    legend = L.control({position: 'bottomright'});
-    legendDiv = L.DomUtil.create('div', 'info legend');
 
-    L.easyButton('fa-info',
-        function () {
-            if (L.DomUtil.hasClass(legendDiv, "active")) {
-                legend.removeFrom(map);
-                L.DomUtil.removeClass(legendDiv, "active");
-            } else {
-                legend.addTo(map);
-                L.DomUtil.addClass(legendDiv, "active");
-            }
-
-        },
-        'Toggle legend ON of OFF'
-    );
-
-    // Now generate the legend and .
+    // Now generate the legend
 
     var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
-    console.log('requesting url ' + url);
-    $.getJSON(url, generatePalette);
+    //console.log('url: ' + url);
+    //$.getJSON(url, generatePalette);
+    legend = new L.control.legend(url);
 
-
+    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+    rectHighlight = null;
     map.spin(false);
 
 }
@@ -107,9 +282,15 @@ function initializeSearch() {
     // Reset search "button"
     $('#reset-search').click(function () {
         $('#search_ac').tagsinput('removeAll');
-        // remove the boundaries rectangle
-        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-        rectHighlight = null;
+
+        // reset seasonal search panel
+        $('.season-toggle').each(function () {
+            if ($(this).prop('checked')) {
+                $(this).bootstrapToggle('off');
+            }
+        });
+
+
         removeHighlight();
         sidebar.close();
         setTimeout(function () {
@@ -119,20 +300,20 @@ function initializeSearch() {
     });
 
     // World search toggle
-    $('#toggle-world').click(function () {
-
-        if ($('#world-search').val() === '1') {
-            $('#toggle-world').toggleClass("btn-primary", false)
-                .attr('title', 'Enable global search suggestions');
-            $('#world-search').val('0');
-            $('#world-icon').css('color', '#265a88');
-        } else {
-            $('#toggle-world').toggleClass("btn-primary", true)
-                .attr('title', 'Limit search suggestions to current view');
-            $('#world-search').val('1');
-            $('#world-icon').css('color', 'white');
-        }
-    });
+    // $('#toggle-world').click(function () {
+    //
+    //     if ($('#world-search').val() === '1') {
+    //         $('#toggle-world').toggleClass("btn-primary", false)
+    //             .attr('title', 'Enable global search suggestions');
+    //         $('#world-search').val('0');
+    //         $('#world-icon').css('color', '#265a88');
+    //     } else {
+    //         $('#toggle-world').toggleClass("btn-primary", true)
+    //             .attr('title', 'Limit search suggestions to current view');
+    //         $('#world-search').val('1');
+    //         $('#world-icon').css('color', 'white');
+    //     }
+    // });
 
 
     //FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case handling
@@ -165,20 +346,20 @@ function initializeSearch() {
                     // match start: match.index
                     // capturing group n: match[n]
                     partSearch = match[1];
-                    console.log(url + encodeURI(match[1]));
-                    if ($('#world-search').val() === '1') {
-                        return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]);
-                    } else {
+                    //console.log(url + encodeURI(match[1]));
+                    if ($('#world-toggle').prop('checked')) {
                         return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
+                    } else {
+                        return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]);
                     }
                 } else {
                     // Match attempt failed
                     partSearch = false;
 
-                    if ($('#world-search').val() === '1') {
-                        return url + encodeURI(query);
-                    } else {
+                    if ($('#world-toggle').prop('checked')) {
                         return url + encodeURI(query) + buildBbox(map.getBounds());
+                    } else {
+                        return url + encodeURI(query);
                     }
                 }
 
@@ -236,7 +417,7 @@ function initializeSearch() {
             },
             replace: function (url, query) {
                 url = solrTaUrl + $('#view-mode').val() + 'Acgrouped?q=';
-                if ($('#world-search').val() === '1') {
+                if ($('#world-toggle').prop('checked')) {
                     return url + encodeURI(query) + '*';
                 } else {
                     return url + encodeURI(query) + '*' + buildBbox(map.getBounds());
@@ -286,6 +467,10 @@ function initializeSearch() {
                     return 'label label-success fa fa-eyedropper';
                 case 'Collection protocols' :
                     return 'label label-success fa fa-shopping-cart';
+                case 'Date' :
+                    return 'label label-info fa fa-calendar';
+                case 'Seasonal' :
+                    return 'label label-info fa fa-calendar-check-o';
                 default :
                     return 'label label-warning fa fa-search';   // orange
             }
@@ -309,11 +494,11 @@ function initializeSearch() {
                     templates: {
                         empty: function () {
                             var msg;
-                            if ($('#world-search').val() === '1') {
-                                msg = 'No results found';
-                            } else {
-                                msg = 'No results found. Try enabling world search.';
+                            if ($('#world-toggle').prop('checked')) {
+                                msg = 'No suggestions found. Try enabling world search or hit enter to perform a free text search instead.';
 
+                            } else {
+                                msg = 'No suggestions found. Hit Enter to perform a free text search instead.';
                             }
                             return [
                                 '<span class="tt-suggestions" style="display: block;">',
@@ -352,29 +537,50 @@ function initializeSearch() {
     });
 
     // Set current view
-    $("#SelectView").find("li a").click(function () {
+
+    $(".dropdown-menu li a").click(function () {
+        $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
+        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
         var selText = $(this).text();
-        if (selText === "Samples view") {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html(selText + ' <span class="caret"></span>');
+        if (selText === "Samples") {
             $('#view-mode').val('smpl');
         } else {
-            $(this).parents(".dropdown").find(".dropdown-toggle").html('IR phenotypes view' + ' <span class="caret"></span>');
             $('#view-mode').val('ir');
         }
         var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
 
-        // remove the boundaries rectangle
-        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-        rectHighlight = null;
         removeHighlight();
         sidebar.close();
         setTimeout(function () {
             resetPlots()
         }, delay);
-        $.getJSON(url, generatePalette);
+        $.getJSON(url, function (data) {
+            legend.populateLegend(data, "species_category")
+        });
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
+    });
 
+    $("#SelectViewDropdown").find(".dropdown-menu li a").click(function () {
+
+        var selText = $(this).text();
+        if (selText === "Samples") {
+            $('#view-mode').val('smpl');
+        } else {
+            $('#view-mode').val('ir');
+        }
+        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+
+        removeHighlight();
+        sidebar.close();
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+        $.getJSON(url, function (data) {
+            legend.populateLegend(data, "species_category")
+        });
+        acSuggestions.initialize(true);
+        acOtherResults.initialize(true);
     });
 
 }
@@ -395,6 +601,12 @@ function loadSolr(parameters) {
     var zoomLevel = parameters.zoomLevel;
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
+
+    // build a geohash grid
+    // var mapBounds = map.getBounds();
+    // var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
+    // if (urlParams.grid === "true") addGeohashes(map, South, West, North, East, geoLevel.slice(-1));
+    if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, geoLevel.slice(-1));
 
     //we are too deep in, just download the landmarks instead
 
@@ -420,6 +632,8 @@ function loadSolr(parameters) {
             if (clear) {
                 assetLayerGroup.clearLayers();
             }
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+            rectHighlight = null;
             map.spin(false);
             return;
         }
@@ -584,9 +798,6 @@ function loadSolr(parameters) {
                 layer.on("dblclick", function () {
                     clearTimeout(timer);
                     prevent = true;
-                    // remove the boundaries rectangle
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                    rectHighlight = null;
 
                     map.fitBounds(record.bounds);
                     //resetPlots();
@@ -627,9 +838,11 @@ function loadSolr(parameters) {
                 layer.on("mouseover", function () {
                     moveTopMarker(layer);
                     var recBounds = L.latLngBounds(record.bounds);
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+
                     rectHighlight = L.rectangle(recBounds, {
-                        color: "#cyan",
-                        weight: 5,
+                        color: "grey",
+                        weight: 1,
                         fill: true,
                         clickable: false
                     }).addTo(map);
@@ -664,6 +877,8 @@ function loadSolr(parameters) {
 
 
         // inform the user that data is loaded
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
         map.spin(false);
 
     };
@@ -684,6 +899,28 @@ function loadSolr(parameters) {
 
 }
 
+
+/*
+ function checkSeasonal
+ date: 6/4/2016
+ purpose: go through the search terms and check whether a seasonal tag already exits
+ inputs: none
+ outputs: the value of the seasonal tag if it exists, otherwise false
+ */
+
+function checkSeasonal() {
+    var activeTerms = $('#search_ac').tagsinput('items');
+
+    for (var i = 0; i < activeTerms.length; i++) {
+        var obj = activeTerms[i];
+        if (obj.type === 'Seasonal') return obj.value;
+
+    }
+
+    return false;
+}
+
+
 function loadSmall(mode, zoomLevel) {
     "use strict";
     var pruneCluster = new PruneClusterForLeaflet(120);
@@ -703,18 +940,11 @@ function loadSmall(mode, zoomLevel) {
         marker.on("dblclick", function () {
             clearTimeout(timer);
             prevent = true;
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
 
-            //resetPlots();
             // Zoom-in to marker
             if (map.getZoom() < 11) {
                 map.setView(marker._latlng, 11, {animate: true});
             } else {
-                // remove the boundaries rectangle
-                if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                rectHighlight = null;
                 removeHighlight();
                 sidebar.close();
                 setTimeout(function () {
@@ -884,10 +1114,6 @@ function loadSmall(mode, zoomLevel) {
             clearTimeout(timer);
             prevent = true;
 
-            // remove the boundaries rectangle
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
-
             // Compute the  cluster bounds (it"s slow : O(n))
             var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
             var b = pruneCluster.Cluster.ComputeBounds(markersArea);
@@ -902,9 +1128,7 @@ function loadSmall(mode, zoomLevel) {
 
                 // If the zoom level doesn't change
                 if (zoomLevelAfter === zoomLevelBefore) {
-                    // remove the boundaries rectangle
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                    rectHighlight = null;
+
                     removeHighlight();
                     sidebar.close();
                     setTimeout(function () {
@@ -999,9 +1223,11 @@ function loadSmall(mode, zoomLevel) {
 
             }
 
+            if (rectHighlight !== null) map.removeLayer(rectHighlight);
+
             rectHighlight = L.rectangle(recBounds, {
-                color: "#cyan",
-                weight: 5,
+                color: "grey",
+                weight: 1,
                 fill: true,
                 clickable: false
             }).addTo(map);
@@ -1079,6 +1305,8 @@ function loadSmall(mode, zoomLevel) {
         }
         assetLayerGroup.addLayer(pruneCluster);
         //inform the user loading is done
+        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+        rectHighlight = null;
         map.spin(false);
     };
 
@@ -1086,6 +1314,7 @@ function loadSmall(mode, zoomLevel) {
     var url = solrPopbioUrl + $('#view-mode').val() + 'Markers?' + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
 
     // inform the user that data is loading
+
     map.spin(true);
     $.getJSON(url, buildMap);
 
@@ -1182,105 +1411,6 @@ function geohashLevel(zoomLevel, type) {
     return (geoLevel);
 }
 
-function buildPalette(items, nmColors, paletteType) {
-    /*
-     function buildPalette
-     date: 17/03/2015
-     purpose:
-     inputs: {items} a list of items to be associated with colors, {mColors} the number of colors in the palette
-     {paletteType} 1 for Kelly's 2 for boytons
-     outputs: an associative array with items names as the keys and color as the values
-     */
-    "use strict";
-
-    var newPalette = [];
-
-    // from http://stackoverflow.com/questions/470690/how-to-automatically-generate-n-distinct-colors
-    var kelly_colors_hex = [
-        "#FFB300", // Vivid Yellow
-        "#803E75", // Strong Purple
-        "#FF6800", // Vivid Orange
-        "#A6BDD7", // Very Light Blue
-        "#C10020", // Vivid Red
-        "#CEA262", // Grayish Yellow
-        "#817066", // Medium Gray
-
-        // The following don't work well for people with defective color vision
-        "#007D34", // Vivid Green
-        "#F6768E", // Strong Purplish Pink
-        "#00538A", // Strong Blue
-        "#FF7A5C", // Strong Yellowish Pink
-        "#53377A", // Strong Violet
-        "#FF8E00", // Vivid Orange Yellow
-        "#B32851", // Strong Purplish Red
-        "#F4C800", // Vivid Greenish Yellow
-        "#7F180D", // Strong Reddish Brown
-        "#93AA00", // Vivid Yellowish Green
-        "#593315", // Deep Yellowish Brown
-        "#F13A13", // Vivid Reddish Orange
-        "#232C16" // Dark Olive Green
-    ];
-
-    // from http://alumni.media.mit.edu/~wad/color/palette.html
-    var boytons_colors_hex = [
-        //"#000000", // Black
-        "#575757", // Dark Gray
-        "#A0A0A0", // Light Gray
-        "#FFFFFF", // White
-        "#2A4BD7", // Blue
-        "#1D6914", // Green
-        "#814A19", // Brown
-        "#8126C0", // Purple
-        "#9DAFFF", // Light Purple
-        "#81C57A", // Light Green
-        "#E9DEBB", // Cream
-        "#AD2323", // Red
-        "#29D0D0", // Teal
-        "#FFEE33", // Yellow
-        "#FF9233", // Orange
-        "#FFCDF3", // Pink
-    ];
-
-    var noItems = items.length,
-        stNoItems = noItems;
-
-    for (var i = 0; i < nmColors; i++) {
-        if (typeof (items[i]) !== 'undefined') {
-            var item = items[i][0];
-            newPalette[item] = kelly_colors_hex[i];
-            //console.log(item);
-
-            noItems--; // track how many items don't have a proper color
-        }
-
-    }
-
-    var lumInterval = 0.5 / noItems,
-        lum = 0.7;
-    for (var c = 0; c < noItems; c++) {
-        var element = stNoItems - noItems + c;
-        var item = items[element][0];
-        newPalette[item] = colorLuminance("#FFFFFF", -lum);
-        lum -= lumInterval;
-        //console.log(item);
-
-
-    }
-
-    newPalette["others"] = "radial-gradient(" + colorLuminance("#FFFFFF", -0.7) + ", " + colorLuminance("#FFFFFF", -lum) + ")";
-    newPalette["Unknown"] = "black";
-
-    return newPalette;
-}
-
-function sortHashByValue(hash) {
-    var tupleArray = [];
-    for (var key in hash) tupleArray.push([key, hash[key]]);
-    tupleArray.sort(function (a, b) {
-        return b[1] - a[1]
-    });
-    return tupleArray;
-}
 
 function updatePieChart(population, stats) {
     if (stats) {
@@ -1432,17 +1562,27 @@ function tableHtml(divid, results) {
 
 
     results.forEach(function (element) {
-        var dates = element.collection_date;
+        var dates = element.collection_date_range;
         var frmDate;
 
-        // convert a pair of dates (date range) to a string
-        if (dates && dates.length > 1) {
+        if (dates && dates.length > 0) {
+            var dateString = dates[0];
+            if (/TO/.test(dateString)) {
+                // Successful match
+                var myregexp = /\[(\S+)\sTO\s(\S+)\]/;
+                var match = myregexp.exec(dateString);
+                var startDateString = match[1], endDateString = match[2];
+                frmDate = dateResolution(startDateString) + ' to ' + dateResolution(endDateString);
+                // dateResolution(match[2]);
 
-            var startDate = new Date(dates[0]), endDate = new Date(dates[1]);
-            frmDate = startDate.toDateString() + '-' + endDate.toDateString();
-        } else if (dates && dates.length > 0) {
-            var date = new Date(dates[0]);
-            frmDate = date.toDateString();
+
+            } else {
+                // Match attempt failed
+                var date = new Date(dateString);
+                frmDate = date.toDateString();
+
+            }
+
         }
 
         var species = element.species_category ? element.species_category[0] : 'Unknown';
@@ -1550,6 +1690,38 @@ function filterMarkers(items) {
 
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
 
+        if (element.type === 'Date') {
+
+            var format = "YYYY-MM-DD";
+
+
+            var dateEnd = dateConvert(element.dateEnd, format);
+            var dateStart = dateConvert(element.dateStart, format);
+
+            terms[element.type].push({
+                "field": element.field, "value": '[' + dateStart + ' TO ' + dateEnd + ']'
+            });
+            return
+
+        }
+
+        if (element.type === 'Seasonal') {
+
+
+            for (var j = 0; j < element.ranges.length; j++) {
+                var range = element.ranges[j];
+                terms[element.type].push({
+                    "field": element.field, "value": '[' + range + ']'
+                });
+
+            }
+
+
+            return
+
+        }
+
+
         if (element.qtype == 'exact') {
             terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
         } else {
@@ -1577,7 +1749,7 @@ function filterMarkers(items) {
             qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;
         });
 
-        // get the numbeer of different field queries per catego (this is usually one or two)
+        // get the numbeer of different field queries per category (this is usually one or two)
         var alen = Object.keys(qries).length;
         // more than one categories
         if (i < tlen - 1) {
@@ -1675,6 +1847,8 @@ function mapTypeToField(type) {
             return "id";
         case "Insecticides":
             return "insecticide_cvterms";
+        case "Collection date":
+            return "collection_date_range";
         default :
             return type.toLowerCase()
 
@@ -1693,98 +1867,6 @@ function mapTypeToIcon(type) {
 
     }
 
-}
-
-function generatePalette(result) {
-    var doc = result.facet_counts.facet_pivot["geohash_2,species_category"];
-    var items = [];
-    for (var obj in doc) if (doc.hasOwnProperty(obj)) {
-        var count = doc[obj].count;
-
-        var pivot = doc[obj].pivot;
-        for (var pivotElm in pivot) if (pivot.hasOwnProperty(pivotElm)) {
-            var ratio = pivot[pivotElm].count / count;
-            var species = pivot[pivotElm].value;
-            var index = parseInt(pivotElm);
-            var points;
-            // Use a scoring scheme to make sure species with a good presence per region get a proper color (we only have 20 good colours)
-            switch (index) {
-                case 1:
-                    points = 7 * ratio;
-                    break;
-                case 2:
-                    points = 3 * ratio;
-                    break;
-                case 3:
-                    points = 1 * ratio;
-                    break;
-                default:
-                    points = 0;
-                    break
-
-            }
-
-            if (items.hasOwnProperty(species)) {
-                items[species] += points;
-
-            } else {
-
-                items[species] = points;
-
-            }
-        }
-    }
-
-    // this is where the legend items are sorted
-    var sortedItems = sortHashByValue(items);
-    palette = buildPalette(sortedItems, legendSpecies, 1);
-
-    var inHtml = "";
-    var cntLegend = 1;
-    for (var obj1 in palette) {
-        if (cntLegend > legendSpecies - 1) {
-            inHtml += '<i style="background:' + palette["others"] + '"></i> ' + 'Others<br />';
-            $("#legend").html(inHtml);
-            break;
-        }
-        var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2");
-        inHtml += '<i style="background:' + palette[obj1] + '" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + abbrSpecies + '</em><br>' : '+');
-        cntLegend++;
-    }
-
-    if ($('#view-mode').val() === 'ir') {
-
-        inHtml += '<div class="data-layer-legend" style="border: 0">';
-        inHtml += '<p>Resistance</p>';
-        inHtml += '<div class="min-value" style="border: 0">Low</div>';
-        inHtml += '<div class="scale-bars">';
-        var colorsArr = L.ColorBrewer.Diverging.RdYlBu[10].slice(); //copy array by value
-        $.each(colorsArr.reverse(), function (index, value) {
-            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10px; background-color: ' + value + ' ;"></i>';
-        });
-
-        inHtml += '</div><div class="max-value" style="border: 0">High</div>' +
-            '</div>' +
-            '<p style="font-size: smaller; word-wrap: break-word; width: 200px; margin-top: 20px">Values have been rescaled globally and only give a relative indication of resistance/susceptibility</p>';
-
-    }
-
-    // Populate legend when added to map
-    legend.onAdd = function (map) {
-        legendDiv.innerHTML = inHtml;
-        return legendDiv;
-    };
-
-    // Was the legend already active? Refresh it!
-    if (L.DomUtil.hasClass(legendDiv, "active")) {
-        legend.removeFrom(map);
-        legend.addTo(map);
-    }
-
-
-    // moved this here to avoid querying SOLR before the palette is done building
-    loadSolr({clear: 1, zoomLevel: map.getZoom()});
-//        filterMarkers('');
 }
 
 function PaneSpin(divid, command) {
@@ -1832,12 +1914,12 @@ function resetPlots() {
     var pieHTML, violinHTML, tableHTML;
     if (firstClick) {
         pieHTML =
-            '<h3>Sample summary data</h3>' +
+            '<h3>Summary view for selected samples</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>' +
             '<h1>Go on!</h1>' +
-            '<h3>click a marker</h3>' +
-            '<h3>to plot some real data</h3> ' +
+            '<h4>click a marker on the map</h4>' +
+            '<h4>to plot some real data</h4> ' +
             '</div>' +
             '<div id="pie-chart-area">' +
             '<svg></svg>' +
@@ -1846,23 +1928,23 @@ function resetPlots() {
             '<div style="text-align: center; margin-top: 30px">' +
             '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
             '<h1>Go on!</h1>' +
-            '<h3>click a marker</h3>' +
-            '<h3>to plot some real data</h3> ' +
+            '<h4>click a marker on the map</h4>' +
+            '<h4>to plot some real data</h4> ' +
             '</div>';
         tableHTML =
             '<div style="text-align: center; margin-top: 30px">' +
             '<i class="fa fa-table" style="color: #2c699e; font-size: 12em"></i>' +
             '<h1>Go on!</h1>' +
-            '<h3>click a marker</h3>' +
-            '<h3>to see some real data</h3> ' +
+            '<h4>click a marker on the map</h4>' +
+            '<h4>to see some real data</h4> ' +
             '</div>';
     } else {
 
         pieHTML =
-            '<h3>Sample summary data</h3>' +
+            '<h3>Summary view for selected samples</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>' +
-            '<h3>click a marker</h3>' +
+            '<h4>click a marker on the map</h4>' +
             '</div>' +
             '<div id="pie-chart-area">' +
             '<svg></svg>' +
@@ -1870,12 +1952,12 @@ function resetPlots() {
         violinHTML =
             '<div style="text-align: center; margin-top: 30px">' +
             '<i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>' +
-            '<h3>click a marker</h3>' +
+            '<h4>click a marker on the map</h4>' +
             '</div>';
         tableHTML =
             '<div style="text-align: center; margin-top: 30px">' +
             '<i class="fa fa-table" style="color: #2c699e; font-size: 12em"></i>' +
-            '<h3>click a marker</h3>' +
+            '<h4>click a marker on the map</h4>' +
             '</div>';
     }
 
@@ -1933,3 +2015,300 @@ Number.prototype.roundDecimals = function (decimals) {
     }
 
 };
+
+function constructSeasonal(selectedMonths) {
+    // build ranges
+    var format = "YYYY-MM", formatText = "MMM";
+    var ranges = [], rangesText = [];
+    var range, rangeText, inRange = false;
+    var startDate = new Date(1600, 0, 1), endDate = new Date(1600, 0, 1);
+
+    for (var i = 1; i < 13; i++) {
+        var month = selectedMonths[i];
+        if (month) {
+            if (!inRange) {
+
+                startDate.setMonth(i - 1);
+                endDate.setMonth(i - 1);
+                inRange = true;
+            } else {
+                endDate.setMonth(i - 1);
+            }
+
+            if (i === 12) {
+
+                range = dateConvert(startDate, format) + ' TO ' + dateConvert(endDate, format);
+                ranges.push(range);
+
+                if (startDate.getTime() === endDate.getTime()) {
+
+                    rangeText = dateConvert(startDate, formatText);
+                } else {
+
+                    rangeText = dateConvert(startDate, formatText) + '-' + dateConvert(endDate, formatText);
+                }
+
+                rangesText.push(rangeText);
+                inRange = false;
+                // console.log(i + ': ' + month + ' ' + range);
+            }
+
+
+        } else {
+            if (inRange) {
+
+                range = dateConvert(startDate, format) + ' TO ' + dateConvert(endDate, format);
+                ranges.push(range);
+
+                if (startDate.getTime() === endDate.getTime()) {
+
+                    rangeText = dateConvert(startDate, formatText);
+                } else {
+
+                    rangeText = dateConvert(startDate, formatText) + '-' + dateConvert(endDate, formatText);
+                }
+
+                rangesText.push(rangeText);
+                inRange = false;
+            }
+
+        }
+    }
+
+    return {
+        ranges: ranges,
+        rangesText: rangesText
+    };
+}
+
+/*
+ function dateResolution
+ date: 7/4/2016
+ purpose: Given a SOLR date string return the proper date format based on the resolution of the string
+ inputs: dateString: a SOLR date string e.g. 2016-01 or 2016-01-03
+ outputs: a string e.g Jan 2016 or Mon Jan 3 2016
+ */
+
+function dateResolution(dateString) {
+    // very complex regex I got from https://gist.github.com/philipashlock/8830168
+    // could probably simplify it a lot for our needs but I'm leaving it like this for possible future use
+    // match[1] is year, match[5] is month, match[7] is day
+    var myregexp = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/g;
+    var match = myregexp.exec(dateString);
+    var year = match[1], month = match[5], day = match[7];
+
+    if (typeof day !== 'undefined') {
+        var date = new Date(dateString);
+        return date.toDateString();
+    }
+
+    if (typeof month !== 'undefined') {
+        var format = "MMM YYYY", date = new Date(dateString);
+        return dateConvert(date, format);
+    }
+
+    if (typeof year !== 'undefined') {
+        return dateString;
+    }
+
+    return false;
+    console.log(match[1] + '-' + match[5] + '-' + match[7]);
+
+
+}
+
+function setDateRange(elementStart, elementEnd, yearsAgo) {
+
+    var startingYear = new Date();
+    // When initialing the datepicker end date is limited to the current time,
+    // As a result we must set endDate to earlier tonight for "Today" to be allowed in the date-end field
+    var endDate = new Date(Date.UTC(startingYear.getUTCFullYear(), startingYear.getUTCMonth(), startingYear.getUTCDate()));
+
+    // Find the starting year
+    startingYear.setUTCFullYear(startingYear.getUTCFullYear() - yearsAgo);
+    // Set the start date as the January 1st of the starting year
+    var startDate = new Date(Date.UTC(startingYear.getUTCFullYear(), 0, 1));
+
+    // Udated the input fields
+    $(elementStart).datepicker('setUTCDate', startDate);
+    $(elementEnd).datepicker('setUTCDate', endDate);
+
+}
+
+function dateConvert(dateobj, format) {
+    var year = dateobj.getFullYear();
+    var month = ("0" + (dateobj.getMonth() + 1)).slice(-2);
+    var date = ("0" + dateobj.getDate()).slice(-2);
+    var hours = ("0" + dateobj.getHours()).slice(-2);
+    var minutes = ("0" + dateobj.getMinutes()).slice(-2);
+    var seconds = ("0" + dateobj.getSeconds()).slice(-2);
+    var day = dateobj.getDay();
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var dates = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var converted_date = "";
+
+    switch (format) {
+        case "YYYY-MM-DD":
+            converted_date = year + "-" + month + "-" + date;
+            break;
+        case "YYYY-MM":
+            converted_date = year + "-" + month;
+            break;
+        case "MMM YYYY":
+            converted_date = months[parseInt(month) - 1] + " " + year;
+            break;
+        case "YYYY-MMM-DD DDD":
+            converted_date = year + "-" + months[parseInt(month) - 1] + "-" + date + " " + dates[parseInt(day)];
+            break;
+        case "MMM":
+            converted_date = months[parseInt(month) - 1];
+            break;
+    }
+
+    return converted_date;
+}
+
+
+// Add an URL parser to JQuery that returns an object
+// This function is meant to be used with an URL like the window.location
+// Use: $.parseParams('http://mysite.com/?var=string') or $.parseParams() to parse the window.location
+// Simple variable:  ?var=abc                        returns {var: "abc"}
+// Simple object:    ?var.length=2&var.scope=123     returns {var: {length: "2", scope: "123"}}
+// Simple array:     ?var[]=0&var[]=9                returns {var: ["0", "9"]}
+// Array with index: ?var[0]=0&var[1]=9              returns {var: ["0", "9"]}
+// Nested objects:   ?my.var.is.here=5               returns {my: {var: {is: {here: "5"}}}}
+// All together:     ?var=a&my.var[]=b&my.cookie=no  returns {var: "a", my: {var: ["b"], cookie: "no"}}
+// You just cant have an object in an array, ?var[1].test=abc DOES NOT WORK
+// Taken from https://gist.github.com/kares/956897 (scroll down, code in the comments)
+(function ($) {
+    var re = /([^&=]+)=?([^&]*)/g;
+    var decode = function (str) {
+        return decodeURIComponent(str.replace(/\+/g, ' '));
+    };
+    $.parseParams = function (query) {
+        // recursive function to construct the result object
+        function createElement(params, key, value) {
+            key = key + '';
+            // if the key is a property
+            if (key.indexOf('.') !== -1) {
+                // extract the first part with the name of the object
+                var list = key.split('.');
+                // the rest of the key
+                var new_key = key.split(/\.(.+)?/)[1];
+                // create the object if it doesnt exist
+                if (!params[list[0]]) params[list[0]] = {};
+                // if the key is not empty, create it in the object
+                if (new_key !== '') {
+                    createElement(params[list[0]], new_key, value);
+                } else console.warn('parseParams :: empty property in key "' + key + '"');
+            } else
+            // if the key is an array
+            if (key.indexOf('[') !== -1) {
+                // extract the array name
+                var list = key.split('[');
+                key = list[0];
+                // extract the index of the array
+                var list = list[1].split(']');
+                var index = list[0]
+                // if index is empty, just push the value at the end of the array
+                if (index == '') {
+                    if (!params) params = {};
+                    if (!params[key] || !$.isArray(params[key])) params[key] = [];
+                    params[key].push(value);
+                } else
+                // add the value at the index (must be an integer)
+                {
+                    if (!params) params = {};
+                    if (!params[key] || !$.isArray(params[key])) params[key] = [];
+                    params[key][parseInt(index)] = value;
+                }
+            } else
+            // just normal key
+            {
+                if (!params) params = {};
+                params[key] = value;
+            }
+        }
+
+        // be sure the query is a string
+        if (!query) {
+            query = window.location + '';
+        } else {
+            query = query + '';
+
+        }
+
+        var params = {}, e;
+        if (query) {
+            // remove # from end of query
+            if (query.indexOf('#') !== -1) {
+                query = query.substr(0, query.indexOf('#'));
+            }
+
+            // remove ? at the begining of the query
+            if (query.indexOf('?') !== -1) {
+                query = query.substr(query.indexOf('?') + 1, query.length);
+            } else return {};
+            // empty parameters
+            if (query == '') return {};
+            // execute a createElement on every key and value
+            while (e = re.exec(query)) {
+                var key = decode(e[1]);
+                var value = decode(e[2]);
+                createElement(params, key, value);
+            }
+        }
+        return params;
+    };
+})(jQuery);
+
+
+// Encode an object to an url string
+// This function return the search part, beginning with "?"
+// Use: $.encodeURL({var: "test", len: 1}) returns ?var=test&len=1
+(function ($) {
+    $.encodeURL = function (object) {
+
+        // recursive function to construct the result string
+        function createString(element, nest) {
+            if (element === null) return '';
+            if ($.isArray(element)) {
+                var count = 0,
+                    url = '';
+                for (var t = 0; t < element.length; t++) {
+                    if (count > 0) url += '&';
+                    url += nest + '[]=' + element[t];
+                    count++;
+                }
+                return url;
+            } else if (typeof element === 'object') {
+                var count = 0,
+                    url = '';
+                for (var name in element) {
+                    if (element.hasOwnProperty(name)) {
+                        if (count > 0) url += '&';
+                        url += createString(element[name], nest + '.' + name);
+                        count++;
+                    }
+                }
+                return url;
+            } else {
+                return nest + '=' + element;
+            }
+        }
+
+        var url = '?',
+            count = 0;
+
+        // execute a createString on every property of object
+        for (var name in object) {
+            if (object.hasOwnProperty(name)) {
+                if (count > 0) url += '&';
+                url += createString(object[name], name);
+                count++;
+            }
+        }
+
+        return url;
+    };
+})(jQuery);

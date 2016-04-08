@@ -51,11 +51,23 @@ BODY {
 }
 
 .info {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 6px 8px;
     font-size: small;
     background: white;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 5px;
+}
+
+.nvd3 text {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: italic;
+}
+
+.nvtooltip {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: italic;
+
 }
 
 .info h4 {
@@ -114,6 +126,10 @@ BODY {
 
 .sidebar-pane h3 {
     font-size: 24px;
+    color: #666;
+}
+.sidebar-pane h4 {
+    font-size: 18px;
     color: #666;
 }
 
@@ -187,7 +203,7 @@ BODY {
     margin-bottom: 10px;
     margin-right: 10px;
 
-    font-family: Arial;
+    /*font-family: Arial;*/
     font-size: 13px;
     text-align: left;
 
@@ -266,7 +282,7 @@ BODY {
     z-index: 300001;
     display: block;
 
-    font-family: Arial, sans-serif;
+    /*font-family: Arial, sans-serif;*/
     font-size: 13px;
     text-align: left;
     pointer-events: none;
@@ -422,3 +438,56 @@ html {
     text-decoration: none;
     color: black;
 }
+
+.rotate {
+    -moz-transition: all 300ms linear;
+    -webkit-transition: all 300ms linear;
+    transition: all 300ms linear;
+}
+
+.rotate.down {
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+/* CSS transitions for map markers */
+
+/*.leaflet-marker-icon,*/
+/*.leaflet-marker-shadow {*/
+/*-webkit-animation: fadein 0.5s; !* Safari, Chrome and Opera > 12.1 *!*/
+/*-moz-animation: fadein 0.5s; !* Firefox < 16 *!*/
+/*-ms-animation: fadein 0.5s; !* Internet Explorer *!*/
+/*-o-animation: fadein 0.5s; !* Opera < 12.1 *!*/
+/*animation: fadein 0.5s;*/
+
+/*}*/
+
+/*@keyframes fadein {*/
+/*from { opacity: 0; }*/
+/*to   { opacity: 1; }*/
+/*}*/
+
+/*!* Firefox < 16 *!*/
+/*@-moz-keyframes fadein {*/
+/*from { opacity: 0; }*/
+/*to   { opacity: 1; }*/
+/*}*/
+
+/*!* Safari, Chrome and Opera > 12.1 *!*/
+/*@-webkit-keyframes fadein {*/
+/*from { opacity: 0; }*/
+/*to   { opacity: 1; }*/
+/*}*/
+
+/*!* Internet Explorer *!*/
+/*@-ms-keyframes fadein {*/
+/*from { opacity: 0; }*/
+/*to   { opacity: 1; }*/
+/*}*/
+
+/*!* Opera < 12.1 *!*/
+/*@-o-keyframes fadein {*/
+/*from { opacity: 0; }*/
+/*to   { opacity: 1; }*/
+/*}*/

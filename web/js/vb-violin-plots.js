@@ -345,13 +345,6 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
         var template = $.templates("#irBsPointTemplate");
         var tooltipHtml = template.render(point);
 
-
-        //var strConcentration = (concentration && concentration_unit) ? '<p>Concentration: ' + concentration + ' ' + concentration_unit + '</p>' : '',
-        //    strDuration = (duration && duration_unit) ? '<p>Duration: ' + duration + ' ' + duration_unit + '</p>' : '';
-        //var tooltipHtml = '<h3 style="background-color: %COLOR"><font color="white">%SPECIES</font></h3><p><b>%VALUE</b></p><p>%INSCT</p>'
-        //    .replace('%COLOR', color).replace('%SPECIES', species).replace('%INSCT', insecticide).replace('%VALUE', value)
-        //    .concat(strConcentration).concat(strDuration);
-
         gSwarmPlot.append("circle")
             .attr("cx", x(p.x))
             .attr("cy", y(p.y))
@@ -376,7 +369,7 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
                     tooltipY = d3.event.pageY - 28;
                 }
 
-                tooltip.style("left", (d3.event.pageX + 5) + "px")
+                tooltip.style("left", (d3.event.pageX + 20) + "px")
                     .style("top", (tooltipY) + "px")
 
             })
@@ -434,7 +427,7 @@ function createBeeViolinPlot(divid, filter) {
             '<div style="text-align: center; margin-top: 30px">' +
             '<i class="fa fa-area-chart" style="color: #C3312D; font-size: 12em"></i>' +
             '<h1>Ooops</h1>' +
-            '<h3>this plot type only works with Insecticide Resistance data</h3>' +
+            '<h4>this plot type only works with Insecticide Resistance data</h4>' +
             '<h4>switch to IR phenotypes view and try again</h4>' +
             '</div>'
         );
