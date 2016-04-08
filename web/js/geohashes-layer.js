@@ -8,7 +8,7 @@ function addGeohashes(objMap, geolevel) {
     // var geolevel = geohashLevel(zoomLevel, "geohash").slice(-1);
     var mapBounds = objMap.getBounds();
     var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
-    
+
     if (geohashesGrid) {
         objMap.removeLayer(geohashesGrid)
     }
