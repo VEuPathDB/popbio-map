@@ -32,7 +32,8 @@
 
     <!-- Bootstrap slider -->
     <link rel="stylesheet"
-          href="libs/bootstrap-slider/dist/css/bootstrap-slider.css"/>
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/css/bootstrap-slider.min.css"/>
+
 
     <!-- Javascript libraries -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
@@ -54,7 +55,7 @@
 
     <!-- Boostrap slider-->
     <script type="text/javascript"
-            src="libs/bootstrap-slider/dist/bootstrap-slider.js"></script>
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/bootstrap-slider.min.js"></script>
 
 
     <!-- Added geohash to enable geohashes layer -->
@@ -78,6 +79,12 @@
     <!-- Added geohashes-layers.js to enable geohashes -->
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
 
+
+    <!-- Date range search -->
+    <!-- Include Required Prerequisites -->
+    <!--<script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>-->
+    <!--<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>-->
+    <!--<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css" />-->
 
     <!-- Include Date Range Picker -->
     <!--<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
@@ -392,16 +399,10 @@
     <div class="mapbox">
         <div class="overlaytop">
 
+
             <label class="sr-only" for="search_ac">Search...</label>
             <div class="input-group">
-                <span id="expand-menu" class="input-group-addon btn-info"
-                      style="cursor: pointer;"
-                      title="Expand menu"
-                      data-toggle="collapse"
-                      data-target="#advanced-options">
-                    <i class="rotate fa fa-bars fa-fw" id="bars-icon">
-                    </i>
-                </span>
+                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
                 <input type="text" class="form-control" placeholder="Search..." id="search_ac"
                        data-role="tagsinput"/>
                 <span id="reset-search" class="input-group-addon btn-danger"
@@ -411,93 +412,8 @@
                 </span>
             </div>
 
-            <div class="collapse" style="margin-top:5px; width: 100%;padding: 10px 10px 10px 10px; background: #ffffff;"
-                 id="advanced-options">
-
-                <div class="table-responsive">
-                    <h4>Advanced search</h4>
-                    <table class="table table-condensed">
-                        <tbody>
-                        <!--<thead>-->
-                        <tr class="active">
-                            <th colspan="3">Normalised Insecticide Resistance</th>
-                            <th></th>
-                        </tr>
-                        <!--</thead>-->
-                        <tr>
-                            <td class="col-md-2" style="vertical-align: bottom; text-align: left;">
-                                Low
-                            </td>
-                            <td class="col-md-1" style="vertical-align: bottom; text-align: right;">
-                                High
-                            </td>
-                            <td class="col-md-1" style="vertical-align: bottom; text-align: right;">
-                            </td>
-                            <td class="col-md-8"></td>
-
-                        </tr>
-                        <tr style="border-top: 0px;">
-                            <td colspan="2" class="col-md-3" style="vertical-align: top; border-top: 0px;">
-                                <div id="menu-scale-bars" class="scale-bars">
-
-                                </div>
-                                <div>
-                                    <input type="text" id="pre-norm-ir-slider">
-                                </div>
-                            </td>
-                            <td class="col-md-1" style="vertical-align: top; border-top: 0px;">
-                                <button
-                                        id="add-norm-ir" type="button" class="btn btn-default"
-                                        title="Add Insecticide Resistance filter">
-                                    <i
-                                            class="fa fa-plus">
-
-                                    </i>
-                                </button>
-
-                            </td>
-                            <td class="col-md-8" style="vertical-align: top; border-top: 0px;">
-                                Filter samples based on their normalised insecticide resistance. <br>
-                                <b>Important note:</b> <br>
-                                All sample values have been rescaled globally and only give a relative indication of
-                                resistance/susceptibility.
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <h4>More options</h4>
-                    <table class="table table-condensed">
-                        <tr class="active">
-                            <th colspan="2">Clustering grid</th>
-                            <th></th>
-                        </tr>
-                        <tbody>
-                        <tr>
-                            <td class="col-md-3">
-                                <span class="btn-group btn-group-justified" data-toggle="buttons"
-                                      role="group"
-                                      style="height: 30px;">
-                                <input id="grid-toggle" type="checkbox" data-toggle="toggle"
-                                       data-on="<i class='fa fa-th'></i> Grid On"
-                                       data-off="<i class='fa fa-th'></i> Grid Off">
-
-                                </span>
-
-                            </td>
-                            <td>
-                                Show or hide the clustering grid. This only affects the appearance of the map.
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-
-
-            </div>
-
             <div class="collapse in main-menu" id="menu-bar">
-                <div class="btn-group btn-group-justified" data-toggle="buttons" role="group"
+                <div class=" btn-group btn-group-justified" data-toggle="buttons" role="group"
                      style="margin-top:3px;">
 
                     <div class="btn-group dropdown" id="SelectViewDropdown" role="group">
@@ -542,12 +458,21 @@
                     </button>
                 </span>
 
+                    <input id="grid-toggle" type="checkbox" data-toggle="toggle"
+                           data-on="<i class='fa fa-th'></i> Grid On"
+                           data-off="<i class='fa fa-th'></i> Grid Off">
+
                     <input id="world-toggle" type="checkbox" data-toggle="toggle"
                            data-on="<i class='fa fa-globe'></i> Local suggestions"
                            data-off="<i class='fa fa-globe'></i> Global suggestions">
 
 
                 </div>
+            </div>
+
+            <div class="collapse" style="margin-top:0px;" id="advanced-options">
+
+
             </div>
 
             <div class="collapse main-menu" style="margin-top:0px;" id="daterange">
@@ -755,17 +680,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -845,17 +759,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -947,17 +850,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 <!-- Stop cutting here for Map stuff -->
@@ -970,10 +862,10 @@
 
     //        var solrPopbioUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_popbio/';
     //        var solrTaUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_ta/';
-    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
-    //    var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
-    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
-    //    var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
+    //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
+    var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
+    //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
+    var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
     var map, sidebar;
     var assetLayerGroup;
     var smallClusters = [], months = [];
@@ -987,8 +879,7 @@
     var geohashesGrid = null;
     // map scaled values from 0-1 to colors green to red
     //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
-    var colorBrewer = L.ColorBrewer.Diverging.RdYlBu[10].slice(); // using slice() to copy array by value
-    var trafficLight = new L.CustomColorFunction(0, 1, colorBrewer, {interpolate: true});
+    var trafficLight = new L.CustomColorFunction(0, 1, L.ColorBrewer.Diverging.RdYlBu[10]);
 
     // Hack to prevent single click events firing when double clicking
     var timer = 0;
@@ -998,41 +889,13 @@
     // this is to remember background type selection between markers
     var bgPlotType = 1;
 
-    // Norm IR slider initiation
-    var normIrSlider;
-
-
     initializeSearch();
 
 
     // set view according to the value of the view url parameter. Otherwise default to smpl
     var urlParams = $.parseParams();
 
-
     $(window).load(function () {
-
-        // add the IR scale bars in the advanced options pane
-        var inHtml = '';
-//        var scaleWidth = $('#norm-ir-slider').width() / 10;
-        $.each(colorBrewer.slice().reverse(), function (index, value) {
-            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10%; background-color: ' + value + ' ;"></i>';
-        });
-        $('#menu-scale-bars').html(inHtml);
-
-        normIrSlider = $('#pre-norm-ir-slider').bslider({
-            value: [0, 9],
-            id: "norm-ir-slider",
-            handle: "triangle",
-            min: 0,
-            max: 9,
-            step: 1,
-            tooltip: 'hide'
-        });
-
-//        data-provide="bslider" class="form-control" value=""
-//        data-bslider-min="0" data-bslider-max="1" data-bslider-step="0.1"
-//        data-bslider-value="[0.1,0.9]" data-bslider-tooltip="hide"
-//        data-bslider-id="norm-ir-slider"/
 
         bindEvents();
         initializeMap();

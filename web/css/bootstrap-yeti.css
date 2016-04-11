@@ -5981,6 +5981,12 @@ a.label:focus {
     background-color: #008cba;
 }
 
+.label-secondary {
+    background-color: #a08fb5;
+    /*border: 1px #000000;*/
+    /*color: #000000;*/
+}
+
 .label-primary[href]:hover,
 .label-primary[href]:focus {
     background-color: #006687;

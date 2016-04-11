@@ -23,6 +23,24 @@ function bindEvents() {
 
     // collapse open panels
 
+
+    // hide the main menu bar and other panels when advanced options are expanded
+
+    $('#advanced-options').on('show.bs.collapse', function () {
+        // $('.main-menu').collapse('hide');
+        $('#bars-icon').toggleClass('down');
+    });
+
+    $('#advanced-options').on('hide.bs.collapse', function () {
+        // $('#menu-bar').collapse('show');
+        $('#bars-icon').toggleClass('down');
+    });
+
+    // $('#advanced-options').on('shown.bs.collapse', function () {
+    //
+    //
+    // });
+
     // clear the date selection panel once collapsed
     $('#daterange').on('hidden.bs.collapse', function () {
         $("#date-start").datepicker("clearDates");
@@ -116,6 +134,37 @@ function bindEvents() {
         }
     });
 
+    // add the normalized IR filters into search
+    $('#add-norm-ir').click(function () {
+        // var normIrSlider = $('#norm-ir-slider').bslider({});
+        // var normIrSlider = $('#norm-ir-slider').slider();
+        var normIrValues = normIrSlider.bslider('getValue');
+        var firstVal = normIrValues[0], secondVal = normIrValues[1];
+        // if (secondVal < firstVal) {
+        //     var temp = secondVal;
+        //     secondVal = firstVal;
+        //     firstVal = temp;
+        // }
+
+        var inHtml = '';
+        console.log(firstVal + ' - ' + (secondVal + 1));
+        $.each(colorBrewer.slice().reverse().slice(firstVal, secondVal + 1), function (index, value) {
+            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 6px; background-color: ' + value + ' ;">&nbsp &nbsp</i>';
+        });
+        // $('#menu-scale-bars').html(inHtml);
+
+        // reverse the values, 0-> high resistance, 1-> low resistance
+        normIrValues = (1 - (secondVal / 10 + 0.1)) + ' TO ' + (1 - (firstVal / 10));
+
+        $('#search_ac').tagsinput('add', {
+            value: normIrValues,
+            html: inHtml,
+            normIrValues: normIrValues,
+            type: 'Norm-IR',
+            field: 'phenotype_rescaled_value_f'
+
+        });
+    });
 
     // Enable the add dates button only if the date fields are populated
     $("#date-start").datepicker()
@@ -470,7 +519,9 @@ function initializeSearch() {
                 case 'Date' :
                     return 'label label-info fa fa-calendar';
                 case 'Seasonal' :
-                    return 'label label-info fa fa-calendar-check-o';
+                    return 'label label-info fa fa-calendar-check-o ';
+                case 'Norm-IR' :
+                    return 'label label-secondary fa fa-bolt';
                 default :
                     return 'label label-warning fa fa-search';   // orange
             }
@@ -1721,6 +1772,16 @@ function filterMarkers(items) {
 
         }
 
+        if (element.type === 'Norm-IR') {
+
+
+            terms[element.type].push({
+                "field": element.field, "value": '[' + element.normIrValues + ']'
+            });
+            return
+
+
+        }
 
         if (element.qtype == 'exact') {
             terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
@@ -1849,25 +1910,27 @@ function mapTypeToField(type) {
             return "insecticide_cvterms";
         case "Collection date":
             return "collection_date_range";
+        case "Normalised IR":
+            return "phenotype_rescaled_value_f";
         default :
             return type.toLowerCase()
 
     }
 
 }
-
-function mapTypeToIcon(type) {
-    switch (type) {
-        case "Taxonomy":
-            return '<i class="fa fa-sitemap"></i>';
-        case "Title":
-            return '<i class="fa fa-info-circle"></i>';
-        default :
-            return '<i class="fa fa-camera-retro"></i>';
-
-    }
-
-}
+//
+// function mapTypeToIcon(type) {
+//     switch (type) {
+//         case "Taxonomy":
+//             return '<i class="fa fa-sitemap"></i>';
+//         case "Title":
+//             return '<i class="fa fa-info-circle"></i>';
+//         default :
+//             return '<i class="fa fa-camera-retro"></i>';
+//
+//     }
+//
+// }
 
 function PaneSpin(divid, command) {
 
@@ -2079,6 +2142,12 @@ function constructSeasonal(selectedMonths) {
         ranges: ranges,
         rangesText: rangesText
     };
+}
+
+function constructIrNorm(min, max) {
+
+
+    return {}
 }
 
 /*

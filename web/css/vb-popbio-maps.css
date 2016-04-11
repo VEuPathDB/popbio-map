@@ -452,6 +452,11 @@ html {
     transform: rotate(90deg);
 }
 
+#norm-ir-slider {
+    width: 90%;
+    margin-left: 5%;
+}
+
 /* CSS transitions for map markers */
 
 /*.leaflet-marker-icon,*/
