@@ -27,14 +27,13 @@ function bindEvents() {
     // hide the main menu bar and other panels when advanced options are expanded
 
     $('#advanced-options').on('show.bs.collapse', function () {
-        // $('.main-menu').collapse('hide');
-        $('#bars-icon').toggleClass('down');
-    });
-
-    $('#advanced-options').on('hide.bs.collapse', function () {
-        // $('#menu-bar').collapse('show');
-        $('#bars-icon').toggleClass('down');
-    });
+            // $('.main-menu').collapse('hide');
+            $('#bars-icon').toggleClass('down');
+        })
+        .on('hide.bs.collapse', function () {
+            // $('#menu-bar').collapse('show');
+            $('#bars-icon').toggleClass('down');
+        });
 
     // $('#advanced-options').on('shown.bs.collapse', function () {
     //
@@ -136,25 +135,36 @@ function bindEvents() {
 
     // add the normalized IR filters into search
     $('#add-norm-ir').click(function () {
-        // var normIrSlider = $('#norm-ir-slider').bslider({});
-        // var normIrSlider = $('#norm-ir-slider').slider();
+
+        // Map the values returned by the slider to Normalised IR values
+        var scaleToIrMap = {
+            0: 1,
+            1: 0.9,
+            2: 0.8,
+            3: 0.7,
+            4: 0.6,
+            5: 0.4,
+            6: 0.3,
+            7: 0.2,
+            8: 0.1,
+            9: 0
+        };
+
         var normIrValues = normIrSlider.bslider('getValue');
         var firstVal = normIrValues[0], secondVal = normIrValues[1];
-        // if (secondVal < firstVal) {
-        //     var temp = secondVal;
-        //     secondVal = firstVal;
-        //     firstVal = temp;
-        // }
+
 
         var inHtml = '';
-        console.log(firstVal + ' - ' + (secondVal + 1));
+        console.log(firstVal + ' - ' + secondVal);
         $.each(colorBrewer.slice().reverse().slice(firstVal, secondVal + 1), function (index, value) {
             inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 6px; background-color: ' + value + ' ;">&nbsp &nbsp</i>';
         });
         // $('#menu-scale-bars').html(inHtml);
 
         // reverse the values, 0-> high resistance, 1-> low resistance
-        normIrValues = (1 - (secondVal / 10 + 0.1)) + ' TO ' + (1 - (firstVal / 10));
+        // normIrValues = (1 - (secondVal / 10 + 0.1)).roundDecimals(1) + ' TO ' + (1 - (firstVal / 10)).roundDecimals(1);
+        normIrValues = scaleToIrMap[secondVal] + ' TO ' + scaleToIrMap[firstVal];
+        console.log(normIrValues);
 
         $('#search_ac').tagsinput('add', {
             value: normIrValues,
@@ -1625,7 +1635,9 @@ function tableHtml(divid, results) {
                 var startDateString = match[1], endDateString = match[2];
                 frmDate = dateResolution(startDateString) + ' to ' + dateResolution(endDateString);
                 // dateResolution(match[2]);
+            } else if (/^\d{4}$/.test(dateString)) {
 
+                frmDate = dateResolution(dateString);
 
             } else {
                 // Match attempt failed
@@ -1734,9 +1746,8 @@ function filterMarkers(items) {
         return;
     }
 
-    //qryUrl = 'q=';
     var terms = {};
-    //items = $("#search_ac").tagsinput('items');
+
     items.forEach(function (element) {
 
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
@@ -1774,7 +1785,7 @@ function filterMarkers(items) {
 
         if (element.type === 'Norm-IR') {
 
-
+            // console.log(element.normIrValues);
             terms[element.type].push({
                 "field": element.field, "value": '[' + element.normIrValues + ']'
             });
@@ -2166,18 +2177,20 @@ function dateResolution(dateString) {
     var match = myregexp.exec(dateString);
     var year = match[1], month = match[5], day = match[7];
 
+    var date = new Date(dateString);
+
     if (typeof day !== 'undefined') {
-        var date = new Date(dateString);
         return date.toDateString();
     }
 
     if (typeof month !== 'undefined') {
-        var format = "MMM YYYY", date = new Date(dateString);
+        var format = "MMM YYYY";
         return dateConvert(date, format);
     }
 
     if (typeof year !== 'undefined') {
-        return dateString;
+        var format = "YYYY";
+        return dateConvert(date, format);
     }
 
     return false;
@@ -2231,6 +2244,9 @@ function dateConvert(dateobj, format) {
             break;
         case "MMM":
             converted_date = months[parseInt(month) - 1];
+            break;
+        case "YYYY":
+            converted_date = year;
             break;
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
 
@@ -7,89 +7,95 @@
 
 
     <!-- CSS styles-->
-    <link rel="stylesheet" href="css/vectorbase.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/vectorbase.css" type="text/css" media="screen"/>
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
+          rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.min.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="css/MarkerCluster.Default.min.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.min.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.min.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.min.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/nvd3/nv.d3.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">-->
-    <link rel="stylesheet" href="css/bootstrap-yeti.css">
-    <link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.min.css">
-    <link rel="stylesheet" href="./css/typeaheadjs.min.css">
-    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.min.css"/>
-    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
 
-    <link rel="stylesheet" href="./css/vb-popbio-maps.min.css">
+
+    <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/nvd3/nv.d3.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.css">
+    <link rel="stylesheet" href="css/typeaheadjs.css">
+    <link rel="stylesheet" href="css/bootstrap-yeti.css">
+    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.css"/>
+    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css"/>
+
 
     <!-- Bootstrap toggles -->
-    <!--<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">-->
-    <link rel="stylesheet" href="libs/bootstrap-toggle/css/bootstrap-toggle.min.css"/>
+    <link rel="stylesheet" href="libs/bootstrap-toggle/css/bootstrap-toggle.css"/>
 
     <!-- Bootstrap slider -->
-    <link rel="stylesheet"
-          href="libs/bootstrap-slider/dist/css/bootstrap-slider.css"/>
+    <link rel="stylesheet" href="libs/bootstrap-slider/dist/css/bootstrap-slider.css"/>
+
+    <link rel="stylesheet" href="css/vb-popbio-maps.css">
+
+    <!--<link rel="stylesheet" type="text/css" href="dist/VB_popbio_map_libs.min.css"/>-->
+    <!--<link rel="stylesheet" type="text/css" href="dist/VB_popbio_map.min.css"/>-->
+
 
     <!-- Javascript libraries -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
     <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.min.js"></script>
-    <script type="text/javascript" src="libs/leaflet.fullscreen/Control.FullScreen.min.js"></script>
-    <script type="text/javascript" src="libs/spin.js/spin.min.js"></script>
-    <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"
+            charset="utf-8"></script>
+
+
+    <!--<script type="text/javascript" src="dist/VB_popbio_map_libs.min.js" charset="utf-8"></script>-->
+    <!--<script type="text/javascript" src="dist/VB_popbio_map.min.js" charset="utf-8"></script>-->
+
+    <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.js"></script>
+    <script type="text/javascript" src="libs/leaflet.fullscreen/Control.FullScreen.js"></script>
+    <script type="text/javascript" src="libs/spin.js/spin.js"></script>
+    <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.js"></script>
     <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
     <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
-    <script type="text/javascript" src="libs/PruneCluster/PruneCluster.min.js"></script>
-    <script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.min.js"></script>
+    <script type="text/javascript" src="libs/PruneCluster/PruneCluster.js"></script>
+    <script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.js"></script>
 
-    <!-- Bootstrap toggles -->
-    <!--<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>-->
-    <script type="text/javascript" src="libs/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <!--&lt;!&ndash; Bootstrap toggles &ndash;&gt;-->
+    <script type="text/javascript" src="libs/bootstrap-toggle/js/bootstrap-toggle.js"></script>
 
-    <!-- Boostrap slider-->
-    <script type="text/javascript"
-            src="libs/bootstrap-slider/dist/bootstrap-slider.js"></script>
+    <!--&lt;!&ndash; Boostrap slider&ndash;&gt;-->
+    <script type="text/javascript" src="libs/bootstrap-slider/dist/bootstrap-slider.js"></script>
 
 
-    <!-- Added geohash to enable geohashes layer -->
+    <!--&lt;!&ndash; Added geohash to enable geohashes layer &ndash;&gt;-->
     <script type="text/javascript" src="libs/geohash-js/geohash.js"></script>
     <script type="text/javascript" src="libs/node-geohash/main.js"></script>
 
-    <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.min.js"></script>
+    <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.js"></script>
 
-    <!-- VB code -->
+    <!--&lt;!&ndash; VB code &ndash;&gt;-->
     <script type="text/javascript" src="js/map.Legend.js"></script>
-    <script type="text/javascript" src="js/Icon.Canvas.min.js"></script>
-    <script type="text/javascript" src="js/nv.d3.pie.min.js"></script>
+    <script type="text/javascript" src="js/Icon.Canvas.js"></script>
+    <script type="text/javascript" src="js/nv.d3.pie.js"></script>
     <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
     <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
     <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
-    <script type="text/javascript" src="libs/jsrender/jsrender.min.js"></script>
-    <script type="text/javascript"
-            src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.min.js"></script>
+    <script type="text/javascript" src="libs/jsrender/jsrender.js"></script>
+    <script type="text/javascript" src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js"></script>
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
-    <!-- Added geohashes-layers.js to enable geohashes -->
+    <!--Added geohashes-layers.js to enable geohashes -->
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
 
 
     <!-- Include Date Range Picker -->
-    <!--<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>-->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
 
-    <style>
-
-    </style>
 </head>
+
 
 <body>
 <map name="ribbon">
@@ -98,7 +104,8 @@
 </map>
 <img src="ribbon.png" usemap="#ribbon" alt="beta"
      style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
-
+<!-- Keep the following line for grunt-->
+<!-- SIMPLE START -->
 <div class="no-interactions" id="no-interactions"></div>
 
 <div id="min_width_container">
@@ -254,7 +261,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <span class="input-group-addon btn-primary" style="cursor: default; width: 40px">
+                                <span class="input-group-addon btn-primary" style="cursor: default; width: 40px;">
                                     <i class="fa fa-globe fa-fw"
                                        style="color: white"></i>
                                 </span>
@@ -265,7 +272,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <span class="input-group-addon" style="cursor: default; width: 40px">
+                                <span class="input-group-addon" style="cursor: default; width: 40px;">
                                     <i class="fa fa-globe fa-fw"
                                        style="color: rgb(38, 90, 136);"></i>
                                 </span>
@@ -436,8 +443,8 @@
                             <td class="col-md-8"></td>
 
                         </tr>
-                        <tr style="border-top: 0px;">
-                            <td colspan="2" class="col-md-3" style="vertical-align: top; border-top: 0px;">
+                        <tr style="border-top: 0;">
+                            <td colspan="2" class="col-md-3" style="vertical-align: top; border-top: 0;">
                                 <div id="menu-scale-bars" class="scale-bars">
 
                                 </div>
@@ -445,7 +452,7 @@
                                     <input type="text" id="pre-norm-ir-slider">
                                 </div>
                             </td>
-                            <td class="col-md-1" style="vertical-align: top; border-top: 0px;">
+                            <td class="col-md-1" style="vertical-align: top; border-top: 0;">
                                 <button
                                         id="add-norm-ir" type="button" class="btn btn-default"
                                         title="Add Insecticide Resistance filter">
@@ -456,7 +463,7 @@
                                 </button>
 
                             </td>
-                            <td class="col-md-8" style="vertical-align: top; border-top: 0px;">
+                            <td class="col-md-8" style="vertical-align: top; border-top: 0;">
                                 Filter samples based on their normalised insecticide resistance. <br>
                                 <b>Important note:</b> <br>
                                 All sample values have been rescaled globally and only give a relative indication of
@@ -465,10 +472,10 @@
                         </tr>
                         </tbody>
                     </table>
-                    <h4>More options</h4>
+                    <h4>Configuration options</h4>
                     <table class="table table-condensed">
                         <tr class="active">
-                            <th colspan="2">Clustering grid</th>
+                            <th colspan="3">Clustering grid</th>
                             <th></th>
                         </tr>
                         <tbody>
@@ -484,7 +491,9 @@
                                 </span>
 
                             </td>
-                            <td>
+                            <td class="col-md-1">
+                            </td>
+                            <td class="col-md-8">
                                 Show or hide the clustering grid. This only affects the appearance of the map.
                             </td>
                         </tr>
@@ -496,7 +505,7 @@
 
             </div>
 
-            <div class="collapse in main-menu" id="menu-bar">
+            <div class="main-menu" id="menu-bar">
                 <div class="btn-group btn-group-justified" data-toggle="buttons" role="group"
                      style="margin-top:3px;">
 
@@ -550,7 +559,7 @@
                 </div>
             </div>
 
-            <div class="collapse main-menu" style="margin-top:0px;" id="daterange">
+            <div class="collapse main-menu" style="margin-top:0;" id="daterange">
 
                 <div class="input-daterange input-group" id="datepicker" style="margin-top: 5px;">
                     <span class="input-group-addon"
@@ -595,33 +604,33 @@
                             class="fa fa-long-arrow-left fa-fw"></i></span>
 
                     <span class="btn-group btn-group-justified" role="group">
-                        <div class="btn-group" role="group">
+                        <span class="btn-group" role="group">
                             <button type="button" class="btn btn-default date-shortcut" value="50">50 years</button>
-                        </div>
-                        <div class="btn-group" role="group">
+                        </span>
+                        <span class="btn-group" role="group">
                             <button type="button" class="btn btn-default date-shortcut" value="40">40 years</button>
-                        </div>
-                        <div class="btn-group" role="group">
+                        </span>
+                        <span class="btn-group" role="group">
                             <button type="button" class="btn btn-default date-shortcut" value="30">30 years</button>
-                        </div>
-                        <div class="btn-group" role="group">
+                        </span>
+                        <span class="btn-group" role="group">
                             <button type="button" class="btn btn-default date-shortcut" value="20">20 years</button>
-                        </div>
-                        <div class="btn-group" role="group">
+                        </span>
+                        <span class="btn-group" role="group">
                             <button type="button" class="btn btn-default date-shortcut" value="15">15 years</button>
-                        </div>
-                        <div class="btn-group" role="group">
+                        </span>
+                        <span class="btn-group" role="group">
                             <button type="button" class="btn btn-default date-shortcut" value="10">10 years</button>
-                        </div>
-                        <div class="btn-group" role="group">
+                        </span>
+                        <span class="btn-group" role="group">
                             <button type="button" class="btn btn-default date-shortcut" value="5">5 years</button>
-                        </div>
+                        </span>
                     </span>
 
                 </div>
             </div>
 
-            <div class="collapse main-menu" style="margin-top:0px;" id="seasonal">
+            <div class="collapse main-menu" style="margin-top:0;" id="seasonal">
 
                 <div id="date-seasonal" class="input-group" style="margin-top: 5px;">
                     <!--<span class="input-group-addon" title="Display samples collected during the following months">-->
@@ -1013,7 +1022,6 @@
 
         // add the IR scale bars in the advanced options pane
         var inHtml = '';
-//        var scaleWidth = $('#norm-ir-slider').width() / 10;
         $.each(colorBrewer.slice().reverse(), function (index, value) {
             inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10%; background-color: ' + value + ' ;"></i>';
         });
@@ -1029,17 +1037,14 @@
             tooltip: 'hide'
         });
 
-//        data-provide="bslider" class="form-control" value=""
-//        data-bslider-min="0" data-bslider-max="1" data-bslider-step="0.1"
-//        data-bslider-value="[0.1,0.9]" data-bslider-tooltip="hide"
-//        data-bslider-id="norm-ir-slider"/
-
         bindEvents();
         initializeMap();
 
         // detect when user changes zoom or pans around the map
         map.on("movestart", function () {
                     removeHighlight();
+                    // close open panels
+                    $('.collapse').collapse('hide');
                     sidebar.close();
                     setTimeout(function () {
                         resetPlots()
@@ -1052,6 +1057,8 @@
                 .on("click", function () {
                     removeHighlight();
                     sidebar.close();
+                    // close open panels
+                    $('.collapse').collapse('hide');
                     setTimeout(function () {
                         resetPlots()
                     }, delay);
@@ -1061,6 +1068,8 @@
 
 
 </script>
+<!-- SIMPLE END -->
+<!-- Keep the above line for grunt-->
 </body>
 </html>
 

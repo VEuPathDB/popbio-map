@@ -457,6 +457,21 @@ html {
     margin-left: 5%;
 }
 
+/* Replace leaflet styles*/
+
+/* general typography */
+.leaflet-container {
+    font: 12px/1.5 "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+.leaflet-bar, .leaflet-control-layers, .sidebar {
+    color: #333;
+    background-color: #FFF;
+    border: 1px solid #E7E7E7 !important;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
 /* CSS transitions for map markers */
 
 /*.leaflet-marker-icon,*/
