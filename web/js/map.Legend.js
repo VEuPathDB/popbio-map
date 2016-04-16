@@ -3,7 +3,8 @@ L.Control.MapLegend = L.Control.extend({
         position: 'bottomright',
         numberOfColors: 20,
         //sortType: 'name'
-        sortType: 'color'
+        sortType: 'color',
+        lum: 0.7
     },
 
     // add the legend to the DOM tree
@@ -117,20 +118,18 @@ L.Control.MapLegend = L.Control.extend({
 
         limitedPalette = newPalette;
 
-        var lumInterval = 0.5 / noItems,
-            lum = 0.7;
+        var lumInterval = 0.5 / noItems;
+        this.lum = 0.7;
         for (var c = 0; c < noItems; c++) {
             var element = stNoItems - noItems + c;
             var item = items[element][0];
-            newPalette[item] = colorLuminance("#FFFFFF", -lum);
-            lum -= lumInterval;
+            newPalette[item] = this.colorLuminance("#FFFFFF", -this.lum);
+            this.lum -= lumInterval;
             //console.log(item);
 
 
         }
 
-        newPalette["others"] = "radial-gradient(" + colorLuminance("#FFFFFF", -0.7) + ", " + colorLuminance("#FFFFFF", -lum) + ")";
-        limitedPalette["others"] = "radial-gradient(" + colorLuminance("#FFFFFF", -0.7) + ", " + colorLuminance("#FFFFFF", -lum) + ")";
         newPalette["Unknown"] = "black";
         limitedPalette["Unknown"] = "black";
 
@@ -192,7 +191,7 @@ L.Control.MapLegend = L.Control.extend({
 
     sortColorsByHue: function (colors) {
         var tuples = [];
-        var sortedPallete = [];
+        var sortedPallete = {};
         for (var colorsKey in colors) if (colors.hasOwnProperty(colorsKey)) {
             tuples.push([colorsKey, colors[colorsKey]])
         }
@@ -213,11 +212,42 @@ L.Control.MapLegend = L.Control.extend({
         return sortedPallete;
     },
 
+    colorLuminance: function (hex, lum) {
+        /*
+         function colorLuminance
+         date: 20/03/2015
+         purpose: extracts the red, green and blue values in turn, converts them to decimal, applies the luminosity factor,
+         and converts them back to hexadecimal.
+         inputs: <hex> original hex color value <lum> level of luminosity from 0 (lightest) to 1 (darkest)
+         outputs: a hex represantation of the color
+         source: http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+         */
+
+        // validate hex string
+        "use strict";
+
+        hex = String(hex).replace(/[^0-9a-f]/gi, '');
+        if (hex.length < 6) {
+            hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        }
+        lum = lum || 0;
+
+        // convert to decimal and change luminosity
+        var rgb = "#", c, i;
+        for (i = 0; i < 3; i++) {
+            c = parseInt(hex.substr(i * 2, 2), 16);
+            c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+            rgb += ("00" + c).substr(c.length);
+        }
+
+        return rgb;
+    },
+
     outputColors: function (hexArray) {
-        var colors = [];
+        var colors = {};
         var cntLegend = 1;
         for (var paletteKey in palette) if (palette.hasOwnProperty(paletteKey)) {
-            if (cntLegend > legendSpecies - 1) break;
+            if (cntLegend > legendSpecies) break;
             var color = new this.Color(palette[paletteKey]);
             this.constructColor(color);
             colors[paletteKey] = color;
@@ -234,15 +264,19 @@ L.Control.MapLegend = L.Control.extend({
         var inHtml = ""; // store HTML here
         var cntLegend = 1; // store the number of the elements/entries in the legend
         for (var obj1 in palette) if (palette.hasOwnProperty(obj1)) {
-            if (cntLegend > legendSpecies - 1) {
-                inHtml += '<i style="background:' + palette["others"] + ';"></i> ' + 'Others<br />';
-                $("#legend").html(inHtml);
-                break;
-            }
+
             var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An. gambiae
-            inHtml += '<i style="background:' + palette[obj1] + ';" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + abbrSpecies + '</em><br>' : '+');
+            inHtml += '<span class="active-legend" type="Taxonomy" value="' + obj1 + '"> ' +
+                '<i style="background:' + palette[obj1] + ';" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + abbrSpecies + '</em><br>' : '+');
+            inHtml += '</span>';
+            
+
             cntLegend++; // update the counter of legend entries
         }
+        // add others
+        var othersBg = "radial-gradient(" + this.colorLuminance("#FFFFFF", -0.7) + ", " + this.colorLuminance("#FFFFFF", -this.lum) + ")"
+        inHtml += '<i style="background:' + othersBg + ';"></i> ' + 'Others<br />';
+        $("#legend").html(inHtml);
 
         // if in IR mode add the IR resistance color scale
         if ($('#view-mode').val() === 'ir') {
@@ -329,11 +363,11 @@ L.Control.MapLegend = L.Control.extend({
         //this.sortHashByValue(items);
         var palettes = [];
         var limitedPalette = [];
-        palettes = this.generatePalette(sortedItems, legendSpecies, 1);
+        palettes = this.generatePalette(sortedItems);
         palette = palettes[0];
         limitedPalette = palettes[1];
 
-        var sortedPalette;
+        var sortedPalette = [];
         if (this.options.sortType === 'name') {
             sortedPalette = limitedPalette;
 

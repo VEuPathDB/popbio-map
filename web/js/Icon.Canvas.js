@@ -17,6 +17,7 @@ L.Icon.Canvas = L.Icon.extend({
         var pop = this.options.population;
         e.width = s.x;
         e.height = s.y;
+        e.id = this.options.id;
         this.draw(e.getContext('2d'), s.x, s.y);
         return e;
     },

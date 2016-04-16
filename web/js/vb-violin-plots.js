@@ -437,12 +437,16 @@ function createBeeViolinPlot(divid, filter) {
     var self = this;
     var url = solrPopbioUrl + 'irViolinStats?&' + qryUrl + filter + '&json.wrf=?&callback=?';
 
+    // store the selected plot type
+
+
     // Empty the div
     $(divid).empty();
 
 
     $.getJSON(url)
         .done(function (json) {
+
 
             if (json.facets.count && json.facets.count > 0) {
 
@@ -474,7 +478,7 @@ function createBeeViolinPlot(divid, filter) {
                             var optionText = element.val + ' (' + innElement.val + '): ' + innElement.count + ' phenotypes';
                             $('<option/>', {
                                 text: optionText,
-                                value: innElement.val,
+                                value: element.val + '-' + innElement.val,
                                 data: {
                                     phenotype_value_type_s: element.val,
                                     phenotype_value_unit_s: innElement.val,
@@ -491,8 +495,18 @@ function createBeeViolinPlot(divid, filter) {
                 label.appendTo($(divid));
                 s.appendTo($(divid));
 
+
+                // check if there was a previous selection and if it currently exists
+                if (selectedPlotType !== 'none' && $('#plotType option[value="' + selectedPlotType + '"]').length > 0) {
+                    $('#plotType').val(selectedPlotType);
+
+                }
+
                 // build the graph using the first option in the drop-down
                 var selectionData = s.find(':selected').data();
+
+                // build the graph using the first option in the drop-down
+                // var selectionData = s.find(':selected').data();
 
                 //buildBackgroundPlot(divid, filter, selectionData);
                 PaneSpin('swarm-plots', 'start');
@@ -514,10 +528,13 @@ function createBeeViolinPlot(divid, filter) {
 
 
             }
+            $(document).trigger("jsonLoaded");
+
 
         })
         .fail(function () {
             PaneSpin('swarm-plots', 'stop');
+            // $(document).trigger("jsonLoaded");
 
             console.log('Failed while loading irViolinStats')
         });
@@ -701,34 +718,7 @@ function buildPlot(divid, filter, selection) {
                             var factoredRadius = scaledRadius * scaleFactor;
 
                             firstResult.doclist.docs.forEach(function (element, index) {
-
-
-                                dataset.push({
-                                    x: undefined,
-                                    y: element.phenotype_value_f,
-                                    species: element.species_category,
-                                    insecticide: element.insecticide_s,
-                                    concentration: element.concentration_f,
-                                    duration: element.duration_f,
-                                    accession: element.accession,
-                                    bundleName: element.bundle_name,
-                                    url: element.url,
-                                    sampleType: element.sample_type,
-                                    geoCoords: element.geo_coords,
-                                    geolocation: element.geolocations[0],
-                                    bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
-                                    textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
-                                    collectionDate: element.collection_date,
-                                    projects: element.projects,
-                                    collectionProtocols: element.collection_protocols,
-                                    protocols: element.protocols,
-                                    phenotypeValue: element.phenotype_value_f,
-                                    phenotypeValueType: element.phenotype_value_type_s,
-                                    phenotypeValueUnit: element.phenotype_value_unit_s,
-                                    sampleSize: element.sample_size_i,
-                                    concentrationUnit: element.concentration_unit_s,
-                                    durationUnit: element.duration_unit_s
-                                });
+                                buildDataset(dataset, element);
 
                             });
 
@@ -774,32 +764,7 @@ function buildPlot(divid, filter, selection) {
                             var factoredRadius = scaledRadius * scaleFactor;
 
                             firstResult.doclist.docs.forEach(function (element, index) {
-                                dataset.push({
-                                    x: undefined,
-                                    y: element.phenotype_value_f,
-                                    species: element.species_category,
-                                    insecticide: element.insecticide_s,
-                                    concentration: element.concentration_f,
-                                    duration: element.duration_f,
-                                    accession: element.accession,
-                                    bundleName: element.bundle_name,
-                                    url: element.url,
-                                    sampleType: element.sample_type,
-                                    geoCoords: element.geo_coords,
-                                    geolocation: element.geolocations[0],
-                                    bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
-                                    textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
-                                    collectionDate: element.collection_date,
-                                    projects: element.projects,
-                                    collectionProtocols: element.collection_protocols,
-                                    protocols: element.protocols,
-                                    phenotypeValue: element.phenotype_value_f,
-                                    phenotypeValueType: element.phenotype_value_type_s,
-                                    phenotypeValueUnit: element.phenotype_value_unit_s,
-                                    sampleSize: element.sample_size_i,
-                                    concentrationUnit: element.concentration_unit_s,
-                                    durationUnit: element.duration_unit_s
-                                });
+                                buildDataset(dataset, element);
 
                             });
 
@@ -866,33 +831,7 @@ function buildPlot(divid, filter, selection) {
                             var factoredRadius = scaledRadius * scaleFactor;
 
                             firstResult.doclist.docs.forEach(function (element, index) {
-
-                                dataset.push({
-                                    x: undefined,
-                                    y: element.phenotype_value_f,
-                                    species: element.species_category,
-                                    insecticide: element.insecticide_s,
-                                    concentration: element.concentration_f,
-                                    duration: element.duration_f,
-                                    accession: element.accession,
-                                    bundleName: element.bundle_name,
-                                    url: element.url,
-                                    sampleType: element.sample_type,
-                                    geoCoords: element.geo_coords,
-                                    geolocation: element.geolocations[0],
-                                    bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
-                                    textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
-                                    collectionDate: element.collection_date,
-                                    projects: element.projects,
-                                    collectionProtocols: element.collection_protocols,
-                                    protocols: element.protocols,
-                                    phenotypeValue: element.phenotype_value_f,
-                                    phenotypeValueType: element.phenotype_value_type_s,
-                                    phenotypeValueUnit: element.phenotype_value_unit_s,
-                                    sampleSize: element.sample_size_i,
-                                    concentrationUnit: element.concentration_unit_s,
-                                    durationUnit: element.duration_unit_s
-                                });
+                                buildDataset(dataset, element);
 
                             });
 
@@ -931,33 +870,7 @@ function buildPlot(divid, filter, selection) {
                             var factoredRadius = scaledRadius * scaleFactor;
 
                             firstResult.doclist.docs.forEach(function (element, index) {
-
-                                dataset.push({
-                                    x: undefined,
-                                    y: element.phenotype_value_f,
-                                    species: element.species_category,
-                                    insecticide: element.insecticide_s,
-                                    concentration: element.concentration_f,
-                                    duration: element.duration_f,
-                                    accession: element.accession,
-                                    bundleName: element.bundle_name,
-                                    url: element.url,
-                                    sampleType: element.sample_type,
-                                    geoCoords: element.geo_coords,
-                                    geolocation: element.geolocations[0],
-                                    bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
-                                    textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
-                                    collectionDate: element.collection_date,
-                                    projects: element.projects,
-                                    collectionProtocols: element.collection_protocols,
-                                    protocols: element.protocols,
-                                    phenotypeValue: element.phenotype_value_f,
-                                    phenotypeValueType: element.phenotype_value_type_s,
-                                    phenotypeValueUnit: element.phenotype_value_unit_s,
-                                    sampleSize: element.sample_size_i,
-                                    concentrationUnit: element.concentration_unit_s,
-                                    durationUnit: element.duration_unit_s
-                                });
+                                buildDataset(dataset, element);
 
                             });
 
@@ -994,8 +907,12 @@ function buildPlot(divid, filter, selection) {
             bgrVlPromise.fail(function () {
                 console.log('Failed while loading irViolin')
             });
+            // $(document).trigger("jsonLoaded");
+
         })
         .fail(function () {
+            // $(document).trigger("jsonLoaded");
+
             console.log('Failed while loading irViolin')
         });
 
@@ -1071,4 +988,42 @@ function getScaleFactor(x) {
     var scale = x.indexOf(".");
     if (scale == -1) return 1;
     return Math.pow(10, (x.length - scale - 1));
+}
+
+function buildDataset(dataset, element) {
+
+    dataset.push({
+        x: undefined,
+        y: element.phenotype_value_f,
+        species: element.species_category,
+        speciesType: 'Taxonomy',
+        insecticide: element.insecticide_s,
+        insecticideType: 'Insecticides',
+        concentration: element.concentration_f,
+        duration: element.duration_f,
+        accession: element.accession,
+        accessionType: 'Stable ID',
+        bundleName: element.bundle_name,
+        url: element.url,
+        sampleType: element.sample_type,
+        sampleTypeType: 'Sample type',
+        geoCoords: element.geo_coords,
+        geolocation: element.geolocations[0],
+        geolocationType: 'Geography',
+        bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
+        textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
+        collectionDate: element.collection_date,
+        projects: element.projects,
+        projectsType: 'Projects',
+        collectionProtocols: element.collection_protocols,
+        collectionProtocolsType: 'Collection protocols',
+        protocols: element.protocols,
+        protocolsType: 'Protocols',
+        phenotypeValue: element.phenotype_value_f,
+        phenotypeValueType: element.phenotype_value_type_s,
+        phenotypeValueUnit: element.phenotype_value_unit_s,
+        sampleSize: element.sample_size_i,
+        concentrationUnit: element.concentration_unit_s,
+        durationUnit: element.duration_unit_s
+    });
 }

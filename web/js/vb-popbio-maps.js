@@ -216,6 +216,13 @@ function bindEvents() {
         // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
         if (event.item.replace) return;
 
+        if (event.item.activeTerm) {
+            filterMarkers($("#search_ac").tagsinput('items'));
+            // resetPlots()
+
+            return;
+        }
+
         removeHighlight();
         sidebar.close();
         setTimeout(function () {
@@ -671,12 +678,12 @@ function loadSolr(parameters) {
 
     //we are too deep in, just download the landmarks instead
 
-    if (zoomLevel > 11) {
-        loadSmall(1, zoomLevel);
-
-        return;
-
-    }
+    // if (zoomLevel > 16) {
+    //     loadSmall(1, zoomLevel);
+    //
+    //     return;
+    //
+    // }
 
     var terms = [];
 
@@ -770,10 +777,10 @@ function loadSolr(parameters) {
             // at the same time exclude them from [terms] so as to not display them twice
             if (docLat.hasOwnProperty(key)) {
                 var count = docLat[key].count;
-                if (count < 2) {
-                    smallClusters.push(key);
-                    continue;
-                }
+                // if (count < 0) {
+                //     smallClusters.push(key);
+                //     continue;
+                // }
 
                 // go over the facet pivots and save the population and statistics
                 docSpc.forEach(function (element, array) {
@@ -852,69 +859,146 @@ function loadSolr(parameters) {
                     className: "marker-cluster",
                     population: record.population,
                     trafficlight: record.trafficlight,
-                    stats: record.stats
+                    stats: record.stats,
+                    id: record.term
                 });
             },
             onEachRecord: function (layer, record) {
                 layer.on("dblclick", function () {
-                    clearTimeout(timer);
-                    prevent = true;
+                        clearTimeout(timer);
+                        prevent = true;
 
-                    map.fitBounds(record.bounds);
-                    //resetPlots();
-                });
-                layer.on("click", function () {
+                        map.fitBounds(record.bounds);
+                    })
+                    .on("click", function () {
 
-                    var wasHighlighted = false;
-                    if (layer === highlight) wasHighlighted = true;
-                    removeHighlight(layer);
-                    highlightMarker(layer);
-                    timer = setTimeout(function () {
-                        if (!prevent) {
+                        var panel = $('.sidebar-pane.active');
+                        var panelId = panel.attr('id');
 
-                            if (wasHighlighted) {
-                                removeHighlight();
-                                sidebar.close();
-                                setTimeout(function () {
-                                    resetPlots()
-                                }, delay);
-                                return;
+                        var recBounds = L.latLngBounds(record.bounds);
+
+                        if (highlightedId) {
+
+                            $('.sidebar-pane').data('has-graph', false);
+
+                            switch (panelId) {
+                                case "graphs":
+                                    updatePieChart(record.population, record.fullstats);
+                                    panel.data('has-graph', true);
+                                    break;
+                                case "swarm-plots":
+                                    createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                    panel.data('has-graph', true);
+                                    break;
+                                case "marker-table":
+                                    updateTable("#table-contents", buildBbox(recBounds));
+                                    panel.data('has-graph', true);
+                                    break;
+                                default:
+                                    break;
                             }
 
-                            if ($('#sidebar').hasClass('collapsed')) {
-                                if ($('.sidebar-pane.active').attr('id') === 'help') {
-                                    sidebar.open('graphs');
-                                } else {
-                                    sidebar.open($('.sidebar-pane.active').attr('id'));
-                                }
-                            }
-                            updatePieChart(record.population, record.fullstats);
-                            var recBounds = L.latLngBounds(record.bounds);
-                            createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
-                            updateTable("#table-contents", buildBbox(recBounds));
+                            prevent = false;
+                            return;
                         }
-                    }, delay);
-                    prevent = false;
-                });
-                layer.on("mouseover", function () {
-                    moveTopMarker(layer);
-                    var recBounds = L.latLngBounds(record.bounds);
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
 
-                    rectHighlight = L.rectangle(recBounds, {
-                        color: "grey",
-                        weight: 1,
-                        fill: true,
-                        clickable: false
-                    }).addTo(map);
+                        if (sidebarClick) {
 
-                });
-                layer.on("mouseout", function () {
-                    removeTopMarker(layer);
-                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                    rectHighlight = null;
 
-                });
+                            switch (panelId) {
+                                case "graphs":
+                                    if (!panel.data('has-graph')) {
+                                        updatePieChart(record.population, record.fullstats);
+                                        panel.data('has-graph', true);
+                                    }
+                                    break;
+                                case "swarm-plots":
+                                    if (!panel.data('has-graph')) {
+                                        createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                    }
+                                    break;
+                                case "marker-table":
+                                    if (!panel.data('has-graph')) {
+                                        updateTable("#table-contents", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            prevent = false;
+                            return;
+                        }
+
+                        var wasHighlighted = false;
+                        if (layer._icon === highlight) wasHighlighted = true;
+                        removeHighlight(layer._icon);
+                        highlightMarker(layer._icon);
+                        timer = setTimeout(function () {
+                            if (!prevent) {
+
+                                if (wasHighlighted) {
+                                    removeHighlight();
+                                    sidebar.close();
+                                    setTimeout(function () {
+                                        resetPlots()
+                                    }, delay);
+                                    return;
+                                }
+
+                                if ($('#sidebar').hasClass('collapsed')) {
+                                    if ($('.sidebar-pane.active').attr('id') === 'help') {
+                                        sidebar.open('graphs');
+                                    } else {
+                                        sidebar.open($('.sidebar-pane.active').attr('id'));
+                                    }
+                                }
+
+                                // Determine the open pane and update the right graph
+                                $('.sidebar-pane').data('has-graph', false);
+
+                                switch (panelId) {
+                                    case "graphs":
+                                        updatePieChart(record.population, record.fullstats);
+                                        panel.data('has-graph', true);
+                                        break;
+                                    case "swarm-plots":
+                                        createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                        break;
+                                    case "marker-table":
+                                        updateTable("#table-contents", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            }
+                        }, delay);
+                        prevent = false;
+                    })
+                    .on("mouseover", function () {
+                        moveTopMarker(layer);
+                        var recBounds = L.latLngBounds(record.bounds);
+                        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+
+                        rectHighlight = L.rectangle(recBounds, {
+                            color: "grey",
+                            weight: 1,
+                            fill: true,
+                            clickable: false
+                        }).addTo(map);
+
+                    })
+                    .on("mouseout", function () {
+                        removeTopMarker(layer);
+                        if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                        rectHighlight = null;
+
+                    });
             }
 
         };
@@ -931,10 +1015,10 @@ function loadSolr(parameters) {
         }
         // map.addLayer(layer);
 
-        if (smallClusters.length > 0) {
-            loadSmall(0, zoomLevel);
-
-        }
+        // if (smallClusters.length > 0) {
+        //     loadSmall(0, zoomLevel);
+        //
+        // }
 
 
         // inform the user that data is loaded
@@ -951,11 +1035,16 @@ function loadSolr(parameters) {
 
     // inform the user that data is loading
     map.spin(true);
-    $.getJSON(url, buildMap).fail(function () {
-        console.log("Ahhh");
-        map.spin(false);
+    $.getJSON(url, buildMap)
+        .done(function () {
+            $(document).trigger("jsonLoaded");
 
-    });
+        })
+        .fail(function () {
+            console.log("Ahhh");
+            map.spin(false);
+
+        });
 
 
 }
@@ -979,406 +1068,6 @@ function checkSeasonal() {
     }
 
     return false;
-}
-
-
-function loadSmall(mode, zoomLevel) {
-    "use strict";
-    var pruneCluster = new PruneClusterForLeaflet(120);
-
-    pruneCluster.BuildLeafletClusterIcon = function (cluster) {
-        var e = new L.Icon.MarkerCluster();
-
-        e.stats = cluster.stats;
-        e.population = cluster.population;
-        e.trafficlight = cluster.totalWeight / cluster.population;
-        return e;
-    };
-
-    // Override PrepareLeafletMarker to add event listeners
-
-    pruneCluster.PrepareLeafletMarker = function (marker, data, category) {
-        marker.on("dblclick", function () {
-            clearTimeout(timer);
-            prevent = true;
-
-            // Zoom-in to marker
-            if (map.getZoom() < 11) {
-                map.setView(marker._latlng, 11, {animate: true});
-            } else {
-                removeHighlight();
-                sidebar.close();
-                setTimeout(function () {
-                    resetPlots()
-                }, delay);
-            }
-
-
-        });
-        marker.on("click", function () {
-
-            var wasHighlighted = false;
-            if (marker === highlight) wasHighlighted = true;
-            removeHighlight(marker);
-            highlightMarker(marker);
-            timer = setTimeout(function () {
-                if (wasHighlighted) {
-                    removeHighlight();
-                    sidebar.close();
-                    setTimeout(function () {
-                        resetPlots()
-                    }, delay);
-                    return;
-                }
-                if (!prevent) {
-
-                    // first we need a list of all categories
-
-                    var fullElStats = [];
-
-                    fullElStats.push({
-                        "label": category.replace(/sensu lato/, "sl")
-                            .replace(/chromosomal form/, "cf"),
-                        "value": 1,
-                        "color": (palette[category] ? palette[category] : "#000000")
-                    });
-
-                    if ($('#sidebar').hasClass('collapsed')) {
-                        if ($('.sidebar-pane.active').attr('id') === 'help') {
-                            sidebar.open('graphs');
-                        } else {
-                            sidebar.open($('.sidebar-pane.active').attr('id'));
-                        }
-                    }
-                    updatePieChart(1, fullElStats);
-                    var filter = '&fq=id:' + data.id;
-                    createBeeViolinPlot("#swarm-chart-area", filter);
-                    updateTable("#table-contents", filter);
-
-                }
-                prevent = false;
-            }, delay);
-        });
-
-
-        if (data.icon) {
-            if (typeof data.icon === 'function') {
-                marker.setIcon(data.icon(data, category));
-            }
-            else {
-                marker.setIcon(data.icon);
-            }
-        }
-        if (data.popup) {
-            var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
-            if (marker.getPopup()) {
-                marker.setPopupContent(content, data.popupOptions);
-            }
-            else {
-                marker.bindPopup(content, data.popupOptions);
-            }
-        }
-    };
-
-    L.Icon.MarkerCluster = L.Icon.extend({
-        options: {
-            iconSize: new L.Point(40, 40),
-            className: 'prunecluster leaflet-markercluster-icon'
-        },
-
-        createIcon: function () {
-            // based on L.Icon.Canvas from shramov/leaflet-plugins (BSD licence)
-            var e = document.createElement('canvas');
-            this._setIconStyles(e, 'icon');
-            var s = this.options.iconSize;
-            e.width = s.x;
-            e.height = s.y;
-            this.draw(e.getContext('2d'), s.x, s.y);
-            return e;
-        },
-
-        createShadow: function () {
-            return null;
-        },
-
-        draw: function (canvas) {
-            var pi2 = Math.PI * 2;
-            var start = Math.PI * 1.5;
-            var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
-
-            for (var key in this.stats) if (this.stats.hasOwnProperty(key)) {
-
-                var size = this.stats[key] / this.population;
-                //console.log(key + ":" + this.stats[key]);
-
-                if (size > 0) {
-                    canvas.beginPath();
-                    canvas.moveTo(iconSize2, iconSize2);
-                    if (palette.hasOwnProperty(key)) {
-                        //console.log(key + '=' + palette[key])
-                        canvas.fillStyle = palette[key];
-                    } else {
-                        canvas.fillStyle = palette["others"];
-                        //console.log(key + '*' + palette["others"]);
-                    }
-                    var from = start,
-                        to = start + size * pi2;
-
-                    if (to < from) {
-                        from = start;
-                    }
-                    canvas.arc(iconSize2, iconSize2, iconSize2, from, to);
-
-                    start = start + size * pi2;
-                    canvas.lineTo(iconSize2, iconSize2);
-                    canvas.fill();
-                    canvas.closePath();
-                }
-
-
-            }
-
-            canvas.beginPath();
-            canvas.fillStyle = 'white';
-            canvas.arc(iconSize2, iconSize2, iconSize3, 0, Math.PI * 2);
-            canvas.fill();
-            canvas.closePath();
-
-            var colors = markerColor(this.trafficlight);
-
-            if ($('#view-mode').val() === 'ir') {
-
-                canvas.beginPath();
-                canvas.fillStyle = colors[0];
-                canvas.arc(iconSize2, iconSize2, iconSize2 - 7, 0, Math.PI * 2);
-                canvas.fill();
-                canvas.closePath();
-            }
-
-            canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
-            //canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
-            canvas.textAlign = 'center';
-            canvas.textBaseline = 'middle';
-            canvas.font = 'bold 12px sans-serif';
-
-            canvas.fillText(this.population, iconSize2, iconSize2, iconSize);
-        }
-    });
-
-    pruneCluster.BuildLeafletCluster = function (cluster, position) {
-        var m = new L.Marker(position, {
-            icon: pruneCluster.BuildLeafletClusterIcon(cluster)
-        });
-
-
-        m.on("dblclick", function () {
-            clearTimeout(timer);
-            prevent = true;
-
-            // Compute the  cluster bounds (it"s slow : O(n))
-            var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
-            var b = pruneCluster.Cluster.ComputeBounds(markersArea);
-
-            if (b) {
-                var bounds = new L.LatLngBounds(
-                    new L.LatLng(b.minLat, b.maxLng),
-                    new L.LatLng(b.maxLat, b.minLng));
-
-                var zoomLevelBefore = pruneCluster._map.getZoom();
-                var zoomLevelAfter = pruneCluster._map.getBoundsZoom(bounds, false, new L.Point(20, 20, null));
-
-                // If the zoom level doesn't change
-                if (zoomLevelAfter === zoomLevelBefore) {
-
-                    removeHighlight();
-                    sidebar.close();
-                    setTimeout(function () {
-                        resetPlots()
-                    }, delay);
-
-                    // Send an event for the LeafletSpiderfier
-                    pruneCluster._map.fire("overlappingmarkers", {
-                        cluster: pruneCluster,
-                        markers: markersArea,
-                        center: m.getLatLng(),
-                        marker: m
-                    });
-
-                }
-                else {
-                    pruneCluster._map.fitBounds(bounds);
-                }
-            }
-        });
-        m.on("click", function () {
-
-            var wasHighlighted = false;
-            if (m === highlight) wasHighlighted = true;
-
-            removeHighlight(m);
-            highlightMarker(m);
-            timer = setTimeout(function () {
-                if (!prevent) {
-                    // is this marker already active?
-                    if (wasHighlighted) {
-                        removeHighlight();
-                        sidebar.close();
-                        setTimeout(function () {
-                            resetPlots()
-                        }, delay);
-                        return;
-                    }
-                    //do click stuff here
-                    // first we need a list of all categories
-                    var fullElStats = [];
-
-                    //FixMe: Remove these replacements when proper names are returned from the popbio API
-                    var stats = cluster.stats;
-                    for (var key in stats) {
-                        fullElStats.push({
-                            //"label": key.replace(/^([A-Z])(\w+)(.+)$/, "$1.$3")
-                            "label": key.replace(/sensu lato/, "sl")
-                                .replace(/chromosomal form/, "cf"),
-                            "value": stats[key],
-                            "color": (palette[key] ? palette[key] : "#000000")
-                        });
-                    }
-
-                    if ($('#sidebar').hasClass('collapsed')) {
-                        if ($('.sidebar-pane.active').attr('id') === 'help') {
-                            sidebar.open('graphs');
-                        } else {
-                            sidebar.open($('.sidebar-pane.active').attr('id'));
-                        }
-                    }
-                    updatePieChart(cluster.population, fullElStats);
-
-                    var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
-                    var b = pruneCluster.Cluster.ComputeBounds(markersArea);
-
-                    if (b) {
-                        var bounds = new L.LatLngBounds(
-                            new L.LatLng(b.minLat, b.maxLng),
-                            new L.LatLng(b.maxLat, b.minLng));
-
-                    }
-
-                    createBeeViolinPlot("#swarm-chart-area", buildBbox(bounds));
-                    updateTable("#table-contents", buildBbox(bounds));
-
-                }
-            }, delay);
-            prevent = false;
-
-        });
-
-        m.on("mouseover", function () {
-            moveTopMarker(m);
-            var markersArea = pruneCluster.Cluster.FindMarkersInArea(cluster.bounds);
-            var b = pruneCluster.Cluster.ComputeBounds(markersArea);
-
-            if (b) {
-                var recBounds = new L.LatLngBounds(
-                    new L.LatLng(b.minLat, b.maxLng),
-                    new L.LatLng(b.maxLat, b.minLng));
-
-            }
-
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-
-            rectHighlight = L.rectangle(recBounds, {
-                color: "grey",
-                weight: 1,
-                fill: true,
-                clickable: false
-            }).addTo(map);
-
-        });
-        m.on("mouseout", function () {
-            removeTopMarker(m);
-            if (rectHighlight !== null) map.removeLayer(rectHighlight);
-            rectHighlight = null;
-
-        });
-        return m;
-    };
-
-
-    // detect the zoom level and request the appropriate facets
-    var geoLevel = geohashLevel(zoomLevel, "geohash");
-
-    var geoQuery;
-
-    if (mode === 0) {
-        //geoQuery = "(";
-        geoQuery = "(";
-
-        for (var i = 0; i < smallClusters.length; i++) {
-            if (i === smallClusters.length - 1) {
-                geoQuery += smallClusters[i];
-                break;
-            }
-            //geoQuery += smallClusters[i] + " OR ";
-            geoQuery += smallClusters[i] + " ";
-        }
-
-        geoQuery += ")";
-    } else {
-
-        geoQuery = "*";
-
-    }
-
-    var buildMap = function (result) {
-
-        var doc = result.response.docs;
-
-        for (var key in doc) if (doc.hasOwnProperty(key)) {
-            var coords = doc[key].geo_coords.split(",");
-            var pheVal = ($('#view-mode').val() === 'ir') ? doc[key].phenotype_rescaled_value_f : -1;
-            var marker = new PruneCluster.Marker(coords[0], coords[1]);
-            marker.data.id = doc[key].id;
-            if (doc[key].hasOwnProperty("species_category")) {
-                var species = doc[key].species_category[0];
-                marker.category = doc[key].species_category[0];
-                // store trafficlight value as weights
-                marker.weight = pheVal;
-                marker.data.trafficlight = pheVal;
-                //console.log(doc[key].species_category[0]);
-            } else {
-                console.log(key + ": no species defined")
-            }
-            marker.data.icon = L.VectorMarkers.icon({
-                prefix: 'fa',
-                icon: 'circle',
-                markerColor: palette[species] ? palette[species] : "red",
-                iconColor: markerColor(pheVal)[0],
-                extraClasses: 'single-marker-icon'
-            });
-
-            pruneCluster.RegisterMarker(marker);
-        }
-
-        if (mode) {
-            assetLayerGroup.clearLayers();
-            $("#markersCount").html(result.response.numFound + ' samples in current view');
-
-        }
-        assetLayerGroup.addLayer(pruneCluster);
-        //inform the user loading is done
-        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-        rectHighlight = null;
-        map.spin(false);
-    };
-
-
-    var url = solrPopbioUrl + $('#view-mode').val() + 'Markers?' + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
-
-    // inform the user that data is loading
-
-    map.spin(true);
-    $.getJSON(url, buildMap);
-
 }
 
 function buildBbox(bounds) {
@@ -1608,6 +1297,8 @@ function updateTable(divid, filter, singleMarker) {
                         });
                 }
             });
+            $(document).trigger("jsonLoaded");
+
 
         })
         .fail(function () {
@@ -1654,17 +1345,23 @@ function tableHtml(divid, results) {
 
             var row = {
                 accession: element.accession,
+                accessionType: 'Stable ID',
                 bundleName: element.bundle_name,
                 url: element.url,
                 sampleType: element.sample_type,
+                sampleTypeType: 'Sample type',
                 geoCoords: element.geo_coords,
                 geolocation: element.geolocations[0],
+                geolocationType: 'Geography',
                 species: species,
+                speciesType: 'Taxonomy',
                 bgColor: palette[species],
                 textColor: getContrastYIQ(palette[species]),
                 collectionDate: frmDate,
                 projects: element.projects,
-                collectionProtocols: element.collection_protocols
+                projectsType: 'Projects',
+                collectionProtocols: element.collection_protocols,
+                collectionProtocolsType: 'Collection protocols'
             };
 
             var template = $.templates("#smplRowTemplate");
@@ -1672,22 +1369,30 @@ function tableHtml(divid, results) {
 
             var row = {
                 accession: element.accession,
+                accessionType: 'Stable ID',
                 bundleName: element.bundle_name,
                 url: element.url,
                 sampleType: element.sample_type,
+                sampleTypeType: 'Sample type',
                 geoCoords: element.geo_coords,
                 geolocation: element.geolocations[0],
+                geolocationType: 'Geography',
                 species: species,
+                speciesType: 'Taxonomy',
                 bgColor: palette[species],
                 textColor: getContrastYIQ(palette[species]),
                 collectionDate: frmDate,
                 projects: element.projects,
+                projectsType: 'Projects',
                 collectionProtocols: element.collection_protocols,
+                collectionProtocolsType: 'Collection protocols',
                 protocols: element.protocols,
+                protocolsType: 'Protocols',
                 phenotypeValue: element.phenotype_value_f,
                 phenotypeValueType: element.phenotype_value_type_s,
                 phenotypeValueUnit: element.phenotype_value_unit_s,
                 insecticide: element.insecticide_s,
+                insecticideType: 'Insecticides',
                 sampleSize: element.sample_size_i,
                 concentration: element.concentration_f,
                 concentrationUnit: element.concentration_unit_s,
@@ -1707,36 +1412,7 @@ function tableHtml(divid, results) {
 }
 
 
-function colorLuminance(hex, lum) {
-    /*
-     function colorLuminance
-     date: 20/03/2015
-     purpose: extracts the red, green and blue values in turn, converts them to decimal, applies the luminosity factor,
-     and converts them back to hexadecimal.
-     inputs: <hex> original hex color value <lum> level of luminosity from 0 (lightest) to 1 (darkest)
-     outputs: a hex represantation of the color
-     source: http://www.sitepoint.com/javascript-generate-lighter-darker-color/
-     */
 
-    // validate hex string
-    "use strict";
-
-    hex = String(hex).replace(/[^0-9a-f]/gi, '');
-    if (hex.length < 6) {
-        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-    lum = lum || 0;
-
-    // convert to decimal and change luminosity
-    var rgb = "#", c, i;
-    for (i = 0; i < 3; i++) {
-        c = parseInt(hex.substr(i * 2, 2), 16);
-        c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-        rgb += ("00" + c).substr(c.length);
-    }
-
-    return rgb;
-}
 
 function filterMarkers(items) {
     "use strict";
@@ -1923,6 +1599,8 @@ function mapTypeToField(type) {
             return "collection_date_range";
         case "Normalised IR":
             return "phenotype_rescaled_value_f";
+        case "Projects":
+            return "projects";
         default :
             return type.toLowerCase()
 
@@ -1940,7 +1618,7 @@ function mapTypeToField(type) {
 //             return '<i class="fa fa-camera-retro"></i>';
 //
 //     }
-//
+//S
 // }
 
 function PaneSpin(divid, command) {
@@ -1960,6 +1638,7 @@ function PaneSpin(divid, command) {
 }
 
 function highlightMarker(marker) {
+    $(marker).addClass("highlight-marker");
     $(marker._icon).addClass("highlight-marker");
     highlight = marker;
     if (firstClick) firstClick = false;
@@ -1977,13 +1656,16 @@ function removeTopMarker(marker) {
 function removeHighlight(marker) {
     // check for highlight
     if (highlight !== null) {
-        $(highlight._icon).removeClass("highlight-marker");
+        $(highlight).removeClass("highlight-marker");
         marker ? highlight = marker : highlight = null;
     }
+
+
 }
 
 function resetPlots() {
     "use strict";
+
 
     var pieHTML, violinHTML, tableHTML;
     if (firstClick) {

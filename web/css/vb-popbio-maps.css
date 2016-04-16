@@ -251,9 +251,12 @@ BODY {
     content: "";
 }
 
-.marker-row ul li:after, .tooltip-bs ul li:after {
-    content: ", ";
-}
+/*.marker-row.row {*/
+/*padding-right: 8px !important;*/
+/*}*/
+/*.marker-row ul li:after, .tooltip-bs ul li:after {*/
+/*content: ", ";*/
+/*}*/
 
 /* for the violin plots */
 .cancel {
@@ -470,6 +473,14 @@ html {
     border: 1px solid #E7E7E7 !important;
     border-radius: 0px;
     box-shadow: none;
+}
+
+/* x-jsrender active terms*/
+.active-term, .active-legend {
+    /*border-bottom: 1px dotted;*/
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
 }
 
 /* CSS transitions for map markers */
