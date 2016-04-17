@@ -2,6 +2,149 @@
  * Created by Ioannis on 18/6/2015.
  */
 // Class: Violin --------------------------------------------- //
+
+
+function createBeeViolinPlot(divid, filter) {
+
+    "use strict";
+
+    // Only proceed if in IR mode, otherwise clear the graph
+    if ($('#view-mode').val() === 'smpl') {
+
+        $(divid).html(
+            '<div style="text-align: center; margin-top: 30px">' +
+            '<i class="fa fa-area-chart" style="color: #C3312D; font-size: 12em"></i>' +
+            '<h1>Ooops</h1>' +
+            '<h4>this plot type only works with Insecticide Resistance data</h4>' +
+            '<h4>switch to IR phenotypes view and try again</h4>' +
+            '</div>'
+        );
+        return;
+    }
+
+    var self = this;
+    var url = solrPopbioUrl + 'irViolinStats?&' + qryUrl + filter + '&json.wrf=?&callback=?';
+
+    // store the selected plot type
+
+    // fade-out the graph
+
+    $('#swarm-chart-area').fadeOut();
+
+
+    $.getJSON(url)
+        .done(function (json) {
+            PaneSpin('swarm-plots', 'start');
+
+
+            if (json.facets.count && json.facets.count > 0) {
+
+
+                setTimeout(function () {
+                    $(divid).empty();
+
+
+                    // let's create and populate a drop down
+                    var label = $('<label>').text('Phenotypes included in background: ');
+                    var bs = $('<select />').attr('id', 'bgPlotType')
+                        .attr('class', "form-control");
+                    $('<option/>', {text: 'phenotypes matching search', value: 1}).appendTo(bs);
+                    $('<option/>', {
+                        text: 'phenotypes visible on map (including the ones behind this panel)',
+                        value: 2
+                    }).appendTo(bs);
+                    $('<option/>', {text: 'all phenotypes', value: 3}).appendTo(bs);
+                    label.appendTo($(divid));
+                    // set to selected value
+                    bs.val(bgPlotType)
+                        .appendTo($(divid));
+
+
+                    // let's create and populate a drop down
+                    label = $('<label>').text('Measurement type: ');
+                    var s = $('<select />').attr('id', 'plotType')
+                        .attr('class', "form-control");
+
+                    // add options to the selection box, store additional info into data
+                    json.facets.vtypes.buckets.forEach(function (element) {
+                            var i = 0;
+                            element.vunits.buckets.forEach(function (innElement) {
+                                var optionText = element.val + ' (' + innElement.val + '): ' + innElement.count + ' phenotypes';
+                                $('<option/>', {
+                                    text: optionText,
+                                    value: element.val + '-' + innElement.val,
+                                    data: {
+                                        phenotype_value_type_s: element.val,
+                                        phenotype_value_unit_s: innElement.val,
+                                        count: innElement.count,
+                                        min: innElement.pmin,
+                                        max: innElement.pmax
+                                    }
+                                }).appendTo(s);
+                            })
+                        }
+                    )
+                    ;
+
+                    label.appendTo($(divid));
+                    s.appendTo($(divid));
+
+
+                    // check if there was a previous selection and if it currently exists
+                    if (selectedPlotType !== 'none' && $('#plotType option[value="' + selectedPlotType + '"]').length > 0) {
+                        $('#plotType').val(selectedPlotType);
+
+                    }
+
+                    // build the graph using the first option in the drop-down
+                    var selectionData = s.find(':selected').data();
+
+                    // build the graph using the first option in the drop-down
+                    // var selectionData = s.find(':selected').data();
+
+                    //buildBackgroundPlot(divid, filter, selectionData);
+                    buildPlot(divid, filter, selectionData);
+
+                    // build a new graph whenever selection is changed
+                    s.change(function () {
+                        PaneSpin('swarm-plots', 'start');
+                        selectionData = s.find(':selected').data();
+                        $('#beeViolinPlot').fadeOut();
+
+                        setTimeout(function () {
+                            buildPlot(divid, filter, selectionData);
+
+                        }, delay);
+                    });
+                    bs.change(function () {
+                        PaneSpin('swarm-plots', 'start');
+                        selectionData = s.find(':selected').data();
+                        // remember selection
+                        bgPlotType = bs.find(':selected').val();
+                        $('#beeViolinPlot').fadeOut();
+                        setTimeout(function () {
+                            buildPlot(divid, filter, selectionData);
+
+                        }, delay);
+                    });
+
+                }, delay);
+
+            }
+            // $(document).trigger("jsonLoaded");
+
+
+        })
+        .fail(function () {
+            PaneSpin('swarm-plots', 'stop');
+            // $(document).trigger("jsonLoaded");
+
+            console.log('Failed while loading irViolinStats')
+        });
+
+
+}
+
 function addViolin(svg, results, yRange, width, yDomain, resolution, interpolation, log) {
 
     "use strict";
@@ -416,132 +559,6 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
 
 }
 
-function createBeeViolinPlot(divid, filter) {
-
-    "use strict";
-
-    // Only proceed if in IR mode, otherwise clear the graph
-    if ($('#view-mode').val() === 'smpl') {
-
-        $(divid).html(
-            '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-area-chart" style="color: #C3312D; font-size: 12em"></i>' +
-            '<h1>Ooops</h1>' +
-            '<h4>this plot type only works with Insecticide Resistance data</h4>' +
-            '<h4>switch to IR phenotypes view and try again</h4>' +
-            '</div>'
-        );
-        return;
-    }
-
-    var self = this;
-    var url = solrPopbioUrl + 'irViolinStats?&' + qryUrl + filter + '&json.wrf=?&callback=?';
-
-    // store the selected plot type
-
-
-    // Empty the div
-    $(divid).empty();
-
-
-    $.getJSON(url)
-        .done(function (json) {
-
-
-            if (json.facets.count && json.facets.count > 0) {
-
-                // let's create and populate a drop down
-                var label = $('<label>').text('Phenotypes included in background: ');
-                var bs = $('<select />').attr('id', 'bgPlotType')
-                    .attr('class', "form-control");
-                $('<option/>', {text: 'phenotypes matching search', value: 1}).appendTo(bs);
-                $('<option/>', {
-                    text: 'phenotypes visible on map (including the ones behind this panel)',
-                    value: 2
-                }).appendTo(bs);
-                $('<option/>', {text: 'all phenotypes', value: 3}).appendTo(bs);
-                label.appendTo($(divid));
-                // set to selected value
-                bs.val(bgPlotType)
-                    .appendTo($(divid));
-
-
-                // let's create and populate a drop down
-                label = $('<label>').text('Measurement type: ');
-                var s = $('<select />').attr('id', 'plotType')
-                    .attr('class', "form-control");
-
-                // add options to the selection box, store additional info into data
-                json.facets.vtypes.buckets.forEach(function (element) {
-                        var i = 0;
-                        element.vunits.buckets.forEach(function (innElement) {
-                            var optionText = element.val + ' (' + innElement.val + '): ' + innElement.count + ' phenotypes';
-                            $('<option/>', {
-                                text: optionText,
-                                value: element.val + '-' + innElement.val,
-                                data: {
-                                    phenotype_value_type_s: element.val,
-                                    phenotype_value_unit_s: innElement.val,
-                                    count: innElement.count,
-                                    min: innElement.pmin,
-                                    max: innElement.pmax
-                                }
-                            }).appendTo(s);
-                        })
-                    }
-                )
-                ;
-
-                label.appendTo($(divid));
-                s.appendTo($(divid));
-
-
-                // check if there was a previous selection and if it currently exists
-                if (selectedPlotType !== 'none' && $('#plotType option[value="' + selectedPlotType + '"]').length > 0) {
-                    $('#plotType').val(selectedPlotType);
-
-                }
-
-                // build the graph using the first option in the drop-down
-                var selectionData = s.find(':selected').data();
-
-                // build the graph using the first option in the drop-down
-                // var selectionData = s.find(':selected').data();
-
-                //buildBackgroundPlot(divid, filter, selectionData);
-                PaneSpin('swarm-plots', 'start');
-                buildPlot(divid, filter, selectionData);
-
-                // build a new graph whenever selection is changed
-                s.change(function () {
-                    PaneSpin('swarm-plots', 'start');
-                    selectionData = s.find(':selected').data();
-                    buildPlot(divid, filter, selectionData);
-                });
-                bs.change(function () {
-                    PaneSpin('swarm-plots', 'start');
-                    selectionData = s.find(':selected').data();
-                    // remember selection
-                    bgPlotType = bs.find(':selected').val();
-                    buildPlot(divid, filter, selectionData);
-                });
-
-
-            }
-            $(document).trigger("jsonLoaded");
-
-
-        })
-        .fail(function () {
-            PaneSpin('swarm-plots', 'stop');
-            // $(document).trigger("jsonLoaded");
-
-            console.log('Failed while loading irViolinStats')
-        });
-
-
-}
-
 function buildPlot(divid, filter, selection) {
     "use strict";
 
@@ -890,6 +907,9 @@ function buildPlot(divid, filter, selection) {
                     // stop spinner
                     PaneSpin('swarm-plots', 'stop');
 
+                    $('#swarm-chart-area').fadeIn();
+                    $('#beeViolinPlot').fadeIn();
+
                 });
 
                 selBsPromise.fail(function () {
@@ -909,10 +929,11 @@ function buildPlot(divid, filter, selection) {
             });
             // $(document).trigger("jsonLoaded");
 
+
         })
         .fail(function () {
             // $(document).trigger("jsonLoaded");
-
+            // $('#beeViolinPlot').fadeIn();
             console.log('Failed while loading irViolin')
         });
 
@@ -981,7 +1002,6 @@ function buildPlot(divid, filter, selection) {
 
     }
 }
-
 
 function getScaleFactor(x) {
     x = parseFloat(x) + "";

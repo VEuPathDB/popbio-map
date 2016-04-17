@@ -393,7 +393,7 @@
         <div class="overlaytop">
 
             <label class="sr-only" for="search_ac">Search...</label>
-            <div class="input-group">
+            <div id="search-bar" class="input-group">
                 <span id="expand-menu" class="input-group-addon btn-info"
                       style="cursor: pointer;"
                       title="Expand menu"
@@ -1080,6 +1080,13 @@
     // set view according to the value of the view url parameter. Otherwise default to smpl
     var urlParams = $.parseParams();
 
+
+    $(function () {
+        $('.marker-row').each(function (i, e) {
+            $(this).delay(i * 500).fadeIn(500);
+        });
+
+    });
 
     $(window).load(function () {
         $('.sidebar-pane').data('has-graph', false);

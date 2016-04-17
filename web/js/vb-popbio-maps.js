@@ -217,9 +217,33 @@ function bindEvents() {
         if (event.item.replace) return;
 
         if (event.item.activeTerm) {
-            filterMarkers($("#search_ac").tagsinput('items'));
+            $('#search-bar').animate({
+                    left: "+=4"
+                }, 15)
+                .animate({
+                    left: "-=8"
+                }, 30)
+                .animate({
+                    left: "+=8"
+                }, 30)
+                .animate({
+                    left: "-=8"
+                }, 30)
+                .animate({
+                    left: "+=8"
+                }, 30)
+                .animate({
+                    left: "-=4"
+                }, 15)
+            ;
+
+
             // resetPlots()
 
+            // $('#search-bar').fadeTo(80,0.3, function () {
+            //     $('#search-bar').delay(0).fadeTo(80,1)
+            // });
+            filterMarkers($("#search_ac").tagsinput('items'));
             return;
         }
 
@@ -512,36 +536,7 @@ function initializeSearch() {
 
     $('#search_ac').tagsinput({
         tagClass: function (item) {
-            switch (item.type) {
-                case 'Taxonomy'   :
-                    return 'label label-primary fa fa-sitemap';   // dark blue
-                case 'Geography':
-                    return 'label label-primary fa fa-map-marker';  // dark blue
-                case 'Title'  :
-                    return 'label label-success fa fa-tag';    // green
-                case 'Description':
-                    return 'label label-success fa fa-info-circle';   // green
-                case 'Projects'   :
-                    return 'label label-success fa fa-database';   // green
-//                    return 'label label-default fa fa-database';   // grey
-                case 'Anywhere'   :
-                    return 'label label-default fa fa-search';   // grey
-//                    return 'label label-info fa fa-search';   // cyan
-                case 'Pubmed references' :
-                    return 'label label-success fa fa-book';
-                case 'Insecticides' :
-                    return 'label label-success fa fa-eyedropper';
-                case 'Collection protocols' :
-                    return 'label label-success fa fa-shopping-cart';
-                case 'Date' :
-                    return 'label label-info fa fa-calendar';
-                case 'Seasonal' :
-                    return 'label label-info fa fa-calendar-check-o ';
-                case 'Norm-IR' :
-                    return 'label label-secondary fa fa-bolt';
-                default :
-                    return 'label label-warning fa fa-search';   // orange
-            }
+            return mapTypeToIcon(item.type);
         },
         itemValue: 'value',
         itemText: function (item) {
@@ -952,7 +947,9 @@ function loadSolr(parameters) {
                                     if ($('.sidebar-pane.active').attr('id') === 'help') {
                                         sidebar.open('graphs');
                                     } else {
-                                        sidebar.open($('.sidebar-pane.active').attr('id'));
+                                        $('#swarm-chart-area').empty();
+                                        $('#table-contents').empty();
+                                        sidebar.open(panelId);
                                     }
                                 }
 
@@ -1246,7 +1243,10 @@ function updateTable(divid, filter, singleMarker) {
 
     var self = this;
 
-    $(divid).empty();
+    $('.marker-row').fadeOut();
+
+    // setTimeout(function () {
+    // }, delay);
 
     // turn off previous scroll event listeners
     //$('#marker-table').off("scroll");
@@ -1262,42 +1262,52 @@ function updateTable(divid, filter, singleMarker) {
                 nextCursorMark = json.nextCursorMark;
                 cursorUrl = url + '&cursorMark=' + nextCursorMark;
 
-                tableHtml(divid, docs);
+
+                setTimeout(function () {
+                    $(divid).empty();
+
+                    tableHtml(divid, docs);
+                    PaneSpin('marker-table', 'stop');
+                }, delay);
             }
-            PaneSpin('marker-table', 'stop');
 
             var pageCount;
 
-            $('#marker-table').infiniteScrollHelper({
-                bottomBuffer: 80,
-                loadMore: function (page, done) {
+            // wait until the table is plotted and animated before setting-up infinite scroll
+            setTimeout(function () {
+                $('#marker-table').infiniteScrollHelper({
+                    bottomBuffer: 80,
+                    loadMore: function (page, done) {
 
-                    PaneSpin('marker-table', 'start');
+                        PaneSpin('marker-table', 'start');
 
-                    $.getJSON(cursorUrl)
-                        .done(function (json) {
+                        $.getJSON(cursorUrl)
+                            .done(function (json) {
 
-                            if (json.response.numFound && json.response.numFound > 0) {
-                                var docs = json.response.docs;
+                                if (json.response.numFound && json.response.numFound > 0) {
+                                    var docs = json.response.docs;
 
-                                cursorMark = nextCursorMark;
-                                nextCursorMark = json.nextCursorMark;
-                                cursorUrl = url + '&cursorMark=' + nextCursorMark;
+                                    cursorMark = nextCursorMark;
+                                    nextCursorMark = json.nextCursorMark;
+                                    cursorUrl = url + '&cursorMark=' + nextCursorMark;
+                                    // $(divid).empty();
 
-                                tableHtml(divid, docs);
-                            }
-                            PaneSpin('marker-table', 'stop');
-                            done();
-                        })
-                        .fail(function () {
-                            PaneSpin('marker-table', 'stop');
+                                    tableHtml(divid, docs);
+                                    PaneSpin('marker-table', 'stop');
+                                    // tableHtml(divid, docs);
+                                }
+                                done();
+                            })
+                            .fail(function () {
+                                PaneSpin('marker-table', 'stop');
 
-                            console.log('Failed while loading smplTable');
-                            done()
-                        });
-                }
-            });
-            $(document).trigger("jsonLoaded");
+                                console.log('Failed while loading smplTable');
+                                done();
+                            });
+                    }
+                });
+            }, delay);
+            // $(document).trigger("jsonLoaded");
 
 
         })
@@ -1405,13 +1415,14 @@ function tableHtml(divid, results) {
         }
         var htmlOutput = template.render(row);
         $(divid).append(htmlOutput);
-
+        $('.marker-row').fadeIn();
+        // $('.marker-row').each(function (i, e) {
+        //     $(this).delay(i*50).slideDown('fast');
+        // });
 
     });
 
 }
-
-
 
 
 function filterMarkers(items) {
@@ -1608,18 +1619,48 @@ function mapTypeToField(type) {
 
 }
 //
-// function mapTypeToIcon(type) {
-//     switch (type) {
-//         case "Taxonomy":
-//             return '<i class="fa fa-sitemap"></i>';
-//         case "Title":
-//             return '<i class="fa fa-info-circle"></i>';
-//         default :
-//             return '<i class="fa fa-camera-retro"></i>';
-//
-//     }
-//S
-// }
+function mapTypeToIcon(type) {
+    switch (type) {
+        case 'Taxonomy'   :
+            return 'label label-primary fa fa-sitemap';   // dark blue
+        case 'Geography':
+            return 'label label-primary fa fa-map-marker';  // dark blue
+        case 'Title'  :
+            return 'label label-success fa fa-tag';    // green
+        case 'Description':
+            return 'label label-success fa fa-info-circle';   // green
+        case 'Projects'   :
+            return 'label label-success fa fa-database';   // green
+//                    return 'label label-default fa fa-database';   // grey
+        case 'Anywhere'   :
+            return 'label label-default fa fa-search';   // grey
+//                    return 'label label-info fa fa-search';   // cyan
+        case 'Pubmed references' :
+            return 'label label-success fa fa-book';
+        case 'Insecticides' :
+            return 'label label-success fa fa-eyedropper';
+        case 'Collection protocols' :
+            return 'label label-success fa fa-shopping-cart';
+        case 'Date' :
+            return 'label label-info fa fa-calendar';
+        case 'Seasonal' :
+            return 'label label-info fa fa-calendar-check-o ';
+        case 'Norm-IR' :
+            return 'label label-secondary fa fa-bolt';
+        case 'Stable ID' :
+            return 'label label-warning fa fa-tag';
+        case 'Sample' :
+            return 'label label-warning fa fa-map-pin';
+        case 'Sample type' :
+            return 'label label-warning fa fa-file-o';
+        case 'Protocols' :
+            return 'label label-warning fa fa-sort-amount-desc';
+        default :
+            return 'label label-warning fa fa-search';
+
+    }
+    S
+}
 
 function PaneSpin(divid, command) {
 
