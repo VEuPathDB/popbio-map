@@ -236,13 +236,6 @@ function bindEvents() {
                     left: "-=4"
                 }, 15)
             ;
-
-
-            // resetPlots()
-
-            // $('#search-bar').fadeTo(80,0.3, function () {
-            //     $('#search-bar').delay(0).fadeTo(80,1)
-            // });
             filterMarkers($("#search_ac").tagsinput('items'));
             return;
         }
@@ -388,22 +381,6 @@ function initializeSearch() {
         }, delay);
         filterMarkers('');
     });
-
-    // World search toggle
-    // $('#toggle-world').click(function () {
-    //
-    //     if ($('#world-search').val() === '1') {
-    //         $('#toggle-world').toggleClass("btn-primary", false)
-    //             .attr('title', 'Enable global search suggestions');
-    //         $('#world-search').val('0');
-    //         $('#world-icon').css('color', '#265a88');
-    //     } else {
-    //         $('#toggle-world').toggleClass("btn-primary", true)
-    //             .attr('title', 'Limit search suggestions to current view');
-    //         $('#world-search').val('1');
-    //         $('#world-icon').css('color', 'white');
-    //     }
-    // });
 
 
     //FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case handling
@@ -1026,7 +1003,9 @@ function loadSolr(parameters) {
     };
 
 
-    var url = solrPopbioUrl + $('#view-mode').val() + 'Geoclust?' + qryUrl + buildBbox(map.getBounds()) + "&stats.facet=" + geoLevel + "&facet.pivot=" + geoLevel + ",species_category&json.wrf=?&callback=?";
+    var url = solrPopbioUrl + $('#view-mode').val() + 'Geoclust?' + qryUrl + buildBbox(map.getBounds()) + "&stats.facet="
+        + geoLevel + "&facet.pivot=" + geoLevel + ",species_category&json.wrf=?&callback=?";
+    
 
     //console.log(url);
 

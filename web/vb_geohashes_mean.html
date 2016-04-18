@@ -789,6 +789,7 @@
 
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -901,6 +902,7 @@
             </div>
         </div>
     </div>
+
 
 
 
@@ -1023,6 +1025,7 @@
             </div>
         </div>
     </div>
+
 
 
 
@@ -1152,11 +1155,17 @@
                 .on("jsonLoaded", function () {
                     if (highlightedId) {
                         var marker = $('#' + highlightedId);
-                        $(marker).trigger("click");
-                        highlightMarker(marker);
+                        if (marker.length > 0) {
+                            $(marker).trigger("click");
+                            highlightMarker(marker);
+                        } else {
+                            sidebar.close();
+                            setTimeout(function () {
+                                resetPlots()
+                            }, delay);
+                        }
                         highlightedId = false;
                     }
-                    ;
 
                 });
 

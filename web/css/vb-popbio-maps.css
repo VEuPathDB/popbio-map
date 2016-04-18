@@ -477,11 +477,15 @@ html {
 
 /* x-jsrender active terms*/
 .active-term, .active-legend {
-    /*border-bottom: 1px dotted;*/
+    border-bottom: 1px dotted;
     cursor: pointer;
-    text-decoration: underline;
-    text-decoration-style: dotted;
+    /*text-decoration: underline;*/
+    /*text-decoration-style: dotted;*/
 }
+
+/*.active-term::before {*/
+/*content: '<i class="fa fa-plus-circle fa-fw" aria-hidden="true"></i>';*/
+/*}*/
 
 .marker-row, #beeViolinPlot {
     display: none;
