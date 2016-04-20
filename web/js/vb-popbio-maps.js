@@ -10,6 +10,111 @@ function bindEvents() {
     }
 
 
+    // add the IR scale bars in the advanced options pane
+    var inHtml = '';
+    $.each(colorBrewer.slice().reverse(), function (index, value) {
+        inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10%; background-color: ' + value + ' ;"></i>';
+    });
+    $('#menu-scale-bars').html(inHtml);
+
+    normIrSlider = $('#pre-norm-ir-slider').bslider({
+        value: [0, 9],
+        id: "norm-ir-slider",
+        handle: "triangle",
+        min: 0,
+        max: 9,
+        step: 1,
+        tooltip: 'hide'
+    });
+
+
+    // trigger click event on highlighted marker when switching panels
+    $('.sidebar-icon').on("click", function () {
+        var highlightedMarker = $('.highlight-marker');
+        if (highlightedMarker) {
+            sidebarClick = true;
+            $(highlightedMarker).trigger("click");
+            sidebarClick = false;
+        }
+    });
+
+
+    // Active terms
+    $(document).on("click", '.active-term', function () {
+            highlightedId = $('.highlight-marker').attr('id');
+
+            if ($('.sidebar-pane.active').attr('id') === 'swarm-plots') {
+                selectedPlotType = $('#plotType').val();
+
+            } else {
+                $('#plotType').val('none');
+            }
+
+            $('#search_ac').tagsinput('add', {
+                value: $(this).attr('value'),
+                activeTerm: true,
+                type: $(this).attr('type'),
+                field: mapTypeToField($(this).attr('type')),
+                qtype: 'exact'
+
+            });
+
+            var tooltip = d3.select('#beeswarmPointTooltip');
+            if ($('#no-interactions').hasClass("foreground")) {
+
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0)
+                    .style("z-index", -1000000);
+                $('#no-interactions').removeClass("foreground");
+                stickyHover = false;
+
+            }
+        })
+
+        .on("click", '.active-legend', function () {
+
+            $('#search_ac').tagsinput('add', {
+                value: $(this).attr('value'),
+                activeTerm: true,
+                type: $(this).attr('type'),
+                field: mapTypeToField($(this).attr('type')),
+                qtype: 'exact'
+
+            });
+
+            var tooltip = d3.select('#beeswarmPointTooltip');
+            if ($('#no-interactions').hasClass("foreground")) {
+
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0)
+                    .style("z-index", -1000000);
+                $('#no-interactions').removeClass("foreground");
+                stickyHover = false;
+
+            }
+        })
+        // This is here to trigger an update of the graphs when an active-term is clicked
+        // FixMe: Have to solve the issue with pruneclusters first
+        .on("jsonLoaded", function () {
+            if (highlightedId) {
+                var marker = $('#' + highlightedId);
+                if (marker.length > 0) {
+                    $(marker).trigger("click");
+                    highlightMarker(marker);
+                } else {
+                    sidebar.close();
+                    setTimeout(function () {
+                        resetPlots()
+                    }, delay);
+                }
+                highlightedId = false;
+            }
+
+        });
+    
+    
     // Toggle grid
     $('#grid-toggle').change(function () {
 
@@ -723,11 +828,19 @@ function loadSolr(parameters) {
                 docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_5 : null;
                 docSpc = facetCounts.facet_pivot["geohash_5,species_category"];
                 break;
-            default:
+            case 12:
+            case 13:
+            case 14:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_6;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_6;
                 docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_6 : null;
                 docSpc = facetCounts.facet_pivot["geohash_6,species_category"];
+                break;
+            default:
+                docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_7;
+                docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_7;
+                docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_7 : null;
+                docSpc = facetCounts.facet_pivot["geohash_7,species_category"];
                 break;
 
         }
@@ -1125,8 +1238,13 @@ function geohashLevel(zoomLevel, type) {
             case 11:
                 geoLevel = "geohash_5";
                 break;
-            default:
+            case 12:
+            case 13:
+            case 14:
                 geoLevel = "geohash_6";
+                break;
+            default:
+                geoLevel = "geohash_7";
                 break;
 
         }

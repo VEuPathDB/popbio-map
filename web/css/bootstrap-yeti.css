@@ -1408,8 +1408,8 @@ html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-body {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+.mapbox, #map, #main-wrapper {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
     font-size: 14px;
     line-height: 1.4;
     color: #222222;
@@ -1440,6 +1440,10 @@ a:focus {
     outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
+}
+
+.leaflet-control a:link {
+    color: #000000;
 }
 
 figure {
@@ -1588,10 +1592,16 @@ h3 .small,
 
 h4,
 .h4,
+#main-wrapper h4,
+#main-wrapper .h4,
 h5,
 .h5,
+#main-wrapper h5,
+#main-wrapper h5,
 h6,
-.h6 {
+.h6,
+#main-wrapper h6,
+#main-wrapper .h6 {
     margin-top: 10.5px;
     margin-bottom: 10.5px;
 }
@@ -1631,6 +1641,8 @@ h4,
     font-size: 17px;
 }
 
+#main-wrapper h5,
+#main-wrapper .h5,
 h5,
 .h5 {
     font-size: 14px;
@@ -1806,6 +1818,17 @@ ul,
 ol {
     margin-top: 0;
     margin-bottom: 10.5px;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#main-wrapper ul,
+#main-wrapper ol {
+    margin-top: 0;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 10.5px;
+    padding: 0;
 }
 
 ul ul,

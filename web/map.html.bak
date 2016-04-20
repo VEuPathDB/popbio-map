@@ -1,108 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="utf-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
-
-    <!-- CSS styles-->
-    <link rel="stylesheet" href="css/vectorbase.css" type="text/css" media="screen"/>
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
-          rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
-
-
-    <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="css/MarkerCluster.Default.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/nvd3/nv.d3.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.css">
-    <link rel="stylesheet" href="css/typeaheadjs.css">
-    <link rel="stylesheet" href="css/bootstrap-yeti.css">
-    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.css"/>
-    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css"/>
-
-
-    <!-- Bootstrap toggles -->
-    <link rel="stylesheet" href="libs/bootstrap-toggle/css/bootstrap-toggle.css"/>
-
-    <!-- Bootstrap slider -->
-    <link rel="stylesheet" href="libs/bootstrap-slider/dist/css/bootstrap-slider.css"/>
-
-    <link rel="stylesheet" href="css/vb-popbio-maps.css">
-
-    <!-- Javascript libraries -->
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
-    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"
-            charset="utf-8"></script>
-
-    <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.js"></script>
-    <script type="text/javascript" src="libs/leaflet.fullscreen/Control.FullScreen.js"></script>
-    <script type="text/javascript" src="libs/spin.js/spin.js"></script>
-    <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.js"></script>
-    <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
-    <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
-    <!--<script type="text/javascript" src="libs/PruneCluster/PruneCluster.js"></script>-->
-    <!--<script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.js"></script>-->
-
-    <!--&lt;!&ndash; Bootstrap toggles &ndash;&gt;-->
-    <script type="text/javascript" src="libs/bootstrap-toggle/js/bootstrap-toggle.js"></script>
-
-    <!--&lt;!&ndash; Boostrap slider&ndash;&gt;-->
-    <script type="text/javascript" src="libs/bootstrap-slider/dist/bootstrap-slider.js"></script>
-
-
-    <!--&lt;!&ndash; Added geohash to enable geohashes layer &ndash;&gt;-->
-    <script type="text/javascript" src="libs/geohash-js/geohash.js"></script>
-    <script type="text/javascript" src="libs/node-geohash/main.js"></script>
-
-    <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.js"></script>
-
-    <!--&lt;!&ndash; VB code &ndash;&gt;-->
-    <script type="text/javascript" src="js/map.Legend.js"></script>
-    <script type="text/javascript" src="js/Icon.Canvas.js"></script>
-    <script type="text/javascript" src="js/nv.d3.pie.js"></script>
-    <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
-    <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-    <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
-    <script type="text/javascript" src="libs/jsrender/jsrender.js"></script>
-    <script type="text/javascript" src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js"></script>
-    <script type="text/javascript" src="js/vb-violin-plots.js"></script>
-    <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
-    <!--Added geohashes-layers.js to enable geohashes -->
-    <script type="text/javascript" src="js/geohashes-layer.js"></script>
-
-
-    <!-- Include Date Range Picker -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
-
-</head>
-
-
-<body>
-<map name="ribbon">
-    <area shape="poly" coords="0,0,100,100,0,100"
-          title="This resource is currently under development. It may occasionally be unavailable. Please send all feedback to info@vectorbase.org">
-</map>
-<img src="ribbon.png" usemap="#ribbon" alt="beta"
-     style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
-
 <div class="no-interactions" id="no-interactions"></div>
 
-<div id="min_width_container">
+<div id="map_container">
 
-    <!-- Keep the following line for grunt-->
-    <!-- MAP CUT START -->
+    <!-- Cut here for Map stuff -->
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
@@ -789,8 +689,6 @@
 
 
 
-
-
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -903,8 +801,6 @@
             </div>
         </div>
     </div>
-
-
 
 
 
@@ -1029,17 +925,11 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
 </script>
 
+
 <!-- Stop cutting here for Map stuff -->
+
 <script language="JavaScript">
 
     "use strict";
@@ -1049,12 +939,12 @@
 
     //        var solrPopbioUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_popbio/';
     //        var solrTaUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_ta/';
-    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
-    //    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
+    //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
+    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
     //    var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
-    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
-    //    var solrTaUrl = 'asolr/solr/vb_ta/';
-    //        var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
+    //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
+    var solrTaUrl = 'asolr/solr/vb_ta/';
+    //    var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
     var map, sidebar;
     var assetLayerGroup;
     var smallClusters = [], months = [];
@@ -1087,36 +977,121 @@
 
     initializeSearch();
 
-
     // set view according to the value of the view url parameter. Otherwise default to smpl
     var urlParams = $.parseParams();
 
+    //      FixMe: kind of an ugly hack to set the dropdown text.
 
     $(window).load(function () {
-        $('.sidebar-pane').data('has-graph', false);
-
 
         var windowHeight = $(window).height();
         $('#map_container').height(windowHeight - 166 - 55);
         previousWindowHeight = windowHeight;
 
-        $(window).resize(function () {
-            clearTimeout(resizeId);
-            resizeId = setTimeout(doneResizing, 500);
+        $('.sidebar-pane').data('has-graph', false);
+
+
+        $(document).on("click", '.active-term', function () {
+                    highlightedId = $('.highlight-marker').attr('id');
+
+                    if ($('.sidebar-pane.active').attr('id') === 'swarm-plots') {
+                        selectedPlotType = $('#plotType').val();
+
+                    } else {
+                        $('#plotType').val('none');
+                    }
+
+                    $('#search_ac').tagsinput('add', {
+                        value: $(this).attr('value'),
+                        activeTerm: true,
+                        type: $(this).attr('type'),
+                        field: mapTypeToField($(this).attr('type')),
+                        qtype: 'exact'
+
+                    });
+
+                    var tooltip = d3.select('#beeswarmPointTooltip');
+                    if ($('#no-interactions').hasClass("foreground")) {
+
+                        tooltip.transition()
+                                .duration(500)
+                                .style("opacity", 0)
+                                .style("z-index", -1000000);
+                        $('#no-interactions').removeClass("foreground");
+                        stickyHover = false;
+
+                    }
+                })
+
+                .on("click", '.active-legend', function () {
+
+                    $('#search_ac').tagsinput('add', {
+                        value: $(this).attr('value'),
+                        activeTerm: true,
+                        type: $(this).attr('type'),
+                        field: mapTypeToField($(this).attr('type')),
+                        qtype: 'exact'
+
+                    });
+
+                    var tooltip = d3.select('#beeswarmPointTooltip');
+                    if ($('#no-interactions').hasClass("foreground")) {
+
+                        tooltip.transition()
+                                .duration(500)
+                                .style("opacity", 0)
+                                .style("z-index", -1000000);
+                        $('#no-interactions').removeClass("foreground");
+                        stickyHover = false;
+
+                    }
+                })
+                // This is here to trigger an update of the graphs when an active-term is clicked
+                // FixMe: Have to solve the issue with pruneclusters first
+                .on("jsonLoaded", function () {
+                    if (highlightedId) {
+                        var marker = $('#' + highlightedId);
+                        if (marker.length > 0) {
+                            $(marker).trigger("click");
+                            highlightMarker(marker);
+                        } else {
+                            sidebar.close();
+                            setTimeout(function () {
+                                resetPlots()
+                            }, delay);
+                        }
+                        highlightedId = false;
+                    }
+
+                });
+
+
+        // trigger click event on highlighted marker when switching panels
+        $('.sidebar-icon').on("click", function () {
+            var highlightedMarker = $('.highlight-marker');
+            if (highlightedMarker) {
+                sidebarClick = true;
+                $(highlightedMarker).trigger("click");
+                sidebarClick = false;
+            }
         });
 
+        // add the IR scale bars in the advanced options pane
+        var inHtml = '';
+        $.each(colorBrewer.slice().reverse(), function (index, value) {
+            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10%; background-color: ' + value + ' ;"></i>';
+        });
+        $('#menu-scale-bars').html(inHtml);
 
-        function doneResizing() {
-            //whatever we want to do
-            var windowHeight = $(window).height();
-            if (windowHeight != previousWindowHeight) {
-                $('#map_container').height(windowHeight - 166 - 55);
-                previousWindowHeight = windowHeight;
-                map.invalidateSize();
-
-
-            }
-        }
+        normIrSlider = $('#pre-norm-ir-slider').bslider({
+            value: [0, 9],
+            id: "norm-ir-slider",
+            handle: "triangle",
+            min: 0,
+            max: 9,
+            step: 1,
+            tooltip: 'hide'
+        });
 
         bindEvents();
         initializeMap();
@@ -1148,12 +1123,25 @@
     });
 
 
-</script>
-<!-- MAP CUT END -->
-<!-- Keep the above line for grunt-->
-</body>
-</html>
+    $(window).resize(function () {
+        clearTimeout(resizeId);
+        resizeId = setTimeout(doneResizing, 500);
+    });
 
+
+    function doneResizing() {
+        //whatever we want to do
+        var windowHeight = $(window).height();
+        if (windowHeight != previousWindowHeight) {
+            $('#map_container').height(windowHeight - 166 - 55);
+            previousWindowHeight = windowHeight;
+            map.invalidateSize();
+
+
+        }
+    }
+
+</script>
 
 
 

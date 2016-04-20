@@ -220,6 +220,7 @@
     <field name="geo_coords_ll" type="location" indexed="true" stored="true"/>
     <copyField source="geo_coords" dest="geo_coords_ll"/>
 
+    <field name="geohash_7" type="string" indexed="true" stored="true" multiValued="false"/>
     <field name="geohash_6" type="string" indexed="true" stored="true" multiValued="false"/>
     <field name="geohash_5" type="string" indexed="true" stored="true" multiValued="false"/>
     <field name="geohash_4" type="string" indexed="true" stored="true" multiValued="false"/>

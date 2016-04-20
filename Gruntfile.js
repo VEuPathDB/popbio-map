@@ -20,30 +20,34 @@ module.exports = function (grunt) {
             dist: {
                 files: {
 
-                    'web/dist/<%= pkg.name %>_libs.js': [
+                    'web/dist/js/<%= pkg.name %>_libs.js': [
                         'web/libs/leaflet-dvf/leaflet-dvf.js',
                         'web/libs/leaflet.fullscreen/Control.FullScreen.js',
                         'web/libs/spin.js/spin.js',
                         'web/libs/Leaflet.Spin/leaflet.spin.js',
                         'web/libs/leaflet-zoom-min/L.Control.ZoomMin.js',
                         'web/libs/sidebar-v2/leaflet-sidebar.js',
-                        // 'web/libs/PruneCluster/PruneCluster.js',
-                        // 'web/libs/Leaflet.vector-markers/Leaflet.vector-markers.js',
                         'web/libs/bootstrap-toggle/js/bootstrap-toggle.js',
                         'web/libs/bootstrap-slider/dist/bootstrap-slider.js',
                         'web/libs/geohash-js/geohash.js',
                         'web/libs/node-geohash/main.js',
                         'web/libs/Leaflet.EasyButton/easy-button.js',
+                        'web/js/map.Legend.js',
+                        'web/js/Icon.Canvas.js',
+                        'web/js/nv.d3.pie.js',
                         'web/libs/typeahead.js/dist/typeahead.bundle.js',
                         'web/libs/bootstrap-tagsinput/bootstrap-tagsinput.js',
                         'web/libs/beeswarm/beeswarm.js',
                         'web/libs/jsrender/jsrender.js',
-                        'web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js'
+                        'web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js',
+                        'web/js/vb-violin-plots.js',
+                        'web/js/vb-popbio-maps.js',
+                        'web/js/geohashes-layer.js'
 
                     ],
-                    'web/dist/<%= pkg.name %>.js': [
-                        'web/js/*.js'
-                    ]
+                    // 'web/dist/js/<%= pkg.name %>.js': [
+                    //     'web/js/*.js'
+                    // ]
                 }
             }
         },
@@ -53,15 +57,15 @@ module.exports = function (grunt) {
             },
             prod: {
                 files: {
-                    'web/dist/<%= pkg.name %>_libs.min.js': 'web/dist/<%= pkg.name %>_libs.js',
-                    'web/dist/<%= pkg.name %>.min.js': 'web/dist/<%= pkg.name %>.js'
+                    'web/dist/js/<%= pkg.name %>_libs.min.js': 'web/dist/js/<%= pkg.name %>_libs.js',
+                    // 'web/dist/js/<%= pkg.name %>.min.js': 'web/dist/js/<%= pkg.name %>.js'
                 }
             }
         },
         cssmin: {
             prod: {
                 files: [{
-                    'web/dist/<%= pkg.name %>.min.css': [
+                    'web/dist/css/<%= pkg.name %>.min.css': [
                         'web/libs/leaflet-dvf/css/dvf.css',
                         'web/css/MarkerCluster.Default.css',
                         'web/libs/leaflet.fullscreen/Control.FullScreen.css',
@@ -87,10 +91,10 @@ module.exports = function (grunt) {
         'copy-part-of-file': {
             prod: {
                 options: {
-                    sourceFileStartPattern: '<!-- SIMPLE START -->',
-                    sourceFileEndPattern: '<!-- SIMPLE END -->',
-                    destinationFileStartPattern: '<!-- START -->',
-                    destinationFileEndPattern: '<!-- END -->'
+                    sourceFileStartPattern: '<!-- MAP CUT START -->',
+                    sourceFileEndPattern: '<!-- MAP CUT END -->',
+                    destinationFileStartPattern: '<!-- MAP PASTE START -->',
+                    destinationFileEndPattern: '<!-- MAP PASTE END -->'
                 },
                 files: {
                     'web/map_temp.html': ['web/vb_geohashes_mean.html'],
@@ -118,8 +122,8 @@ module.exports = function (grunt) {
         },
         clean: {
             prod: [
-                'web/dist/<%= pkg.name %>_libs.js',
-                'web/dist/<%= pkg.name %>.js',
+                'web/dist/js/<%= pkg.name %>_libs.js',
+                'web/dist/js/<%= pkg.name %>.js',
                 'web/map_temp.html',
                 'web/vb_geohashes_mean_temp.html'
 
@@ -139,7 +143,10 @@ module.exports = function (grunt) {
 
     // Default task.
     grunt.registerTask('createEmptyFiles', 'Creates an empty file', function () {
-        grunt.file.write('web/map_temp.html', '<!-- START -->\n\n<!-- END -->');
+        grunt.file.write('web/map_temp.html', '<div class="no-interactions" id="no-interactions"></div>\n' +
+            '<div id="map_container">\n' +
+            '<!-- MAP PASTE START -->\n\n' +
+            '<!-- MAP PASTE END -->');
     });
     grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'createEmptyFiles', 'copy-part-of-file', 'htmlmin', 'clean']);
 
