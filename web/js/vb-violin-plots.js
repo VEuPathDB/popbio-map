@@ -1011,7 +1011,22 @@ function getScaleFactor(x) {
 }
 
 function buildDataset(dataset, element) {
+    var species = element.species_category ? element.species_category[0] : 'Unknown';
+    var bgColor;
+    if (glbSummarizeBy === 'Species') {
+        bgColor = palette[species]
+    } else {
+        var field = mapSummarizeByToField(glbSummarizeBy).field;
+        var fieldContents = element[field];
+        if (fieldContents) {
+            typeof fieldContents === 'object' ? bgColor = palette[fieldContents[0]] : bgColor = palette[fieldContents];
 
+        } else {
+            bgColor = palette['Unknown']
+        }
+
+    }
+    
     dataset.push({
         x: undefined,
         y: element.phenotype_value_f,
@@ -1030,14 +1045,14 @@ function buildDataset(dataset, element) {
         geoCoords: element.geo_coords,
         geolocation: element.geolocations[0],
         geolocationType: 'Geography',
-        bgColor: element.species_category ? palette[element.species_category[0]] : palette['Unknown'],
-        textColor: element.species_category ? getContrastYIQ(palette[element.species_category[0]]) : getContrastYIQ(palette['Unknown']),
+        bgColor: bgColor,
+        textColor: getContrastYIQ(bgColor),
         collectionDate: element.collection_date,
-        projects: element.projects,
+        projects: borderColor('Project', element.projects),
         projectsType: 'Projects',
-        collectionProtocols: element.collection_protocols,
+        collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
         collectionProtocolsType: 'Collection protocols',
-        protocols: element.protocols,
+        protocols: borderColor('Protocol', element.protocols),
         protocolsType: 'Protocols',
         phenotypeValue: element.phenotype_value_f,
         phenotypeValueType: element.phenotype_value_type_s,

@@ -3,8 +3,8 @@
     <div id="sidebar" class="sidebar collapsed">
         <ul class="sidebar-tabs" role="tablist">
             <li class="sidebar-icon"><a id="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
-            <li class="sidebar-icon"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
             <li class="sidebar-icon"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
+            <li class="sidebar-icon"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
             <li class="sidebar-icon"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
         </ul>
         <div class="sidebar-content active" id="active-pane">
@@ -32,13 +32,53 @@
             <div class="sidebar-pane" id="help"><h3>Usage tips</h3>
                 <div id="tips" class="table-responsive"><h4>Icons and toolbars</h4>
                     <table class="table table-condensed">
-                        <thead>
-                        <tr class="active">
-                            <th>Icon</th>
-                            <th>Usage</th>
-                        </tr>
-                        </thead>
                         <tbody>
+                        <tr class="active">
+                            <th colspan="2">Search and options</th>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4"><span class="input-group-addon btn-info"
+                                                       style="cursor:default;width:40px"><i
+                                    class="fa fa-bars fa-fw"></i></span></td>
+                            <td>Expand advanced search and configuration options</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4"><span class="input-group-addon btn-danger"
+                                                       style="cursor:default;width:40px"><i
+                                    class="fa fa-times fa-fw"></i></span></td>
+                            <td>Reset search and clear results</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4"><span style="border-bottom:1px dotted">Term</span></td>
+                            <td>Active term, click to add as a search filter</td>
+                        </tr>
+                        <tr>
+                            <td style="width:110px">
+                                <div class="btn-group dropdown" style="width:100%">
+                                    <button class="btn btn-default dropdown-toggle" type="button"><i
+                                            class="fa fa-eye"></i> Samples <span class="caret"></span></button>
+                                </div>
+                            </td>
+                            <td>Select map view</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="toggle btn btn-default off" style="height:30px;width:100%">
+                                    <div class="toggle-group"><label class="btn btn-default active toggle-off"><i
+                                            class="fa fa-globe"></i> Suggestions</label><span
+                                            class="toggle-handle btn btn-default"></span></div>
+                                </div>
+                            </td>
+                            <td>Toggle Global or Local (limited to current view) suggestions</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4x"><span class="leaflet-control-layers leaflet-control"><i
+                                    class="leaflet-control-layers-toggle"></i></span></td>
+                            <td>Select source for map tiles</td>
+                        </tr>
+                        <tr class="active">
+                            <th colspan="2">Map</th>
+                        </tr>
                         <tr>
                             <td class="col-md-4"><span class="leaflet-bar leaflet-control"><i
                                     class="leaflet-control-zoom-fullscreen fullscreen-icon"></i></span></td>
@@ -60,54 +100,27 @@
                             <td>Restore zoom</td>
                         </tr>
                         <tr>
-                            <td class="col-md-4x"><span class="leaflet-control-layers leaflet-control"><i
-                                    class="leaflet-control-layers-toggle"></i></span></td>
-                            <td>Select source for map tiles</td>
-                        </tr>
-                        <tr>
                             <td class="col-md-4x"><span class="leaflet-bar leaflet-control"><i
-                                    class="fa-info fa fa-fw"></i></span></td>
+                                    class="fa-info fa fa-lg"></i></span></td>
                             <td>Toggle legend On or Off</td>
                         </tr>
-                        <tr>
-                            <td class="col-md-4"><span class="input-group-addon btn-danger"
-                                                       style="cursor:default;width:40px"><i class="fa fa-times fa-fw"
-                                                                                            style="color:#fff"></i></span>
-                            </td>
-                            <td>Reset search / Clear results</td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4"><span class="input-group-addon btn-primary"
-                                                       style="cursor:default;width:40px"><i class="fa fa-globe fa-fw"
-                                                                                            style="color:#fff"></i></span>
-                            </td>
-                            <td>Limit search suggestions to current view</td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4"><span class="input-group-addon" style="cursor:default;width:40px"><i
-                                    class="fa fa-globe fa-fw" style="color:#265a88"></i></span></td>
-                            <td>Enable global search suggestions</td>
-                        </tr>
-                        <tr>
-                            <td style="width:110px"><i class="input-group-addon dropdown btn-default"><span
-                                    class="dropdown-toggle" style="cursor:default;width:150px">Samples view <span
-                                    class="caret"></span></span></i></td>
-                            <td>Choose between <b>Samples</b> and <b>Insecticide Resistance</b> view</td>
+                        <tr class="active">
+                            <th colspan="2">Panels</th>
                         </tr>
                         <tr>
                             <td class="col-md-4"><span class="leaflet-bar leaflet-control"><i
                                     class="fa fa-pie-chart"></i></span></td>
-                            <td>Summary view</td>
+                            <td>Summary statistics</td>
                         </tr>
                         <tr>
                             <td class="col-md-4"><span class="leaflet-bar leaflet-control"><i
                                     class="fa fa-area-chart"></i></span></td>
-                            <td>Insecticide Resistance statistics view</td>
+                            <td>Insecticide Resistance statistics</td>
                         </tr>
                         <tr>
                             <td class="col-md-4"><span class="leaflet-bar leaflet-control"><i
                                     class="fa fa-table"></i></span></td>
-                            <td>Details view</td>
+                            <td>Details tables</td>
                         </tr>
                         </tbody>
                     </table>
@@ -123,7 +136,7 @@
                         <tbody>
                         <tr>
                             <td class="col-md-4">Click marker</td>
-                            <td>Toggle details pane</td>
+                            <td>Toggle details panel</td>
                         </tr>
                         <tr>
                             <td class="col-md-4">Double-click marker</td>
@@ -337,7 +350,7 @@
      class="row no-pad" style="width:370px"><div class="col-md-12"><div class="cancel" id="cancel-hover"><i class="fa fa-times" style="color:red"></i></div><h3 style="background-color:{{attr:bgColor}};color:{{attr:textColor}};margin:0 -9px 0 5px"><span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}"><i>{{html:species}}</i></span></h3><p>{{html:bundleName}} <a href="http://www.vectorbase.org{{url:url}}" target="_blank">{{html:accession}}</a> {{if sampleSize}} <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">({{html:sampleType}} </span>of {{>sampleSize}} individuals)</p>{{else}} <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">({{html:sampleType}}) </span><p></p>{{/if}}</div><div class="row"><div class="col-md-6"><p><i class="fa fa-calendar" title="Collection date" style="color:{{attr:bgColor}}"></i> {{for collectionDate}} {{>#data}} {{else}} No date {{/for}}</p></div><div class="col-md-6"><p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color:{{attr:bgColor}}"></i> <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">{{html:geolocation}}</span></p></div></div><div class="row"><div class="col-md-6"><p style="color:{{attr:bgColor}}"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p><ul>{{for projects}}<li><span class="active-term" type="Projects" value="{{attr:#data}}">{{>#data}} </span><a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank"><i class="fa fa-external-link fa-fw" aria-hidden="true"></i></a></li>{{/for}}</ul></div><div class="col-md-6"><p style="color:{{attr:bgColor}}"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Col. Protocol(s)</b></p><ul>{{for collectionProtocols}}<li><span class="active-term" type="Collection protocols" value="{{attr:#data}}">{{>#data}}</span></li>{{/for}}</ul></div></div><div class="row"><div class="col-md-12"><h5 style="color:{{attr:bgColor}};text-align:center;text-decoration:underline">Insecticide Resistance data</h5></div></div><div class="row"><div class="col-md-12"><h5 style="text-align:center"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5></div></div><div class="row"><div class="col-md-6"><p><i class="fa fa-eyedropper" title="Insecticide" style="color:{{attr:bgColor}}"></i> <span class="active-term" type="Insecticides" value="{{attr:insecticide}}">{{html:insecticide}}</span></p>{{if concentration && concentrationUnit}}<p><i class="fa fa-tachometer" title="Concentration" style="color:{{attr:bgColor}}"></i> {{html:concentration}} {{>concentrationUnit}}</p>{{/if}} {{if duration && durationUnit}}<p><i class="fa fa-clock-o" title="Duration" style="color:{{attr:bgColor}}"></i> {{html:duration}} {{>durationUnit}}</p>{{/if}}</div><div class="col-md-6"><p style="color:{{attr:bgColor}}"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p><ul>{{for protocols}}<li><span class="active-term" type="Protocols" value="{{attr:#data}}">{{>#data}}</span></li>{{/for}}</ul></div></div><div class="row"><div class="col-md-12"><h5 style="text-align:center"><i class="fa fa-info-circle" style="color:{{attr:bgColor}}"></i> click the data-point to make this pop-up sticky!</h5></div></div></div>
 </script>
 <script language="JavaScript">"use strict";
-var solrPopbioUrl = "https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/", solrTaUrl = "https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/", map, sidebar, assetLayerGroup, smallClusters = [], months = [], palette, legendSpecies = 20, qryUrl = "q=*", partSearch = !1, legend, PaneSpinner = null, highlight = null, rectHighlight = null, firstClick = !0, highlightedId = !1, sidebarClick = !1, selectedPlotType = "none", geohashesGrid = null, colorBrewer = L.ColorBrewer.Diverging.RdYlBu[10].slice(), trafficLight = new L.CustomColorFunction(0, 1, colorBrewer, {interpolate: !0}), timer = 0, delay = 400, prevent = !1, stickyHover = !1, bgPlotType = 1, normIrSlider, resizeId, previousWindowHeight;
+var solrPopbioUrl = "asolr/solr/vb_popbio/", solrTaUrl = "asolr/solr/vb_ta/", map, sidebar, assetLayerGroup, smallClusters = [], months = [], palette, legendSpecies = 20, qryUrl = "q=*", partSearch = !1, legend, PaneSpinner = null, highlight = null, rectHighlight = null, firstClick = !0, highlightedId = !1, sidebarClick = !1, selectedPlotType = "none", geohashesGrid = null, colorBrewer = L.ColorBrewer.Diverging.RdYlBu[10].slice(), trafficLight = new L.CustomColorFunction(0, 1, colorBrewer, {interpolate: !0}), timer = 0, delay = 400, prevent = !1, stickyHover = !1, bgPlotType = 1, normIrSlider, glbSummarizeBy = "Species", resizeId, previousWindowHeight;
 initializeSearch();
 var urlParams = $.parseParams();
 $(window).load(function () {
@@ -346,11 +359,19 @@ $(window).load(function () {
         e != previousWindowHeight && ($("#map_container").height(e - 166 - 55), previousWindowHeight = e, map.invalidateSize())
     }
 
-    $(".sidebar-pane").data("has-graph", !1);
+    $("#slctSummarizeBy").val(glbSummarizeBy), $(".sidebar-pane").data("has-graph", !1);
     var i = $(window).height();
     $("#map_container").height(i - 166 - 55), previousWindowHeight = i, $(window).resize(function () {
         clearTimeout(resizeId), resizeId = setTimeout(e, 500)
-    }), bindEvents(), initializeMap(), map.on("movestart", function () {
+    }), bindEvents(), initializeMap(), $("#slctSummarizeBy").change(function () {
+        glbSummarizeBy = $("#slctSummarizeBy").val();
+        var e = solrPopbioUrl + $("#view-mode").val() + "Palette?q=*&facet.pivot=geohash_2," + mapSummarizeByToField(glbSummarizeBy).summarize + "&json.wrf=?&callback=?";
+        removeHighlight(), sidebar.close(), setTimeout(function () {
+            resetPlots()
+        }, delay), $.getJSON(e, function (e) {
+            legend._populateLegend(e, glbSummarizeBy)
+        })
+    }), map.on("movestart", function () {
         removeHighlight(), $(".collapse").collapse("hide"), sidebar.close(), setTimeout(function () {
             resetPlots()
         }, delay)

@@ -47,6 +47,13 @@
     <field name="species_category" type="string" indexed="true" stored="true" multiValued="true"/>
     <copyField source="species" dest="species_category"/>
 
+    <!-- These fields are non-tokenized copies to allow pivoting used in summarizing the markers -->
+    <field name="collection_protocols_category" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="collection_protocols" dest="collection_protocols_category"/>
+    <field name="protocols_category" type="string" indexed="true" stored="true" multiValued="true"/>
+    <copyField source="protocols" dest="protocols_category"/>
+
+
     <!-- ======================= -->
     <!-- GENOME: site = "genome" -->
     <!-- ======================= -->

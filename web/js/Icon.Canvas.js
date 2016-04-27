@@ -89,6 +89,7 @@ L.Icon.Canvas = L.Icon.extend({
         canvas.textBaseline = 'middle';
         canvas.font = 'bold 12px sans-serif';
 
-        canvas.fillText(this.options.population, iconSize2, iconSize2, iconSize);
+        // canvas.fillText(this.options.population, iconSize2, iconSize2, iconSize);
+        canvas.fillText(this.options.count, iconSize2, iconSize2, iconSize);
     }
 });

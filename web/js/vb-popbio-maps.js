@@ -10,6 +10,57 @@ function bindEvents() {
     }
 
 
+    $(document).on("click", '.dropdown-menu li a', function () {
+
+        var selValue = $(this).data('value');
+        var selText = $(this).text();
+        var parentID = $(this).closest("div").attr('id');
+
+        switch (parentID) {
+            case 'summByDropdown':
+                glbSummarizeBy = selValue;
+
+                var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' +
+                    mapSummarizeByToField(glbSummarizeBy).summarize +
+                    '&json.wrf=?&callback=?';
+
+                removeHighlight();
+                sidebar.close();
+                setTimeout(function () {
+                    resetPlots()
+                }, delay);
+                $.getJSON(url, function (data) {
+                    legend._populateLegend(data, glbSummarizeBy)
+                });
+                break;
+
+            case 'sortByDropdown':
+                legend.options.sortBy = selText;
+                legend.refreshLegend(palette);
+                //
+                // var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' +
+                //     mapSummarizeByToField(glbSummarizeBy).summarize +
+                //     '&json.wrf=?&callback=?';
+                //
+                // removeHighlight();
+                // sidebar.close();
+                // setTimeout(function () {
+                //     resetPlots()
+                // }, delay);
+                // $.getJSON(url, function (data) {
+                //     legend._populateLegend(data, glbSummarizeBy)
+                // });
+                break;
+
+            default:
+                $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
+                $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+                break;
+        }
+
+
+    });
+
     // add the IR scale bars in the advanced options pane
     var inHtml = '';
     $.each(colorBrewer.slice().reverse(), function (index, value) {
@@ -113,8 +164,8 @@ function bindEvents() {
             }
 
         });
-    
-    
+
+
     // Toggle grid
     $('#grid-toggle').change(function () {
 
@@ -140,10 +191,6 @@ function bindEvents() {
             $('#bars-icon').toggleClass('down');
         });
 
-    // $('#advanced-options').on('shown.bs.collapse', function () {
-    //
-    //
-    // });
 
     // clear the date selection panel once collapsed
     $('#daterange').on('hidden.bs.collapse', function () {
@@ -345,13 +392,13 @@ function bindEvents() {
             return;
         }
 
-        removeHighlight();
         sidebar.close();
         setTimeout(function () {
+            removeHighlight();
             resetPlots()
+            filterMarkers($("#search_ac").tagsinput('items'));
         }, delay);
 
-        filterMarkers($("#search_ac").tagsinput('items'));
     });
     $('#search_ac').on('itemRemoved', function () {
         // reset the seasonal search panel
@@ -365,13 +412,13 @@ function bindEvents() {
         }
 
 
-        removeHighlight();
         sidebar.close();
         setTimeout(function () {
+            removeHighlight();
             resetPlots()
+            filterMarkers($("#search_ac").tagsinput('items'));
         }, delay);
 
-        filterMarkers($("#search_ac").tagsinput('items'));
     });
 }
 
@@ -447,10 +494,11 @@ function initializeMap() {
 
     // Now generate the legend
 
-    var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+    // hardcoded species_category
+    var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
     //console.log('url: ' + url);
     //$.getJSON(url, generatePalette);
-    legend = new L.control.legend(url);
+    legend = new L.control.legend(url, {summarizeBy: glbSummarizeBy});
 
     if (rectHighlight !== null) map.removeLayer(rectHighlight);
     rectHighlight = null;
@@ -483,8 +531,8 @@ function initializeSearch() {
         sidebar.close();
         setTimeout(function () {
             resetPlots()
+            filterMarkers('');
         }, delay);
-        filterMarkers('');
     });
 
 
@@ -683,29 +731,6 @@ function initializeSearch() {
 
     // Set current view
 
-    $(".dropdown-menu li a").click(function () {
-        $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
-        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-        var selText = $(this).text();
-        if (selText === "Samples") {
-            $('#view-mode').val('smpl');
-        } else {
-            $('#view-mode').val('ir');
-        }
-        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
-
-        removeHighlight();
-        sidebar.close();
-        setTimeout(function () {
-            resetPlots()
-        }, delay);
-        $.getJSON(url, function (data) {
-            legend.populateLegend(data, "species_category")
-        });
-        acSuggestions.initialize(true);
-        acOtherResults.initialize(true);
-    });
-
     $("#SelectViewDropdown").find(".dropdown-menu li a").click(function () {
 
         var selText = $(this).text();
@@ -714,7 +739,10 @@ function initializeSearch() {
         } else {
             $('#view-mode').val('ir');
         }
-        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+        // var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' +
+            mapSummarizeByToField(glbSummarizeBy).summarize +
+            '&json.wrf=?&callback=?';
 
         removeHighlight();
         sidebar.close();
@@ -722,7 +750,7 @@ function initializeSearch() {
             resetPlots()
         }, delay);
         $.getJSON(url, function (data) {
-            legend.populateLegend(data, "species_category")
+            legend._populateLegend(data, glbSummarizeBy)
         });
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
@@ -748,10 +776,8 @@ function loadSolr(parameters) {
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
     // build a geohash grid
-    // var mapBounds = map.getBounds();
-    // var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
-    // if (urlParams.grid === "true") addGeohashes(map, South, West, North, East, geoLevel.slice(-1));
     if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, geoLevel.slice(-1));
+    //ToDo: change the grid checkbox value to true when grid is switched on trough a URL parameter
 
     //we are too deep in, just download the landmarks instead
 
@@ -771,7 +797,7 @@ function loadSolr(parameters) {
         // landmarks in each geohash
 
         // display the number of results
-        $("#markersCount").html(result.response.numFound + ' samples in current view');
+        $("#markersCount").html(result.response.numFound + ' samples in current view summarized by ' + glbSummarizeBy + '</u>');
         // detect empty results set
         if (result.response.numFound === 0) {
             if (clear) {
@@ -789,6 +815,7 @@ function loadSolr(parameters) {
         var facetCounts = result.facet_counts;
 
         var viewMode = $('#view-mode').val();
+        var sumField = mapSummarizeByToField(glbSummarizeBy).summarize;
 
         // process the correct geohashes based on the zoom level
         switch (zoomLevel) {
@@ -797,7 +824,8 @@ function loadSolr(parameters) {
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_1;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_1;
                 docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_1 : null;
-                docSpc = facetCounts.facet_pivot["geohash_1,species_category"];
+                // this is were we are forcing species_category as the summarizing field
+                docSpc = facetCounts.facet_pivot["geohash_1," + sumField];
                 break;
             case 3:
             case 4:
@@ -805,28 +833,28 @@ function loadSolr(parameters) {
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_2;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_2;
                 docPhe = ((viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_2 : null);
-                docSpc = facetCounts.facet_pivot["geohash_2,species_category"];
+                docSpc = facetCounts.facet_pivot["geohash_2," + sumField];
                 break;
             case 6:
             case 7:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_3;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_3;
                 docPhe = ((viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_3 : null);
-                docSpc = facetCounts.facet_pivot["geohash_3,species_category"];
+                docSpc = facetCounts.facet_pivot["geohash_3," + sumField];
                 break;
             case 8:
             case 9:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_4;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_4;
                 docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_4 : null;
-                docSpc = facetCounts.facet_pivot["geohash_4,species_category"];
+                docSpc = facetCounts.facet_pivot["geohash_4," + sumField];
                 break;
             case 10:
             case 11:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_5;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_5;
                 docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_5 : null;
-                docSpc = facetCounts.facet_pivot["geohash_5,species_category"];
+                docSpc = facetCounts.facet_pivot["geohash_5," + sumField];
                 break;
             case 12:
             case 13:
@@ -834,13 +862,13 @@ function loadSolr(parameters) {
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_6;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_6;
                 docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_6 : null;
-                docSpc = facetCounts.facet_pivot["geohash_6,species_category"];
+                docSpc = facetCounts.facet_pivot["geohash_6," + sumField];
                 break;
             default:
                 docLat = statFields.geo_coords_ll_0_coordinate.facets.geohash_7;
                 docLng = statFields.geo_coords_ll_1_coordinate.facets.geohash_7;
                 docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets.geohash_7 : null;
-                docSpc = facetCounts.facet_pivot["geohash_7,species_category"];
+                docSpc = facetCounts.facet_pivot["geohash_7," + sumField];
                 break;
 
         }
@@ -852,9 +880,9 @@ function loadSolr(parameters) {
         // time to return the landmarks of several geohashes.
         smallClusters = [];
 
-        var populations = []; // keep the total marker count for each geohash
-        var statistics = []; // keep the species count for each geohash
-        var fullStatistics = []; // keep the species count for each geohash
+        var populations = {}; // keep the total marker count for each geohash
+        var statistics = {}; // keep the species count for each geohash
+        var fullStatistics = {}; // keep the species count for each geohash
 
 
         for (var key in docLat) {
@@ -869,9 +897,9 @@ function loadSolr(parameters) {
 
                 // go over the facet pivots and save the population and statistics
                 docSpc.forEach(function (element, array) {
-                    populations[element.value] = element.count;
                     var elStats = [];
                     var fullElStats = [];
+                    var tagsTotalCount = 0;
                     // check if pivot is empty
                     if (element.pivot) {
 
@@ -879,6 +907,7 @@ function loadSolr(parameters) {
                         element.pivot.forEach(function (innElement) {
                             var key = innElement.value,
                                 count = innElement.count;
+                            tagsTotalCount += count;
 
                             elStats[key] = count;
 
@@ -892,10 +921,34 @@ function loadSolr(parameters) {
                             });
 
                         });
-                    } else {
 
-                        console.log("ERROR: Pivot for element " + element.value + "appears to be empty");
+                        if (element.count - tagsTotalCount > 0) {
+                            elStats["Unknown"] = element.count - tagsTotalCount;
+
+                            fullElStats.push({
+                                "label": 'Unknown',
+                                "value": element.count - tagsTotalCount,
+                                "color": (palette['Unknown'])
+                            });
+                            tagsTotalCount = element.count;
+                        }
+
+                    } else {
+                        tagsTotalCount = element.count;
+                        elStats["Unknown"] = tagsTotalCount;
+                        fullElStats.push({
+                            "label": 'Unknown',
+                            "value": tagsTotalCount,
+                            "color": (palette['Unknown'])
+                        });
+
+                        // console.log("ERROR: Pivot for element " + element.value + " appears to be empty");
                     }
+
+
+                    // populations[element.value] = element.count;
+                    populations[element.value] = tagsTotalCount;
+
                     statistics[element.value] = elStats;
                     fullStatistics[element.value] = fullElStats;
                 });
@@ -921,13 +974,13 @@ function loadSolr(parameters) {
             recordsField: "terms",
             latitudeField: "latLng.0",
             longitudeField: "latLng.1",
-            displayOptions: {
-                "count": {
-                    title: function (value) {
-                        return value;
-                    }
-                }
-            },
+            // displayOptions: {
+            //     "count": {
+            //         title: function (value) {
+            //             return value;
+            //         }
+            //     }
+            // },
             layerOptions: {
                 fill: false,
                 stroke: false,
@@ -942,6 +995,7 @@ function loadSolr(parameters) {
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
                     className: "marker-cluster",
+                    count: record.count,
                     population: record.population,
                     trafficlight: record.trafficlight,
                     stats: record.stats,
@@ -1116,9 +1170,10 @@ function loadSolr(parameters) {
     };
 
 
+    // hardcoded species_category
     var url = solrPopbioUrl + $('#view-mode').val() + 'Geoclust?' + qryUrl + buildBbox(map.getBounds()) + "&stats.facet="
-        + geoLevel + "&facet.pivot=" + geoLevel + ",species_category&json.wrf=?&callback=?";
-    
+        + geoLevel + "&facet.pivot=" + geoLevel + "," + mapSummarizeByToField(glbSummarizeBy).summarize + "&json.wrf=?&callback=?";
+
 
     //console.log(url);
 
@@ -1446,7 +1501,22 @@ function tableHtml(divid, results) {
 
         }
 
+        // hardcoded species_category
         var species = element.species_category ? element.species_category[0] : 'Unknown';
+        var bgColor;
+        if (glbSummarizeBy === 'Species') {
+            bgColor = palette[species]
+        } else {
+            var field = mapSummarizeByToField(glbSummarizeBy).field;
+            var fieldContents = element[field];
+            if (fieldContents) {
+                typeof fieldContents === 'object' ? bgColor = palette[fieldContents[0]] : bgColor = palette[fieldContents];
+
+            } else {
+                bgColor = palette['Unknown']
+            }
+
+        }
 
         if ($('#view-mode').val() === 'smpl') {
 
@@ -1462,12 +1532,12 @@ function tableHtml(divid, results) {
                 geolocationType: 'Geography',
                 species: species,
                 speciesType: 'Taxonomy',
-                bgColor: palette[species],
-                textColor: getContrastYIQ(palette[species]),
+                bgColor: bgColor,
+                textColor: getContrastYIQ(bgColor),
                 collectionDate: frmDate,
-                projects: element.projects,
+                projects: borderColor('Project', element.projects),
                 projectsType: 'Projects',
-                collectionProtocols: element.collection_protocols,
+                collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                 collectionProtocolsType: 'Collection protocols'
             };
 
@@ -1486,14 +1556,14 @@ function tableHtml(divid, results) {
                 geolocationType: 'Geography',
                 species: species,
                 speciesType: 'Taxonomy',
-                bgColor: palette[species],
-                textColor: getContrastYIQ(palette[species]),
+                bgColor: bgColor,
+                textColor: getContrastYIQ(bgColor),
                 collectionDate: frmDate,
-                projects: element.projects,
+                projects: borderColor('Project', element.projects),
                 projectsType: 'Projects',
-                collectionProtocols: element.collection_protocols,
+                collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                 collectionProtocolsType: 'Collection protocols',
-                protocols: element.protocols,
+                protocols: borderColor('Protocol', element.protocols),
                 protocolsType: 'Protocols',
                 phenotypeValue: element.phenotype_value_f,
                 phenotypeValueType: element.phenotype_value_type_s,
@@ -1685,6 +1755,35 @@ function filterMarkers(items) {
     loadSolr({clear: 1, zoomLevel: map.getZoom()})
 }
 
+function borderColor(type, element) {
+    var objWithBorderColors = [];
+
+    if (!element) {
+        objWithBorderColors.push(
+            {
+                name: 'Unknown',
+                brdColor: type === glbSummarizeBy ? palette['Unknown'] : ''
+            }
+        )
+        return objWithBorderColors;
+    }
+
+    for (var i = 0; i < element.length; i++) {
+        var obj = element[i];
+        // var brdColor = type === glbSummarizeBy ? palette[obj] : 'transparent';
+        objWithBorderColors.push(
+            {
+                name: obj,
+                brdColor: type === glbSummarizeBy ? palette[obj] : ''
+            }
+        )
+
+    }
+
+
+    return objWithBorderColors;
+}
+
 function mapTypeToField(type) {
     switch (type) {
         case "Taxonomy":
@@ -1700,7 +1799,7 @@ function mapTypeToField(type) {
         case "Protocols":
             return "protocols_cvterms";
         case "Stable ID":
-            return "id";
+            return "accession";
         case "Insecticides":
             return "insecticide_cvterms";
         case "Collection date":
@@ -1715,6 +1814,52 @@ function mapTypeToField(type) {
     }
 
 }
+
+
+function mapSummarizeByToField(type) {
+    var fields = {};
+    switch (type) {
+        case "Species":
+            fields.summarize = "species_category";
+            fields.type = "Taxonomy";
+            fields.field = "species_category";
+            break;
+        case "Sample type":
+            fields.summarize = "sample_type";
+            fields.type = "Sample type";
+            fields.field = "sample_type";
+            break;
+        case "Collection protocol":
+            fields.summarize = "collection_protocols_category";
+            fields.type = "Collection protocols";
+            fields.field = "collection_protocols";
+            break;
+        case "Protocol":
+            fields.summarize = "protocols_category";
+            fields.type = "Protocols";
+            fields.field = "protocols";
+            break;
+        case "Insecticide":
+            fields.summarize = "insecticide_s";
+            fields.type = "Insecticides";
+            fields.field = "insecticide_s";
+            break;
+        case "Project":
+            fields.summarize = "projects_category";
+            fields.type = "Projects";
+            fields.field = "projects";
+            break;
+        default :
+            fields.summarize = "species_category";
+            fields.type = "Taxonomy";
+            fields.field = "species_category";
+            break;
+    }
+    return fields;
+
+}
+
+
 //
 function mapTypeToIcon(type) {
     switch (type) {

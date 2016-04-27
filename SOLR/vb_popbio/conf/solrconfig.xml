@@ -1361,7 +1361,7 @@
             <str name="fq">has_geodata:true</str>
         </lst>
         <lst name="invariants">
-            <str name="fl">accession, bundle_name, sample_type url, collection_protocol, geolocations, geo_coords,
+            <str name="fl">accession, bundle_name, sample_type, collection_protocol, geolocations, geo_coords,
                 species_category, collection_protocols, collection_date, collection_date_range, projects, sample_size_i
             </str>
             <str name="q.op">OR</str>
@@ -1386,7 +1386,7 @@
             <str name="fq">has_geodata:true</str>
         </lst>
         <lst name="invariants">
-            <str name="fl">accession, bundle_name, sample_type url, collection_protocol, geolocations, geo_coords,
+            <str name="fl">accession, bundle_name, sample_type, collection_protocol, geolocations, geo_coords,
                 species_category, collection_protocols, collection_date, collection_date_range, projects, protocols,
                 phenotype_value_f,
                 phenotype_value_type_s, phenotype_value_unit_s, insecticide_s, sample_size_i, concentration_f,
