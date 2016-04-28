@@ -7201,7 +7201,7 @@ button.close {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1050;
+    z-index: 3150;
     -webkit-overflow-scrolling: touch;
     outline: 0;
 }
@@ -7231,7 +7231,7 @@ button.close {
 .modal-dialog {
     position: relative;
     width: auto;
-    margin: 10px;
+    margin: 90px;
 }
 
 .modal-content {
@@ -7253,7 +7253,7 @@ button.close {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1040;
+    z-index: 3120;
     background-color: #000000;
 }
 
@@ -7263,7 +7263,7 @@ button.close {
 }
 
 .modal-backdrop.in {
-    opacity: 0.5;
+    opacity: 0.3;
     filter: alpha(opacity=50);
 }
 
@@ -7316,7 +7316,7 @@ button.close {
 @media (min-width: 768px) {
     .modal-dialog {
         width: 600px;
-        margin: 30px auto;
+        margin: 50px auto;
     }
 
     .modal-content {

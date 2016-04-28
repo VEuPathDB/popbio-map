@@ -497,7 +497,7 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
                 if (stickyHover) return;
                 $('#cancel-hover').css("display", "none");
                 tooltip.transition()
-                    .duration(100)
+                    .duration(delay)
                     .style("opacity", 1)
                     .style("z-index", 1000000);
 
@@ -519,23 +519,24 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
             .on("mouseout", function (d) {
                 if (stickyHover) return;
                 tooltip.transition()
-                    .duration(500)
+                    .duration(delay)
                     .style("opacity", 0)
                     .style("z-index", -1000000);
             })
             .on("click", function () {
                 tooltip.transition()
-                    .duration(100)
+                    .duration(delay)
                     .style("opacity", 1);
                 stickyHover = true;
 
-                $('#no-interactions').addClass("foreground")
+                $('#no-interactions').addClass("in").addClass("foreground")
+                // $('#no-interactions').addClass("foreground")
                     .on("click", function () {
                         tooltip.transition()
-                            .duration(500)
+                            .duration(delay)
                             .style("opacity", 0)
                             .style("z-index", -1000000);
-                        $('#no-interactions').removeClass("foreground");
+                        $('#no-interactions').removeClass("in").removeClass("foreground");
                         stickyHover = false;
 
 
@@ -544,10 +545,10 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
                 $('#cancel-hover').css("display", "inline")
                     .on("click", function () {
                         tooltip.transition()
-                            .duration(500)
+                            .duration(delay)
                             .style("opacity", 0)
                             .style("z-index", -1000000);
-                        $('#no-interactions').removeClass("foreground");
+                        $('#no-interactions').removeClass('in').removeClass("foreground");
                         stickyHover = false;
 
 

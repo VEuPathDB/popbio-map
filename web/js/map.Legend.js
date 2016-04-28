@@ -29,6 +29,18 @@ L.Control.MapLegend = L.Control.extend({
 
     },
 
+    bindTableFilter: function () {
+        // filter terms in the table legend
+        $('#Filter-Terms').keyup(function() {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+            $('.table-legend-term').show().filter(function() {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+        });
+
+    },
 
     /*
      function generatePalette
@@ -53,7 +65,7 @@ L.Control.MapLegend = L.Control.extend({
             "#A6BDD7", // Very Light Blue
             "#C10020", // Vivid Red
             "#CEA262", // Grayish Yellow
-            "#817066", // Medium Gray
+            // "#817066", // Medium Gray
 
             // The following don't work well for people with defective color vision
             "#007D34", // Vivid Green
@@ -97,11 +109,11 @@ L.Control.MapLegend = L.Control.extend({
 
         for (var i = 0; i < stNoItems; i++) {
             // if (typeof items[i] === 'object') {
+            if (i === this.options.numberOfColors) break;
             var item = items[i][0];
             newPalette[item] = kelly_colors_hex[i];
             noItems--; // track how many items need a grayscale color
 
-            if (i >= this.options.numberOfColors) break;
 
         }
 
@@ -195,7 +207,7 @@ L.Control.MapLegend = L.Control.extend({
             a = a[1];
             b = b[1];
 
-            return a.hue - b.hue;
+            return b.hue - a.hue;
         });
 
         for (var i = 0; i < tuples.length; i++) {
@@ -238,14 +250,14 @@ L.Control.MapLegend = L.Control.extend({
         return rgb;
     },
 
-    _outputNames: function (hexArray) {
+    _outputNames: function (hexArray, numOfColors) {
         var names = [];
         var cntLegend = 1;
         for (var paletteKey in hexArray) if (hexArray.hasOwnProperty(paletteKey)) {
-            if (paletteKey === 'Unknown') continue;
-            if (cntLegend > legendSpecies) break;
+            if (paletteKey == 'Unknown') continue;
+            if (numOfColors > 0 && cntLegend === numOfColors) break;
             var hexcolor = hexArray[paletteKey];
-            names.push({name: paletteKey, color: hexcolor})
+            names.push({name: paletteKey, color: hexcolor});
             cntLegend++;
         }
 
@@ -261,12 +273,12 @@ L.Control.MapLegend = L.Control.extend({
 
     },
 
-    _outputColors: function (hexArray) {
+    _outputColors: function (hexArray, numOfColors) {
         var colors = {};
         var cntLegend = 1;
         for (var paletteKey in hexArray) if (hexArray.hasOwnProperty(paletteKey)) {
-            if (paletteKey === 'Unknown') continue;
-            if (cntLegend > legendSpecies) break;
+            if (paletteKey == 'Unknown') continue;
+            if (numOfColors > 0 && cntLegend === numOfColors) break;
             var color = new this._Color(hexArray[paletteKey]);
             this._constructColor(color);
             colors[paletteKey] = color;
@@ -278,8 +290,80 @@ L.Control.MapLegend = L.Control.extend({
     },
 
 
+    // build the HTML for the table
+    _generateTableHtml: function (sortedPalette, numOfItems) {
+        var inHtml = ""; // store HTML here
+
+        var sortByHTML = '';
+
+        if (this.options.sortBy === 'Name') {
+            sortByHTML = '<i class = "fa fa-sort-alpha-asc sort-by"></i>'
+        } else {
+            sortByHTML = '<i class="sort-by" style="background:radial-gradient(#4d4d4d, #cccccc);"></i>' +
+                '<i class = "fa fa-sort-amount-desc sort-by"></i>'
+        }
+
+
+        var sumDropdownHtml =
+            '<div class="btn-group dropdown" id="summByDropdown" role="group" >' +
+            '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
+            glbSummarizeBy + ' ' +
+            '<span class="caret"></span>' +
+            ' </button > ' +
+            '<ul class = "dropdown-menu" aria-labelledby="summByDropdown"> ' +
+            '<li><a href="#" data-value="Species">Species</a></li> ' +
+            '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
+            '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
+            '<li><a href="#" data-value="Project">Project </a></li> ' +
+            '<li><a href="#" data-value="Protocol">Protocol (only applies to IR)</a></li> ' +
+            '<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' +
+            '</div> ' +
+            '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
+            '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
+            sortByHTML +
+            '<span class="caret"></span>' +
+            ' </button > ' +
+            '<ul class = "dropdown-menu" aria-labelledby="sortByDropdown"> ' +
+            '<li><a href="#" data-value="<i class=\'sort-by\' style=\'background:radial-gradient(#4d4d4d, #cccccc);\'></i><i class = \'fa fa-sort-amount-desc sort-by\'></i>">Color</a></li> ' +
+            '<li><a href="#" data-value="<i class = \'fa fa-sort-alpha-asc sort-by\'></i>">Name</a></li>' +
+            '</div>';
+
+
+        $('#table-legend-controls').html(sumDropdownHtml);
+
+        var type = mapSummarizeByToField(this.options.summarizeBy).type;
+
+        for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
+
+            if (obj1 === 'Unknown') break;
+            // console.log(obj1);
+            if (this.options.summarizeBy === 'Species') {
+
+                inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
+                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + obj1 + '</em><br>' : '+');
+            } else {
+                inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
+                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
+
+            }
+            inHtml += '</span>';
+
+
+
+
+        }
+        $('#Other-Terms-List').html(inHtml).removeClass();
+
+        if (type === "Projects") {
+            $('#Other-Terms-List').addClass('multiColumn-5')
+        } else {
+            $('#Other-Terms-List').addClass('multiColumn-3')
+        }
+
+    },
+
     // build the HTML for the legend node
-    _generateHTML: function (sortedPalette, numOfItems) {
+    _generateLegendHtml: function (sortedPalette, numOfItems) {
         var inHtml = ""; // store HTML here
         var cntLegend = 1; // store the number of the elements/entries in the legend
 
@@ -317,12 +401,11 @@ L.Control.MapLegend = L.Control.extend({
             '</div>';
 
 
-        inHtml += '<div style="border: 0; margin-bottom: 5px;">' +
-            dropdownsHTML +
-            '</div>';
-        for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
-
+        inHtml += '<div style="border: 0; margin-bottom: 5px;">' + dropdownsHTML + '</div>';
             var type = mapSummarizeByToField(this.options.summarizeBy).type;
+        for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
+            if (cntLegend === this.options.numberOfColors) break;
+
             if (this.options.summarizeBy === 'Species') {
                 var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An. gambiae
 
@@ -342,8 +425,10 @@ L.Control.MapLegend = L.Control.extend({
         if (numOfItems > this.options.numberOfColors) {
 
             var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")"
-            inHtml += '<i style="background:' + othersBg + ';"></i> ' + 'Others<br />';
+            inHtml += '<span class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></span>';
         }
+
+
 
         // add Unknown 
         inHtml += '<i style="background: #000000;"></i> Unknown<br />';
@@ -391,22 +476,35 @@ L.Control.MapLegend = L.Control.extend({
      date: 27/4/2016
      purpose: A public function to refresh the legend without connection to SOLR or refreshing the map
      inputs: unsortedPalette: usually the global palette of the map
-     outputs: it calls _generateHTML with the sorted palette and updates the legend
+     outputs: it calls _generateLegendHtml with the sorted palette and updates the legend
      */
 
     refreshLegend: function (unsortedPalette) {
         var sortedPalette = [];
         var paletteSize = _.size(unsortedPalette);
         if (this.options.sortBy === 'Name') {
-            sortedPalette = this._outputNames(unsortedPalette);
+            sortedPalette = this._outputNames(unsortedPalette, this.options.numberOfColors);
 
 
         } else {    // sort by color
 
-            sortedPalette = this._outputColors(unsortedPalette);
+            sortedPalette = this._outputColors(unsortedPalette, this.options.numberOfColors);
         }
 
-        this._generateHTML(sortedPalette, paletteSize);
+        this._generateLegendHtml(sortedPalette, paletteSize);
+
+        if (this.options.sortBy === 'Name') {
+            sortedPalette = this._outputNames(unsortedPalette, 0);
+
+
+        } else {    // sort by color
+
+            sortedPalette = this._outputColors(unsortedPalette, 0);
+        }
+
+        // this._generateLegendHtml(sortedPalette, paletteSize);
+        this._generateTableHtml(sortedPalette, paletteSize);
+        
 
     },
 
@@ -466,17 +564,6 @@ L.Control.MapLegend = L.Control.extend({
         var sortedItems = this._sortHashByValue(items);
         palette = this.generatePalette(sortedItems);
 
-        // var sortedPalette = [];
-        // if (this.options.sortBy === 'Name') {
-        //     sortedPalette = this._outputNames(palette);
-        //
-        //
-        // } else {    // sort by color
-        //
-        //     sortedPalette = this._outputColors(palette);
-        // }
-        //
-        // this._generateHTML(sortedPalette, _.size(palette));
 
         this.refreshLegend(palette);
 
@@ -492,10 +579,13 @@ L.control.legend = function (url, options) {
     var newLegend = new L.Control.MapLegend(options);
 
     if (options.summarizeBy) newLegend.options.summarizeBy = options.summarizeBy;
+    newLegend.options.numberOfColors = legendSpecies;
 
     newLegend.addLegendIcon();
+    newLegend.bindTableFilter();
     $.getJSON(url, function (data) {
         newLegend._populateLegend(data, options.summarizeBy)
     });
+    
     return newLegend;
 };

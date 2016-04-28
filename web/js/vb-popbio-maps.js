@@ -32,24 +32,23 @@ function bindEvents() {
                 $.getJSON(url, function (data) {
                     legend._populateLegend(data, glbSummarizeBy)
                 });
+                $('#Filter-Terms').val('');
                 break;
 
             case 'sortByDropdown':
                 legend.options.sortBy = selText;
                 legend.refreshLegend(palette);
-                //
-                // var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' +
-                //     mapSummarizeByToField(glbSummarizeBy).summarize +
-                //     '&json.wrf=?&callback=?';
-                //
-                // removeHighlight();
-                // sidebar.close();
-                // setTimeout(function () {
-                //     resetPlots()
-                // }, delay);
-                // $.getJSON(url, function (data) {
-                //     legend._populateLegend(data, glbSummarizeBy)
+
+                // $('#Filter-Terms').keyup(function() {
+                var val = $.trim($('#Filter-Terms').val()).replace(/ +/g, ' ').toLowerCase();
+
+                $('.table-legend-term').show().filter(function () {
+                    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                    return !~text.indexOf(val);
+                }).hide();
                 // });
+
+
                 break;
 
             default:
@@ -60,6 +59,13 @@ function bindEvents() {
 
 
     });
+
+    $('#Reset-Filter').click( function () {
+        $('#Filter-Terms').val('');
+        $('.table-legend-term').show();
+
+    });
+
 
     // add the IR scale bars in the advanced options pane
     var inHtml = '';
@@ -117,12 +123,11 @@ function bindEvents() {
                     .duration(500)
                     .style("opacity", 0)
                     .style("z-index", -1000000);
-                $('#no-interactions').removeClass("foreground");
+                $('#no-interactions').removeClass("in").removeClass("foreground");
                 stickyHover = false;
 
             }
         })
-
         .on("click", '.active-legend', function () {
 
             $('#search_ac').tagsinput('add', {
@@ -796,8 +801,13 @@ function loadSolr(parameters) {
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
 
+        var viewMode = $('#view-mode').val();
         // display the number of results
-        $("#markersCount").html(result.response.numFound + ' samples in current view summarized by ' + glbSummarizeBy + '</u>');
+        if (viewMode === "ir") {
+            $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
+        } else {
+            $("#markersCount").html(result.response.numFound + ' visible samples summarized by ' + glbSummarizeBy + '</u>');
+        }
         // detect empty results set
         if (result.response.numFound === 0) {
             if (clear) {
@@ -814,7 +824,6 @@ function loadSolr(parameters) {
         var statFields = result.stats.stats_fields;
         var facetCounts = result.facet_counts;
 
-        var viewMode = $('#view-mode').val();
         var sumField = mapSummarizeByToField(glbSummarizeBy).summarize;
 
         // process the correct geohashes based on the zoom level

@@ -85,7 +85,7 @@ BODY {
     min-height: 300px;
 }
 
-.legend i {
+.legend i, #Other-Terms-List i, #table-legend-controls i {
     width: 14px;
     height: 14px;
     float: left;
@@ -121,7 +121,7 @@ BODY {
     width: 56%;
     min-width: 250px;
     /*max-width: 500px;*/
-    z-index: 314159;
+    z-index: 3000;
 }
 
 .mapbox .overlaybottom {
@@ -133,7 +133,7 @@ BODY {
     text-align: center;
     background: rgba(255, 255, 255, 0.7);
     /*max-width: 500px;*/
-    z-index: 300000;
+    z-index: 3000;
     font-size: small;
 
 }
@@ -156,6 +156,10 @@ BODY {
 .sidebar-pane h1 {
     font-size: 36px;
     color: #333;
+}
+
+.sidebar-icon, circle, path, .boxplot {
+    cursor: pointer;
 }
 
 /*keep the curson inline with the tags if the space left is more than width*/
@@ -189,11 +193,11 @@ BODY {
 
 .highlight-marker {
     box-shadow: 0px 0px 0px 5px rgba(255, 255, 0, 1);
-    z-index: 2147483646 !important;
+    z-index: 3100 !important;
 }
 
 .top-marker {
-    z-index: 2147483646 !important;
+    z-index: 3100 !important;
 }
 
 /* for the table */
@@ -252,18 +256,24 @@ BODY {
 .cancel {
     position: relative;
     cursor: pointer;
-    margin: 4px -5px 0 0;;
+    margin: 4px -5px 0 0;
+    opacity: 0.6;
     float: right;
     height: 15px;
     width: 14px;
-    background-color: white;
+    background: transparent;
     text-align: center;
-    font-weight: bold;
-    font-size: 11px;
-    color: white;
-    border-radius: 3px;
-    z-index: 100000000000000;
+    font-size: 14px;
+    color: #FFFFFF;
+    z-index: 3100;
+    text-decoration: none;
+    text-shadow: none;
     display: none;
+}
+
+.cancel:hover,
+.cancel:focus {
+    opacity: 1;
 }
 
 .marker-row, .tooltip-bs, .tooltip {
@@ -286,7 +296,7 @@ BODY {
 .tooltip, .tooltip-bs {
     position: absolute;
     background: rgba(255, 255, 255, 0.9);
-    z-index: 300001;
+    z-index: 3080;
     pointer-events: none;
     user-select: none;
 
@@ -372,7 +382,7 @@ BODY {
 /* end of violin plots specific CSS*/
 
 .xy-tooltip {
-    z-index: 100000;
+    z-index: 3070;
 }
 
 .no-interactions {
@@ -385,7 +395,7 @@ BODY {
 }
 
 .foreground {
-    z-index: 1000000;
+    z-index: 3150;
 }
 
 html {
@@ -462,7 +472,7 @@ html {
 }
 
 /* x-jsrender active terms*/
-.active-term, .active-legend {
+.active-term, .active-legend, .active-others {
     border-bottom: 1px dotted;
     cursor: pointer;
     /*text-transform: capitalize;*/
@@ -483,6 +493,42 @@ html {
 div.error div, div.warning div, div.info div, div.hint div {
     border: 0;
     border-radius: 0;
+}
+
+.multiColumn-2 {
+    -webkit-column-gap: 20px;
+    -moz-column-gap: 20px;
+    column-gap: 20px;
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+}
+
+.multiColumn-3 {
+    -webkit-column-gap: 20px;
+    -moz-column-gap: 20px;
+    column-gap: 20px;
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+}
+
+.multiColumn-4 {
+    -webkit-column-gap: 20px;
+    -moz-column-gap: 20px;
+    column-gap: 20px;
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+}
+
+.multiColumn-5 {
+    -webkit-column-gap: 20px;
+    -moz-column-gap: 20px;
+    column-gap: 20px;
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5;
 }
 
 /* CSS transitions for map markers */

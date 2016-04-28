@@ -102,7 +102,64 @@
 <img src="ribbon.png" usemap="#ribbon" alt="beta"
      style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
 
-<div class="no-interactions" id="no-interactions"></div>
+<div class="no-interactions modal-backdrop fade" id="no-interactions"></div>
+
+<div class="modal fade" id="Table-Legend-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <div class="row">
+                    <div class="col-lg-7 col-sm-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="Filter-Terms" placeholder="Filter terms">
+                        <span id="Reset-Filter" class="input-group-addon btn-danger"
+                              style="cursor: pointer"
+                              title="Reset search"><i
+                                class="fa fa-times fa-fw"></i>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-5">
+                        <div id='table-legend-controls' class="btn-group">
+                            <!--<div class="btn-group dropdown" id="summByDropdown" role="group" >-->
+                            <!--<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                            <!--glbSummarizeBy + ' ' +-->
+                            <!--<span class="caret"></span>' +-->
+                            <!--</button > ' +-->
+                            <!--<ul class = "dropdown-menu" aria-labelledby="summByDropdown"> ' +-->
+                            <!--<li><a href="#" data-value="Species">Species</a></li> ' +-->
+                            <!--<li><a href="#" data-value="Sample type">Sample type</a></li> ' +-->
+                            <!--<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +-->
+                            <!--<li><a href="#" data-value="Project">Project </a></li> ' +-->
+                            <!--<li><a href="#" data-value="Protocol">Protocol (only applies to IR)</a></li> ' +-->
+                            <!--<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' +-->
+                            <!--</div> ' +-->
+                            <!--<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +-->
+                            <!--<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +-->
+                            <!--sortByHTML +-->
+                            <!--<span class="caret"></span>' +-->
+                            <!--</button > ' +-->
+                            <!--<ul class = "dropdown-menu" aria-labelledby="sortByDropdown"> ' +-->
+                            <!--<li><a href="#" data-value="<i class=\'sort-by\' style=\'background:radial-gradient(#4d4d4d, #cccccc);\'></i><i class = \'fa fa-sort-amount-desc sort-by\'></i>">Color</a></li> ' +-->
+                            <!--<li><a href="#" data-value="<i class = \'fa fa-sort-alpha-asc sort-by\'></i>">Name</a></li>' +-->
+                            <!--</div>'-->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="Other-Terms-List">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 <div id="min_width_container">
 
@@ -303,7 +360,7 @@
                                 </span>
                             </td>
                             <td>
-                                Toggle legend On or Off
+                                Toggle legend On or Off and change categorization and coloring
                             </td>
                         </tr>
 
@@ -515,12 +572,8 @@
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
-
-
             </div>
-
             <div class="main-menu" id="menu-bar">
                 <div class="btn-group btn-group-justified" data-toggle="buttons" role="group"
                      style="margin-top:3px;">
@@ -794,7 +847,7 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">
+                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                         </a>
                     </li>
@@ -827,6 +880,15 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -895,7 +957,7 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">
+                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                         </a>
                     </li>
@@ -977,12 +1039,22 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="irBsPointTemplate">
     <div class="row no-pad" style="width: 370px;">
         <div class="col-md-12" >
-            <div class="cancel" id="cancel-hover"><i class="fa fa-times" style="color: red;"></i></div>
+            <div class="cancel" id="cancel-hover"><i class="fa fa-times"></i></div>
+            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
                 <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
                     <i> {{html:species}}</i>
@@ -1044,7 +1116,7 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">
+                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                         </a>
                     </li>
@@ -1131,17 +1203,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
