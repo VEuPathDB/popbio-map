@@ -1025,6 +1025,7 @@ function loadSolr(parameters) {
 
                         var recBounds = L.latLngBounds(record.bounds);
 
+                        // was a marker already highlighted?
                         if (highlightedId) {
 
                             $('.sidebar-pane').data('has-graph', false);
@@ -1122,6 +1123,13 @@ function loadSolr(parameters) {
                                         updateTable("#table-contents", buildBbox(recBounds));
                                         panel.data('has-graph', true);
                                         break;
+                                    case "help":
+                                        updatePieChart(record.population, record.fullstats);
+                                        panel.data('has-graph', true);
+                                        sidebar.open('graphs');
+
+                                        break;
+
                                     default:
                                         break;
                                 }
