@@ -61,12 +61,29 @@ BODY {
 
 .nvd3 text {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-style: italic;
 }
 
 .nvtooltip {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-style: italic;
+    border-radius: 0;
+    border: 1px solid #CCCCCC;
+}
+
+.nv-label text {
+    fill: #FFFFFF !important;
+}
+
+.nvd3.nv-pie path {
+    fill-opacity: 0.8;
+}
+
+.nv-legend-text-italics {
+    font-style: italic !important;
+}
+
+.legend-color-guide {
+    border-radius: 10px !important;
+    border: 0 !important;
 
 }
 

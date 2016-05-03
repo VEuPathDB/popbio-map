@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/nvd3/nv.d3.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/nvd3/build/nv.d3.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.css">
     <link rel="stylesheet" href="css/typeaheadjs.css">
     <link rel="stylesheet" href="css/bootstrap-yeti.css">
@@ -75,7 +75,8 @@
     <!--&lt;!&ndash; VB code &ndash;&gt;-->
     <script type="text/javascript" src="js/map.Legend.js"></script>
     <script type="text/javascript" src="js/Icon.Canvas.js"></script>
-    <script type="text/javascript" src="js/nv.d3.pie.js"></script>
+    <!--<script type="text/javascript" src="js/nv.d3.pie.js"></script>-->
+    <script type="text/javascript" src="libs/nvd3/build/nv.d3.js"></script>
     <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
     <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
     <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
@@ -189,7 +190,7 @@
 
                     <h4>to plot some real data</h4>
                 </div>
-                <div id="pie-chart-area" style="width: 390px;">
+                <div id="pie-chart-area" style="width: 100%; height: 100%;">
                     <svg></svg>
                 </div>
             </div>

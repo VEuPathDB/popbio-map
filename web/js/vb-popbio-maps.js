@@ -60,7 +60,7 @@ function bindEvents() {
 
     });
 
-    $('#Reset-Filter').click( function () {
+    $('#Reset-Filter').click(function () {
         $('#Filter-Terms').val('');
         $('.table-legend-term').show();
 
@@ -920,14 +920,25 @@ function loadSolr(parameters) {
 
                             elStats[key] = count;
 
-                            //FixMe: Remove these replacements when proper names are returned from the popbio API
-                            fullElStats.push({
-                                "label": key.replace(/sensu lato/, "sl")
-                                    .replace(/chromosomal form/, "cf"),
-                                //"label": key,
-                                "value": count,
-                                "color": (palette[key] ? palette[key] : "#000000")
-                            });
+
+                            if (legend.options.summarizeBy === 'Species') {
+
+                                //FixMe: Remove these replacements when proper names are returned from the popbio API
+                                fullElStats.push({
+                                    "label": key.replace(/sensu lato/, "sl")
+                                        .replace(/chromosomal form/, "cf"),
+                                    //"label": key,
+                                    "value": count,
+                                    "color": (palette[key] ? palette[key] : "#000000")
+                                });
+                            } else {
+                                fullElStats.push({
+                                    "label": key,
+                                    "value": count,
+                                    "color": (palette[key] ? palette[key] : "#000000")
+                                });
+                            }
+                            ;
 
                         });
 
@@ -1335,35 +1346,53 @@ function updatePieChart(population, stats) {
         $('#pie-chart-header').empty();
 
         d3.select("#pie-chart-area svg")
-            .attr("width", "380px")
+            .attr("width", "100%")
             .attr("height", "500px")
-            .style({width: "380px", height: "500px"});
+            .style({width: "100%", height: "500px"});
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
                 .x(function (d) {
-                    return d.label
+                    return d.label.capitalizeFirstLetter();
                 })
                 .y(function (d) {
                     return d.value
                 })
                 .color(function (d) {
-                    return d.data["color"]
+                    // return d.data["color"]
+                    return d.color
                 })
                 .showLabels(true)     //Display pie labels
                 .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
                 .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
                 .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
                 .donutRatio(0.5)     //Configure h ow big you want the donut hole size to be.
-                .growOnHover(false);
+                .growOnHover(false)
+                ;
 
+            chart.legend.vers('classic')
+                .rightAlign(false)
+                .maxKeyLength(23)
+                .margin({left: 0, right: 0})
+                .width(380)
+                .padding(20);
+
+
+            if (legend.options.summarizeBy === 'Species') {
+                chart.legend.applyClass('nv-legend-text-italics');
+                chart.tooltip.applyClass('nv-legend-text-italics');
+            }
+
+            // Overwrite valueFormatter to return integers
+            chart.tooltip.valueFormatter(function (d, i) {
+                return d.roundDecimals(0);
+            })
 
             d3.select("#pie-chart-area svg")
                 .datum(stats)
-                .transition().duration(800)
+                .transition().duration(delay)
                 .call(chart);
 
-            nv.utils.windowResize(chart.update);         //Renders the chart when window is resized.
 
             return chart;
         });
