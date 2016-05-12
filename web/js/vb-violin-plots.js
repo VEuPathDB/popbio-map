@@ -525,30 +525,48 @@ function addBeeswarm(svg, points, yRange, xRange, yDomain, xDomain, log) {
             })
             .on("click", function () {
                 tooltip.transition()
-                    .duration(delay)
-                    .style("opacity", 1);
+                    .duration(0)
+                    .style("opacity", 1)
+                    .style("z-index", 1000000);
+
+                tooltip.html(tooltipHtml);
+                var winHeight = window.innerHeight;
+                var tooltipHeight = tooltip.node().getBoundingClientRect().height;
+                var tooltipY;
+
+                if (d3.event.pageY - 8 + tooltipHeight > winHeight) {
+                    tooltipY = d3.event.pageY - tooltipHeight + 28;
+                } else {
+                    tooltipY = d3.event.pageY - 28;
+                }
+
+                tooltip.style("left", (d3.event.pageX + 20) + "px")
+                    .style("top", (tooltipY) + "px")
+
                 stickyHover = true;
 
                 $('#no-interactions').addClass("in").addClass("foreground")
                 // $('#no-interactions').addClass("foreground")
-                    .on("click", function () {
+                    .one("click", function () {
                         tooltip.transition()
                             .duration(delay)
                             .style("opacity", 0)
                             .style("z-index", -1000000);
                         $('#no-interactions').removeClass("in").removeClass("foreground");
+                        $(document).off('click', '#cancel-hover');
+
                         stickyHover = false;
 
 
                     });
 
                 $('#cancel-hover').css("display", "inline")
-                    .on("click", function () {
+                    .one("click", function () {
                         tooltip.transition()
                             .duration(delay)
                             .style("opacity", 0)
                             .style("z-index", -1000000);
-                        $('#no-interactions').removeClass('in').removeClass("foreground");
+                        $('#no-interactions').removeClass('in').removeClass("foreground").off('click');
                         stickyHover = false;
 
 
@@ -1027,7 +1045,7 @@ function buildDataset(dataset, element) {
         }
 
     }
-    
+
     dataset.push({
         x: undefined,
         y: element.phenotype_value_f,

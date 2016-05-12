@@ -220,6 +220,7 @@ BODY {
 /* for the table */
 #marker-table {
     overflow-y: auto;
+    overflow-x: hidden;
     height: 100%;
     padding-right: 0;
 }
@@ -260,6 +261,11 @@ BODY {
 
 .marker-row ul li:last-child:after, .tooltip-bs ul li:last-child:after {
     content: "";
+}
+
+.row.less-margin {
+    margin-left: -10px;
+    margin-right: -5px;
 }
 
 /*.marker-row.row {*/
@@ -322,6 +328,9 @@ BODY {
 .tooltip-bs {
     pointer-events: auto;
     user-select: text;
+    max-height: 400px;
+    overflow-y:auto;
+    overflow-x: hidden;
 
 }
 
@@ -500,6 +509,10 @@ html {
 /*.active-term::before {*/
 /*content: '<i class="fa fa-plus-circle fa-fw" aria-hidden="true"></i>';*/
 /*}*/
+
+.active-hover {
+    cursor: pointer;
+}
 
 .marker-row, #beeViolinPlot {
     display: none;

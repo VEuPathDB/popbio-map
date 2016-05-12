@@ -96,38 +96,179 @@ function bindEvents() {
     });
 
 
-    // Active terms
-    $(document).on("click", '.active-term', function () {
-            highlightedId = $('.highlight-marker').attr('id');
+    // VB entities popup (projects, samples, assays)
+    $(document).on('click', '.active-hover', function (event) {
 
-            if ($('.sidebar-pane.active').attr('id') === 'swarm-plots') {
-                selectedPlotType = $('#plotType').val();
+        // select the right div
+        var entityTooltip = $('#vbEntityTooltip');
 
-            } else {
-                $('#plotType').val('none');
-            }
+        // identify the entity type
+        var id = $(this).attr('value'), type = $(this).attr('type'),
+            bgColor = $(this).data('bgcolor');
+        var textColor = getContrastYIQ(bgColor);
+        var template, entityRestURL, entityURL;
 
-            $('#search_ac').tagsinput('add', {
-                value: $(this).attr('value'),
-                activeTerm: true,
-                type: $(this).attr('type'),
-                field: mapTypeToField($(this).attr('type')),
-                qtype: 'exact'
+        switch (type) {
+            case 'Projects':
+                template = $.templates("#projectInfoTemplate");
+                entityURL = '/popbio/project/?id=' + id;
+                entityRestURL = '/popbio/REST/project/' + id + '/head';
+                break;
+            default:
+                break;
+        }
+
+        // setup an ajax promise
+        var entityPromise = $.getJSON(entityRestURL);
+
+        // display the div and start the spinner
+        entityTooltip.html('')
+        entityTooltip.css("opacity", "1").css("z-index", "1000000");
+        PaneSpin('vbEntityTooltip', 'start');
+
+        // bind the events to close the popup
+        $(document).one('click', '#entity-cancel-hover', function (event) {
+
+            entityTooltip.animate(
+                {
+                    'opacity': 0,
+                    'z-index': -1000000
+                },
+                delay);
+
+            // if a beeswarm tooltip is open then keep the no-interactions active
+            if (!stickyHover) $('#no-interactions').removeClass('in').removeClass("foreground").off("click");
+            PaneSpin('vbEntityTooltip', 'stop');
+
+
+        });
+
+
+        $('#no-interactions').addClass("in").addClass("foreground")
+            .one("click", function () {
+                entityTooltip.animate(
+                    {
+                        'opacity': 0,
+                        'z-index': -1000000
+                    },
+                    delay);
+                $('#no-interactions').removeClass("in").removeClass("foreground");
+                $(document).off('click', '#entity-cancel-hover');
+                PaneSpin('vbEntityTooltip', 'stop');
+
 
             });
 
-            var tooltip = d3.select('#beeswarmPointTooltip');
-            if ($('#no-interactions').hasClass("foreground")) {
 
-                tooltip.transition()
-                    .duration(500)
-                    .style("opacity", 0)
-                    .style("z-index", -1000000);
-                $('#no-interactions').removeClass("in").removeClass("foreground");
-                stickyHover = false;
+        // get the proper position for the popup
+        var winHeight = window.innerHeight;
+        var tooltipHeight = 400;
+        if (entityTooltip.height() > 0) tooltipHeight = entityTooltip.height();
+        var tooltipY;
 
+        if (event.pageY - tooltipHeight < 8) {
+            tooltipY = 8
+        } else if (event.pageY + tooltipHeight > winHeight) {
+            tooltipY = event.pageY - tooltipHeight - 8;
+        } else {
+            tooltipY = event.pageY - 28;
+        }
+
+        // set up the popup position
+        entityTooltip.css("left", (event.pageX + 10) + "px")
+            .css("top", (tooltipY) + "px")
+
+        // interogate the popbio REST api
+        entityPromise.done(function (entityJson) {
+
+            // add the entity type
+            entityJson.entityType = type;
+
+            // convert the dates
+            var newCreationDate = new Date(entityJson.creation_date);
+            var newLastModifiedDate = new Date (entityJson.last_modified_date);
+
+            entityJson.creation_date = newCreationDate.toDateString();
+            entityJson.last_modified_date = newLastModifiedDate.toDateString();
+
+            // add the background and text colour
+            entityJson.bgColor = bgColor;
+            entityJson.textColor = textColor;
+
+            // add the URL to the entity page
+            entityJson.entityURL = entityURL;
+            // entityJson.publications = [];
+
+            var tooltipHtml = template.render(entityJson);
+            entityTooltip.html(tooltipHtml);
+
+            // now that we have the final html of the popup recalculate its position
+            tooltipHeight = entityTooltip.height();
+
+            if (event.pageY - tooltipHeight < 8) {
+                tooltipY = 8
+            } else if (event.pageY + tooltipHeight > winHeight) {
+                tooltipY = event.pageY - tooltipHeight - 8;
+            } else {
+                tooltipY = event.pageY - 28;
             }
+
+            // set up the popup position
+            entityTooltip.css("left", (event.pageX + 10) + "px")
+                .css("top", (tooltipY) + "px")
+
+            // check if the popup has a vertical scrollbar
+            if (entityTooltip.has_scrollbar()) {
+                $('#entity-cancel-hover').css('margin-right', '10px')
+            }
+
+            PaneSpin('vbEntityTooltip', 'stop');
+
+
         })
+            .fail(function () {
+                PaneSpin('vbEntityTooltip', 'stop');
+
+                return "Error while retrieving data";
+            })
+        ;
+
+
+    })
+
+
+    // Active terms
+    $(document).on("click", '.active-term', function () {
+        highlightedId = $('.highlight-marker').attr('id');
+
+        if ($('.sidebar-pane.active').attr('id') === 'swarm-plots') {
+            selectedPlotType = $('#plotType').val();
+
+        } else {
+            $('#plotType').val('none');
+        }
+
+        $('#search_ac').tagsinput('add', {
+            value: $(this).attr('value'),
+            activeTerm: true,
+            type: $(this).attr('type'),
+            field: mapTypeToField($(this).attr('type')),
+            qtype: 'exact'
+
+        });
+
+        var tooltip = d3.select('#beeswarmPointTooltip');
+        if ($('#no-interactions').hasClass("foreground")) {
+
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0)
+                .style("z-index", -1000000);
+            $('#no-interactions').removeClass("in").removeClass("foreground");
+            stickyHover = false;
+
+        }
+    })
         .on("click", '.active-legend', function () {
 
             $('#search_ac').tagsinput('add', {
@@ -188,9 +329,9 @@ function bindEvents() {
     // hide the main menu bar and other panels when advanced options are expanded
 
     $('#advanced-options').on('show.bs.collapse', function () {
-            // $('.main-menu').collapse('hide');
-            $('#bars-icon').toggleClass('down');
-        })
+        // $('.main-menu').collapse('hide');
+        $('#bars-icon').toggleClass('down');
+    })
         .on('hide.bs.collapse', function () {
             // $('#menu-bar').collapse('show');
             $('#bars-icon').toggleClass('down');
@@ -375,8 +516,8 @@ function bindEvents() {
 
         if (event.item.activeTerm) {
             $('#search-bar').animate({
-                    left: "+=4"
-                }, 15)
+                left: "+=4"
+            }, 15)
                 .animate({
                     left: "-=8"
                 }, 30)
@@ -1024,11 +1165,11 @@ function loadSolr(parameters) {
             },
             onEachRecord: function (layer, record) {
                 layer.on("dblclick", function () {
-                        clearTimeout(timer);
-                        prevent = true;
+                    clearTimeout(timer);
+                    prevent = true;
 
-                        map.fitBounds(record.bounds);
-                    })
+                    map.fitBounds(record.bounds);
+                })
                     .on("click", function () {
 
                         var panel = $('.sidebar-pane.active');
@@ -1352,22 +1493,22 @@ function updatePieChart(population, stats) {
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
-                .x(function (d) {
-                    return d.label.capitalizeFirstLetter();
-                })
-                .y(function (d) {
-                    return d.value
-                })
-                .color(function (d) {
-                    // return d.data["color"]
-                    return d.color
-                })
-                .showLabels(true)     //Display pie labels
-                .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
-                .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
-                .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
-                .donutRatio(0.5)     //Configure h ow big you want the donut hole size to be.
-                .growOnHover(false)
+                    .x(function (d) {
+                        return d.label.capitalizeFirstLetter();
+                    })
+                    .y(function (d) {
+                        return d.value
+                    })
+                    .color(function (d) {
+                        // return d.data["color"]
+                        return d.color
+                    })
+                    .showLabels(true)     //Display pie labels
+                    .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
+                    .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
+                    .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
+                    .donutRatio(0.5)     //Configure h ow big you want the donut hole size to be.
+                    .growOnHover(false)
                 ;
 
             chart.legend.vers('classic')
@@ -1403,6 +1544,7 @@ function updatePieChart(population, stats) {
 
     }
 }
+
 $.fn.redraw = function () {
     /*
      function redraw
@@ -1861,7 +2003,6 @@ function mapTypeToField(type) {
 
 }
 
-
 function mapSummarizeByToField(type) {
     var fields = {};
     switch (type) {
@@ -1904,7 +2045,6 @@ function mapSummarizeByToField(type) {
     return fields;
 
 }
-
 
 //
 function mapTypeToIcon(type) {
@@ -2264,7 +2404,6 @@ function dateConvert(dateobj, format) {
     return converted_date;
 }
 
-
 // Add an URL parser to JQuery that returns an object
 // This function is meant to be used with an URL like the window.location
 // Use: $.parseParams('http://mysite.com/?var=string') or $.parseParams() to parse the window.location
@@ -2358,7 +2497,6 @@ function dateConvert(dateobj, format) {
     };
 })(jQuery);
 
-
 // Encode an object to an url string
 // This function return the search part, beginning with "?"
 // Use: $.encodeURL({var: "test", len: 1}) returns ?var=test&len=1
@@ -2407,4 +2545,13 @@ function dateConvert(dateobj, format) {
 
         return url;
     };
+})(jQuery);
+
+// plugtrade.com - jQuery detect vertical scrollbar function //
+(function($) {
+    $.fn.has_scrollbar = function() {
+        var divnode = this.get(0);
+        if(divnode.scrollHeight > divnode.clientHeight)
+            return true;
+    }
 })(jQuery);

@@ -33,6 +33,7 @@
 *.iws
 
 ## Plugin-specific files:
+/web/malaria
 
 # IntelliJ
 /out/
