@@ -99,6 +99,11 @@ function bindEvents() {
     // VB entities popup (projects, samples, assays)
     $(document).on('click', '.active-hover', function (event) {
 
+        if (stickyHover) {
+            $('#beeswarmPointTooltip').css('z-index', "3000");
+        }
+
+
         // select the right div
         var entityTooltip = $('#vbEntityTooltip');
 
@@ -107,6 +112,21 @@ function bindEvents() {
             bgColor = $(this).data('bgcolor');
         var textColor = getContrastYIQ(bgColor);
         var template, entityRestURL, entityURL;
+
+        // initial HTML for the tool
+
+        var initialHTML = '<div class="row no-pad" style="width: 370px; height: 300px">' +
+            '<div class="col-md-12">' +
+            '<div class="cancel" id="entity-cancel-hover" style="display: inline;"><i class="fa fa-times"></i></div>' +
+            '<h3 style="background-color: "' + bgColor + '"; color: "' + textColor + '";  margin: 0 -10px 0 0;">' +
+            '</h3>' +
+            '</div>' +
+            '<div class="row less-margin">' +
+            '<div class="col-md-12">' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+
 
         switch (type) {
             case 'Projects':
@@ -122,7 +142,28 @@ function bindEvents() {
         var entityPromise = $.getJSON(entityRestURL);
 
         // display the div and start the spinner
-        entityTooltip.html('')
+        entityTooltip.html(initialHTML);
+
+
+        // get the proper position for the popup
+        var winHeight = window.innerHeight;
+        var tooltipHeight = 400;
+        if (entityTooltip.height() > 0) tooltipHeight = entityTooltip.height();
+        var tooltipY;
+
+        if (event.pageY - tooltipHeight < 8) {
+            tooltipY = 8
+        } else if (event.pageY + tooltipHeight > winHeight) {
+            tooltipY = event.pageY - tooltipHeight - 8;
+        } else {
+            tooltipY = event.pageY - 28;
+        }
+
+        // set up the popup position
+        entityTooltip.css("left", (event.pageX + 10) + "px")
+            .css("top", (tooltipY) + "px")
+
+
         entityTooltip.css("opacity", "1").css("z-index", "1000000");
         PaneSpin('vbEntityTooltip', 'start');
 
@@ -137,7 +178,11 @@ function bindEvents() {
                 delay);
 
             // if a beeswarm tooltip is open then keep the no-interactions active
-            if (!stickyHover) $('#no-interactions').removeClass('in').removeClass("foreground").off("click");
+            if (!stickyHover) {
+                $('#no-interactions').removeClass('in').removeClass("foreground").off("click");
+            } else {
+                $('#beeswarmPointTooltip').css('z-index', "1000000");
+            }
             PaneSpin('vbEntityTooltip', 'stop');
 
 
@@ -160,24 +205,6 @@ function bindEvents() {
             });
 
 
-        // get the proper position for the popup
-        var winHeight = window.innerHeight;
-        var tooltipHeight = 400;
-        if (entityTooltip.height() > 0) tooltipHeight = entityTooltip.height();
-        var tooltipY;
-
-        if (event.pageY - tooltipHeight < 8) {
-            tooltipY = 8
-        } else if (event.pageY + tooltipHeight > winHeight) {
-            tooltipY = event.pageY - tooltipHeight - 8;
-        } else {
-            tooltipY = event.pageY - 28;
-        }
-
-        // set up the popup position
-        entityTooltip.css("left", (event.pageX + 10) + "px")
-            .css("top", (tooltipY) + "px")
-
         // interogate the popbio REST api
         entityPromise.done(function (entityJson) {
 
@@ -186,7 +213,7 @@ function bindEvents() {
 
             // convert the dates
             var newCreationDate = new Date(entityJson.creation_date);
-            var newLastModifiedDate = new Date (entityJson.last_modified_date);
+            var newLastModifiedDate = new Date(entityJson.last_modified_date);
 
             entityJson.creation_date = newCreationDate.toDateString();
             entityJson.last_modified_date = newLastModifiedDate.toDateString();
@@ -214,8 +241,15 @@ function bindEvents() {
             }
 
             // set up the popup position
-            entityTooltip.css("left", (event.pageX + 10) + "px")
-                .css("top", (tooltipY) + "px")
+            entityTooltip.animate(
+                {
+                    'left': (event.pageX + 10) + "px",
+                    'top': (tooltipY) + "px"
+                },
+                delay);
+
+            // entityTooltip.css("left", (event.pageX + 10) + "px")
+            //     .css("top", (tooltipY) + "px")
 
             // check if the popup has a vertical scrollbar
             if (entityTooltip.has_scrollbar()) {
@@ -2548,10 +2582,10 @@ function dateConvert(dateobj, format) {
 })(jQuery);
 
 // plugtrade.com - jQuery detect vertical scrollbar function //
-(function($) {
-    $.fn.has_scrollbar = function() {
+(function ($) {
+    $.fn.has_scrollbar = function () {
         var divnode = this.get(0);
-        if(divnode.scrollHeight > divnode.clientHeight)
+        if (divnode.scrollHeight > divnode.clientHeight)
             return true;
     }
 })(jQuery);
