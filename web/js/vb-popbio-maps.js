@@ -1873,7 +1873,16 @@ function filterMarkers(items) {
         if (element.qtype == 'exact') {
             terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
         } else {
-            terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
+            if (/^".+"$/.test(element.value)) {
+                // Successful match
+                terms[element.type].push({"field": element.field, "value": element.value});
+
+            } else {
+                // Match attempt failed
+                terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
+
+            }
+
             //console.log("inexact");
         }
     });

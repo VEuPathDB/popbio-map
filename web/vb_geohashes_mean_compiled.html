@@ -24,10 +24,10 @@
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"
             charset="utf-8"></script>
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"
             charset="utf-8"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
     <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.string/3.3.4/underscore.string.js"-->
     <!--charset="utf-8"></script>-->
 
@@ -36,9 +36,45 @@
 </head>
 
 <body>
-<div class="no-interactions" id="no-interactions"></div>
-
 <div id="min_width_container">
+
+    <div class="no-interactions modal-backdrop fade" id="no-interactions"></div>
+
+    <div class="modal fade" id="Table-Legend-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <div class="row">
+                        <div class="col-lg-7 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="Filter-Terms" placeholder="Filter terms">
+                        <span id="Reset-Filter" class="input-group-addon btn-danger"
+                              style="cursor: pointer"
+                              title="Reset search"><i
+                                class="fa fa-times fa-fw"></i>
+                        </span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-5">
+                            <div id='table-legend-controls' class="btn-group">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="Other-Terms-List">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
     <!-- Cut here for Map stuff -->
     <!-- MAP PASTE START -->
@@ -66,7 +102,7 @@
 
                     <h4>to plot some real data</h4>
                 </div>
-                <div id="pie-chart-area" style="width: 390px;">
+                <div id="pie-chart-area" style="width: 100%; height: 100%;">
                     <svg></svg>
                 </div>
             </div>
@@ -237,7 +273,7 @@
                                 </span>
                             </td>
                             <td>
-                                Toggle legend On or Off
+                                Toggle legend On or Off and change categorization and coloring
                             </td>
                         </tr>
 
@@ -449,12 +485,8 @@
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
-
-
             </div>
-
             <div class="main-menu" id="menu-bar">
                 <div class="btn-group btn-group-justified" data-toggle="buttons" role="group"
                      style="margin-top:3px;">
@@ -660,10 +692,12 @@
 
 </div>
 
+
 <!-- Add a tooltip div to use as a mouse-over info div for the beeswarm charts-->
 
 <div id="plotTooltip" class="tooltip" style="opacity: 0;"></div>
 <div id="beeswarmPointTooltip" class="tooltip-bs" style="opacity: 0;"></div>
+<div id="vbEntityTooltip" class="tooltip-bs"></div>
 
 <script type="text/x-jsrender" id="smplRowTemplate">
     <div class="row no-pad marker-row">
@@ -678,7 +712,7 @@
                 <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
                     {{html:accession}}
                 </span>
-                <a href="http://www.vectorbase.org{{url:url}}" target="_blank">
+                <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                 </a>
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -722,13 +756,23 @@
                             {{/if}}
                                 <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
-                            <span type="Projects" value="{{attr:#data.name}}">
+                            <span class="active-term" type="Projects" value="{{attr:#data.name}}">
 
                         {{/if}}
-                            {{>#data.name}}
-                            </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">
-                            <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                        {{>#data.name}}
+                        </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa fa-external-link fa-fw " aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -749,7 +793,7 @@
                             {{/if}}
                                 <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
-                            <span type="Collection protocols" value="{{attr:#data.name}}">
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
 
                         {{/if}}
                             {{>#data.name}}
@@ -760,16 +804,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
 
 </script>
 
@@ -787,7 +821,7 @@
                 <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
                     {{html:accession}}
                 </span>
-                <a href="http://www.vectorbase.org{{url:url}}" target="_blank">
+                <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                 </a>            {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -834,12 +868,22 @@
                             {{/if}}
                                 <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
-                            <span type="Projects" value="{{attr:#data.name}}">
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
 
                         {{/if}}
                             {{>#data.name}}
                             </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                         </a>
                     </li>
@@ -861,7 +905,7 @@
                             {{/if}}
                                 <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
-                            <span type="Collection protocols" value="{{attr:#data.name}}">
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
 
                         {{/if}}
                             {{>#data.name}}
@@ -910,7 +954,7 @@
                             {{/if}}
                                 <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
-                            <span type="Protocols" value="{{attr:#data.name}}">
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
 
                         {{/if}}
                             {{>#data.name}}
@@ -922,23 +966,14 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
-
 </script>
 
 <script type="text/x-jsrender" id="irBsPointTemplate">
     <div class="row no-pad" style="width: 370px;">
         <div class="col-md-12" >
-            <div class="cancel" id="cancel-hover"><i class="fa fa-times" style="color: red;"></i></div>
-            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -9px 0 5px;">
+            <div class="cancel" id="cancel-hover"><i class="fa fa-times"></i></div>
+            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
                 <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
                     <i> {{html:species}}</i>
                 </span>
@@ -947,7 +982,7 @@
                 <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
                     {{html:accession}}
                 </span>
-                <a href="http://www.vectorbase.org{{url:url}}" target="_blank">
+                <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                 </a>            {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -980,14 +1015,36 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-database" title="Projects"></i><b> Project(s)</b></p>
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
+                </p>
                 <ul>
                 {{for projects}}
                     <li>
-                        <span class="active-term" type="Projects" value="{{attr:#data}}">
-                            {{>#data}}
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
                         </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data}}" target="_blank">
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                         </a>
                     </li>
@@ -995,13 +1052,25 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-shopping-cart" title="Collection Protocols"></i><b> Col. Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                </p>
                 <ul>
                 {{for collectionProtocols}}
                     <li>
-                        <span class="active-term" type="Collection protocols" value="{{attr:#data}}">
-                            {{>#data}}
-                        </span>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
                     </li>
                 {{/for}}
                 </ul>
@@ -1038,9 +1107,19 @@
                 <ul>
                 {{for protocols}}
                     <li>
-                        <span class="active-term" type="Protocols" value="{{attr:#data}}">
-                            {{>#data}}
-                        </span>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
                     </li>
                 {{/for}}
                 </ul>
@@ -1055,22 +1134,148 @@
 
 
 
+</script>
 
+<script type="text/x-jsrender" id="projectInfoTemplate">
+    <div class="row no-pad" style="width: 370px;">
+        <div class="col-md-12" >
+            <div class="cancel" id="entity-cancel-hover" style="display: inline;"><i class="fa fa-times"></i></div>
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
+                <span class="active-term" type="{{attr:entityType}}" value="{{attr:id}}">
+                    {{html:id}}
+                </span>
+                <a href={{url:entityURL}} target="_blank">
+                    <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                </a>
+            </h3>
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-12" >
+                <h5>{{attr:name}}</h5>
+            </div>
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-12">
+                <p style="font-size: smaller;">
+                {{attr:description}}
+                </p>
+            </div>
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center;">
+                <i class="fa fa-files-o fa-fw" title="Publications"></i>
+                Publications</h5>
+            </div>
+        </div>
+        <div class="row">
+            {{if publications.length === 0}}
+            <div class="col-md-12">
+            <p>No publications stored for this project</p>
+            </div>
+            {{else}}
+            <div class="col-md-12">
+                <ol>
+                {{for publications}}
+                <li>
+                    {{if #data.status.accession === 'EFO:0001796'}}
+                        <p>{{attr:#data.title}}</p>
+                        <p style="font-size: smaller">
+                        {{if #data.authors.length > 2}}
+                            {{attr:#data.authors.slice(0, 3).join(', ')}} <i> et al.</i>
+                        {{else}}
+                            {{attr:#data.authors.join(', ')}}
+                        {{/if}}
+                        </p>
+                        <p style="font-size: smaller">
+                        {{if (#data.pubmed_id || #data.doi}}
+                            <i class="fa fa-link fa-fw" title="External links"></i>
+                        {{/if}}
+                        {{if #data.pubmed_id}}
+                        <a href=http://www.ncbi.nlm.nih.gov/pubmed/{{url:#data.pubmed_id}} target="_blank">
+                            Pubmed
+                        </a>
+                        {{/if}}
+                        {{if #data.doi}}
+                        <a href=http://dx.doi.org/{{url:#data.doi}} target="_blank">
+                            Journal
+                        </a>
+                        {{/if}}
 
+                        </p>
+                    {{else #data.status.accession === 'EFO:0001795'}}
+                        <p>{{attr:#data.title}}</p>
+                        <p style="font-size: smaller">
+                        {{if #data.authors.length > 2}}
+                            {{attr:#data.authors.slice(0, 3).join(', ')}} <i> et al.</i>
+                        {{else}}
+                            {{attr:#data.authors.join(', ')}}
+                        {{/if}}
+                        </p>
+                        <p style="font-size: smaller">
+                        In preparation
+                        </p>
+                    {{else #data.status.accession === 'VBcv:0000233'}}
+                        <p>{{attr:#data.title}}</p>
+                        <p style="font-size: smaller">
+                        {{if #data.authors.length > 2}}
+                            {{attr:#data.authors.slice(0, 3).join(', ')}} <i> et al.</i>
+                        {{else}}
+                            {{attr:#data.authors.join(', ')}}
+                        {{/if}}
+                        </p>
+                        <p style="font-size: smaller">
+                            Unpublished
+                        </p>
+                        {{if #data.url}}
+                            <i class="fa fa-link fa-fw" title="External links"></i>
+                        <a href={{url:#data.url}} target="_blank">
+                            {{attr:#data.url}}
+                        </a>
+                        {{/if}}
+                    {{else #data.status.accession === 'VBcv:0000667'}}
+                        <p>{{attr:#data.title}}</p>
+                        <p style="font-size: smaller">
+                        {{if #data.authors.length > 2}}
+                            {{attr:#data.authors.slice(0, 3).join(', ')}} <i> et al.</i>
+                        {{else}}
+                            {{attr:#data.authors.join(', ')}}
+                        {{/if}}
+                        </p>
+                        {{if #data.url}}
+                            <i class="fa fa-link fa-fw" title="External links"></i>
+                        <a href={{url:#data.url}} target="_blank">
+                            {{attr:#data.url}}
+                        </a>
+                        {{/if}}
+                    {{/if}}
+                </li>
+                {{/for}}
+                </ol>
+            </div>
+            {{/if}}
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-calendar fa-fw" title="In VectorBase since"></i><b> In VectorBase since</b>
+                </p>
+                <ul><li>
+                {{attr:creation_date}}
+                </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-calendar fa-fw" title="Last modification date"></i><b> Last modified on</b>
+                </p>
+                <ul><li>
+                {{attr:last_modified_date}}
+                </li></ul>
 
+            </div>
+        </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
+    </div>
 
 
 </script>
@@ -1094,8 +1299,8 @@
     var map, sidebar;
     var assetLayerGroup;
     var smallClusters = [], months = [];
-    var palette;
-    var legendSpecies = 20;
+    var palette = {};
+    var legendSpecies = 18;
     var qryUrl = 'q=*';
     var partSearch = false;
     var legend;
@@ -1133,7 +1338,6 @@
 
     $(window).load(function () {
 
-        $('#slctSummarizeBy').val(glbSummarizeBy);
 
         $('.sidebar-pane').data('has-graph', false);
 
@@ -1160,36 +1364,20 @@
             }
         }
 
-        bindEvents();
         initializeMap();
+        bindEvents();
 
-        $('#slctSummarizeBy').change(function () {
-            glbSummarizeBy = $('#slctSummarizeBy').val();
-            var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' +
-                    mapSummarizeByToField(glbSummarizeBy).summarize +
-                    '&json.wrf=?&callback=?';
 
+        // detect when user changes zoom or pans around the map
+        map.on("movestart", function () {
             removeHighlight();
+            // close open panels
+            $('.collapse').collapse('hide');
             sidebar.close();
             setTimeout(function () {
                 resetPlots()
             }, delay);
-            $.getJSON(url, function (data) {
-                legend._populateLegend(data, glbSummarizeBy)
-            });
-
-        });
-
-        // detect when user changes zoom or pans around the map
-        map.on("movestart", function () {
-                    removeHighlight();
-                    // close open panels
-                    $('.collapse').collapse('hide');
-                    sidebar.close();
-                    setTimeout(function () {
-                        resetPlots()
-                    }, delay);
-                })
+        })
                 .on("moveend", function () {
 
                     loadSolr({clear: 1, zoomLevel: map.getZoom()});

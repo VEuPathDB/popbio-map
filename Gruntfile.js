@@ -109,7 +109,7 @@ module.exports = function (grunt) {
                     removeComments: true,
                     collapseWhitespace: true,
                     minifyCSS: true,
-                    minifyJS: true,
+                    minifyJS: false,
                     minifyURLs: true,
                     processScripts: ['text/x-jsrender'],
                     ignoreCustomComments: [/^\sSIMPLE/]  // keep these comments

@@ -40,7 +40,7 @@
 
     <!-- Javascript libraries -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
-    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"
             charset="utf-8"></script>
@@ -103,6 +103,7 @@
 <img src="ribbon.png" usemap="#ribbon" alt="beta"
      style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
 
+<div id="min_width_container">
 <div class="no-interactions modal-backdrop fade" id="no-interactions"></div>
 
 <div class="modal fade" id="Table-Legend-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
@@ -124,28 +125,6 @@
                     </div>
                     <div class="col-lg-4 col-sm-5">
                         <div id='table-legend-controls' class="btn-group">
-                            <!--<div class="btn-group dropdown" id="summByDropdown" role="group" >-->
-                            <!--<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-                            <!--glbSummarizeBy + ' ' +-->
-                            <!--<span class="caret"></span>' +-->
-                            <!--</button > ' +-->
-                            <!--<ul class = "dropdown-menu" aria-labelledby="summByDropdown"> ' +-->
-                            <!--<li><a href="#" data-value="Species">Species</a></li> ' +-->
-                            <!--<li><a href="#" data-value="Sample type">Sample type</a></li> ' +-->
-                            <!--<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +-->
-                            <!--<li><a href="#" data-value="Project">Project </a></li> ' +-->
-                            <!--<li><a href="#" data-value="Protocol">Protocol (only applies to IR)</a></li> ' +-->
-                            <!--<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' +-->
-                            <!--</div> ' +-->
-                            <!--<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +-->
-                            <!--<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +-->
-                            <!--sortByHTML +-->
-                            <!--<span class="caret"></span>' +-->
-                            <!--</button > ' +-->
-                            <!--<ul class = "dropdown-menu" aria-labelledby="sortByDropdown"> ' +-->
-                            <!--<li><a href="#" data-value="<i class=\'sort-by\' style=\'background:radial-gradient(#4d4d4d, #cccccc);\'></i><i class = \'fa fa-sort-amount-desc sort-by\'></i>">Color</a></li> ' +-->
-                            <!--<li><a href="#" data-value="<i class = \'fa fa-sort-alpha-asc sort-by\'></i>">Name</a></li>' +-->
-                            <!--</div>'-->
                         </div>
                     </div>
 
@@ -162,7 +141,6 @@
 </div>
 
 
-<div id="min_width_container">
 
     <!-- Keep the following line for grunt-->
     <!-- MAP CUT START -->
@@ -800,7 +778,7 @@
                 <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
                     {{html:accession}}
                 </span>
-                <a href="http://www.vectorbase.org{{url:url}}" target="_blank">
+                <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                 </a>
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -859,7 +837,7 @@
                             {{/if}}
                             ></i>
                         </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data.name}}" target="_blank">
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-external-link fa-fw " aria-hidden="true"></i>
                         </a>
                     </li>
@@ -909,7 +887,7 @@
                 <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
                     {{html:accession}}
                 </span>
-                <a href="http://www.vectorbase.org{{url:url}}" target="_blank">
+                <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                 </a>            {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -971,7 +949,7 @@
                             {{/if}}
                             ></i>
                         </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data.name}}" target="_blank">
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                         </a>
                     </li>
@@ -1070,7 +1048,7 @@
                 <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
                     {{html:accession}}
                 </span>
-                <a href="http://www.vectorbase.org{{url:url}}" target="_blank">
+                <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                 </a>            {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -1132,7 +1110,7 @@
                             {{/if}}
                             ></i>
                         </span>
-                        <a href="http://www.vectorbase.org/popbio/project/?id={{>#data.name}}" target="_blank">
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                         </a>
                     </li>
