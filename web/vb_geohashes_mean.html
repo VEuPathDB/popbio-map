@@ -104,42 +104,41 @@
      style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
 
 <div id="min_width_container">
-<div class="no-interactions modal-backdrop fade" id="no-interactions"></div>
+    <div class="no-interactions modal-backdrop fade" id="no-interactions"></div>
 
-<div class="modal fade" id="Table-Legend-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <div class="row">
-                    <div class="col-lg-7 col-sm-6">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="Filter-Terms" placeholder="Filter terms">
+    <div class="modal fade" id="Table-Legend-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <div class="row">
+                        <div class="col-lg-7 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="Filter-Terms" placeholder="Filter terms">
                         <span id="Reset-Filter" class="input-group-addon btn-danger"
                               style="cursor: pointer"
                               title="Reset search"><i
                                 class="fa fa-times fa-fw"></i>
                         </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-5">
-                        <div id='table-legend-controls' class="btn-group">
+                        <div class="col-lg-4 col-sm-5">
+                            <div id='table-legend-controls' class="btn-group">
+                            </div>
                         </div>
+
                     </div>
-
                 </div>
-            </div>
-            <div class="modal-body">
-                <div id="Other-Terms-List">
+                <div class="modal-body">
+                    <div id="Other-Terms-List">
 
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
-
 
 
     <!-- Keep the following line for grunt-->
@@ -871,6 +870,7 @@
         </div>
     </div>
 
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -1031,6 +1031,7 @@
             </div>
         </div>
     </div>
+
 
 </script>
 
@@ -1199,6 +1200,7 @@
     </div>
 
 
+
 </script>
 
 <script type="text/x-jsrender" id="projectInfoTemplate">
@@ -1343,6 +1345,7 @@
     </div>
 
 
+
 </script>
 
 <!-- Stop cutting here for Map stuff -->
@@ -1353,14 +1356,14 @@
     // Global vars
     // Should minimize them
 
-    //            var solrPopbioUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_popbio/';
-    //        var solrTaUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_ta/';
+    //    var solrPopbioUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_popbio/';
+    //    var solrTaUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_ta/';
     //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
     //    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
-    var solrPopbioUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_popbio/';
+    var solrPopbioUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_popbio/';
     //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
     //    var solrTaUrl = 'asolr/solr/vb_ta/';
-    var solrTaUrl = 'http://funcgen.vectorbase.org/popbio-map-preview/asolr/solr/vb_ta/';
+    var solrTaUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_ta/';
     var map, sidebar;
     var assetLayerGroup;
     var smallClusters = [], months = [];

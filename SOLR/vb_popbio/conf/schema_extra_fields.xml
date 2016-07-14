@@ -23,11 +23,15 @@
 
     <!-- The Following are fields that were originally in the schema.xml file, but were modified specifically for VectorBase-->
     <field name="label" type="text_ws_finer" indexed="true" stored="true" termVectors="true" omitNorms="true"/>
+    <!-- copy of label to enable docValues-->
+    <field name="label_s" type="string" indexed="true" stored="true" docValues="true"/>
+    <copyField source="label" dest="label_s"/>
+
     <field name="content" type="text_ws_finer" indexed="true" stored="true" termVectors="true"/>
 
     <!-- The following are fields that were added specifically for the different domains of VectorBase-->
     <!-- UNIVERSAL -->
-    <field name="accession" type="string" indexed="true" stored="true"/>
+    <field name="accession" type="string" indexed="true" stored="true" docValues="true"/>
     <field name="description" type="text_ws_finer" indexed="true" stored="true"/>
 
     <field name="text" type="string_ci" indexed="true" stored="true" multiValued="true"/>
@@ -44,7 +48,7 @@
     <copyField source="species" dest="text"/>
 
     <!-- Added by Greg Davis to test string values for the species field-->
-    <field name="species_category" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="species_category" type="string" indexed="true" stored="true" multiValued="true" docValues="true"/>
     <copyField source="species" dest="species_category"/>
 
     <!-- These fields are non-tokenized copies to allow pivoting used in summarizing the markers -->
@@ -166,6 +170,11 @@
     <field name="geolocations" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="geolocations" dest="text"/>
 
+    <!-- copy geolocations for export -->
+    <copyField source="geolocations" dest="geolocations_ss"/>
+    <field name="geolocations_ss" type="string" indexed="true" stored="true" multiValued="true" docValues="true"/>
+
+
     <field name="annotations" type="text_en_splitting" indexed="true" stored="true" multiValued="true"/>
     <copyField source="annotations" dest="text"/>
 
@@ -182,6 +191,10 @@
     <field name="projects" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="projects" dest="text"/>
 
+    <!-- copy projects for export-->
+    <field name="projects_ss" type="string" indexed="true" stored="true" multiValued="true" docValues="true"/>
+    <copyField source="projects" dest="projects_ss"/>
+
     <field name="projects_category" type="string_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="projects" dest="projects_category"/>
 
@@ -197,18 +210,36 @@
     <copyField source="collection_date" dest="text"/>
     <field name="collection_date_range" type="rdate" indexed="true" stored="true" multiValued="true"/>
     <copyField source="collection_date_range" dest="text"/>
+    <!-- copy collection_date_range for export-->
+    <field name="collection_date_range_ss" type="string" indexed="true" stored="true" multiValued="true"
+           docValues="true"/>
+    <copyField source="collection_date_range" dest="collection_date_range_ss"/>
+
     <field name="collection_season" type="rdates" indexed="true" stored="true" multiValued="true"/>
 
 
     <field name="has_geodata" type="boolean" indexed="true" stored="true" multiValued="true"/>
     <field name="sample_type" type="text_ws_na" indexed="true" stored="true" multiValued="false"/>
     <copyField source="sample_type" dest="text"/>
+    <!-- copy sample type for export-->
+    <field name="sample_type_s" type="string" indexed="true" stored="true" multiValued="false" docValues="true"/>
+    <copyField source="sample_type" dest="sample_type_s"/>
+
     <field name="assay_type" type="text_ws_na" indexed="true" stored="true" multiValued="false"/>
     <copyField source="assay_type" dest="text"/>
     <field name="collection_protocols" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="collection_protocols" dest="text"/>
+    <!-- copy collection_protocols for export-->
+    <field name="collection_protocols_ss" type="string" indexed="true" stored="true" multiValued="true"
+           docValues="true"/>
+    <copyField source="collection_protocols" dest="collection_protocols_ss"/>
+
     <field name="protocols" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="protocols" dest="text"/>
+    <!-- copy protocols for export-->
+    <field name="protocols_ss" type="string" indexed="true" stored="true" multiValued="true" docValues="true"/>
+    <copyField source="protocols" dest="protocols_ss"/>
+
     <field name="study_designs" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="study_designs" dest="text"/>
 

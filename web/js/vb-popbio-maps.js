@@ -660,7 +660,7 @@ function initializeMap() {
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
     });
 
-    map.addLayer(mp1);
+    map.addLayer(mp3);
     assetLayerGroup = new L.LayerGroup();
     assetLayerGroup.addTo(map);
     var layerCtl = new L.Control.Layers({
