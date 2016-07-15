@@ -613,6 +613,8 @@ function bindEvents() {
 function initializeMap() {
     "use strict";
 
+    // new MapQuest way of adding layers
+    var mapQuestLayers = MQ.mapLayer();
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
         center: [23.079, 3.515],
@@ -632,25 +634,6 @@ function initializeMap() {
     sidebar = L.control.sidebar('sidebar').addTo(map);
 
 
-    var mp1 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png", {
-        minZoom: 2,
-        maxZoom: 15,
-        subdomains: ["otile1", "otile2", "otile3", "otile4"],
-        noWrap: 0,
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
-        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="http://mapbox.com">Mapbox</a>'
-    });
-
-    var mp2 = new L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png", {
-        minZoom: 2,
-        maxZoom: 15,
-        maxNativeZoom: 11,
-        subdomains: ["otile1", "otile2", "otile3", "otile4"],
-        noWrap: 0,
-        attribution: 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-    });
-
     var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: 15,
@@ -660,13 +643,16 @@ function initializeMap() {
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
     });
 
-    map.addLayer(mp3);
+    map.addLayer(mapQuestLayers);
     assetLayerGroup = new L.LayerGroup();
     assetLayerGroup.addTo(map);
     var layerCtl = new L.Control.Layers({
-        "MapQuest-OSM": mp1,
+        'Map': mapQuestLayers,
+        'Hybrid': MQ.hybridLayer(),
+        'Satellite': MQ.satelliteLayer(),
+        'Dark': MQ.darkLayer(),
+        'Light': MQ.lightLayer(),
         'OpenStreetMap': mp3,
-        'MapQuest Open Aerial': mp2
     });
     layerCtl.setPosition('topright');
     layerCtl.addTo(map);
