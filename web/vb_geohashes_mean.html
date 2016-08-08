@@ -6,17 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 
-    <!-- CSS styles-->
+    <!-- Remote CSS styles -->
     <link rel="stylesheet" href="css/vectorbase.css" type="text/css" media="screen"/>
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
           rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
+    <!-- End of remote CSS styles -->
 
 
+    <!-- Local CSS styles <replaced with dist/css/VB_popbio_map.min.css when compiled-->
     <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="css/MarkerCluster.Default.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.css" type="text/css" media="screen"/>
@@ -29,7 +31,6 @@
     <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.css"/>
     <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css"/>
 
-
     <!-- Bootstrap toggles -->
     <link rel="stylesheet" href="libs/bootstrap-toggle/css/bootstrap-toggle.css"/>
 
@@ -37,8 +38,9 @@
     <link rel="stylesheet" href="libs/bootstrap-slider/dist/css/bootstrap-slider.css"/>
 
     <link rel="stylesheet" href="css/vb-popbio-maps.css">
+    <!-- End of local CSS styles -->
 
-    <!-- Javascript libraries -->
+    <!-- Remote Javascript libraries -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
     <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -48,9 +50,10 @@
             charset="utf-8"></script>
     <!-- MapQuest-->
     <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=NC7FvPNcQKOEloh7oL3ZFOaMTD8iqfQI"></script>
-
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.string/3.3.4/underscore.string.js"-->
-    <!--charset="utf-8"></script>-->
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- End of remote Javascript libraries -->
 
 
     <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.js"></script>
@@ -59,26 +62,22 @@
     <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.js"></script>
     <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
     <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
-    <!--<script type="text/javascript" src="libs/PruneCluster/PruneCluster.js"></script>-->
-    <!--<script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.js"></script>-->
 
-    <!--&lt;!&ndash; Bootstrap toggles &ndash;&gt;-->
+    <!-- Bootstrap toggles -->
     <script type="text/javascript" src="libs/bootstrap-toggle/js/bootstrap-toggle.js"></script>
 
-    <!--&lt;!&ndash; Boostrap slider&ndash;&gt;-->
+    <!-- Boostrap slider -->
     <script type="text/javascript" src="libs/bootstrap-slider/dist/bootstrap-slider.js"></script>
 
-
-    <!--&lt;!&ndash; Added geohash to enable geohashes layer &ndash;&gt;-->
+    <!-- Added geohash to enable geohashes layer -->
     <script type="text/javascript" src="libs/geohash-js/geohash.js"></script>
     <script type="text/javascript" src="libs/node-geohash/main.js"></script>
 
     <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.js"></script>
 
-    <!--&lt;!&ndash; VB code &ndash;&gt;-->
+    <!-- VB code -->
     <script type="text/javascript" src="js/map.Legend.js"></script>
     <script type="text/javascript" src="js/Icon.Canvas.js"></script>
-    <!--<script type="text/javascript" src="js/nv.d3.pie.js"></script>-->
     <script type="text/javascript" src="libs/nvd3/build/nv.d3.js"></script>
     <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
     <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
@@ -90,10 +89,6 @@
     <!--Added geohashes-layers.js to enable geohashes -->
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
 
-
-    <!-- Include Date Range Picker -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
 
 </head>
 
@@ -119,10 +114,10 @@
                         <div class="col-lg-7 col-sm-6">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="Filter-Terms" placeholder="Filter terms">
-                        <span id="Reset-Filter" class="input-group-addon btn-danger"
-                              style="cursor: pointer"
-                              title="Reset search"><i
-                                class="fa fa-times fa-fw"></i>
+                                <span id="Reset-Filter" class="input-group-addon btn-danger"
+                                      style="cursor: pointer"
+                                      title="Reset search"><i
+                                        class="fa fa-times fa-fw"></i>
                         </span>
                             </div>
                         </div>
@@ -152,6 +147,7 @@
             <li class="sidebar-icon"><a id="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
             <li class="sidebar-icon"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
             <li class="sidebar-icon"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
+            <li class="sidebar-icon"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
             <li class="sidebar-icon"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
         </ul>
 
@@ -444,6 +440,38 @@
 
                 </div>
 
+            </div>
+
+            <div class="sidebar-pane" id="export">
+                <h3>Export data</h3>
+                <div id="export-selection" style="margin-top: 30px;">
+                    <h5>Download a CSV file containing:</h5>
+                    <div class="btn-group dropdown" id="SelectExportDropdown" role="group">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="select-export"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                value="1">
+                            <i class="fa fa-globe" id="globe-icon"></i> all data on the map <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="Select export options">
+                            <li><a href="#" data-value="<i class='fa fa-globe'></i> all data on the map"
+                                   data-selected="1">all data on the map</a></li>
+                            <li><a href="#" data-value="<i class='fa fa-search'></i> data matching search"
+                                   data-selected="2">data matching search</a></li>
+                            <li><a href="#" data-value="<i class='fa fa-desktop'></i> data visible on screen"
+                                   data-selected="3">data visible on screen</a></li>
+                            <li><a href="#" data-value="<i class='fa fa-pie-chart'></i> data for selected marker on map"
+                                   data-selected="4">data for selected marker on map</a></li>
+                        </ul>
+                    </div>
+                    <a type="button" class="btn btn-primary" id="download-button"><i class='fa fa-floppy-o'></i>
+                        Download
+                    </a>
+
+
+                </div>
+                <div id="export-error" style="margin-top: 30px; display: none;">
+
+                </div>
             </div>
         </div>
     </div>
@@ -871,7 +899,34 @@
                 </ul>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
     </div>
+
+
+
 
 
 </script>
@@ -1034,6 +1089,9 @@
             </div>
         </div>
     </div>
+
+
+
 
 
 </script>
@@ -1204,6 +1262,9 @@
 
 
 
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="projectInfoTemplate">
@@ -1349,6 +1410,9 @@
 
 
 
+
+
+
 </script>
 
 <!-- Stop cutting here for Map stuff -->
@@ -1362,17 +1426,18 @@
     //    var solrPopbioUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_popbio/';
     //    var solrTaUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_ta/';
     //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
-    //    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
-    var solrPopbioUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_popbio/';
+    var solrPopbioUrl = 'asolr/solr/vb_popbio/';
+    var solrExportUrl = 'esolr/solr/vb_popbio/';
+    //    var solrPopbioUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_popbio/';
     //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
-    //    var solrTaUrl = 'asolr/solr/vb_ta/';
-    var solrTaUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_ta/';
+    var solrTaUrl = 'asolr/solr/vb_ta/';
+    //    var solrTaUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_ta/';
     var map, sidebar;
     var assetLayerGroup;
     var smallClusters = [], months = [];
     var palette = {};
     var legendSpecies = 18;
-    var qryUrl = 'q=*';
+    var qryUrl = 'q=*:*';
     var partSearch = false;
     var legend;
     var PaneSpinner = null;

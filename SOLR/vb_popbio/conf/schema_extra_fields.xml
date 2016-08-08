@@ -23,9 +23,7 @@
 
     <!-- The Following are fields that were originally in the schema.xml file, but were modified specifically for VectorBase-->
     <field name="label" type="text_ws_finer" indexed="true" stored="true" termVectors="true" omitNorms="true"/>
-    <!-- copy of label to enable docValues-->
-    <field name="label_s" type="string" indexed="true" stored="true" docValues="true"/>
-    <copyField source="label" dest="label_s"/>
+
 
     <field name="content" type="text_ws_finer" indexed="true" stored="true" termVectors="true"/>
 
@@ -170,10 +168,6 @@
     <field name="geolocations" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="geolocations" dest="text"/>
 
-    <!-- copy geolocations for export -->
-    <copyField source="geolocations" dest="geolocations_ss"/>
-    <field name="geolocations_ss" type="string" indexed="true" stored="true" multiValued="true" docValues="true"/>
-
 
     <field name="annotations" type="text_en_splitting" indexed="true" stored="true" multiValued="true"/>
     <copyField source="annotations" dest="text"/>
@@ -191,10 +185,6 @@
     <field name="projects" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="projects" dest="text"/>
 
-    <!-- copy projects for export-->
-    <field name="projects_ss" type="string" indexed="true" stored="true" multiValued="true" docValues="true"/>
-    <copyField source="projects" dest="projects_ss"/>
-
     <field name="projects_category" type="string_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="projects" dest="projects_category"/>
 
@@ -210,10 +200,7 @@
     <copyField source="collection_date" dest="text"/>
     <field name="collection_date_range" type="rdate" indexed="true" stored="true" multiValued="true"/>
     <copyField source="collection_date_range" dest="text"/>
-    <!-- copy collection_date_range for export-->
-    <field name="collection_date_range_ss" type="string" indexed="true" stored="true" multiValued="true"
-           docValues="true"/>
-    <copyField source="collection_date_range" dest="collection_date_range_ss"/>
+
 
     <field name="collection_season" type="rdates" indexed="true" stored="true" multiValued="true"/>
 
@@ -221,24 +208,17 @@
     <field name="has_geodata" type="boolean" indexed="true" stored="true" multiValued="true"/>
     <field name="sample_type" type="text_ws_na" indexed="true" stored="true" multiValued="false"/>
     <copyField source="sample_type" dest="text"/>
-    <!-- copy sample type for export-->
-    <field name="sample_type_s" type="string" indexed="true" stored="true" multiValued="false" docValues="true"/>
-    <copyField source="sample_type" dest="sample_type_s"/>
+
 
     <field name="assay_type" type="text_ws_na" indexed="true" stored="true" multiValued="false"/>
     <copyField source="assay_type" dest="text"/>
     <field name="collection_protocols" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="collection_protocols" dest="text"/>
-    <!-- copy collection_protocols for export-->
-    <field name="collection_protocols_ss" type="string" indexed="true" stored="true" multiValued="true"
-           docValues="true"/>
-    <copyField source="collection_protocols" dest="collection_protocols_ss"/>
+
 
     <field name="protocols" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="protocols" dest="text"/>
-    <!-- copy protocols for export-->
-    <field name="protocols_ss" type="string" indexed="true" stored="true" multiValued="true" docValues="true"/>
-    <copyField source="protocols" dest="protocols_ss"/>
+
 
     <field name="study_designs" type="text_ws_na" indexed="true" stored="true" multiValued="true"/>
     <copyField source="study_designs" dest="text"/>
@@ -265,6 +245,97 @@
     <field name="geohash_3" type="string" indexed="true" stored="true" multiValued="false"/>
     <field name="geohash_2" type="string" indexed="true" stored="true" multiValued="false"/>
     <field name="geohash_1" type="string" indexed="true" stored="true" multiValued="false"/>
+
+
+    <!-- ====================================== -->
+    <!-- field copies with docValues for export-->
+    <!-- ====================================== -->
+    <!-- accession-->
+    <field name="exp_id_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="id" dest="exp_id_s"/>
+
+    <!-- accession-->
+    <field name="exp_accession_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="accession" dest="exp_accession_s"/>
+
+    <!-- sample/phenotype/genotype? -->
+    <field name="exp_bundle_name_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="bundle_name" dest="exp_bundle_name_s"/>
+
+    <!-- species name -->
+    <field name="exp_species_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="species" dest="exp_species_s"/>
+
+    <!-- population/pool/individual? -->
+    <field name="exp_sample_type_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="sample_type" dest="exp_sample_type_s"/>
+
+    <!-- sample size for pools and populations-->
+    <field name="exp_sample_size_i" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="sample_size_i" dest="exp_sample_size_i"/>
+
+    <!-- Short description -->
+    <field name="exp_label_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="label" dest="exp_label_s"/>
+
+    <!-- collection date range -->
+    <field name="exp_collection_date_range_ss" type="string" indexed="false" stored="false" multiValued="true"
+           docValues="true"/>
+    <copyField source="collection_date_range" dest="exp_collection_date_range_ss"/>
+
+    <!-- collection protocol -->
+    <field name="exp_collection_protocols_ss" type="string" indexed="false" stored="false" multiValued="true"
+           docValues="true"/>
+    <copyField source="collection_protocols" dest="exp_collection_protocols_ss"/>
+
+    <!-- Projects that the sample belongs -->
+    <field name="exp_projects_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
+    <copyField source="projects" dest="exp_projects_ss"/>
+
+    <!-- lat & lon -->
+    <field name="exp_geo_coords_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="geo_coords" dest="exp_geo_coords_s"/>
+
+    <!-- Name of location collected -->
+    <field name="exp_geolocations_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
+    <copyField source="geolocations" dest="exp_geolocations_ss"/>
+
+    <!-- Phenotype specific fields-->
+    <field name="exp_phenotype_type_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="phenotype_type_s" dest="exp_phenotype_type_s"/>
+
+    <field name="exp_protocols_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
+    <copyField source="protocols" dest="exp_protocols_ss"/>
+
+    <field name="exp_insecticide_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="insecticide_s" dest="exp_insecticide_s"/>
+
+    <field name="exp_concentration_f" type="float" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="concentration_f" dest="exp_concentration_f"/>
+
+    <field name="exp_concentration_unit_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="concentration_unit_s" dest="exp_concentration_unit_s"/>
+
+    <field name="exp_duration_f" type="float" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="duration_f" dest="exp_duration_f"/>
+
+    <field name="exp_duration_unit_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="duration_unit_s" dest="exp_duration_unit_s"/>
+
+    <field name="exp_phenotype_value_f" type="float" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="phenotype_value_f" dest="exp_phenotype_value_f"/>
+
+    <field name="exp_phenotype_value_unit_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="phenotype_value_unit_s" dest="exp_phenotype_value_unit_s"/>
+
+    <field name="exp_phenotype_value_type_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="phenotype_value_type_s" dest="exp_phenotype_value_type_s"/>
 
 
     <!-- =================================== -->

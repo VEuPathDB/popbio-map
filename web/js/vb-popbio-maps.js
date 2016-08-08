@@ -20,7 +20,7 @@ function bindEvents() {
             case 'summByDropdown':
                 glbSummarizeBy = selValue;
 
-                var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' +
+                var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*:*&facet.pivot=geohash_2,' +
                     mapSummarizeByToField(glbSummarizeBy).summarize +
                     '&json.wrf=?&callback=?';
 
@@ -51,6 +51,18 @@ function bindEvents() {
 
                 break;
 
+            case 'SelectExportDropdown':
+                $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
+                $(this).parents(".dropdown").find('.btn').val($(this).data('selected'));
+
+
+                // clear the warning area from previous warnings
+                $('#export-error').fadeOut()
+                    .removeClass('alert alert-warning')
+                    .html('');
+
+                break;
+
             default:
                 $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
                 $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
@@ -65,6 +77,70 @@ function bindEvents() {
         $('.table-legend-term').show();
 
     });
+
+    // download data
+    $('#download-button').click(function () {
+        var selectedOption = $('#select-export').val(),
+            viewMode = $('#view-mode').val(),
+            url = solrExportUrl,
+            viewBox = buildBbox(map.getBounds());
+
+        $(this).removeAttr('href');
+
+
+        switch (selectedOption) {
+            //download all data
+            case "1":
+                url += viewMode + 'Export?q=*:*&sort=exp_id_s+asc';
+                this.href = url;
+                break
+            // data matching search
+            case "2":
+                url += viewMode + 'Export?' + qryUrl + '&sort=exp_id_s+asc';
+                this.href = url;
+                break;
+            // data visible on screen
+            case "3":
+                url += viewMode + 'Export?' + qryUrl + viewBox + '&sort=exp_id_s+asc';
+                this.href = url;
+                break;
+            // data for selected marker
+            case "4":
+                // grab the id (geohash) of the highlighted marker
+                var highlightedMarkerId = $('.highlight-marker').attr('id');
+
+                // was there a highlighed marker
+                if (highlightedMarkerId) {
+                    //console.log(highlightedMarkerId)
+                    // using the marker id (geohash name) and the length construct an fq to query SOLR
+                    var len = highlightedMarkerId.length,
+                        geohashFq = '&fq=geohash_' + len + ':' + highlightedMarkerId;
+
+                    //ToDo: Clear the warning area when a marker is highlighted. Best strategy would be to emmit an
+                    // event whenever a marker is highlighted.
+
+                    // clear the warning area from previous warnings
+                    $('#export-error').fadeOut()
+                        .removeClass('alert alert-warning')
+                        .html('');
+
+                    // build the url and download the data
+                    url += viewMode + 'Export?' + qryUrl + geohashFq + '&sort=exp_id_s+asc';
+                    //console.log(url);
+                    this.href = url;
+                } else { // no marker is selected
+                    // inform the user that there are no selected markers
+                    $('#export-error').addClass('alert alert-warning')
+                        .html('<h5><i class="fa fa-exclamation-triangle fa-fw"></i> Please select a marker first.</h5>')
+                        .fadeIn();
+
+                }
+                break;
+            default:
+                break;
+
+        }
+    })
 
 
     // add the IR scale bars in the advanced options pane
@@ -661,7 +737,7 @@ function initializeMap() {
     // Now generate the legend
 
     // hardcoded species_category
-    var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
+    var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*:*&facet.pivot=geohash_2,' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
     //console.log('url: ' + url);
     //$.getJSON(url, generatePalette);
     legend = new L.control.legend(url, {summarizeBy: glbSummarizeBy});
@@ -906,7 +982,7 @@ function initializeSearch() {
             $('#view-mode').val('ir');
         }
         // var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
-        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,' +
+        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*:*&facet.pivot=geohash_2,' +
             mapSummarizeByToField(glbSummarizeBy).summarize +
             '&json.wrf=?&callback=?';
 
@@ -1415,8 +1491,8 @@ function buildBbox(bounds) {
 
     "use strict";
     var solrBbox;
-
-    if (bounds.getEast()) {
+    //typeof attr !== typeof undefined && attr !== false
+    if (typeof bounds.getEast() !== undefined && bounds.getEast() !== false) {
         //console.log("bounds IS an object");
         // fix endless bounds of leaflet to comply with SOLR limits
         var south = bounds.getSouth();
@@ -1443,7 +1519,7 @@ function buildBbox(bounds) {
         }
         solrBbox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
     } else {
-        //console.log("bounds is not an object");
+        console.log("bounds is not an object");
         solrBbox = "&fq=geo_coords:[-90,-180 TO 90, 180]"; // a generic Bbox
     }
     return (solrBbox);
@@ -1746,7 +1822,9 @@ function tableHtml(divid, results) {
                 projects: borderColor('Project', element.projects),
                 projectsType: 'Projects',
                 collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                collectionProtocolsType: 'Collection protocols'
+                collectionProtocolsType: 'Collection protocols',
+                protocols: borderColor('Protocol', element.protocols),
+                protocolsType: 'Protocols'
             };
 
             var template = $.templates("#smplRowTemplate");
@@ -1803,7 +1881,7 @@ function tableHtml(divid, results) {
 function filterMarkers(items) {
     "use strict";
     if (items.length === 0) {
-        qryUrl = 'q=*';
+        qryUrl = 'q=*:*';
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
         return;
     }
@@ -2025,6 +2103,8 @@ function mapTypeToField(type) {
             return "phenotype_rescaled_value_f";
         case "Projects":
             return "projects";
+        case "Authors":
+            return "project_authors_txt";
         default :
             return type.toLowerCase()
 
@@ -2088,10 +2168,8 @@ function mapTypeToIcon(type) {
             return 'label label-success fa fa-info-circle';   // green
         case 'Projects'   :
             return 'label label-success fa fa-database';   // green
-//                    return 'label label-default fa fa-database';   // grey
         case 'Anywhere'   :
             return 'label label-default fa fa-search';   // grey
-//                    return 'label label-info fa fa-search';   // cyan
         case 'Pubmed references' :
             return 'label label-success fa fa-book';
         case 'Insecticides' :
@@ -2112,6 +2190,8 @@ function mapTypeToIcon(type) {
             return 'label label-warning fa fa-file-o';
         case 'Protocols' :
             return 'label label-warning fa fa-sort-amount-desc';
+        case 'Authors' :
+            return 'label label-success fa fa-user';
         default :
             return 'label label-warning fa fa-search';
 
@@ -2138,6 +2218,7 @@ function PaneSpin(divid, command) {
 function highlightMarker(marker) {
     $(marker).addClass("highlight-marker");
     $(marker._icon).addClass("highlight-marker");
+
     highlight = marker;
     if (firstClick) firstClick = false;
 }

@@ -315,7 +315,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
-            '<li><a href="#" data-value="Protocol">Protocol (only applies to IR)</a></li> ' +
+            '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
             '<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' +
             '</div> ' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
@@ -387,7 +387,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
-            '<li><a href="#" data-value="Protocol">Protocol (only applies to IR)</a></li> ' +
+            '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
             '<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' +
             '</div> ' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +

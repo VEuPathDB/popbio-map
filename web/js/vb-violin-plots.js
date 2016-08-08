@@ -245,7 +245,7 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
                 var bin = 'Range: ' + d[length - 1].val.roundDecimals(4) + '-' + (d[length - 1].val + dx).roundDecimals(4);
                 var count = d[length - 1].count;
             }
-            var tooltipHtml = '<h3 style="background-color: #CCCCCC;"><font color="white">Count of phenotypes</font></h3><p>%BIN</p><p><b>%COUNT</b></p>'
+            var tooltipHtml = '<h3 style="background-color: #CCCCCC;"><span style="color: rgb(255, 255, 255); ">Count of phenotypes</span></h3><p>%BIN</p><p><b>%COUNT</b></p>'
                 .replace('%BIN', bin).replace('%COUNT', count);
             tooltip.html(tooltipHtml)
                 .style("left", (d3.event.pageX + 5) + "px")
@@ -288,7 +288,7 @@ function addViolin(svg, results, yRange, width, yDomain, resolution, interpolati
                 var bin = 'Range: ' + d[length - 1].val.roundDecimals(4) + '-' + (d[length - 1].val + dx).roundDecimals(4);
                 var count = d[length - 1].count;
             }
-            var tooltipHtml = '<h3 style="background-color: #CCCCCC;"><font color="white">Count of phenotypes</font></h3><p>%BIN</p><p><b>%COUNT</b></p>'
+            var tooltipHtml = '<h3 style="background-color: #CCCCCC;"><span style="color: rgb(255, 255, 255); ">Count of phenotypes</span></h3><p>%BIN</p><p><b>%COUNT</b></p>'
                 .replace('%BIN', bin).replace('%COUNT', count);
             tooltip.html(tooltipHtml)
                 .style("left", (d3.event.pageX + 5) + "px")
@@ -368,11 +368,11 @@ function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth
     iS = [0, 1, 2, 3, 4];
     var iSclass = ["", "", "median", "", ""];
     var iStooltips = [
-        '<h3 style="background-color: #000000"><font color="white">5th percentile</font></h3><p><b>%VALUE</b></p>',
-        '<h3 style="background-color: #000000"><font color="white">25th percentile</font></h3><p><b>%VALUE</b></p>',
-        '<h3 style="background-color: #ff0000"><font color="white">Median</font></h3><p><b>%VALUE</b></p>',
-        '<h3 style="background-color: #000000"><font color="white">75th percentile</font></h3><p><b>%VALUE</b></p>',
-        '<h3 style="background-color: #000000"><font color="white">95th percentile</font></h3><p><b>%VALUE</b></p>'
+        '<h3 style="background-color: #000000;"><span style="color: white; ">5th percentile</span></h3><p><b>%VALUE</b></p>',
+        '<h3 style="background-color: #000000;"><span style="color: white; ">25th percentile</span></h3><p><b>%VALUE</b></p>',
+        '<h3 style="background-color: #ff0000;"><span style="color: white; ">Median</span></h3><p><b>%VALUE</b></p>',
+        '<h3 style="background-color: #000000;"><span style="color: white; ">75th percentile</span></h3><p><b>%VALUE</b></p>',
+        '<h3 style="background-color: #000000;"><span style="color: white; ">95th percentile</span></h3><p><b>%VALUE</b></p>'
     ];
 
     function constructHTML(elm, html) {
@@ -408,7 +408,7 @@ function addBoxPlot(svg, elmProbs, elmMean, yRange, width, yDomain, boxPlotWidth
     }
 
 
-    var tooltipHtml = '<h3 style="background-color: #ff0000"><font color="white">Mean</font></h3><p><b>' + elmMean.roundDecimals(4) + '</b></p>';
+    var tooltipHtml = '<h3 style="background-color: #ff0000;"><font color="white">Mean</font></h3><p><b>' + elmMean.roundDecimals(4) + '</b></p>';
     gBoxPlot.append("circle")
         .attr("class", "boxplot mean")
         .attr("cx", x(0.5))

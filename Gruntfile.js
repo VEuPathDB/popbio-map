@@ -34,7 +34,6 @@ module.exports = function (grunt) {
                         'web/libs/Leaflet.EasyButton/easy-button.js',
                         'web/js/map.Legend.js',
                         'web/js/Icon.Canvas.js',
-                        // 'web/js/nv.d3.pie.js',
                         'web/libs/nvd3/build/nv.d3.js',
                         'web/libs/typeahead.js/dist/typeahead.bundle.js',
                         'web/libs/bootstrap-tagsinput/bootstrap-tagsinput.js',
@@ -111,7 +110,8 @@ module.exports = function (grunt) {
                     minifyCSS: true,
                     minifyJS: false,
                     minifyURLs: true,
-                    processScripts: ['text/x-jsrender'],
+                    //processScripts: ['text/x-jsrender'],
+                    ignoreCustomFragments: [/{{.+}}/],
                     ignoreCustomComments: [/^\sSIMPLE/]  // keep these comments
                 },
                 files: {                                   // Dictionary of files
