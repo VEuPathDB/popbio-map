@@ -586,6 +586,7 @@ function buildPlot(divid, filter, selection) {
     var width = 380, height = 500;
     var plotDiv = d3.select(divid);
     var resolution = 25, interpolation = 'basis';
+    var log = false;
     // exclude extreme outliers
     if (pCount < 3) {
         var vlJsonFacet = {
