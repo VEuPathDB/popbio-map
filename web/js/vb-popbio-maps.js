@@ -9,6 +9,9 @@ function bindEvents() {
         $('#view-mode').val('smpl');
     }
 
+    // update the export fields dropdown
+    updateExportFields($("#view-mode").val());
+
 
     $(document).on("click", '.dropdown-menu li a', function () {
 
@@ -51,18 +54,6 @@ function bindEvents() {
 
                 break;
 
-            case 'SelectExportDropdown':
-                $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
-                $(this).parents(".dropdown").find('.btn').val($(this).data('selected'));
-
-
-                // clear the warning area from previous warnings
-                $('#export-error').fadeOut()
-                    .removeClass('alert alert-warning')
-                    .html('');
-
-                break;
-
             default:
                 $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
                 $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
@@ -71,6 +62,7 @@ function bindEvents() {
 
 
     });
+
 
     $('#Reset-Filter').click(function () {
         $('#Filter-Terms').val('');
@@ -81,27 +73,44 @@ function bindEvents() {
     // download data
     $('#download-button').click(function () {
         var selectedOption = $('#select-export').val(),
-            viewMode = $('#view-mode').val(),
+            viewMode = $("#view-mode").val(),
             url = solrExportUrl,
-            viewBox = buildBbox(map.getBounds());
+            viewBox = buildBbox(map.getBounds()),
+            fieldsStr = '&fl=';
+
+        // clear the error area
+        $('#export-error').fadeOut();
+
+        if ($('#select-export-fields').val()) {
+            fieldsStr += $('#select-export-fields').val().join();
+
+        } else {
+            // no marker is selected
+            // inform the user that there are no selected markers
+            $('#export-error').addClass('alert alert-warning')
+                .html('<h5><i class="fa fa-exclamation-triangle fa-fw"></i> Please select at least one field</h5>')
+                .fadeIn();
+            return;
+        }
 
         $(this).removeAttr('href');
 
+        //console.log($('#select-export-fields').val().join());
 
         switch (selectedOption) {
             //download all data
             case "1":
-                url += viewMode + 'Export?q=*:*&sort=exp_id_s+asc';
+                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc';
                 this.href = url;
                 break
             // data matching search
             case "2":
-                url += viewMode + 'Export?' + qryUrl + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc';
                 this.href = url;
                 break;
             // data visible on screen
             case "3":
-                url += viewMode + 'Export?' + qryUrl + viewBox + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc';
                 this.href = url;
                 break;
             // data for selected marker
@@ -125,7 +134,7 @@ function bindEvents() {
                         .html('');
 
                     // build the url and download the data
-                    url += viewMode + 'Export?' + qryUrl + geohashFq + '&sort=exp_id_s+asc';
+                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc';
                     //console.log(url);
                     this.href = url;
                 } else { // no marker is selected
@@ -908,7 +917,7 @@ function initializeSearch() {
 
     $('#search_ac').tagsinput({
         tagClass: function (item) {
-            return mapTypeToIcon(item.type);
+            return mapTypeToLabel(item.type);
         },
         itemValue: 'value',
         itemText: function (item) {
@@ -981,6 +990,10 @@ function initializeSearch() {
         } else {
             $('#view-mode').val('ir');
         }
+
+        // update the export fields dropdown
+        updateExportFields($("#view-mode").val());
+
         // var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
         var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*:*&facet.pivot=geohash_2,' +
             mapSummarizeByToField(glbSummarizeBy).summarize +
@@ -998,6 +1011,189 @@ function initializeSearch() {
         acOtherResults.initialize(true);
     });
 
+}
+
+/**
+ Created by Ioannis on 11/08/2016
+ Given the view mode update the fields selection dropdown
+ **/
+
+function updateExportFields(viewMode) {
+    var smplFields = [
+        {
+            value: 'exp_accession_s',
+            label: 'Accession',
+            icon: mapTypeToIcon('Stable ID')
+        },
+        {
+            value: 'exp_bundle_name_s',
+            label: 'Record type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_species_s',
+            label: 'Species',
+            icon: mapTypeToIcon('Taxonomy')
+        },
+        {
+            value: 'exp_sample_type_s',
+            label: 'Sample type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_label_s',
+            label: 'Label',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            icon: mapTypeToIcon('Date')
+        },
+        {
+            value: 'exp_collection_protocols_ss',
+            label: 'Collection protocols',
+            icon: mapTypeToIcon('Collection protocols')
+        },
+        {
+            value: 'exp_projects_ss',
+            label: 'Projects',
+            icon: mapTypeToIcon('Projects')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
+        },
+        {
+            value: 'exp_geolocations_ss',
+            label: 'Locations',
+            icon: mapTypeToIcon('Location')
+        },
+        {
+            value: 'exp_protocols_ss',
+            label: 'Protocols',
+            icon: mapTypeToIcon('Protocols')
+        }
+
+    ];
+    var irFields = [
+        {
+            value: 'exp_accession_s',
+            label: 'Accession',
+            icon: mapTypeToIcon('Stable ID')
+        },
+        {
+            value: 'exp_bundle_name_s',
+            label: 'Record type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_species_s',
+            label: 'Species',
+            icon: mapTypeToIcon('Taxonomy')
+        },
+        {
+            value: 'exp_sample_type_s',
+            label: 'Sample type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_label_s',
+            label: 'Label',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            icon: mapTypeToIcon('Date')
+        },
+        {
+            value: 'exp_collection_protocols_ss',
+            label: 'Collection protocols',
+            icon: mapTypeToIcon('Collection protocols')
+        },
+        {
+            value: 'exp_projects_ss',
+            label: 'Projects',
+            icon: mapTypeToIcon('Projects')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
+        },
+        {
+            value: 'exp_geolocations_ss',
+            label: 'Locations',
+            icon: mapTypeToIcon('Location')
+        },
+        {
+            value: 'exp_phenotype_type_s',
+            label: 'Phenotype type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_insecticide_s',
+            label: 'Insecticide',
+            icon: mapTypeToIcon('Insecticide')
+        },
+        {
+            value: 'exp_protocols_ss',
+            label: 'Protocols',
+            icon: mapTypeToIcon('Protocols')
+        },
+        {
+            value: 'exp_concentration_f,exp_concentration_unit_s',
+            label: 'Concentration',
+            subtext: 'value, unit',
+            icon: mapTypeToIcon('Concentration')
+        },
+        {
+            value: 'exp_duration_f,exp_duration_unit_s',
+            label: 'Duration',
+            subtext: 'value, unit',
+            icon: mapTypeToIcon('Duration')
+        },
+        {
+            value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
+            label: 'Phenotype value',
+            subtext: 'value, unit, type',
+            icon: mapTypeToIcon('Phenotype')
+        }
+
+    ]
+
+    // empty the dropdown
+    $('#select-export-fields').empty();
+
+    if (viewMode === 'ir') {
+        $.each(irFields, function (index, obj) {
+            $('#select-export-fields')
+                .append(
+                    $("<option></option>")
+                        .attr("value", obj.value)
+                        .text(obj.label)
+                        .data('subtext', obj.subtext)
+                        .data('icon', obj.icon)
+                );
+        })
+
+    } else {
+        $.each(smplFields, function (index, obj) {
+            $('#select-export-fields')
+                .append(
+                    $("<option></option>")
+                        .attr("value", obj.value)
+                        .text(obj.label)
+                        .data('icon', obj.icon)
+                );
+        })
+    }
+
+    $('#select-export-fields')
+        .selectpicker('selectAll')
+        .selectpicker('refresh');
 }
 
 /**
@@ -1977,7 +2173,7 @@ function filterMarkers(items) {
             // more than one fields for this category
             if (k < alen - 1) {
                 if (obj === 'Anywhere') {
-                    qryUrl += '(' + qries['anywhere'] + ') AND ';
+                    qryUrl += 'text:(' + qries['anywhere'] + ') AND ';
                 } else {
                     qryUrl += '(';
                     for (var fieldQry in qries) {
@@ -1993,7 +2189,7 @@ function filterMarkers(items) {
 
             } else {
                 if (obj === 'Anywhere') {
-                    qryUrl += '(' + qries['anywhere'] + ') AND ';
+                    qryUrl += 'text:(' + qries['anywhere'] + ') AND ';
                 } else {
                     for (var fieldQry in qries) {
 
@@ -2027,7 +2223,7 @@ function filterMarkers(items) {
 
             } else {
                 if (obj === 'Anywhere') {
-                    qryUrl += '(' + qries['anywhere'] + '))';
+                    qryUrl += 'text:(' + qries['anywhere'] + '))';
                 } else {
                     for (var fieldQry in qries) {
                         qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
@@ -2156,47 +2352,104 @@ function mapSummarizeByToField(type) {
 }
 
 //
+function mapTypeToLabel(type) {
+    switch (type) {
+        case 'Taxonomy'   :
+            return 'label label-primary fa ' + mapTypeToIcon(type);   // dark blue
+        case 'Geography':
+            return 'label label-primary fa ' + mapTypeToIcon(type);  // dark blue
+        case 'Title'  :
+            return 'label label-success fa ' + mapTypeToIcon(type);    // green
+        case 'Description':
+            return 'label label-success fa ' + mapTypeToIcon(type);   // green
+        case 'Projects'   :
+            return 'label label-success fa ' + mapTypeToIcon(type);   // green
+        case 'Anywhere'   :
+            return 'label label-default fa ' + mapTypeToIcon(type);   // grey
+        case 'Pubmed references' :
+            return 'label label-success fa ' + mapTypeToIcon(type);
+        case 'Insecticides' :
+            return 'label label-success fa ' + mapTypeToIcon(type);
+        case 'Collection protocols' :
+            return 'label label-success fa ' + mapTypeToIcon(type);
+        case 'Date' :
+            return 'label label-info fa ' + mapTypeToIcon(type);
+        case 'Seasonal' :
+            return 'label label-info fa ' + mapTypeToIcon(type);
+        case 'Norm-IR' :
+            return 'label label-secondary fa ' + mapTypeToIcon(type);
+        case 'Stable ID' :
+            return 'label label-warning fa ' + mapTypeToIcon(type);
+        case 'Sample' :
+            return 'label label-warning fa ' + mapTypeToIcon(type);
+        case 'Sample type' :
+            return 'label label-warning fa ' + mapTypeToIcon(type);
+        case 'Protocols' :
+            return 'label label-warning fa ' + mapTypeToIcon(type);
+        case 'Authors' :
+            return 'label label-success fa ' + mapTypeToIcon(type);
+        case 'Coordinates':
+            return 'label label-success fa ' + mapTypeToIcon(type);
+        default :
+            return 'label label-warning fa ' + mapTypeToIcon(type);
+
+    }
+}
+
 function mapTypeToIcon(type) {
     switch (type) {
         case 'Taxonomy'   :
-            return 'label label-primary fa fa-sitemap';   // dark blue
+            return 'fa-sitemap';
         case 'Geography':
-            return 'label label-primary fa fa-map-marker';  // dark blue
+            return 'fa-map-marker';
         case 'Title'  :
-            return 'label label-success fa fa-tag';    // green
+            return 'fa-tag';
         case 'Description':
-            return 'label label-success fa fa-info-circle';   // green
+            return 'fa-info-circle';
         case 'Projects'   :
-            return 'label label-success fa fa-database';   // green
+            return 'fa-database';
         case 'Anywhere'   :
-            return 'label label-default fa fa-search';   // grey
+            return 'fa-search';
         case 'Pubmed references' :
-            return 'label label-success fa fa-book';
+            return 'fa-book';
         case 'Insecticides' :
-            return 'label label-success fa fa-eyedropper';
+            return 'fa-eyedropper';
         case 'Collection protocols' :
-            return 'label label-success fa fa-shopping-cart';
+            return 'fa-shopping-cart';
         case 'Date' :
-            return 'label label-info fa fa-calendar';
+            return 'fa-calendar';
         case 'Seasonal' :
-            return 'label label-info fa fa-calendar-check-o ';
+            return 'fa-calendar-check-o';
         case 'Norm-IR' :
-            return 'label label-secondary fa fa-bolt';
+            return 'fa-bolt';
         case 'Stable ID' :
-            return 'label label-warning fa fa-tag';
+            return 'fa-tag';
         case 'Sample' :
-            return 'label label-warning fa fa-map-pin';
+            return 'fa-map-pin';
         case 'Sample type' :
-            return 'label label-warning fa fa-file-o';
+            return 'fa-file-o';
         case 'Protocols' :
-            return 'label label-warning fa fa-sort-amount-desc';
+            return 'fa-sort-amount-desc';
         case 'Authors' :
-            return 'label label-success fa fa-user';
+            return 'fa-user';
+        case 'Coordinates':
+            return 'fa-map-marker';
+        case 'Location':
+            return 'fa-location-arrow';
+        case 'Insecticide':
+            return 'fa-eyedropper';
+        case 'Protocols':
+            return 'fa-sort-amount-desc';
+        case 'Concentration':
+            return 'fa-tachometer';
+        case 'Duration':
+            return 'fa-clock-o';
+        case 'Phenotype':
+            return 'fa-eye';
         default :
-            return 'label label-warning fa fa-search';
+            return 'fa-search';
 
     }
-    S
 }
 
 function PaneSpin(divid, command) {

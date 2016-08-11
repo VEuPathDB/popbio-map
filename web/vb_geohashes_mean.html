@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="libs/bootstrap-slider/dist/css/bootstrap-slider.css"/>
 
     <link rel="stylesheet" href="css/vb-popbio-maps.css">
+    <!-- bootstrap-select -->
+    <link rel="stylesheet" href="libs/bootstrap-select/dist/css/bootstrap-select.min.css">
     <!-- End of local CSS styles -->
 
     <!-- Remote Javascript libraries -->
@@ -55,25 +57,25 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
     <!-- End of remote Javascript libraries -->
 
-
+    <!-- Local Javascript libraries-->
     <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.js"></script>
     <script type="text/javascript" src="libs/leaflet.fullscreen/Control.FullScreen.js"></script>
     <script type="text/javascript" src="libs/spin.js/spin.js"></script>
     <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.js"></script>
     <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
     <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
-
     <!-- Bootstrap toggles -->
     <script type="text/javascript" src="libs/bootstrap-toggle/js/bootstrap-toggle.js"></script>
-
     <!-- Boostrap slider -->
     <script type="text/javascript" src="libs/bootstrap-slider/dist/bootstrap-slider.js"></script>
-
     <!-- Added geohash to enable geohashes layer -->
     <script type="text/javascript" src="libs/geohash-js/geohash.js"></script>
     <script type="text/javascript" src="libs/node-geohash/main.js"></script>
 
     <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.js"></script>
+    <!-- bootstrap-select -->
+    <script type="text/javascript" src="libs/bootstrap-select/dist/js/bootstrap-select.js"></script>
+
 
     <!-- VB code -->
     <script type="text/javascript" src="js/map.Legend.js"></script>
@@ -88,6 +90,7 @@
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
     <!--Added geohashes-layers.js to enable geohashes -->
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
+
 
 
 </head>
@@ -444,27 +447,25 @@
             <div class="sidebar-pane" id="export">
                 <h3>Export data</h3>
                 <div id="export-selection" style="margin-top: 30px;">
-                    <h5>Download a CSV file containing:</h5>
-                    <div class="btn-group dropdown" id="SelectExportDropdown" role="group">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="select-export"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-                                value="1">
-                            <i class="fa fa-globe" id="globe-icon"></i> all data on the map <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="Select export options">
-                            <li><a href="#" data-value="<i class='fa fa-globe'></i> all data on the map"
-                                   data-selected="1">all data on the map</a></li>
-                            <li><a href="#" data-value="<i class='fa fa-search'></i> data matching search"
-                                   data-selected="2">data matching search</a></li>
-                            <li><a href="#" data-value="<i class='fa fa-desktop'></i> data visible on screen"
-                                   data-selected="3">data visible on screen</a></li>
-                            <li><a href="#" data-value="<i class='fa fa-pie-chart'></i> data for selected marker on map"
-                                   data-selected="4">data for selected marker on map</a></li>
-                        </ul>
-                    </div>
-                    <a type="button" class="btn btn-primary" id="download-button"><i class='fa fa-floppy-o'></i>
+                    <h5>Download a CSV file containing</h5>
+                    <div>
+                        <select id="select-export" class="selectpicker" data-icon-Base="fa fa-fw"
+                                data-tick-Icon="fa-check" data-width="90%" >
+                            <option data-icon="fa-globe" value="1">all data on the map</option>
+                            <option data-icon="fa-search" value="2">data matching search</option>
+                            <option data-icon="fa-desktop" value="3">data visible on screen</option>
+                            <option data-icon="fa-dot-circle-o" value="4">data for selected marker on map</option>
+                        </select>
+                    <h5>with the following fields</h5>
+                        <select id="select-export-fields" class="selectpicker" multiple data-actions-box="true"
+                                data-icon-Base="fa fa-fw" data-selected-text-format="count > 2"
+                                data-tick-Icon="fa-check" data-width="90%">
+                        </select>
+                    <div style="margin-top: 20px;">
+                        <a type="button" class="btn btn-primary" id="download-button"><i class='fa fa-floppy-o'></i>
                         Download
-                    </a>
+                    </a></div>
+                    </div>
 
 
                 </div>
@@ -929,6 +930,9 @@
 
 
 
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -1089,6 +1093,9 @@
             </div>
         </div>
     </div>
+
+
+
 
 
 
@@ -1267,6 +1274,9 @@
 
 
 
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="projectInfoTemplate">
@@ -1416,6 +1426,9 @@
 
 
 
+
+
+
 </script>
 
 <!-- Stop cutting here for Map stuff -->
@@ -1502,6 +1515,8 @@
 
             }
         }
+
+
 
         initializeMap();
         bindEvents();
