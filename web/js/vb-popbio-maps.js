@@ -81,6 +81,9 @@ function bindEvents() {
         // clear the error area
         $('#export-error').fadeOut();
 
+        // reset the button link
+        $(this).removeAttr('href');
+
         if ($('#select-export-fields').val()) {
             fieldsStr += $('#select-export-fields').val().join();
 
@@ -93,7 +96,6 @@ function bindEvents() {
             return;
         }
 
-        $(this).removeAttr('href');
 
         //console.log($('#select-export-fields').val().join());
 
