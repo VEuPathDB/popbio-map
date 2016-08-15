@@ -48,16 +48,27 @@ function createBeeViolinPlot(divid, filter) {
                     var label = $('<label>').text('Phenotypes included in background: ');
                     var bs = $('<select />').attr('id', 'bgPlotType')
                         .attr('class', "form-control");
-                    $('<option/>', {text: 'phenotypes matching search', value: 1}).appendTo(bs);
+                    //ToDo: Uncomment next line to convert to a bootstrap-select
+                    //.attr('class', "selectpicker");
+                    $('<option/>', {
+                        text: 'phenotypes matching search',
+                        value: 1
+                    }).appendTo(bs);
                     $('<option/>', {
                         text: 'phenotypes visible on map (including the ones behind this panel)',
                         value: 2
                     }).appendTo(bs);
-                    $('<option/>', {text: 'all phenotypes', value: 3}).appendTo(bs);
+                    $('<option/>', {
+                        text: 'all phenotypes',
+                        value: 3
+                    }).appendTo(bs);
                     label.appendTo($(divid));
                     // set to selected value
                     bs.val(bgPlotType)
                         .appendTo($(divid));
+
+                    //ToDo: Uncomment next line to convert to a bootstrap-select
+                    //$('#bgPlotType').selectpicker('refresh');
 
 
                     // let's create and populate a drop down

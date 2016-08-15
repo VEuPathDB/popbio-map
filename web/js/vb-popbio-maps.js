@@ -923,8 +923,10 @@ function initializeSearch() {
         },
         itemValue: 'value',
         itemText: function (item) {
-            // add a leading space to separate text from tag icon
-            return ' ' + item.value;
+            return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+        },
+        itemHTML: function (item) {
+            return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
         },
         typeaheadjs: ({
             options: {
@@ -2357,43 +2359,43 @@ function mapSummarizeByToField(type) {
 function mapTypeToLabel(type) {
     switch (type) {
         case 'Taxonomy'   :
-            return 'label label-primary fa ' + mapTypeToIcon(type);   // dark blue
+            return 'label label-primary';   // dark blue
         case 'Geography':
-            return 'label label-primary fa ' + mapTypeToIcon(type);  // dark blue
+            return 'label label-primary';  // dark blue
         case 'Title'  :
-            return 'label label-success fa ' + mapTypeToIcon(type);    // green
+            return 'label label-success';    // green
         case 'Description':
-            return 'label label-success fa ' + mapTypeToIcon(type);   // green
+            return 'label label-success';   // green
         case 'Projects'   :
-            return 'label label-success fa ' + mapTypeToIcon(type);   // green
+            return 'label label-success';   // green
         case 'Anywhere'   :
-            return 'label label-default fa ' + mapTypeToIcon(type);   // grey
+            return 'label label-default';   // grey
         case 'Pubmed references' :
-            return 'label label-success fa ' + mapTypeToIcon(type);
+            return 'label label-success';
         case 'Insecticides' :
-            return 'label label-success fa ' + mapTypeToIcon(type);
+            return 'label label-success';
         case 'Collection protocols' :
-            return 'label label-success fa ' + mapTypeToIcon(type);
+            return 'label label-success';
         case 'Date' :
-            return 'label label-info fa ' + mapTypeToIcon(type);
+            return 'label label-info fa'
         case 'Seasonal' :
-            return 'label label-info fa ' + mapTypeToIcon(type);
+            return 'label label-info fa'
         case 'Norm-IR' :
-            return 'label label-secondary fa ' + mapTypeToIcon(type);
+            return 'label label-secondary';
         case 'Stable ID' :
-            return 'label label-warning fa ' + mapTypeToIcon(type);
+            return 'label label-warning';
         case 'Sample' :
-            return 'label label-warning fa ' + mapTypeToIcon(type);
+            return 'label label-warning';
         case 'Sample type' :
-            return 'label label-warning fa ' + mapTypeToIcon(type);
+            return 'label label-warning';
         case 'Protocols' :
-            return 'label label-warning fa ' + mapTypeToIcon(type);
+            return 'label label-warning';
         case 'Authors' :
-            return 'label label-success fa ' + mapTypeToIcon(type);
+            return 'label label-success';
         case 'Coordinates':
-            return 'label label-success fa ' + mapTypeToIcon(type);
+            return 'label label-success';
         default :
-            return 'label label-warning fa ' + mapTypeToIcon(type);
+            return 'label label-warning';
 
     }
 }
@@ -2768,6 +2770,12 @@ function dateConvert(dateobj, format) {
 
     return converted_date;
 }
+
+// truncate any string longer than *max* and append *add* at the end (three ellipses by default)
+String.prototype.truncString = function (max, add) {
+    add = add || '...';
+    return (this.length > max ? this.substring(0, max) + add : this);
+};
 
 // Add an URL parser to JQuery that returns an object
 // This function is meant to be used with an URL like the window.location
