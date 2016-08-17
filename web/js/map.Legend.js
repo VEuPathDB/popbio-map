@@ -31,10 +31,10 @@ L.Control.MapLegend = L.Control.extend({
 
     bindTableFilter: function () {
         // filter terms in the table legend
-        $('#Filter-Terms').keyup(function() {
+        $('#Filter-Terms').keyup(function () {
             var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 
-            $('.table-legend-term').show().filter(function() {
+            $('.table-legend-term').show().filter(function () {
                 var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
                 return !~text.indexOf(val);
             }).hide();
@@ -349,8 +349,6 @@ L.Control.MapLegend = L.Control.extend({
             inHtml += '</span>';
 
 
-
-
         }
         $('#Other-Terms-List').html(inHtml).removeClass();
 
@@ -402,7 +400,7 @@ L.Control.MapLegend = L.Control.extend({
 
 
         inHtml += '<div style="border: 0; margin-bottom: 5px;">' + dropdownsHTML + '</div>';
-            var type = mapSummarizeByToField(this.options.summarizeBy).type;
+        var type = mapSummarizeByToField(this.options.summarizeBy).type;
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
             if (cntLegend === this.options.numberOfColors) break;
 
@@ -429,8 +427,7 @@ L.Control.MapLegend = L.Control.extend({
         }
 
 
-
-        // add Unknown 
+        // add Unknown
         inHtml += '<i style="background: #000000;"></i> Unknown<br />';
         palette['Unknown'] = '#000000';
 
@@ -452,7 +449,10 @@ L.Control.MapLegend = L.Control.extend({
             inHtml += '</div></div>' +
                 '<div class="max-value" style="border: 0;">High</div></div>' +
                 '<p style="font-size: smaller; word-wrap: break-word; width: 100%; max-width: 190px; margin-top: 20px;">' +
-                'Values have been rescaled globally and only give a relative indication of resistance/susceptibility</p>';
+                'Values have been rescaled globally and only give a relative indication of' +
+                ' resistance/susceptibility. ' +
+                '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
+                'More info</span></p>';
 
 
         }
@@ -504,7 +504,7 @@ L.Control.MapLegend = L.Control.extend({
 
         // this._generateLegendHtml(sortedPalette, paletteSize);
         this._generateTableHtml(sortedPalette, paletteSize);
-        
+
 
     },
 
@@ -586,6 +586,6 @@ L.control.legend = function (url, options) {
     $.getJSON(url, function (data) {
         newLegend._populateLegend(data, options.summarizeBy)
     });
-    
+
     return newLegend;
 };

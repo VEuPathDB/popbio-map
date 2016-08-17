@@ -92,7 +92,6 @@
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
 
 
-
 </head>
 
 
@@ -136,6 +135,59 @@
                 <div class="modal-body">
                     <div id="Other-Terms-List">
 
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ir-normalisation-help" tabindex="-1" role="dialog"
+         aria-labelledby="Insecticide Resistance Normalisation Help">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Normalisation of insecticide resistance values</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="ir-normalisation-html">
+
+                        <table class="table table-condensed">
+                            <tbody>
+                            <tr class="active">
+                                <th>Mortality rate</th>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    The colouring of percent mortality values has been inspired by the WHO test
+                                    procedures of Insecticide resistance.
+                                    <img style="display: block; margin: 30px auto auto;"
+                                         src="/sites/all/modules/custom/popbio/htdocs/images/PM.svg"
+                                         width="70%"/>
+                                </td>
+                            </tr>
+                            <tr class="active">
+                                <th>LC50, LC90, LC95, LT50, LT90, LT95 etc</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Lethal concentration and lethal time values have very skewed distributions. These
+                                    are log-transformed and the top and bottom 2% values are discarded before colour
+                                    scale assignment between the minimum and maximum.
+                                    <img style="display: block; margin: 30px auto auto;"
+                                         src="/sites/all/modules/custom/popbio/htdocs/images/LC50.svg"
+                                         width="70%"/>
+                                    <img style="display: block; margin: 30px auto auto;"
+                                         src="/sites/all/modules/custom/popbio/htdocs/images/LC50_logged.svg"
+                                         width="70%"/>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -450,21 +502,21 @@
                     <h5>Download a CSV file containing</h5>
                     <div>
                         <select id="select-export" class="selectpicker" data-icon-Base="fa fa-fw"
-                                data-tick-Icon="fa-check" data-width="90%" >
+                                data-tick-Icon="fa-check" data-width="90%">
                             <option data-icon="fa-globe" value="1">all data</option>
                             <option data-icon="fa-search" value="2">data matching search</option>
                             <option data-icon="fa-desktop" value="3">data visible on screen</option>
                             <option data-icon="fa-dot-circle-o" value="4">data for selected marker on map</option>
                         </select>
-                    <h5>with the following fields</h5>
+                        <h5>with the following fields</h5>
                         <select id="select-export-fields" class="selectpicker" multiple data-actions-box="true"
                                 data-icon-Base="fa fa-fw" data-selected-text-format="count > 2"
                                 data-tick-Icon="fa-check" data-width="90%">
                         </select>
-                    <div style="margin-top: 20px;">
-                        <a type="button" class="btn btn-primary" id="download-button"><i class='fa fa-floppy-o'></i>
-                        Download
-                    </a></div>
+                        <div style="margin-top: 20px;">
+                            <a type="button" class="btn btn-primary" id="download-button"><i class='fa fa-floppy-o'></i>
+                                Download
+                            </a></div>
                     </div>
 
 
@@ -550,6 +602,7 @@
                                 <b>Important note:</b> <br>
                                 All sample values have been rescaled globally and only give a relative indication of
                                 resistance/susceptibility.
+                                <span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">More info</span>
                             </td>
                         </tr>
                         </tbody>
@@ -933,6 +986,11 @@
 
 
 
+
+
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="irRowTemplate">
@@ -1093,6 +1151,11 @@
             </div>
         </div>
     </div>
+
+
+
+
+
 
 
 
@@ -1277,6 +1340,11 @@
 
 
 
+
+
+
+
+
 </script>
 
 <script type="text/x-jsrender" id="projectInfoTemplate">
@@ -1429,6 +1497,11 @@
 
 
 
+
+
+
+
+
 </script>
 
 <!-- Stop cutting here for Map stuff -->
@@ -1515,7 +1588,6 @@
 
             }
         }
-
 
 
         initializeMap();

@@ -37,6 +37,7 @@ module.exports = function (grunt) {
                         'web/libs/nvd3/build/nv.d3.js',
                         'web/libs/typeahead.js/dist/typeahead.bundle.js',
                         'web/libs/bootstrap-tagsinput/bootstrap-tagsinput.js',
+                        'web/libs/bootstrap-select/dist/js/bootstrap-select.js',
                         'web/libs/beeswarm/beeswarm.js',
                         'web/libs/jsrender/jsrender.js',
                         'web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js',
@@ -79,6 +80,7 @@ module.exports = function (grunt) {
                         'web/libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css',
                         'web/libs/bootstrap-toggle/css/bootstrap-toggle.css',
                         'web/libs/bootstrap-slider/dist/css/bootstrap-slider.css',
+                        'web/libs/bootstrap-select/dist/css/bootstrap-select.css',
                         'web/css/vb-popbio-maps.css'
                     ]
 
