@@ -131,6 +131,16 @@ module.exports = function (grunt) {
                 'web/vb_geohashes_mean_temp.html'
 
             ]
+        },
+        replace: {
+            another_example: {
+                src         : ['web/map_temp.html'],
+                overwrite   : true,                 // overwrite matched source files
+                replacements: [{
+                    from: 'src="/images/',
+                    to  : 'src="/sites/all/modules/custom/popbio/htdocs/images/'
+                }]
+            }
         }
     });
 
@@ -142,15 +152,17 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-copy-part-of-file');
+    grunt.loadNpmTasks('grunt-text-replace');
 
-
-    // Default task.
+    // Create empty files
     grunt.registerTask('createEmptyFiles', 'Creates an empty file', function () {
         //grunt.file.write('web/map_temp.html', '<div class="no-interactions" id="no-interactions"></div>\n' +
         grunt.file.write('web/map_temp.html', '<div id="map_container">\n' +
             '<!-- MAP PASTE START -->\n\n' +
             '<!-- MAP PASTE END -->');
     });
-    grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'createEmptyFiles', 'copy-part-of-file', 'htmlmin', 'clean']);
+
+    // Default task
+    grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'createEmptyFiles', 'copy-part-of-file', 'replace', 'htmlmin', 'clean']);
 
 };

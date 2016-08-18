@@ -1,13 +1,13 @@
 L.Icon.Canvas = L.Icon.extend({
     options: {
-        iconSize: new L.Point(20, 20), // Have to be supplied
+        iconSize  : new L.Point(20, 20), // Have to be supplied
         /*
          iconAnchor: (Point)
          popupAnchor: (Point)
          */
-        className: 'leaflet-canvas-icon',
+        className : 'leaflet-canvas-icon',
         population: 0,
-        stats: []
+        stats     : []
     },
 
     createIcon: function () {
@@ -65,7 +65,6 @@ L.Icon.Canvas = L.Icon.extend({
 
         }
 
-
         canvas.beginPath();
         canvas.fillStyle = 'white';
         canvas.arc(iconSize2, iconSize2, iconSize3, 0, Math.PI * 2);
@@ -78,7 +77,7 @@ L.Icon.Canvas = L.Icon.extend({
 
             canvas.beginPath();
             canvas.fillStyle = colors[0];
-            canvas.arc(iconSize2, iconSize2, iconSize2-7, 0, Math.PI * 2);
+            canvas.arc(iconSize2, iconSize2, iconSize2 - 7, 0, Math.PI * 2);
             canvas.fill();
             canvas.closePath();
         }

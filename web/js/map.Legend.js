@@ -1,10 +1,10 @@
 L.Control.MapLegend = L.Control.extend({
     options: {
-        position: 'bottomright',
+        position      : 'bottomright',
         numberOfColors: 20,  // still not using this :(
-        summarizeBy: 'Species',
-        sortBy: 'Color',
-        lum: 0.7
+        summarizeBy   : 'Species',
+        sortBy        : 'Color',
+        lum           : 0.7
     },
 
     // add the legend to the DOM tree
@@ -25,7 +25,6 @@ L.Control.MapLegend = L.Control.extend({
             },
             'Toggle legend ON of OFF'
         );
-
 
     },
 
@@ -52,7 +51,6 @@ L.Control.MapLegend = L.Control.extend({
      outputs: an associative array with items names as the keys and color as the values
      */
     generatePalette: function (items) {
-
 
         var newPalette = {};
         var limitedPalette = {};
@@ -103,7 +101,6 @@ L.Control.MapLegend = L.Control.extend({
             "#FFCDF3"  // Pink
         ];
 
-
         var noItems = items.length,
             stNoItems = noItems; // store the number of items
 
@@ -113,7 +110,6 @@ L.Control.MapLegend = L.Control.extend({
             var item = items[i][0];
             newPalette[item] = kelly_colors_hex[i];
             noItems--; // track how many items need a grayscale color
-
 
         }
 
@@ -125,12 +121,10 @@ L.Control.MapLegend = L.Control.extend({
             newPalette[item] = this._colorLuminance("#FFFFFF", -this.lum);
             this.lum -= lumInterval;
 
-
         }
 
         return newPalette;
     },
-
 
     // Get a simple associative array (key-value) and sort it by value
     _sortHashByValue: function (hash) {
@@ -141,7 +135,6 @@ L.Control.MapLegend = L.Control.extend({
         });
         return tupleArray;
     },
-
 
     // taken from http://jsfiddle.net/shanfan/ojgp5718/
 
@@ -160,13 +153,11 @@ L.Control.MapLegend = L.Control.extend({
         var max = Math.max.apply(Math, [r, g, b]);
         var min = Math.min.apply(Math, [r, g, b]);
 
-
         /* Variables for HSV value of hex color. */
         var chr = max - min;
         var hue = 0;
         var val = max;
         var sat = 0;
-
 
         if (val > 0) {
             /* Calculate Saturation only if Value isn't 0. */
@@ -194,7 +185,6 @@ L.Control.MapLegend = L.Control.extend({
         colorObj.blue = parseInt(hex.substring(4, 6), 16);
         return colorObj;
     },
-
 
     _sortColorsByHue: function (colors) {
         var tuples = [];
@@ -289,7 +279,6 @@ L.Control.MapLegend = L.Control.extend({
 
     },
 
-
     // build the HTML for the table
     _generateTableHtml: function (sortedPalette, numOfItems) {
         var inHtml = ""; // store HTML here
@@ -299,10 +288,9 @@ L.Control.MapLegend = L.Control.extend({
         if (this.options.sortBy === 'Name') {
             sortByHTML = '<i class = "fa fa-sort-alpha-asc sort-by"></i>'
         } else {
-            sortByHTML = '<i class="sort-by" style="background:radial-gradient(#4d4d4d, #cccccc);"></i>' +
+            sortByHTML = '<i class="sort-by" style="background:radial-gradient(#4D4D4D, #CCCCCC);"></i>' +
                 '<i class = "fa fa-sort-amount-desc sort-by"></i>'
         }
-
 
         var sumDropdownHtml =
             '<div class="btn-group dropdown" id="summByDropdown" role="group" >' +
@@ -328,7 +316,6 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="<i class = \'fa fa-sort-alpha-asc sort-by\'></i>">Name</a></li>' +
             '</div>';
 
-
         $('#table-legend-controls').html(sumDropdownHtml);
 
         var type = mapSummarizeByToField(this.options.summarizeBy).type;
@@ -347,7 +334,6 @@ L.Control.MapLegend = L.Control.extend({
 
             }
             inHtml += '</span>';
-
 
         }
         $('#Other-Terms-List').html(inHtml).removeClass();
@@ -370,7 +356,7 @@ L.Control.MapLegend = L.Control.extend({
         if (this.options.sortBy === 'Name') {
             sortByHTML = '<i class = "fa fa-sort-alpha-asc sort-by"></i>'
         } else {
-            sortByHTML = '<i class="sort-by" style="background:radial-gradient(#4d4d4d, #cccccc);"></i>' +
+            sortByHTML = '<i class="sort-by" style="background:radial-gradient(#4D4D4D, #CCCCCC);"></i>' +
                 '<i class = "fa fa-sort-amount-desc sort-by"></i>'
         }
 
@@ -398,14 +384,14 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="<i class = \'fa fa-sort-alpha-asc sort-by\'></i>">Name</a></li>' +
             '</div>';
 
-
         inHtml += '<div style="border: 0; margin-bottom: 5px;">' + dropdownsHTML + '</div>';
         var type = mapSummarizeByToField(this.options.summarizeBy).type;
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
             if (cntLegend === this.options.numberOfColors) break;
 
             if (this.options.summarizeBy === 'Species') {
-                var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An. gambiae
+                var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An.
+                                                                                // gambiae
 
                 inHtml += '<span class="active-legend" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + abbrSpecies + '</em><br>' : '+');
@@ -416,7 +402,6 @@ L.Control.MapLegend = L.Control.extend({
             }
             inHtml += '</span>';
 
-
             cntLegend++; // update the counter of legend entries
         }
         // add others
@@ -425,7 +410,6 @@ L.Control.MapLegend = L.Control.extend({
             var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")"
             inHtml += '<span class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></span>';
         }
-
 
         // add Unknown
         inHtml += '<i style="background: #000000;"></i> Unknown<br />';
@@ -453,7 +437,6 @@ L.Control.MapLegend = L.Control.extend({
                 ' resistance/susceptibility. ' +
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
                 'More info</span></p>';
-
 
         }
 
@@ -485,7 +468,6 @@ L.Control.MapLegend = L.Control.extend({
         if (this.options.sortBy === 'Name') {
             sortedPalette = this._outputNames(unsortedPalette, this.options.numberOfColors);
 
-
         } else {    // sort by color
 
             sortedPalette = this._outputColors(unsortedPalette, this.options.numberOfColors);
@@ -496,7 +478,6 @@ L.Control.MapLegend = L.Control.extend({
         if (this.options.sortBy === 'Name') {
             sortedPalette = this._outputNames(unsortedPalette, 0);
 
-
         } else {    // sort by color
 
             sortedPalette = this._outputColors(unsortedPalette, 0);
@@ -504,7 +485,6 @@ L.Control.MapLegend = L.Control.extend({
 
         // this._generateLegendHtml(sortedPalette, paletteSize);
         this._generateTableHtml(sortedPalette, paletteSize);
-
 
     },
 
@@ -516,7 +496,6 @@ L.Control.MapLegend = L.Control.extend({
             // update map options
             this.options.summarizeBy = fieldName;
         }
-
 
         var pivotParams = geohashLevel + "," + mapSummarizeByToField(fieldName).summarize;
 
@@ -531,7 +510,8 @@ L.Control.MapLegend = L.Control.extend({
                 var sumField = pivot[pivotElm].value;
                 var index = parseInt(pivotElm);
                 var points;
-                // Use a scoring scheme to make sure species with a good presence per region get a proper color (we only have 20 good colours)
+                // Use a scoring scheme to make sure species with a good presence per region get a proper color (we
+                // only have 20 good colours)
                 switch (index) {
                     case 1:
                         points = 7 * ratio;
@@ -564,7 +544,6 @@ L.Control.MapLegend = L.Control.extend({
         var sortedItems = this._sortHashByValue(items);
         palette = this.generatePalette(sortedItems);
 
-
         this.refreshLegend(palette);
 
         // moved this here to avoid querying SOLR before the palette is done building
@@ -574,7 +553,6 @@ L.Control.MapLegend = L.Control.extend({
 });
 
 L.control.legend = function (url, options) {
-
 
     var newLegend = new L.Control.MapLegend(options);
 

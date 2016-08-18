@@ -33,7 +33,6 @@ function loadSmall(mode, zoomLevel) {
                 }, delay);
             }
 
-
         });
         marker.on("click", function () {
 
@@ -82,7 +81,6 @@ function loadSmall(mode, zoomLevel) {
             }, delay);
         });
 
-
         if (data.icon) {
             if (typeof data.icon === 'function') {
                 marker.setIcon(data.icon(data, category));
@@ -104,7 +102,7 @@ function loadSmall(mode, zoomLevel) {
 
     L.Icon.MarkerCluster = L.Icon.extend({
         options: {
-            iconSize: new L.Point(40, 40),
+            iconSize : new L.Point(40, 40),
             className: 'prunecluster leaflet-markercluster-icon'
         },
 
@@ -157,7 +155,6 @@ function loadSmall(mode, zoomLevel) {
                     canvas.closePath();
                 }
 
-
             }
 
             canvas.beginPath();
@@ -192,7 +189,6 @@ function loadSmall(mode, zoomLevel) {
             icon: pruneCluster.BuildLeafletClusterIcon(cluster)
         });
 
-
         m.on("dblclick", function () {
             clearTimeout(timer);
             prevent = true;
@@ -222,8 +218,8 @@ function loadSmall(mode, zoomLevel) {
                     pruneCluster._map.fire("overlappingmarkers", {
                         cluster: pruneCluster,
                         markers: markersArea,
-                        center: m.getLatLng(),
-                        marker: m
+                        center : m.getLatLng(),
+                        marker : m
                     });
 
                 }
@@ -311,9 +307,9 @@ function loadSmall(mode, zoomLevel) {
             if (rectHighlight !== null) map.removeLayer(rectHighlight);
 
             rectHighlight = L.rectangle(recBounds, {
-                color: "grey",
-                weight: 1,
-                fill: true,
+                color    : "grey",
+                weight   : 1,
+                fill     : true,
                 clickable: false
             }).addTo(map);
 
@@ -326,7 +322,6 @@ function loadSmall(mode, zoomLevel) {
         });
         return m;
     };
-
 
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
@@ -373,10 +368,10 @@ function loadSmall(mode, zoomLevel) {
                 console.log(key + ": no species defined")
             }
             marker.data.icon = L.VectorMarkers.icon({
-                prefix: 'fa',
-                icon: 'circle',
-                markerColor: palette[species] ? palette[species] : "red",
-                iconColor: markerColor(pheVal)[0],
+                prefix      : 'fa',
+                icon        : 'circle',
+                markerColor : palette[species] ? palette[species] : "red",
+                iconColor   : markerColor(pheVal)[0],
                 extraClasses: 'single-marker-icon'
             });
 
@@ -394,7 +389,6 @@ function loadSmall(mode, zoomLevel) {
         rectHighlight = null;
         map.spin(false);
     };
-
 
     var url = solrPopbioUrl + $('#view-mode').val() + 'Markers?' + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
 

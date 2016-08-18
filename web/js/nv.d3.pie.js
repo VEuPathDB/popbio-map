@@ -160,7 +160,6 @@ nv.interactiveGuideline = function () {
     // check if IE by looking for activeX
     var isMSIE = "ActiveXObject" in window;
 
-
     function layer(selection) {
         selection.each(function (data) {
             var container = d3.select(this);
@@ -243,16 +242,16 @@ nv.interactiveGuideline = function () {
 
                 var pointXValue = xScale.invert(mouseX);
                 dispatch.elementMousemove({
-                    mouseX: mouseX,
-                    mouseY: mouseY,
+                    mouseX     : mouseX,
+                    mouseY     : mouseY,
                     pointXValue: pointXValue
                 });
 
                 //If user double clicks the layer, fire a elementDblclick
                 if (d3.event.type === "dblclick") {
                     dispatch.elementDblclick({
-                        mouseX: mouseX,
-                        mouseY: mouseY,
+                        mouseX     : mouseX,
+                        mouseY     : mouseY,
                         pointXValue: pointXValue
                     });
                 }
@@ -260,8 +259,8 @@ nv.interactiveGuideline = function () {
                 // if user single clicks the layer, fire elementClick
                 if (d3.event.type === 'click') {
                     dispatch.elementClick({
-                        mouseX: mouseX,
-                        mouseY: mouseY,
+                        mouseX     : mouseX,
+                        mouseY     : mouseY,
                         pointXValue: pointXValue
                     });
                 }
@@ -447,7 +446,8 @@ nv.nearestValueIndex = function (values, searchVal, threshold) {
 
         var gravity = 'w'   //Can be 'n','s','e','w'. Determines how tooltip is positioned.
             , distance = 50   //Distance to offset tooltip from the mouse location.
-            , snapDistance = 25   //Tolerance allowed before tooltip is moved from its current position (creates 'snapping' effect)
+            , snapDistance = 25   //Tolerance allowed before tooltip is moved from its current position (creates
+                                  // 'snapping' effect)
             , fixedTop = null //If not null, this fixes the top position of the tooltip.
             , classes = null  //Attaches additional CSS classes to the tooltip DIV that is created.
             , chartContainer = null   //Parent DIV, of the SVG Container that holds the chart.
@@ -526,7 +526,6 @@ nv.nearestValueIndex = function (values, searchVal, threshold) {
                 .html(function (p, i) {
                     return valueFormatter(p.value, i)
                 });
-
 
             trowEnter.selectAll("td").each(function (p) {
                 if (p.highlight) {
@@ -913,7 +912,6 @@ nv.nearestValueIndex = function (values, searchVal, threshold) {
 
 })();
 
-
 /*
  Gets the browser window size
 
@@ -946,7 +944,6 @@ nv.utils.windowSize = function () {
     return (size);
 };
 
-
 /*
  Binds callback function to run when window is resized
  */
@@ -959,12 +956,11 @@ nv.utils.windowResize = function (handler) {
     // return object with clear function to remove the single added callback.
     return {
         callback: handler,
-        clear: function () {
+        clear   : function () {
             window.removeEventListener('resize', handler);
         }
     }
 };
-
 
 /*
  Backwards compatible way to implement more d3-like coloring of graphs.
@@ -990,7 +986,6 @@ nv.utils.getColor = function (color) {
     }
 };
 
-
 /*
  Default color chooser uses the index of an object as before.
  */
@@ -1000,7 +995,6 @@ nv.utils.defaultColor = function () {
         return d.color || colors[i % colors.length]
     };
 };
-
 
 /*
  Returns a color function that takes the result of 'getKey' for each series and
@@ -1034,7 +1028,6 @@ nv.utils.customTheme = function (dictionary, getKey, defaultColors) {
     };
 };
 
-
 /*
  From the PJAX example on d3js.org, while this is not really directly needed
  it's a very cool method for doing pjax, I may expand upon it a little bit,
@@ -1065,7 +1058,6 @@ nv.utils.pjax = function (links, content) {
     });
 };
 
-
 /*
  For when we want to approximate the width in pixels for an SVG:text element.
  Most common instance is when the element is in a display:none; container.
@@ -1081,7 +1073,6 @@ nv.utils.calcApproxTextWidth = function (svgTextElem) {
     }
     return 0;
 };
-
 
 /*
  Numbers that are undefined, null or NaN, convert them to zeros.
@@ -1105,7 +1096,6 @@ d3.selection.prototype.watchTransition = function (renderWatch) {
     var args = [this].concat([].slice.call(arguments, 1));
     return renderWatch.transition.apply(renderWatch, args);
 };
-
 
 /*
  Helper object to watch when d3 has rendered something
@@ -1207,7 +1197,6 @@ nv.utils.renderWatch = function (dispatch, duration) {
 
 };
 
-
 /*
  Takes multiple objects and combines them into the first one (dst)
  example:  nv.utils.deepExtend({a: 1}, {a: 2, b: 3}, {c: 4});
@@ -1229,7 +1218,6 @@ nv.utils.deepExtend = function (dst) {
         }
     });
 };
-
 
 /*
  state utility object, used to track d3 states in the models
@@ -1307,7 +1295,6 @@ nv.utils.state = function () {
 
 };
 
-
 /*
  Snippet of code you can insert into each nv.models.* to give you the ability to
  do things like:
@@ -1330,7 +1317,6 @@ nv.utils.optionsFunc = function (args) {
     }
     return this;
 };
-
 
 /*
  numTicks:  requested number of ticks
@@ -1359,7 +1345,6 @@ nv.utils.calcTicksX = function (numTicks, data) {
     return numTicks;
 };
 
-
 /*
  returns number of ticks to actually use on Y axis, based on chart data
  */
@@ -1367,7 +1352,6 @@ nv.utils.calcTicksY = function (numTicks, data) {
     // currently uses the same logic but we can adjust here if needed later
     return nv.utils.calcTicksX(numTicks, data);
 };
-
 
 /*
  Add a particular option from an options object onto chart
@@ -1390,7 +1374,6 @@ nv.utils.initOption = function (chart, name) {
     }
 };
 
-
 /*
  Add all options in an options object to the chart
  */
@@ -1402,7 +1385,6 @@ nv.utils.initOptions = function (chart) {
         nv.utils.initOption(chart, ops[i]);
     }
 };
-
 
 /*
  Inherit options from a D3 object
@@ -1416,7 +1398,6 @@ nv.utils.inheritOptionsD3 = function (target, d3_source, oplist) {
     d3.rebind.apply(this, oplist);
 };
 
-
 /*
  Remove duplicates from an array
  */
@@ -1426,14 +1407,12 @@ nv.utils.arrayUnique = function (a) {
     });
 };
 
-
 /*
  Keeps a list of custom symbols to draw from in addition to d3.svg.symbol
  Necessary since d3 doesn't let you extend its list -_-
  Add new symbols by doing nv.utils.symbols.set('name', function(size){...});
  */
 nv.utils.symbolMap = d3.map();
-
 
 /*
  Replaces d3.svg.symbol so that we can look both there and our own map
@@ -1465,7 +1444,6 @@ nv.utils.symbol = function () {
     return symbol;
 };
 
-
 /*
  Inherit option getter/setter functions from source to target
  d3.rebind makes calling the function on target actually call it on source
@@ -1486,7 +1464,6 @@ nv.utils.inheritOptions = function (target, source) {
     target._inherited = nv.utils.arrayUnique(ops.concat(calls).concat(inherited).concat(ops).concat(target._inherited || []));
     target._d3options = nv.utils.arrayUnique(d3ops.concat(target._d3options || []));
 };
-
 
 /*
  Runs common initialize code on the svg before the chart builds
@@ -1512,7 +1489,8 @@ nv.models.legend = function () {
         , align = true
         , rightAlign = false
         , updateState = true   //If true, legend will update data.disabled and trigger a 'stateChange' dispatch.
-        , radioButtonMode = false   //If true, clicking legend items will cause it to behave like a radio button. (only one can be selected at a time)
+        , radioButtonMode = false   //If true, clicking legend items will cause it to behave like a radio button. (only
+                                    // one can be selected at a time)
         , dispatch = d3.dispatch('legendClick', 'legendDblclick', 'legendMouseover', 'legendMouseout', 'stateChange')
         ;
 
@@ -1618,7 +1596,8 @@ nv.models.legend = function () {
                     var nodeTextLength;
                     try {
                         nodeTextLength = legendText.node().getComputedTextLength();
-                        // If the legendText is display:none'd (nodeTextLength == 0), simulate an error so we approximate, instead
+                        // If the legendText is display:none'd (nodeTextLength == 0), simulate an error so we
+                        // approximate, instead
                         if (nodeTextLength <= 0) throw Error();
                     }
                     catch (e) {
@@ -1714,50 +1693,50 @@ nv.models.legend = function () {
 
     chart._options = Object.create({}, {
         // simple options, just get/set the necessary values
-        width: {
-            get: function () {
+        width          : {
+            get   : function () {
                 return width;
             }, set: function (_) {
                 width = _;
             }
         },
-        height: {
-            get: function () {
+        height         : {
+            get   : function () {
                 return height;
             }, set: function (_) {
                 height = _;
             }
         },
-        key: {
-            get: function () {
+        key            : {
+            get   : function () {
                 return getKey;
             }, set: function (_) {
                 getKey = _;
             }
         },
-        align: {
-            get: function () {
+        align          : {
+            get   : function () {
                 return align;
             }, set: function (_) {
                 align = _;
             }
         },
-        rightAlign: {
-            get: function () {
+        rightAlign     : {
+            get   : function () {
                 return rightAlign;
             }, set: function (_) {
                 rightAlign = _;
             }
         },
-        updateState: {
-            get: function () {
+        updateState    : {
+            get   : function () {
                 return updateState;
             }, set: function (_) {
                 updateState = _;
             }
         },
         radioButtonMode: {
-            get: function () {
+            get   : function () {
                 return radioButtonMode;
             }, set: function (_) {
                 radioButtonMode = _;
@@ -1766,7 +1745,7 @@ nv.models.legend = function () {
 
         // options that require extra logic in the setter
         margin: {
-            get: function () {
+            get   : function () {
                 return margin;
             }, set: function (_) {
                 margin.top = _.top !== undefined ? _.top : margin.top;
@@ -1775,8 +1754,8 @@ nv.models.legend = function () {
                 margin.left = _.left !== undefined ? _.left : margin.left;
             }
         },
-        color: {
-            get: function () {
+        color : {
+            get   : function () {
                 return color;
             }, set: function (_) {
                 color = nv.utils.getColor(_);
@@ -1828,7 +1807,6 @@ nv.models.pie = function () {
         , dispatch = d3.dispatch('chartClick', 'elementClick', 'elementDblClick', 'elementMouseover', 'elementMouseout', 'renderEnd')
         ;
 
-
     //============================================================
     // chart function
     //------------------------------------------------------------
@@ -1861,13 +1839,12 @@ nv.models.pie = function () {
             //
             container.on('click', function (d, i) {
                 dispatch.chartClick({
-                    data: d,
+                    data : d,
                     index: i,
-                    pos: d3.event,
-                    id: id
+                    pos  : d3.event,
+                    id   : id
                 });
             });
-
 
             var arc = d3.svg.arc().outerRadius(arcRadius);
             var arcOver = d3.svg.arc().outerRadius(arcRadius + 5);
@@ -1934,13 +1911,13 @@ nv.models.pie = function () {
                         .attr("d", arcOver);
                 }
                 dispatch.elementMouseover({
-                    label: getX(d.data),
-                    value: getY(d.data),
-                    point: d.data,
+                    label     : getX(d.data),
+                    value     : getY(d.data),
+                    point     : d.data,
                     pointIndex: i,
-                    pos: [d3.event.pageX, d3.event.pageY],
-                    id: id,
-                    color: d3.select(this).style("fill")
+                    pos       : [d3.event.pageX, d3.event.pageY],
+                    id        : id,
+                    color     : d3.select(this).style("fill")
                 });
             });
             ae.on('mouseout', function (d, i) {
@@ -1955,7 +1932,7 @@ nv.models.pie = function () {
                     value: getY(d.data),
                     point: d.data,
                     index: i,
-                    id: id
+                    id   : id
                 });
             });
 
@@ -1976,8 +1953,8 @@ nv.models.pie = function () {
                     value: getY(d.data),
                     point: d.data,
                     index: i,
-                    pos: d3.event,
-                    id: id
+                    pos  : d3.event,
+                    id   : id
                 });
                 d3.event.stopPropagation();
             });
@@ -1987,8 +1964,8 @@ nv.models.pie = function () {
                     value: getY(d.data),
                     point: d.data,
                     index: i,
-                    pos: d3.event,
-                    id: id
+                    pos  : d3.event,
+                    id   : id
                 });
                 d3.event.stopPropagation();
             });
@@ -2086,15 +2063,14 @@ nv.models.pie = function () {
                     .text(function (d, i) {
                         var percent = (d.endAngle - d.startAngle) / (2 * Math.PI);
                         var labelTypes = {
-                            "key": getX(d.data),
-                            "value": getY(d.data),
+                            "key"    : getX(d.data),
+                            "value"  : getY(d.data),
                             "percent": labelFormat(percent)
                         };
                         return (d.value && percent > labelThreshold) ? labelTypes[labelType] : '';
                     })
                 ;
             }
-
 
             // Computes the angle of an arc, converting from radians to degrees.
             function angle(d) {
@@ -2127,141 +2103,141 @@ nv.models.pie = function () {
 
     chart._options = Object.create({}, {
         // simple options, just get/set the necessary values
-        width: {
-            get: function () {
+        width             : {
+            get   : function () {
                 return width;
             }, set: function (_) {
                 width = _;
             }
         },
-        height: {
-            get: function () {
+        height            : {
+            get   : function () {
                 return height;
             }, set: function (_) {
                 height = _;
             }
         },
-        showLabels: {
-            get: function () {
+        showLabels        : {
+            get   : function () {
                 return showLabels;
             }, set: function (_) {
                 showLabels = _;
             }
         },
-        title: {
-            get: function () {
+        title             : {
+            get   : function () {
                 return title;
             }, set: function (_) {
                 title = _;
             }
         },
-        titleOffset: {
-            get: function () {
+        titleOffset       : {
+            get   : function () {
                 return titleOffset;
             }, set: function (_) {
                 titleOffset = _;
             }
         },
-        labelThreshold: {
-            get: function () {
+        labelThreshold    : {
+            get   : function () {
                 return labelThreshold;
             }, set: function (_) {
                 labelThreshold = _;
             }
         },
-        labelFormat: {
-            get: function () {
+        labelFormat       : {
+            get   : function () {
                 return labelFormat;
             }, set: function (_) {
                 labelFormat = _;
             }
         },
-        valueFormat: {
-            get: function () {
+        valueFormat       : {
+            get   : function () {
                 return valueFormat;
             }, set: function (_) {
                 valueFormat = _;
             }
         },
-        x: {
-            get: function () {
+        x                 : {
+            get   : function () {
                 return getX;
             }, set: function (_) {
                 getX = _;
             }
         },
-        id: {
-            get: function () {
+        id                : {
+            get   : function () {
                 return id;
             }, set: function (_) {
                 id = _;
             }
         },
-        endAngle: {
-            get: function () {
+        endAngle          : {
+            get   : function () {
                 return endAngle;
             }, set: function (_) {
                 endAngle = _;
             }
         },
-        startAngle: {
-            get: function () {
+        startAngle        : {
+            get   : function () {
                 return startAngle;
             }, set: function (_) {
                 startAngle = _;
             }
         },
-        padAngle: {
-            get: function () {
+        padAngle          : {
+            get   : function () {
                 return padAngle;
             }, set: function (_) {
                 padAngle = _;
             }
         },
-        cornerRadius: {
-            get: function () {
+        cornerRadius      : {
+            get   : function () {
                 return cornerRadius;
             }, set: function (_) {
                 cornerRadius = _;
             }
         },
-        donutRatio: {
-            get: function () {
+        donutRatio        : {
+            get   : function () {
                 return donutRatio;
             }, set: function (_) {
                 donutRatio = _;
             }
         },
-        pieLabelsOutside: {
-            get: function () {
+        pieLabelsOutside  : {
+            get   : function () {
                 return pieLabelsOutside;
             }, set: function (_) {
                 pieLabelsOutside = _;
             }
         },
         donutLabelsOutside: {
-            get: function () {
+            get   : function () {
                 return donutLabelsOutside;
             }, set: function (_) {
                 donutLabelsOutside = _;
             }
         },
         labelSunbeamLayout: {
-            get: function () {
+            get   : function () {
                 return labelSunbeamLayout;
             }, set: function (_) {
                 labelSunbeamLayout = _;
             }
         },
-        donut: {
-            get: function () {
+        donut             : {
+            get   : function () {
                 return donut;
             }, set: function (_) {
                 donut = _;
             }
         },
-        growOnHover: {
-            get: function () {
+        growOnHover       : {
+            get   : function () {
                 return growOnHover;
             }, set: function (_) {
                 growOnHover = _;
@@ -2269,8 +2245,8 @@ nv.models.pie = function () {
         },
 
         // options that require extra logic in the setter
-        margin: {
-            get: function () {
+        margin   : {
+            get   : function () {
                 return margin;
             }, set: function (_) {
                 margin.top = typeof _.top != 'undefined' ? _.top : margin.top;
@@ -2279,22 +2255,22 @@ nv.models.pie = function () {
                 margin.left = typeof _.left != 'undefined' ? _.left : margin.left;
             }
         },
-        y: {
-            get: function () {
+        y        : {
+            get   : function () {
                 return getY;
             }, set: function (_) {
                 getY = d3.functor(_);
             }
         },
-        color: {
-            get: function () {
+        color    : {
+            get   : function () {
                 return color;
             }, set: function (_) {
                 color = nv.utils.getColor(_);
             }
         },
         labelType: {
-            get: function () {
+            get   : function () {
                 return labelType;
             }, set: function (_) {
                 labelType = _ || 'key';
@@ -2529,44 +2505,44 @@ nv.models.pieChart = function () {
     // use Object get/set functionality to map between vars and chart functions
     chart._options = Object.create({}, {
         // simple options, just get/set the necessary values
-        noData: {
-            get: function () {
+        noData        : {
+            get   : function () {
                 return noData;
             }, set: function (_) {
                 noData = _;
             }
         },
         tooltipContent: {
-            get: function () {
+            get   : function () {
                 return tooltip;
             }, set: function (_) {
                 tooltip = _;
             }
         },
-        tooltips: {
-            get: function () {
+        tooltips      : {
+            get   : function () {
                 return tooltips;
             }, set: function (_) {
                 tooltips = _;
             }
         },
-        showLegend: {
-            get: function () {
+        showLegend    : {
+            get   : function () {
                 return showLegend;
             }, set: function (_) {
                 showLegend = _;
             }
         },
-        defaultState: {
-            get: function () {
+        defaultState  : {
+            get   : function () {
                 return defaultState;
             }, set: function (_) {
                 defaultState = _;
             }
         },
         // options that require extra logic in the setter
-        color: {
-            get: function () {
+        color         : {
+            get   : function () {
                 return color;
             }, set: function (_) {
                 color = _;
@@ -2574,8 +2550,8 @@ nv.models.pieChart = function () {
                 pie.color(color);
             }
         },
-        duration: {
-            get: function () {
+        duration      : {
+            get   : function () {
                 return duration;
             }, set: function (_) {
                 duration = _;
