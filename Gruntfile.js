@@ -146,8 +146,8 @@ module.exports = function (grunt) {
 
     // Default task.
     grunt.registerTask('createEmptyFiles', 'Creates an empty file', function () {
-        grunt.file.write('web/map_temp.html', '<div class="no-interactions" id="no-interactions"></div>\n' +
-            '<div id="map_container">\n' +
+        //grunt.file.write('web/map_temp.html', '<div class="no-interactions" id="no-interactions"></div>\n' +
+        grunt.file.write('web/map_temp.html', '<div id="map_container">\n' +
             '<!-- MAP PASTE START -->\n\n' +
             '<!-- MAP PASTE END -->');
     });

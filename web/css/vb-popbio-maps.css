@@ -138,7 +138,7 @@ BODY {
     width: 56%;
     min-width: 250px;
     /*max-width: 500px;*/
-    z-index: 3000;
+    z-index: 103000;
 }
 
 .mapbox .overlaybottom {
@@ -150,7 +150,7 @@ BODY {
     text-align: center;
     background: rgba(255, 255, 255, 0.7);
     /*max-width: 500px;*/
-    z-index: 3000;
+    z-index: 103000;
     font-size: small;
 
 }
@@ -210,11 +210,11 @@ BODY {
 
 .highlight-marker {
     box-shadow: 0px 0px 0px 5px rgba(255, 255, 0, 1);
-    z-index: 3100 !important;
+    z-index: 103100 !important;
 }
 
 .top-marker {
-    z-index: 3100 !important;
+    z-index: 103100 !important;
 }
 
 /* for the table */
@@ -288,7 +288,7 @@ BODY {
     text-align: center;
     font-size: 14px;
     color: #FFFFFF;
-    z-index: 3100;
+    z-index: 103100;
     text-decoration: none;
     text-shadow: none;
     display: none;
@@ -319,7 +319,7 @@ BODY {
 .tooltip, .tooltip-bs {
     position: absolute;
     background: rgba(255, 255, 255, 0.9);
-    z-index: 3080;
+    z-index: 103080;
     pointer-events: none;
     user-select: none;
 
@@ -408,7 +408,7 @@ BODY {
 /* end of violin plots specific CSS*/
 
 .xy-tooltip {
-    z-index: 3070;
+    z-index: 103070;
 }
 
 .no-interactions {
@@ -421,7 +421,7 @@ BODY {
 }
 
 .foreground {
-    z-index: 3150;
+    z-index: 103150;
 }
 
 html {
