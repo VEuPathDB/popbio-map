@@ -734,7 +734,7 @@
              The options below instruct Solr not to output any HTTP Caching
              related headers
           -->
-        <httpCaching never304="true"/>
+        <httpCaching never304="false"/>
         <!-- If you include a <cacheControl> directive, it will be used to
              generate a Cache-Control header (as well as an Expires header
              if the value contains "max-age=")
@@ -774,12 +774,11 @@
              (lastModifiedFrom and etagSeed are both ignored if you use
              the never304="true" option)
           -->
-        <!--
            <httpCaching lastModifiedFrom="openTime"
                         etagSeed="Solr">
-             <cacheControl>max-age=30, public</cacheControl>
+               <cacheControl>max-age=2592000, public</cacheControl>
            </httpCaching>
-          -->
+
     </requestDispatcher>
 
     <!-- Request Handlers
@@ -1116,9 +1115,10 @@
         </lst>
     </requestHandler>
 
+
     <!-- A request handler to serve the proper document structure to display geo-clusters on the popbio map -->
 
-    <requestHandler name="/smplGeoclust" class="solr.SearchHandler">
+    <requestHandler name="/survGeoclust" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
              will be overridden by parameters in the request
           -->
@@ -1145,34 +1145,63 @@
 
     </requestHandler>
 
-    <requestHandler name="/irGeoclust" class="solr.SearchHandler">
-        <!-- default values for query parameters can be specified, these
-             will be overridden by parameters in the request
-          -->
-        <lst name="defaults">
-            <str name="echoParams">explicit</str>
-            <str name="df">text</str>
-            <str name="wt">json</str>
-            <str name="json.nl">map</str>
-        </lst>
-        <lst name="appends">
-            <str name="fq">bundle:pop_sample_phenotype</str>
-            <str name="fq">phenotype_type_s:"insecticide resistance"</str>
-            <str name="fq">has_geodata:true</str>
-        </lst>
-        <lst name="invariants">
-            <int name="rows">0</int>
-            <str name="stats">true</str>
-            <str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_0_coordinate</str>
-            <str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_1_coordinate</str>
-            <str name="stats.field">{!count=true mean=true}phenotype_rescaled_value_f</str>
-            <str name="facet">true</str>
-            <int name="facet.limit">-1</int>
-            <str name="facet.sort">count</str>
-            <int name="facet.pivot.mincount">1</int>
-        </lst>
+    <!-- A request handler to serve the proper document structure to display geo-clusters on the popbio map -->
 
-    </requestHandler>
+    <!--<requestHandler name="/smplGeoclust" class="solr.SearchHandler">-->
+    <!--&lt;!&ndash; default values for query parameters can be specified, these-->
+    <!--will be overridden by parameters in the request-->
+    <!--&ndash;&gt;-->
+    <!--<lst name="defaults">-->
+    <!--<str name="echoParams">explicit</str>-->
+    <!--<str name="df">text</str>-->
+    <!--<str name="wt">json</str>-->
+    <!--<str name="json.nl">map</str>-->
+    <!--</lst>-->
+    <!--<lst name="appends">-->
+    <!--<str name="fq">bundle:pop_sample</str>-->
+    <!--<str name="fq">has_geodata:true</str>-->
+    <!--</lst>-->
+    <!--<lst name="invariants">-->
+    <!--<int name="rows">0</int>-->
+    <!--<str name="stats">true</str>-->
+    <!--<str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_0_coordinate</str>-->
+    <!--<str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_1_coordinate</str>-->
+    <!--<str name="facet">true</str>-->
+    <!--<int name="facet.limit">-1</int>-->
+    <!--<str name="facet.sort">count</str>-->
+    <!--<int name="facet.pivot.mincount">1</int>-->
+    <!--</lst>-->
+
+    <!--</requestHandler>-->
+
+    <!--<requestHandler name="/irGeoclust" class="solr.SearchHandler">-->
+    <!--&lt;!&ndash; default values for query parameters can be specified, these-->
+    <!--will be overridden by parameters in the request-->
+    <!--&ndash;&gt;-->
+    <!--<lst name="defaults">-->
+    <!--<str name="echoParams">explicit</str>-->
+    <!--<str name="df">text</str>-->
+    <!--<str name="wt">json</str>-->
+    <!--<str name="json.nl">map</str>-->
+    <!--</lst>-->
+    <!--<lst name="appends">-->
+    <!--<str name="fq">bundle:pop_sample_phenotype</str>-->
+    <!--<str name="fq">phenotype_type_s:"insecticide resistance"</str>-->
+    <!--<str name="fq">has_geodata:true</str>-->
+    <!--</lst>-->
+    <!--<lst name="invariants">-->
+    <!--<int name="rows">0</int>-->
+    <!--<str name="stats">true</str>-->
+    <!--<str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_0_coordinate</str>-->
+    <!--<str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_1_coordinate</str>-->
+    <!--<str name="stats.field">{!count=true mean=true}phenotype_rescaled_value_f</str>-->
+    <!--<str name="facet">true</str>-->
+    <!--<int name="facet.limit">-1</int>-->
+    <!--<str name="facet.sort">count</str>-->
+    <!--<int name="facet.pivot.mincount">1</int>-->
+    <!--</lst>-->
+
+    <!--</requestHandler>-->
 
     <!-- A request handler to serve the proper document structure for samples palette generation -->
 

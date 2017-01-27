@@ -1,10 +1,10 @@
 L.Control.MapLegend = L.Control.extend({
     options: {
-        position      : 'bottomright',
+        position: 'bottomright',
         numberOfColors: 20,  // still not using this :(
-        summarizeBy   : 'Species',
-        sortBy        : 'Color',
-        lum           : 0.7
+        summarizeBy: 'Species',
+        sortBy: 'Color',
+        lum: 0.7
     },
 
     // add the legend to the DOM tree
@@ -15,7 +15,7 @@ L.Control.MapLegend = L.Control.extend({
         L.easyButton('fa-info',
             function () {
                 if (L.DomUtil.hasClass(legendDiv, "active")) {
-                    legend.removeFrom(map);
+                    legend.remove();
                     L.DomUtil.removeClass(legendDiv, "active");
                 } else {
                     legend.addTo(map);
@@ -448,7 +448,7 @@ L.Control.MapLegend = L.Control.extend({
 
         // Was the legend already active? Refresh it!
         if (L.DomUtil.hasClass(this._legendDiv, "active")) {
-            legend.removeFrom(map);
+            legend.remove();
             legend.addTo(map);
         }
 
@@ -547,7 +547,8 @@ L.Control.MapLegend = L.Control.extend({
         this.refreshLegend(palette);
 
         // moved this here to avoid querying SOLR before the palette is done building
-        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+        filterMarkers($("#search_ac").tagsinput('items'), this.options.flyTo)
+
     }
 
 });
@@ -558,6 +559,7 @@ L.control.legend = function (url, options) {
 
     if (options.summarizeBy) newLegend.options.summarizeBy = options.summarizeBy;
     newLegend.options.numberOfColors = legendSpecies;
+    if (options.flyTo) newLegend.options.flyTo = true;
 
     newLegend.addLegendIcon();
     newLegend.bindTableFilter();

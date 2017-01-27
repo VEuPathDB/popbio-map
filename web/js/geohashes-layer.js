@@ -19,6 +19,10 @@ function addGeohashes(objMap, geolevel) {
     };
 
     var geohashes = geohash.bboxes(South, West, North, East, geolevel);
+    var lakis = GeoHash4.getGeohashesForBoundingBox(South, West, North, East, geolevel);
+
+    console.log(geohashes);
+    console.log(lakis);
 
     function fillGeohashesCounts(element, index) {
         geohashData.terms.push(

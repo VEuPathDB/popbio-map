@@ -4,7 +4,7 @@
 
 function loadSmall(mode, zoomLevel) {
     "use strict";
-    var pruneCluster = new PruneClusterForLeaflet(10, 10);
+    var pruneCluster = new PruneClusterForLeaflet(120, 20);
 
     pruneCluster.BuildLeafletClusterIcon = function (cluster) {
         var e = new L.Icon.MarkerCluster();
@@ -102,7 +102,7 @@ function loadSmall(mode, zoomLevel) {
 
     L.Icon.MarkerCluster = L.Icon.extend({
         options: {
-            iconSize : new L.Point(40, 40),
+            iconSize: new L.Point(30, 30),
             className: 'prunecluster leaflet-markercluster-icon'
         },
 
@@ -353,9 +353,9 @@ function loadSmall(mode, zoomLevel) {
         var doc = result.response.docs;
 
         for (var key in doc) if (doc.hasOwnProperty(key)) {
-            var coords = doc[key].geo_coords.split(",");
+            var coords = doc[key].geo_coords.split(" ");
             var pheVal = ($('#view-mode').val() === 'ir') ? doc[key].phenotype_rescaled_value_f : -1;
-            var marker = new PruneCluster.Marker(coords[0], coords[1]);
+            var marker = new PruneCluster.Marker(coords[1], coords[0]);
             marker.data.id = doc[key].id;
             if (doc[key].hasOwnProperty("species_category")) {
                 var species = doc[key].species_category[0];

@@ -11,7 +11,8 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
           rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
+    <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" type="text/css" media="screen"/>-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
@@ -44,7 +45,8 @@
 
     <!-- Remote Javascript libraries -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
-    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>-->
+    <script type="text/javascript" src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"
             charset="utf-8"></script>
@@ -864,10 +866,16 @@
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
                 </a>
+            {{if sampleSize}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}})
-                </span>
-            </p>
+                </span></p>
+            {{/if}}
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -1009,7 +1017,8 @@
                 </span>
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
-                </a>            {{if sampleSize}}
+                </a>
+            {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}}
                 </span>
@@ -1551,6 +1560,8 @@
 
     var glbSummarizeBy = 'Species';
 
+    var markersBounds = [];
+
     var resizeId, previousWindowHeight;
 
 
@@ -1589,34 +1600,17 @@
             }
         }
 
+        initializeMap({flyTo: applyParameters()});
 
-        initializeMap();
+//        if (applyParameters()) {
+//            initializeMap({flyTo: true});
+//        } else {
+//            initializeMap();
+//        };
+
         bindEvents();
 
 
-        // detect when user changes zoom or pans around the map
-        map.on("movestart", function () {
-            removeHighlight();
-            // close open panels
-            $('.collapse').collapse('hide');
-            sidebar.close();
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-        })
-                .on("moveend", function () {
-
-                    loadSolr({clear: 1, zoomLevel: map.getZoom()});
-                })
-                .on("click", function () {
-                    removeHighlight();
-                    sidebar.close();
-                    // close open panels
-                    $('.collapse').collapse('hide');
-                    setTimeout(function () {
-                        resetPlots()
-                    }, delay);
-                });
 
     });
 

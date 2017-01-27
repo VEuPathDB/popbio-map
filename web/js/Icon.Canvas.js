@@ -1,13 +1,9 @@
 L.Icon.Canvas = L.Icon.extend({
     options: {
-        iconSize  : new L.Point(20, 20), // Have to be supplied
-        /*
-         iconAnchor: (Point)
-         popupAnchor: (Point)
-         */
-        className : 'leaflet-canvas-icon',
+        iconSize: new L.Point(20, 20), // Have to be supplied
+        className: 'leaflet-canvas-icon',
         population: 0,
-        stats     : []
+        stats: []
     },
 
     createIcon: function () {
@@ -28,26 +24,24 @@ L.Icon.Canvas = L.Icon.extend({
 
     draw: function (canvas, width, height) {
 
-        var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5;
+        var iconSize = this.options.iconSize.x, iconSize2 = iconSize / 2, iconSize3 = iconSize / 2.5, iconSize4 = iconSize / 3;
         var pi2 = Math.PI * 2;
 
         var start = Math.PI * 1.5;
         //var start = Math.PI * 2;
-        for (var key in this.options.stats) if (this.options.stats.hasOwnProperty(key)) {
+        var stats = this.options.stats;
+        var count = this.options.count;
+        var cumulativeCount = this.options.cumulativeCount;
+        stats.forEach(function (el) {
 
-            var size = this.options.stats[key] / this.options.population;
-            //console.log(key + "-" + this.options.stats[key]);
+
+            var size = el.value / cumulativeCount;
+            var label = el.label;
 
             if (size > 0) {
                 canvas.beginPath();
                 canvas.moveTo(iconSize2, iconSize2);
-                if (palette.hasOwnProperty(key)) {
-                    //console.log(key + '=' + palette[key])
-                    canvas.fillStyle = palette[key];
-                } else {
-                    canvas.fillStyle = palette["others"];
-                    //console.log(key + '*' + palette["others"]);
-                }
+                canvas.fillStyle = el.color;
 
                 var from = start,
                     to = start + size * pi2;
@@ -63,7 +57,9 @@ L.Icon.Canvas = L.Icon.extend({
                 canvas.closePath();
             }
 
-        }
+        });
+
+        // Draw the marker background
 
         canvas.beginPath();
         canvas.fillStyle = 'white';
@@ -73,22 +69,20 @@ L.Icon.Canvas = L.Icon.extend({
 
         var colors = markerColor(this.options.trafficlight);
 
-        if ($('#view-mode').val() === 'ir') {
+        // Draw the marker fill color (white if now value)
 
-            canvas.beginPath();
-            canvas.fillStyle = colors[0];
-            canvas.arc(iconSize2, iconSize2, iconSize2 - 7, 0, Math.PI * 2);
-            canvas.fill();
-            canvas.closePath();
-        }
-
-        canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
+        canvas.beginPath();
+        canvas.fillStyle = colors[0];
+        canvas.arc(iconSize2, iconSize2, iconSize4, 0, Math.PI * 2);
+        canvas.fill();
+        canvas.closePath();
+        canvas.fillStyle = colors[1];
 
         canvas.textAlign = 'center';
         canvas.textBaseline = 'middle';
         canvas.font = 'bold 12px sans-serif';
 
-        // canvas.fillText(this.options.population, iconSize2, iconSize2, iconSize);
+
         canvas.fillText(this.options.count, iconSize2, iconSize2, iconSize);
     }
 });

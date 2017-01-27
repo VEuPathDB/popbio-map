@@ -48,3 +48,6 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+/web/hpc-leap/
+../hpc-leap/hpc-leap/
+web/libs/jquery-endless-scroll/
