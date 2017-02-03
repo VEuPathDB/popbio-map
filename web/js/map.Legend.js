@@ -4,7 +4,13 @@ L.Control.MapLegend = L.Control.extend({
         numberOfColors: 20,  // still not using this :(
         summarizeBy: 'Species',
         sortBy: 'Color',
-        lum: 0.7
+        lum: 0.7,
+        trafficlight: {
+            colorBrewer: $('#SelectView').val() === 'ir' ?
+                L.ColorBrewer.Diverging.RdYlBu[10].slice() :
+                L.ColorBrewer.Sequential.BuPu[9].slice()
+        },
+        palette: {}
     },
 
     // add the legend to the DOM tree
@@ -41,6 +47,21 @@ L.Control.MapLegend = L.Control.extend({
 
     },
 
+    markerColor: function (value) {
+        var options = this.options;
+        var fillColor, textColor;
+
+        if (value < 0) {
+            return ["white", '#555'];
+        }
+
+        fillColor = options.trafficlight.scale.evaluate(value);
+        textColor = getContrastYIQ(fillColor);
+        return [fillColor, textColor];
+
+
+    },
+
     /*
      function generatePalette
      date: 17/03/2015
@@ -51,7 +72,7 @@ L.Control.MapLegend = L.Control.extend({
      outputs: an associative array with items names as the keys and color as the values
      */
     generatePalette: function (items) {
-
+        var options = this.options;
         var newPalette = {};
         var limitedPalette = {};
 
@@ -106,7 +127,7 @@ L.Control.MapLegend = L.Control.extend({
 
         for (var i = 0; i < stNoItems; i++) {
             // if (typeof items[i] === 'object') {
-            if (i === this.options.numberOfColors) break;
+            if (i === options.numberOfColors) break;
             var item = items[i][0];
             newPalette[item] = kelly_colors_hex[i];
             noItems--; // track how many items need a grayscale color
@@ -188,7 +209,7 @@ L.Control.MapLegend = L.Control.extend({
 
     _sortColorsByHue: function (colors) {
         var tuples = [];
-        var sortedPallete = {};
+        var sortedPalette = {};
         for (var colorsKey in colors) if (colors.hasOwnProperty(colorsKey)) {
             tuples.push([colorsKey, colors[colorsKey]])
         }
@@ -203,22 +224,25 @@ L.Control.MapLegend = L.Control.extend({
         for (var i = 0; i < tuples.length; i++) {
             var key = tuples[i][0];
             var value = tuples[i][1];
-            sortedPallete[key] = value.hex;  // keep only the hex value
+            sortedPalette[key] = value.hex;  // keep only the hex value
         }
 
-        return sortedPallete;
+        return sortedPalette;
     },
 
+
+    /*
+     function _colorLuminance
+     date: 20/03/2015
+     purpose: extracts the red, green and blue values in turn, converts them to decimal, applies the luminosity factor,
+     and converts them back to hexadecimal.
+     inputs: <hex> original hex color value <lum> level of luminosity from 0 (lightest) to 1 (darkest)
+     outputs: a hex represantation of the color
+     source: http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+     */
+
     _colorLuminance: function (hex, lum) {
-        /*
-         function _colorLuminance
-         date: 20/03/2015
-         purpose: extracts the red, green and blue values in turn, converts them to decimal, applies the luminosity factor,
-         and converts them back to hexadecimal.
-         inputs: <hex> original hex color value <lum> level of luminosity from 0 (lightest) to 1 (darkest)
-         outputs: a hex represantation of the color
-         source: http://www.sitepoint.com/javascript-generate-lighter-darker-color/
-         */
+
 
         // validate hex string
         "use strict";
@@ -281,11 +305,12 @@ L.Control.MapLegend = L.Control.extend({
 
     // build the HTML for the table
     _generateTableHtml: function (sortedPalette, numOfItems) {
+        var options = this.options;
         var inHtml = ""; // store HTML here
 
         var sortByHTML = '';
 
-        if (this.options.sortBy === 'Name') {
+        if (options.sortBy === 'Name') {
             sortByHTML = '<i class = "fa fa-sort-alpha-asc sort-by"></i>'
         } else {
             sortByHTML = '<i class="sort-by" style="background:radial-gradient(#4D4D4D, #CCCCCC);"></i>' +
@@ -318,13 +343,13 @@ L.Control.MapLegend = L.Control.extend({
 
         $('#table-legend-controls').html(sumDropdownHtml);
 
-        var type = mapSummarizeByToField(this.options.summarizeBy).type;
+        var type = mapSummarizeByToField(options.summarizeBy).type;
 
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
 
             if (obj1 === 'Unknown') break;
             // console.log(obj1);
-            if (this.options.summarizeBy === 'Species') {
+            if (options.summarizeBy === 'Species') {
 
                 inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + obj1 + '</em><br>' : '+');
@@ -348,12 +373,13 @@ L.Control.MapLegend = L.Control.extend({
 
     // build the HTML for the legend node
     _generateLegendHtml: function (sortedPalette, numOfItems) {
+        var options = this.options;
         var inHtml = ""; // store HTML here
         var cntLegend = 1; // store the number of the elements/entries in the legend
 
         var sortByHTML = '';
 
-        if (this.options.sortBy === 'Name') {
+        if (options.sortBy === 'Name') {
             sortByHTML = '<i class = "fa fa-sort-alpha-asc sort-by"></i>'
         } else {
             sortByHTML = '<i class="sort-by" style="background:radial-gradient(#4D4D4D, #CCCCCC);"></i>' +
@@ -385,11 +411,11 @@ L.Control.MapLegend = L.Control.extend({
             '</div>';
 
         inHtml += '<div style="border: 0; margin-bottom: 5px;">' + dropdownsHTML + '</div>';
-        var type = mapSummarizeByToField(this.options.summarizeBy).type;
+        var type = mapSummarizeByToField(options.summarizeBy).type;
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
-            if (cntLegend === this.options.numberOfColors) break;
+            if (cntLegend === options.numberOfColors) break;
 
-            if (this.options.summarizeBy === 'Species') {
+            if (options.summarizeBy === 'Species') {
                 var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An.
                                                                                 // gambiae
 
@@ -405,27 +431,28 @@ L.Control.MapLegend = L.Control.extend({
             cntLegend++; // update the counter of legend entries
         }
         // add others
-        if (numOfItems > this.options.numberOfColors) {
+        if (numOfItems > options.numberOfColors) {
 
-            var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")"
+            var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")";
             inHtml += '<span class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></span>';
         }
 
         // add Unknown
         inHtml += '<i style="background: #000000;"></i> Unknown<br />';
-        palette['Unknown'] = '#000000';
+        options.palette['Unknown'] = '#000000';
 
         $("#legend").html(inHtml);
 
+        var colorsArr = options.trafficlight.colorBrewer;
         // if in IR mode add the IR resistance color scale
-        if ($('#view-mode').val() === 'ir') {
+        if ($('#SelectView').val() === 'ir') {
 
             inHtml += '<div class="data-layer-legend" style="border: 0">';
             inHtml += '<p style="text-align: left">Resistance</p>';
             inHtml += '<div id="legend-ir-scale-bar">';
             inHtml += '<div class="min-value" style="border: 0">Low</div>';
             inHtml += '<div class="scale-bars">';
-            var colorsArr = L.ColorBrewer.Diverging.RdYlBu[10].slice(); // using slice to copy array by value
+            // var colorsArr = L.ColorBrewer.Diverging.RdYlBu[10].slice(); // using slice to copy array by value
             $.each(colorsArr.reverse(), function (index, value) {
                 inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10px; background-color: ' + value + ' ;"></i>';
             });
@@ -438,6 +465,22 @@ L.Control.MapLegend = L.Control.extend({
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
                 'More info</span></p>';
 
+        } else if ($('#SelectView').val() === 'abnd') {
+            // abundance view
+            inHtml += '<div class="data-layer-legend" style="border: 0">';
+            inHtml += '<p style="text-align: left">Average abundance</p>';
+            inHtml += '<div id="legend-ir-scale-bar">';
+            inHtml += '<div class="min-value" style="border: 0">' + Math.floor(Math.pow(10, options.trafficlight.min)) + '</div>';
+            inHtml += '<div class="scale-bars">';
+            // var colorsArr = this.trafficlight.colorBrewer; // using slice to copy array by value
+            $.each(colorsArr, function (index, value) {
+                inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10px; background-color: ' + value + ' ;"></i>';
+            });
+
+            inHtml += '</div></div>' +
+                '<div class="max-value" style="border: 0;">' + Math.ceil(Math.pow(10, options.trafficlight.max)) + '</div></div>' +
+                '<p style="font-size: smaller; word-wrap: break-word; width: 100%; max-width: 190px; margin-top: 5px;">' +
+                'Individuals per day of sampling<br>Values used for coloring have been log-transformed</p>';
         }
 
         // Populate legend when added to map
@@ -463,19 +506,20 @@ L.Control.MapLegend = L.Control.extend({
      */
 
     refreshLegend: function (unsortedPalette) {
+        var options = this.options;
         var sortedPalette = [];
         var paletteSize = _.size(unsortedPalette);
-        if (this.options.sortBy === 'Name') {
-            sortedPalette = this._outputNames(unsortedPalette, this.options.numberOfColors);
+        if (options.sortBy === 'Name') {
+            sortedPalette = this._outputNames(unsortedPalette, options.numberOfColors);
 
         } else {    // sort by color
 
-            sortedPalette = this._outputColors(unsortedPalette, this.options.numberOfColors);
+            sortedPalette = this._outputColors(unsortedPalette, options.numberOfColors);
         }
 
         this._generateLegendHtml(sortedPalette, paletteSize);
 
-        if (this.options.sortBy === 'Name') {
+        if (options.sortBy === 'Name') {
             sortedPalette = this._outputNames(unsortedPalette, 0);
 
         } else {    // sort by color
@@ -488,31 +532,53 @@ L.Control.MapLegend = L.Control.extend({
 
     },
 
-    _populateLegend: function (result, fieldName) {
+    _populateLegend: function (result, fieldName, flyTo) {
+        var options = this.options;
         var geohashLevel = "geohash_2";
+        if (typeof (flyTo) === 'undefined') flyTo = options.flyTo;
         if (!fieldName) {
-            fieldName = this.options.summarizeBy;
+            fieldName = options.summarizeBy;
         } else {
             // update map options
-            this.options.summarizeBy = fieldName;
+            options.summarizeBy = fieldName;
         }
 
-        var pivotParams = geohashLevel + "," + mapSummarizeByToField(fieldName).summarize;
+        // var pivotParams = geohashLevel + "," + mapSummarizeByToField(fieldName).summarize;
 
-        var doc = result.facet_counts.facet_pivot[pivotParams];
+        // var doc = result.facet_counts.facet_pivot[pivotParams];
+        var facets = result.facets;
+        var facetResults = facets.geo.buckets;
+        var minAbnd = (facets.minAbnd) ? facets.minAbnd : 0;
+        var maxAbnd = (facets.maxAbnd) ? facets.maxAbnd : 1;
+
+        // set trafficlight options
+        var trafficlight = options.trafficlight;
+
+        trafficlight.colorBrewer = $('#SelectView').val() === 'ir' ?
+            L.ColorBrewer.Diverging.RdYlBu[10].slice() :
+            L.ColorBrewer.Sequential.BuPu[9].slice()
+
+        trafficlight.scale = new L.CustomColorFunction(minAbnd, maxAbnd, options.trafficlight.colorBrewer, {interpolate: true});
+        trafficlight.min = minAbnd;
+        trafficlight.max = maxAbnd;
+
+
         var items = [];
-        for (var obj in doc) if (doc.hasOwnProperty(obj)) {
-            var count = doc[obj].count;
+        // for (var obj in doc) if (doc.hasOwnProperty(obj)) {
+        //     var count = doc[obj].count;
 
-            var pivot = doc[obj].pivot;
-            for (var pivotElm in pivot) if (pivot.hasOwnProperty(pivotElm)) {
-                var ratio = pivot[pivotElm].count / count;
-                var sumField = pivot[pivotElm].value;
-                var index = parseInt(pivotElm);
+        facetResults.forEach(function (el) {
+            var geoTerms = el.terms.buckets;
+            var i = 1;
+            var count = el.count;
+            geoTerms.forEach(function (inEl) {
+                var ratio = inEl.count / count;
+                var sumField = inEl.val;
+                // var index = parseInt(i);
                 var points;
                 // Use a scoring scheme to make sure species with a good presence per region get a proper color (we
                 // only have 20 good colours)
-                switch (index) {
+                switch (i) {
                     case 1:
                         points = 7 * ratio;
                         break;
@@ -536,18 +602,20 @@ L.Control.MapLegend = L.Control.extend({
                     items[sumField] = points;
 
                 }
-            }
+                i++;
+            });
 
-        }
+        });
+
 
         // this is where the legend items are sorted
         var sortedItems = this._sortHashByValue(items);
-        palette = this.generatePalette(sortedItems);
+        options.palette = this.generatePalette(sortedItems);
 
-        this.refreshLegend(palette);
+        this.refreshLegend(options.palette);
 
         // moved this here to avoid querying SOLR before the palette is done building
-        filterMarkers($("#search_ac").tagsinput('items'), this.options.flyTo)
+        filterMarkers($("#search_ac").tagsinput('items'), flyTo)
 
     }
 
@@ -559,10 +627,11 @@ L.control.legend = function (url, options) {
 
     if (options.summarizeBy) newLegend.options.summarizeBy = options.summarizeBy;
     newLegend.options.numberOfColors = legendSpecies;
-    if (options.flyTo) newLegend.options.flyTo = true;
+    newLegend.options.flyTo = options.flyTo;
 
     newLegend.addLegendIcon();
     newLegend.bindTableFilter();
+
     $.getJSON(url, function (data) {
         newLegend._populateLegend(data, options.summarizeBy)
     });

@@ -8,7 +8,7 @@ function createBeeViolinPlot(divid, filter) {
     "use strict";
 
     // Only proceed if in IR mode, otherwise clear the graph
-    if ($('#view-mode').val() === 'smpl') {
+    if ($('#SelectView').val() === 'smpl') {
 
         $(divid).html(
             '<div style="text-align: center; margin-top: 30px">' +
@@ -1018,15 +1018,15 @@ function buildDataset(dataset, element) {
     var species = element.species_category ? element.species_category[0] : 'Unknown';
     var bgColor;
     if (glbSummarizeBy === 'Species') {
-        bgColor = palette[species]
+        bgColor = legend.options.palette[species]
     } else {
         var field = mapSummarizeByToField(glbSummarizeBy).field;
         var fieldContents = element[field];
         if (fieldContents) {
-            typeof fieldContents === 'object' ? bgColor = palette[fieldContents[0]] : bgColor = palette[fieldContents];
+            typeof fieldContents === 'object' ? bgColor = legend.options.palette[fieldContents[0]] : bgColor = legend.options.palette[fieldContents];
 
         } else {
-            bgColor = palette['Unknown']
+            bgColor = legend.options.palette['Unknown']
         }
 
     }

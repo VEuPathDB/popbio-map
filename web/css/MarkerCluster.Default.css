@@ -45,12 +45,12 @@
 }
 .marker-cluster {
     background-clip : padding-box;
-    border-radius   : 20px;
+    border-radius: 30px;
 }
 .marker-cluster-selected {
     background-clip : padding-box;
     border          : 2px solid whitesmoke;
-    border-radius   : 20px;
+    border-radius: 30px;
 }
 .marker-cluster div {
     width         : 30px;

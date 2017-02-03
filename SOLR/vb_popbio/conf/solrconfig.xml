@@ -774,10 +774,10 @@
              (lastModifiedFrom and etagSeed are both ignored if you use
              the never304="true" option)
           -->
-           <httpCaching lastModifiedFrom="openTime"
-                        etagSeed="Solr">
-               <cacheControl>max-age=2592000, public</cacheControl>
-           </httpCaching>
+        <httpCaching lastModifiedFrom="openTime"
+                     etagSeed="Solr">
+            <cacheControl>max-age=2592000, public</cacheControl>
+        </httpCaching>
 
     </requestDispatcher>
 
@@ -935,10 +935,10 @@
     -->
 
     <!--<requestHandler name="/stream" class="solr.StreamHandler">-->
-        <!--<lst name="invariants">-->
-            <!--<str name="wt">json</str>-->
-            <!--<str name="distrib">false</str>-->
-        <!--</lst>-->
+    <!--<lst name="invariants">-->
+    <!--<str name="wt">json</str>-->
+    <!--<str name="distrib">false</str>-->
+    <!--</lst>-->
     <!--</requestHandler>-->
 
     <!-- Update Request Handler.
@@ -1118,35 +1118,6 @@
 
     <!-- A request handler to serve the proper document structure to display geo-clusters on the popbio map -->
 
-    <requestHandler name="/survGeoclust" class="solr.SearchHandler">
-        <!-- default values for query parameters can be specified, these
-             will be overridden by parameters in the request
-          -->
-        <lst name="defaults">
-            <str name="echoParams">explicit</str>
-            <str name="df">text</str>
-            <str name="wt">json</str>
-            <str name="json.nl">map</str>
-        </lst>
-        <lst name="appends">
-            <str name="fq">bundle:pop_sample</str>
-            <str name="fq">has_geodata:true</str>
-        </lst>
-        <lst name="invariants">
-            <int name="rows">0</int>
-            <str name="stats">true</str>
-            <str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_0_coordinate</str>
-            <str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_1_coordinate</str>
-            <str name="facet">true</str>
-            <int name="facet.limit">-1</int>
-            <str name="facet.sort">count</str>
-            <int name="facet.pivot.mincount">1</int>
-        </lst>
-
-    </requestHandler>
-
-    <!-- A request handler to serve the proper document structure to display geo-clusters on the popbio map -->
-
     <!--<requestHandler name="/smplGeoclust" class="solr.SearchHandler">-->
     <!--&lt;!&ndash; default values for query parameters can be specified, these-->
     <!--will be overridden by parameters in the request-->
@@ -1179,6 +1150,84 @@
     <!--will be overridden by parameters in the request-->
     <!--&ndash;&gt;-->
     <!--<lst name="defaults">-->
+    <!--<str name="echoParams">none</str>-->
+    <!--<str name="df">text</str>-->
+    <!--<property name="bbox">"lakis"</property>-->
+    <!--</lst>-->
+    <!--<lst name="appends">-->
+    <!--&lt;!&ndash;<str name="fq">bundle:pop_sample_phenotype</str>&ndash;&gt;-->
+    <!--&lt;!&ndash;<str name="fq">phenotype_type_s:"insecticide resistance"</str>&ndash;&gt;-->
+    <!--&lt;!&ndash;<str name="fq">has_geodata:true</str>&ndash;&gt;-->
+    <!--</lst>-->
+    <!--<lst name="invariants">-->
+    <!--<str name="wt">json</str>-->
+    <!--<str name="json.nl">map</str>-->
+    <!--<int name="rows">0</int>-->
+    <!--<str name="json">{-->
+    <!--filter:["bundle:pop_sample_phenotype","has_geodata:true],-->
+    <!--facet:{-->
+    <!--geo:{-->
+    <!--type:terms,-->
+    <!--field:${geo:"geohash_2"},-->
+    <!--limit:2000,-->
+    <!--mincount:1,-->
+    <!--sort:{count:desc},-->
+    <!--facet:{-->
+    <!--ltAvg:avg(geo_coords_ll_0_coordinate),-->
+    <!--ltMin:min(geo_coords_ll_0_coordinate),-->
+    <!--ltMax:max(geo_coords_ll_0_coordinate),-->
+    <!--lnAvg:avg(geo_coords_ll_1_coordinate),-->
+    <!--lnMin:min(geo_coords_ll_1_coordinate),-->
+    <!--lnMax:max(geo_coords_ll_1_coordinate),-->
+    <!--irAvg:avg(phenotype_rescaled_value_f),-->
+    <!--term:{-->
+    <!--type:terms,-->
+    <!--field:${term:"species_category"},-->
+    <!--limit:2000,mincount:1-->
+    <!--}-->
+    <!--}-->
+    <!--}-->
+    <!--}-->
+    <!--}-->
+    <!--</str>-->
+    <!--</lst>-->
+
+    <!--</requestHandler>-->
+
+    <!-- A request handler to serve the proper document structure for samples palette generation -->
+
+    <!--<requestHandler name="/smplPalette" class="solr.SearchHandler">-->
+    <!--&lt;!&ndash; default values for query parameters can be specified, these-->
+    <!--will be overridden by parameters in the request-->
+    <!--&ndash;&gt;-->
+    <!--<lst name="defaults">-->
+    <!--<str name="echoParams">explicit</str>-->
+    <!--<str name="wt">json</str>-->
+    <!--<str name="df">text</str>-->
+    <!--<str name="json.nl">map</str>-->
+    <!--</lst>-->
+    <!--<lst name="appends">-->
+    <!--<str name="fq">bundle:pop_sample</str>-->
+    <!--<str name="fq">has_geodata:true</str>-->
+    <!--</lst>-->
+    <!--<lst name="invariants">-->
+    <!--<int name="rows">0</int>-->
+    <!--<str name="facet">true</str>-->
+    <!--<int name="facet.limit">-1</int>-->
+    <!--<str name="facet.sort">count</str>-->
+    <!--<int name="facet.pivot.mincount">1</int>-->
+    <!--</lst>-->
+
+    <!--</requestHandler>-->
+
+
+    <!-- A request handler to serve the proper document structure for IR assays palette generation -->
+
+    <!--<requestHandler name="/irPalette" class="solr.SearchHandler">-->
+    <!--&lt;!&ndash; default values for query parameters can be specified, these-->
+    <!--will be overridden by parameters in the request-->
+    <!--&ndash;&gt;-->
+    <!--<lst name="defaults">-->
     <!--<str name="echoParams">explicit</str>-->
     <!--<str name="df">text</str>-->
     <!--<str name="wt">json</str>-->
@@ -1191,10 +1240,6 @@
     <!--</lst>-->
     <!--<lst name="invariants">-->
     <!--<int name="rows">0</int>-->
-    <!--<str name="stats">true</str>-->
-    <!--<str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_0_coordinate</str>-->
-    <!--<str name="stats.field">{!min=true max=true count=true mean=true}geo_coords_ll_1_coordinate</str>-->
-    <!--<str name="stats.field">{!count=true mean=true}phenotype_rescaled_value_f</str>-->
     <!--<str name="facet">true</str>-->
     <!--<int name="facet.limit">-1</int>-->
     <!--<str name="facet.sort">count</str>-->
@@ -1203,59 +1248,31 @@
 
     <!--</requestHandler>-->
 
-    <!-- A request handler to serve the proper document structure for samples palette generation -->
 
-    <requestHandler name="/smplPalette" class="solr.SearchHandler">
-        <!-- default values for query parameters can be specified, these
-             will be overridden by parameters in the request
-          -->
-        <lst name="defaults">
-            <str name="echoParams">explicit</str>
-            <str name="wt">json</str>
-            <str name="df">text</str>
-            <str name="json.nl">map</str>
-        </lst>
-        <lst name="appends">
-            <str name="fq">bundle:pop_sample</str>
-            <str name="fq">has_geodata:true</str>
-        </lst>
-        <lst name="invariants">
-            <int name="rows">0</int>
-            <str name="facet">true</str>
-            <int name="facet.limit">-1</int>
-            <str name="facet.sort">count</str>
-            <int name="facet.pivot.mincount">1</int>
-        </lst>
+    <!--<requestHandler name="/abndPalette" class="solr.SearchHandler">-->
+    <!--&lt;!&ndash; default values for query parameters can be specified, these-->
+    <!--will be overridden by parameters in the request-->
+    <!--&ndash;&gt;-->
+    <!--<lst name="defaults">-->
+    <!--<str name="echoParams">explicit</str>-->
+    <!--<str name="wt">json</str>-->
+    <!--<str name="df">text</str>-->
+    <!--<str name="json.nl">map</str>-->
+    <!--</lst>-->
+    <!--<lst name="appends">-->
+    <!--<str name="fq">bundle:pop_sample</str>-->
+    <!--<str name="fq">has_geodata:true</str>-->
+    <!--<str name="fq">has_abundance_data_b:true</str>-->
+    <!--</lst>-->
+    <!--<lst name="invariants">-->
+    <!--<int name="rows">0</int>-->
+    <!--<str name="facet">true</str>-->
+    <!--<int name="facet.limit">-1</int>-->
+    <!--<str name="facet.sort">count</str>-->
+    <!--<int name="facet.pivot.mincount">1</int>-->
+    <!--</lst>-->
 
-    </requestHandler>
-
-
-    <!-- A request handler to serve the proper document structure for IR assays palette generation -->
-
-    <requestHandler name="/irPalette" class="solr.SearchHandler">
-        <!-- default values for query parameters can be specified, these
-             will be overridden by parameters in the request
-          -->
-        <lst name="defaults">
-            <str name="echoParams">explicit</str>
-            <str name="df">text</str>
-            <str name="wt">json</str>
-            <str name="json.nl">map</str>
-        </lst>
-        <lst name="appends">
-            <str name="fq">bundle:pop_sample_phenotype</str>
-            <str name="fq">phenotype_type_s:"insecticide resistance"</str>
-            <str name="fq">has_geodata:true</str>
-        </lst>
-        <lst name="invariants">
-            <int name="rows">0</int>
-            <str name="facet">true</str>
-            <int name="facet.limit">-1</int>
-            <str name="facet.sort">count</str>
-            <int name="facet.pivot.mincount">1</int>
-        </lst>
-
-    </requestHandler>
+    <!--</requestHandler>-->
 
 
     <!-- A request handler to display markers for geohashes (limited to samples)-->
@@ -1319,6 +1336,36 @@
         <lst name="appends">
             <str name="fq">bundle:pop_sample_phenotype</str>
             <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+            <str name="fq">has_geodata:true</str>
+        </lst>
+        <lst name="invariants">
+            <int name="rows">100</int>
+            <str name="group">true</str>
+            <str name="group.field">phenotype_value_type_s</str>
+            <str name="group.limit">100</str>
+            <str name="fl">accession, bundle_name, sample_type url, collection_protocol, geolocations, geo_coords,
+                species_category, collection_protocols, collection_date, collection_date_range, projects, protocols,
+                phenotype_value_f,
+                phenotype_value_type_s, phenotype_value_unit_s, insecticide_s, sample_size_i, concentration_f,
+                concentration_unit_s, duration_f, duration_unit_s
+            </str>
+        </lst>
+    </requestHandler>
+
+
+    <requestHandler name="/abndBeeswarm" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+            <str name="df">text</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_phenotype</str>
+            <str name="fq">has_abundance_data_b:true</str>
             <str name="fq">has_geodata:true</str>
         </lst>
         <lst name="invariants">
@@ -1450,6 +1497,32 @@
                 phenotype_value_f,
                 phenotype_value_type_s, phenotype_value_unit_s, insecticide_s, sample_size_i, concentration_f,
                 concentration_unit_s, duration_f, duration_unit_s
+            </str>
+            <str name="q.op">OR</str>
+        </lst>
+
+    </requestHandler>
+
+    <requestHandler name="/abndTable" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="df">text</str>
+            <int name="rows">20</int>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_geodata:true</str>
+            <str name="fq">has_abundance_data_b:true</str>
+        </lst>
+        <lst name="invariants">
+            <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
+                species_category, collection_protocols, collection_date, collection_date_range, projects, sample_size_i,
+                collection_duration_days_i
             </str>
             <str name="q.op">OR</str>
         </lst>

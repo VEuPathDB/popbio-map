@@ -30,12 +30,13 @@ L.Icon.Canvas = L.Icon.extend({
         var start = Math.PI * 1.5;
         //var start = Math.PI * 2;
         var stats = this.options.stats;
+        var markerText = this.options.markerText;
         var count = this.options.count;
-        var cumulativeCount = this.options.cumulativeCount;
+        // var cumulativeCount = this.options.cumulativeCount;
         stats.forEach(function (el) {
 
 
-            var size = el.value / cumulativeCount;
+            var size = el.value / count;
             var label = el.label;
 
             if (size > 0) {
@@ -67,7 +68,7 @@ L.Icon.Canvas = L.Icon.extend({
         canvas.fill();
         canvas.closePath();
 
-        var colors = markerColor(this.options.trafficlight);
+        var colors = legend.markerColor(this.options.trafficlight);
 
         // Draw the marker fill color (white if now value)
 
@@ -83,6 +84,6 @@ L.Icon.Canvas = L.Icon.extend({
         canvas.font = 'bold 12px sans-serif';
 
 
-        canvas.fillText(this.options.count, iconSize2, iconSize2, iconSize);
+        canvas.fillText(markerText, iconSize2, iconSize2, iconSize);
     }
 });
