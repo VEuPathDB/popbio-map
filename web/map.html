@@ -9,12 +9,11 @@
             <p>{{html:bundleName}} <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}"> {{html:accession}} </span>
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
-                </a>
-                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                </a> {{if sampleSize}} <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}} </span>
+                 of {{>sampleSize}} individuals)</p> {{else}} <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}})
-                </span>
-            </p>
-        </div>
+                </span></p> {{/if}} </div>
         <div class="row">
             <div class="col-md-6">
                 <p>
@@ -317,6 +316,8 @@
 
     var glbSummarizeBy = 'Species';
 
+    var markersBounds = [];
+
     var resizeId, previousWindowHeight;
 
 
@@ -355,33 +356,16 @@
             }
         }
 
+        initializeMap({flyTo: applyParameters()});
 
-        initializeMap();
+//        if (applyParameters()) {
+//            initializeMap({flyTo: true});
+//        } else {
+//            initializeMap();
+//        };
+
         bindEvents();
 
 
-        // detect when user changes zoom or pans around the map
-        map.on("movestart", function () {
-            removeHighlight();
-            // close open panels
-            $('.collapse').collapse('hide');
-            sidebar.close();
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-        })
-                .on("moveend", function () {
-
-                    loadSolr({clear: 1, zoomLevel: map.getZoom()});
-                })
-                .on("click", function () {
-                    removeHighlight();
-                    sidebar.close();
-                    // close open panels
-                    $('.collapse').collapse('hide');
-                    setTimeout(function () {
-                        resetPlots()
-                    }, delay);
-                });
 
     });</script>
