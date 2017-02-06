@@ -25,35 +25,80 @@ function applyParameters() {
                     }
                     break;
                 case "stableID":
+                    // have we passed multiple stable IDs??
+                    var param = urlParams[key];
+                    if (Array.isArray(param)) {
+                        param.forEach(function (element) {
+                            $('#search_ac').tagsinput('add', {
+                                value: element,
+                                activeTerm: true,
+                                type: 'Stable ID',
+                                field: mapTypeToField('Stable ID'),
+                                qtype: 'exact'
 
-                    $('#search_ac').tagsinput('add', {
-                        value: urlParams[key],
-                        activeTerm: true,
-                        type: 'Stable ID',
-                        field: mapTypeToField('Stable ID'),
-                        qtype: 'exact'
+                            });
+                        })
+                    } else {
+                        $('#search_ac').tagsinput('add', {
+                            value: urlParams[key],
+                            activeTerm: true,
+                            type: 'Stable ID',
+                            field: mapTypeToField('Stable ID'),
+                            qtype: 'exact'
 
-                    });
+                        });
+                    }
                     break;
                 case "projectID":
-                    $('#search_ac').tagsinput('add', {
-                        value: urlParams[key],
-                        activeTerm: true,
-                        type: 'Projects',
-                        field: mapTypeToField('Projects'),
-                        qtype: 'exact'
+                    // have we passed multiple project IDs??
+                    var param = urlParams[key];
+                    if (Array.isArray(param)) {
+                        param.forEach(function (element) {
+                            $('#search_ac').tagsinput('add', {
+                                value: element,
+                                activeTerm: true,
+                                type: 'Projects',
+                                field: mapTypeToField('Projects'),
+                                qtype: 'exact'
 
-                    });
+                            });
+                        })
+                    } else {
+
+                        $('#search_ac').tagsinput('add', {
+                            value: urlParams[key],
+                            activeTerm: true,
+                            type: 'Projects',
+                            field: mapTypeToField('Projects'),
+                            qtype: 'exact'
+
+                        });
+                    }
+
                     break;
                 case "species":
-                    $('#search_ac').tagsinput('add', {
-                        value: urlParams[key],
-                        activeTerm: true,
-                        type: 'Taxonomy',
-                        field: mapTypeToField('Taxonomy'),
-                        qtype: 'exact'
+                    var param = urlParams[key];
+                    if (Array.isArray(param)) {
+                        param.forEach(function (element) {
+                            $('#search_ac').tagsinput('add', {
+                                value: element,
+                                activeTerm: true,
+                                type: 'Taxonomy',
+                                field: mapTypeToField('Taxonomy'),
+                                qtype: 'exact'
 
-                    });
+                            });
+                        })
+                    } else {
+                        $('#search_ac').tagsinput('add', {
+                            value: urlParams[key],
+                            activeTerm: true,
+                            type: 'Taxonomy',
+                            field: mapTypeToField('Taxonomy'),
+                            qtype: 'exact'
+
+                        });
+                    }
                     break;
                 default :
                     break;
@@ -2377,9 +2422,9 @@ function mapTypeToLabel(type) {
         case 'Collection protocols' :
             return 'label label-success';
         case 'Date' :
-            return 'label label-info fa'
+            return 'label label-info'
         case 'Seasonal' :
-            return 'label label-info fa'
+            return 'label label-info'
         case 'Norm-IR' :
             return 'label label-secondary';
         case 'Stable ID' :
