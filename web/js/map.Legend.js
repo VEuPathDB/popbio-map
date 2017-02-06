@@ -101,27 +101,43 @@ L.Control.MapLegend = L.Control.extend({
             "#FFCDF3"  // Pink
         ];
 
-        var noItems = items.length,
-            stNoItems = noItems; // store the number of items
+        var numItems = items.length,
+            stNumItems = numItems, // store the number of items
+            hasNoData = false;
 
-        for (var i = 0; i < stNoItems; i++) {
+
+        for (var i = 0; i < stNumItems; i++) {
             // if (typeof items[i] === 'object') {
             if (i === this.options.numberOfColors) break;
             var item = items[i][0];
+
+            // is this 'no data'? Make sure is black. Also temporarily remove from the array and add it last after
+            // grayscale colours have been assigned
+            if (item === 'no data') {
+                hasNoData = true;
+                continue;
+            }
+
             newPalette[item] = kelly_colors_hex[i];
-            noItems--; // track how many items need a grayscale color
+            numItems--; // track how many items need a grayscale color
 
         }
 
-        var lumInterval = 0.5 / noItems;
+        if (hasNoData) {
+            newPalette['no data'] = "#000000";
+            numItems--;
+        }
+
+        var lumInterval = 0.5 / numItems;
         this.lum = 0.7;
-        for (var c = 0; c < noItems; c++) {
-            var element = stNoItems - noItems + c;
+        for (var c = 0; c < numItems; c++) {
+            var element = stNumItems - numItems + c;
             var item = items[element][0];
             newPalette[item] = this._colorLuminance("#FFFFFF", -this.lum);
             this.lum -= lumInterval;
 
         }
+
 
         return newPalette;
     },
@@ -240,11 +256,18 @@ L.Control.MapLegend = L.Control.extend({
         return rgb;
     },
 
+    // Sort palette items by name
     _outputNames: function (hexArray, numOfColors) {
         var names = [];
-        var cntLegend = 1;
+        var cntLegend = 1,
+            hasNoData = false;
+
         for (var paletteKey in hexArray) if (hexArray.hasOwnProperty(paletteKey)) {
-            if (paletteKey == 'Unknown') continue;
+            if (paletteKey === 'no data') {
+                hasNoData = true;
+                continue;
+            }
+
             if (numOfColors > 0 && cntLegend === numOfColors) break;
             var hexcolor = hexArray[paletteKey];
             names.push({name: paletteKey, color: hexcolor});
@@ -259,28 +282,40 @@ L.Control.MapLegend = L.Control.extend({
             sortedArray[item.name] = item.color;
         });
 
+        if (hasNoData) sortedArray['no data'] = '#000000';
         return sortedArray;
 
     },
 
+    // Sort palette items by colour
     _outputColors: function (hexArray, numOfColors) {
         var colors = {};
-        var cntLegend = 1;
+        var cntLegend = 1,
+            hasNoData = false;
         for (var paletteKey in hexArray) if (hexArray.hasOwnProperty(paletteKey)) {
-            if (paletteKey == 'Unknown') continue;
+            if (paletteKey === 'no data') {
+                hasNoData = true;
+                continue;
+            }
             if (numOfColors > 0 && cntLegend === numOfColors) break;
             var color = new this._Color(hexArray[paletteKey]);
-            this._constructColor(color);
-            colors[paletteKey] = color;
+            colors[paletteKey] = this._constructColor(color);
             cntLegend++
         }
+
+        if (hasNoData) {
+            var color = new this._Color('#000000');
+            colors['no data'] = this._constructColor(color);
+
+        }
+
 
         return this._sortColorsByHue(colors);
 
     },
 
     // build the HTML for the table
-    _generateTableHtml: function (sortedPalette, numOfItems) {
+    _generateTableHtml: function (sortedPalette) {
         var inHtml = ""; // store HTML here
 
         var sortByHTML = '';
@@ -304,7 +339,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
             '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
-            '<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' +
+            ($('#SelectView') === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' : '') +
             '</div> ' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
@@ -322,12 +357,12 @@ L.Control.MapLegend = L.Control.extend({
 
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
 
-            if (obj1 === 'Unknown') break;
+            // if (obj1 === 'no data') break;
             // console.log(obj1);
             if (this.options.summarizeBy === 'Species') {
 
                 inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
-                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + obj1 + '</em><br>' : '+');
+                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + obj1.capitalizeFirstLetter() + '</em><br>' : '+');
             } else {
                 inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
@@ -336,6 +371,7 @@ L.Control.MapLegend = L.Control.extend({
             inHtml += '</span>';
 
         }
+
         $('#Other-Terms-List').html(inHtml).removeClass();
 
         if (type === "Projects") {
@@ -372,7 +408,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
             '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
-            '<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' +
+            ($('#SelectView') === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide (only applies to IR)</a> </li> ' : '') +
             '</div> ' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
@@ -387,14 +423,14 @@ L.Control.MapLegend = L.Control.extend({
         inHtml += '<div style="border: 0; margin-bottom: 5px;">' + dropdownsHTML + '</div>';
         var type = mapSummarizeByToField(this.options.summarizeBy).type;
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
-            if (cntLegend === this.options.numberOfColors) break;
+            if (cntLegend === this.options.numberOfColors + 1) break;
 
             if (this.options.summarizeBy === 'Species') {
                 var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An.
                                                                                 // gambiae
 
                 inHtml += '<span class="active-legend" type="' + type + '" value="' + obj1 + '"> ' +
-                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1 + '"></i> ' + (obj1 ? '<em>' + abbrSpecies + '</em><br>' : '+');
+                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + abbrSpecies.capitalizeFirstLetter() + '</em><br>' : '+');
             } else {
                 inHtml += '<span class="active-legend" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
@@ -405,15 +441,16 @@ L.Control.MapLegend = L.Control.extend({
             cntLegend++; // update the counter of legend entries
         }
         // add others
-        if (numOfItems > this.options.numberOfColors) {
+        if (numOfItems > this.options.numberOfColors ) {
 
             var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")"
             inHtml += '<span class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></span>';
         }
 
-        // add Unknown
-        inHtml += '<i style="background: #000000;"></i> Unknown<br />';
-        palette['Unknown'] = '#000000';
+        // add no data
+        // inHtml += '<span class="active-legend" type="' + type + '" value="no data"> ' +
+        //     '<i style="background: #000000;"></i> No Data<br />';
+        // palette['Unknown'] = '#000000';
 
         $("#legend").html(inHtml);
 
@@ -476,11 +513,11 @@ L.Control.MapLegend = L.Control.extend({
         this._generateLegendHtml(sortedPalette, paletteSize);
 
         if (this.options.sortBy === 'Name') {
-            sortedPalette = this._outputNames(unsortedPalette, 0);
+            sortedPalette = this._outputNames(unsortedPalette);
 
         } else {    // sort by color
 
-            sortedPalette = this._outputColors(unsortedPalette, 0);
+            sortedPalette = this._outputColors(unsortedPalette);
         }
 
         // this._generateLegendHtml(sortedPalette, paletteSize);
@@ -540,7 +577,7 @@ L.Control.MapLegend = L.Control.extend({
 
         }
 
-        // this is where the legend items are sorted
+        // this is where the legend items are scored and sorted based on their frequency/abundance
         var sortedItems = this._sortHashByValue(items);
         palette = this.generatePalette(sortedItems);
 

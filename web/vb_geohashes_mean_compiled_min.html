@@ -9,12 +9,11 @@
             <p>{{html:bundleName}} <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}"> {{html:accession}} </span>
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
-                </a>
-                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                </a> {{if sampleSize}} <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}} </span>
+                 of {{>sampleSize}} individuals)</p> {{else}} <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}})
-                </span>
-            </p>
-        </div>
+                </span></p> {{/if}} </div>
         <div class="row">
             <div class="col-md-6">
                 <p>
@@ -32,7 +31,8 @@
                 <p style="color: {{attr:bgColor}};">
                     <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
                 </p>
-                <ul> {{for projects}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Projects" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for projects}} <li> {{if #data.brdColor}} <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                         <span style="padding-left: 5px;">
                             <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
                             aria-hidden="true" {{if #data.brdColor}} data-bgColor={{attr:#data.brdColor}} {{else}} data-bgColor={{attr:~root.bgColor}} {{/if}} ></i>
@@ -46,14 +46,16 @@
                 <p style="color: {{attr:bgColor}};">
                     <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
                 </p>
-                <ul> {{for collectionProtocols}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Collection protocols" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for collectionProtocols}} <li> {{if #data.brdColor}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                     </li> {{/for}} </ul>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
-                <ul> {{for protocols}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Protocols" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for protocols}} <li> {{if #data.brdColor}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                     </li> {{/for}} </ul>
             </div>
         </div>
@@ -89,7 +91,8 @@
                 <p style="color: {{attr:bgColor}};">
                     <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
                 </p>
-                <ul> {{for projects}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Projects" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for projects}} <li> {{if #data.brdColor}} <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                         <span style="padding-left: 5px;">
                             <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
                             aria-hidden="true" {{if #data.brdColor}} data-bgColor={{attr:#data.brdColor}} {{else}} data-bgColor={{attr:~root.bgColor}} {{/if}} ></i>
@@ -103,7 +106,8 @@
                 <p style="color: {{attr:bgColor}};">
                     <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
                 </p>
-                <ul> {{for collectionProtocols}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Collection protocols" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for collectionProtocols}} <li> {{if #data.brdColor}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                     </li> {{/for}} </ul>
             </div>
         </div>
@@ -126,7 +130,8 @@
                 </p> {{if concentration && concentrationUnit}} <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p> {{/if}} {{if duration && durationUnit}} <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p> {{/if}} </div>
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
-                <ul> {{for protocols}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Protocols" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for protocols}} <li> {{if #data.brdColor}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                     </li> {{/for}} </ul>
             </div>
         </div>
@@ -162,7 +167,8 @@
                 <p style="color: {{attr:bgColor}};">
                     <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
                 </p>
-                <ul> {{for projects}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Projects" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for projects}} <li> {{if #data.brdColor}} <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Projects" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                         <span style="padding-left: 5px;">
                             <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
                             aria-hidden="true" {{if #data.brdColor}} data-bgColor={{attr:#data.brdColor}} {{else}} data-bgColor={{attr:~root.bgColor}} {{/if}} ></i>
@@ -176,7 +182,8 @@
                 <p style="color: {{attr:bgColor}};">
                     <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
                 </p>
-                <ul> {{for collectionProtocols}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Collection protocols" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for collectionProtocols}} <li> {{if #data.brdColor}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                     </li> {{/for}} </ul>
             </div>
         </div>
@@ -199,7 +206,8 @@
                 </p> {{if concentration && concentrationUnit}} <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p> {{/if}} {{if duration && durationUnit}} <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p> {{/if}} </div>
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
-                <ul> {{for protocols}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Protocols" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
+                <ul> {{for protocols}} <li> {{if #data.brdColor}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                     </li> {{/for}} </ul>
             </div>
         </div>
@@ -317,6 +325,8 @@
 
     var glbSummarizeBy = 'Species';
 
+    var markersBounds = [];
+
     var resizeId, previousWindowHeight;
 
 
@@ -355,33 +365,16 @@
             }
         }
 
+        initializeMap({flyTo: applyParameters()});
 
-        initializeMap();
+//        if (applyParameters()) {
+//            initializeMap({flyTo: true});
+//        } else {
+//            initializeMap();
+//        };
+
         bindEvents();
 
 
-        // detect when user changes zoom or pans around the map
-        map.on("movestart", function () {
-            removeHighlight();
-            // close open panels
-            $('.collapse').collapse('hide');
-            sidebar.close();
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-        })
-                .on("moveend", function () {
-
-                    loadSolr({clear: 1, zoomLevel: map.getZoom()});
-                })
-                .on("click", function () {
-                    removeHighlight();
-                    sidebar.close();
-                    // close open panels
-                    $('.collapse').collapse('hide');
-                    setTimeout(function () {
-                        resetPlots()
-                    }, delay);
-                });
 
     });</script></body></html>
