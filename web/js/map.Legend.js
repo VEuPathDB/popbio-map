@@ -347,7 +347,7 @@ L.Control.MapLegend = L.Control.extend({
 
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
 
-            if (obj1 === 'Unknown') break;
+            if (obj1 === 'no data') break;
             // console.log(obj1);
             if (options.summarizeBy === 'Species') {
 
@@ -438,8 +438,8 @@ L.Control.MapLegend = L.Control.extend({
         }
 
         // add Unknown
-        inHtml += '<i style="background: #000000;"></i> Unknown<br />';
-        options.palette['Unknown'] = '#000000';
+        // inHtml += '<i style="background: #000000;"></i> Unknown<br />';
+        // options.palette['Unknown'] = '#000000';
 
         $("#legend").html(inHtml);
 

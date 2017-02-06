@@ -1023,16 +1023,10 @@ function initializeSearch() {
         },
         itemValue: 'value',
         itemText: function (item) {
-            return '<i class='
-            fa
-            ' + mapTypeToIcon(item.type) + '
-            '></i> ' + item.value.truncString(80)
+            return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
         },
         itemHTML: function (item) {
-            return '<i class='
-            fa
-            ' + mapTypeToIcon(item.type) + '
-            '></i> ' + item.value.truncString(80)
+            return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
         },
         typeaheadjs: ({
             options: {
