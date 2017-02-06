@@ -1,139 +1,71 @@
-function applyParameters() {
-    // parse the URL parameters and update views and search terms
-    var hasParameters = false;
-    if (typeof urlParams.view === 'undefined' || urlParams.view === null) {
+// set up custom CRS and aliases
 
-        $('#SelectView').selectpicker('val', 'smpl');
-        // $('#view-mode').val('smpl');
+// Wrappers for LatLng
+
+var yx = L.latLng;
+
+var xy = function (x, y) {
+    if (L.Util.isArray(x)) {    // When doing xy([x, y]);
+        return yx(x[1], x[0]);
     }
+    return yx(y, x);  // When doing xy(x, y);
+};
 
-    for (var key in urlParams) {
-        if (urlParams.hasOwnProperty(key)) {
-            switch (key) {
-                case "view":
-                    var view = urlParams[key];
-                    if (view === 'ir' || view === 'smpl' || view === 'abnd') {
+var mapWidth = 256; // map pixel width at zoomLevel 0
+var mapHeight = 192; // map pixel height at zoomLevel 0
 
-                        $('#SelectView').selectpicker('val', view);
-                        // $('#view-mode').val(view);
-                    }
-                    break;
-                case "stableID":
+var mapRangeX = 360;
+var mapRangeY = 180;
 
-                    $('#search_ac').tagsinput('add', {
-                        value: urlParams[key],
-                        activeTerm: true,
-                        type: 'Stable ID',
-                        field: mapTypeToField('Stable ID'),
-                        qtype: 'exact'
+// Custom CRS
+var factorX = mapWidth / mapRangeX;
+var factorY = mapHeight / mapRangeY;
 
-                    });
-                    break;
-                case "projectID":
-                    $('#search_ac').tagsinput('add', {
-                        value: urlParams[key],
-                        activeTerm: true,
-                        type: 'Projects',
-                        field: mapTypeToField('Projects'),
-                        qtype: 'exact'
+var offsetX = mapWidth / 2;
+var offsetY = (256 - mapHeight + mapHeight / 2);
 
-                    });
-                    break;
-                case "species":
-                    $('#search_ac').tagsinput('add', {
-                        value: urlParams[key],
-                        activeTerm: true,
-                        type: 'Taxonomy',
-                        field: mapTypeToField('Taxonomy'),
-                        qtype: 'exact'
+// console.log(factorX);
+// console.log(offsetX);
+// console.log(factorY);
+// console.log(offsetY);
+L.CRS.Pr = L.extend({}, L.CRS.Simple, {
+    projection: L.Projection.LonLat,
+    transformation: new L.Transformation(factorX, offsetX, -factorY, offsetY),
+    // Changing the transformation is the key part, everything else is the same. By specifying a factor, you specify what distance in meters one pixel occupies (as it still is CRS.Simple in all other regards). In this case, I have a tile layer with 256px pieces, so Leaflet thinks it's only 256 meters wide. I know the map is supposed to be 2048x2048 meters, so I specify a factor of 0.125 to multiply in both directions. In the actual roject, I compute all that from the gdal2tiles tilemapresources.xml, which gives the necessary information about tilesizes, total bounds and units-per-pixel at different levels.
 
-                    });
-                    break;
-                default :
-                    break;
-            }
-            hasParameters = true;
-        }
-    }
+// Scale, zoom and distance are entirely unchanged from CRS.Simple
+    scale: function (zoom) {
+        return Math.pow(2, zoom);
+    },
 
-    // update the export fields dropdown
-    updateExportFields($("#SelectView").val());
+    zoom: function (scale) {
+        return Math.log(scale) / Math.LN2;
+    },
 
-    return hasParameters;
-}
+    distance: function (latlng1, latlng2) {
+        var dx = latlng2.lng - latlng1.lng,
+            dy = latlng2.lat - latlng1.lat;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    },
+
+    infinite: true
+});
 
 
 function bindEvents() {
     "use strict"
 
-    // declare timeout function name
-    var timeoutHandler;
-
-
-    // add event listener to map for movement
-    // this is to control Leaflet's annoying behavior when scrolling with a trackpad
-    map.on('moveend', mapMoveHandler);
-    map.on('drag', mapDragHandler);
-
-    function mapMoveHandler() {
-        // cancel any timeout currently running
-        window.clearTimeout(timeoutHandler);
-        // create new timeout to fire sesarch function after 500ms (or whatever you like)
-        timeoutHandler = window.setTimeout(function () {
-            loadSolr({clear: 1, zoomLevel: map.getZoom()});
-
-            // run some function to get results or update markers or something
-        }, 500);
+    if (urlParams.view === 'ir') {
+        $("#SelectViewDropdown").find(".dropdown-menu li a").parents(".dropdown").find(".btn").html("<i class='fa fa-eye' id='view-icon'></i> Insecticide Resistance" + ' <span class="caret"></span>');
+        $('#view-mode').val('ir');
+    } else {
+        $("#SelectViewDropdown").find(".dropdown-menu li a").parents(".dropdown").find(".btn").html("<i class='fa fa-eye' id='view-icon'></i> Samples" + ' <span class="caret"></span>');
+        $('#view-mode').val('smpl');
     }
 
-    function mapDragHandler() {
-        // cancel any timeout currently running
-        window.clearTimeout(timeoutHandler);
-    }
-
-    // detect when user changes zoom or pans around the map
-    map.on("movestart", function () {
-        removeHighlight();
-        // close open panels
-        $('.collapse').collapse('hide');
-        sidebar.close();
-        setTimeout(function () {
-            resetPlots()
-        }, delay);
-    })
-
-        .on("click", function () {
-            removeHighlight();
-            sidebar.close();
-            // close open panels
-            $('.collapse').collapse('hide');
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-        });
-
-    // if we are in abundance view and the zoom level exceeds 8 then switch to open street maps layer
-
-    // map.on('zoomend', function() {
-    //     if (map.getZoom() <10){
-    //         if (map.hasLayer(points)) {
-    //             map.removeLayer(points);
-    //         } else {
-    //             console.log("no point layer active");
-    //         }
-    //     }
-    //     if (map.getZoom() >= 10){
-    //         if (map.hasLayer(points)){
-    //             console.log("layer already added");
-    //         } else {
-    //             map.addLayer(points);
-    //         }
-    //     }
-    // });
-
-
-    // Set current view
-
+    // update the export fields dropdown
+    updateExportFields($("#view-mode").val());
 
     $(document).on("click", '.dropdown-menu li a', function () {
 
@@ -145,7 +77,7 @@ function bindEvents() {
             case 'summByDropdown':
                 glbSummarizeBy = selValue;
 
-                var url = solrPopbioUrl + $('#SelectView').val() + 'Palette?q=*:*&geo=geohash_2&term=' +
+                var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*:*&facet.pivot=geohash_3,' +
                     mapSummarizeByToField(glbSummarizeBy).summarize +
                     '&json.wrf=?&callback=?';
 
@@ -162,7 +94,7 @@ function bindEvents() {
 
             case 'sortByDropdown':
                 legend.options.sortBy = selText;
-                legend.refreshLegend(legend.options.palette);
+                legend.refreshLegend(palette);
 
                 // $('#Filter-Terms').keyup(function() {
                 var val = $.trim($('#Filter-Terms').val()).replace(/ +/g, ' ').toLowerCase();
@@ -192,7 +124,7 @@ function bindEvents() {
     // download data
     $('#download-button').click(function () {
         var selectedOption = $('#select-export').val(),
-            viewMode = $("#SelectView").val(),
+            viewMode = $("#view-mode").val(),
             url = solrExportUrl,
             viewBox = buildBbox(map.getBounds()),
             fieldsStr = '&fl=';
@@ -273,7 +205,7 @@ function bindEvents() {
 
     // add the IR scale bars in the advanced options pane
     var inHtml = '';
-    $.each(legend.options.trafficlight.colorBrewer.slice().reverse(), function (index, value) {
+    $.each(colorBrewer.slice().reverse(), function (index, value) {
         inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10%; background-color: ' + value + ' ;"></i>';
     });
     $('#menu-scale-bars').html(inHtml);
@@ -581,13 +513,13 @@ function bindEvents() {
 
     });
 
-    $('#date-select, #SelectView').click(function () {
+    $('#date-select, #SelectViewDropdown').click(function () {
         if ($('#seasonal').attr("aria-expanded") == 'true') {
             $('#seasonal').collapse('hide');
         }
     });
 
-    $('#season-select, #SelectView').click(function () {
+    $('#season-select, #SelectViewDropdown').click(function () {
 
         if ($('#daterange').attr("aria-expanded") == 'true') {
             $('#daterange').collapse('hide');
@@ -674,9 +606,7 @@ function bindEvents() {
         var inHtml = '';
         console.log(firstVal + ' - ' + secondVal);
         $.each(colorBrewer.slice().reverse().slice(firstVal, secondVal + 1), function (index, value) {
-            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value +
-                ';width: 6px; background - color: ' + value +
-                ';>&nbsp &nbsp</i>';
+            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 6px; background-color: ' + value + ' ;">&nbsp &nbsp</i>';
         });
         // $('#menu-scale-bars').html(inHtml);
 
@@ -733,6 +663,12 @@ function bindEvents() {
 
     $('#search_ac').on('itemAdded', function (event) {
         // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
+
+        // escape special characters
+        // event.item.text.
+        // event.item.value.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
+
+
         if (event.item.replace) return;
 
         if (event.item.activeTerm) {
@@ -796,22 +732,31 @@ function bindEvents() {
  outputs:
  */
 
-function initializeMap(parameters) {
+function initializeMap() {
     "use strict";
 
     // new MapQuest way of adding layers
-    var mapQuestLayers = MQ.mapLayer();
-    var flyTo = parameters.flyTo;
+    // var mapQuestLayers = MQ.mapLayer();
+
+    // calculate layer bounds
+    var ne = [mapRangeY / 2, mapRangeX / 2];
+    var sw = [-mapRangeY / 2, -mapRangeX / 2];
+    console.log("ne: " + ne);
+    console.log("sw: " + sw);
+
+    var layerbounds = new L.LatLngBounds(sw, ne);
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
-        center: [23.079, 3.515],
+        center: [0, 0],
         minZoom: 1,
-        maxZoom: 15,
-        zoom: 3,
+        maxZoom: 7,
+        zoom: 2,
+        crs: L.CRS.Pr,
         zoomControl: false,
-        zoomAnimationThreshold: 16,
-        worldCopyJump: true  //  the map tracks when you pan to another "copy" of the world and seamlessly jumps to the
-                             // original one so that all overlays like markers and vector layers are still visible.
+        // maxBounds: layerbounds,
+        zoomSnap: 1,
+        zoomDelta: 1
+        // zoomAnimation: false
     });
 
     map.spin(true);
@@ -824,38 +769,86 @@ function initializeMap(parameters) {
     map.addControl(new L.Control.ZoomMin({position: "topright"}));
     sidebar = L.control.sidebar('sidebar').addTo(map);
 
-    var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        minZoom: 2,
-        maxZoom: 15,
-        noWrap: 0,
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
-        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+
+    var map_abs_exp_embryonic = new
+        L.tileLayer('http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/tiles/avg_exp_map/{z}/{x}/{y}.png', {
+        minZoom: 1,
+        maxZoom: 7,
+        attribution: 'Ioannis Kirmitzoglou',
+        bounds: layerbounds,
+        noWrap: true
+    }).addTo(map);
+
+
+    var map_abs_exp_bloodMeal = new
+        L.tileLayer('http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/tiles/avg_exp_bloodMeal_map/{z}/{x}/{y}.png', {
+        minZoom: 1,
+        maxZoom: 7,
+        attribution: 'Ioannis Kirmitzoglou',
+        bounds: layerbounds,
+        noWrap: true
     });
 
-    map.addLayer(mapQuestLayers);
+    var map_abs_exp_tissues = new
+        L.tileLayer('http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/tiles/avg_exp_tissues_map/{z}/{x}/{y}.png', {
+        minZoom: 1,
+        maxZoom: 7,
+        attribution: 'Ioannis Kirmitzoglou',
+        bounds: layerbounds,
+        noWrap: true
+    });
+
+    var map_abs_exp_circadian = new
+        L.tileLayer('http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/tiles/avg_exp_circadian_map/{z}/{x}/{y}.png', {
+        minZoom: 1,
+        maxZoom: 7,
+        attribution: 'Ioannis Kirmitzoglou',
+        bounds: layerbounds,
+        noWrap: true
+    });
+
+    // map.addLayer(mapQuestLayers);
     assetLayerGroup = new L.LayerGroup();
     assetLayerGroup.addTo(map);
+
     var layerCtl = new L.Control.Layers({
-        'Map': mapQuestLayers,
-        'Hybrid': MQ.hybridLayer(),
-        'Satellite': MQ.satelliteLayer(),
-        'Dark': MQ.darkLayer(),
-        'Light': MQ.lightLayer(),
-        'OpenStreetMap': mp3,
+        'Overall embryonic differential expression': map_abs_exp_embryonic,
+        'Overall tissues differential expression': map_abs_exp_tissues,
+        'Overall circadian differential expression': map_abs_exp_circadian,
+        'Overall blood meal differential expression': map_abs_exp_bloodMeal
     });
+
     layerCtl.setPosition('topright');
     layerCtl.addTo(map);
 
     // Now generate the legend
 
     // hardcoded species_category
-    var url = solrPopbioUrl + $('#SelectView').val() + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
+    var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*:*&facet.pivot=geohash_3,' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
+    //console.log('url: ' + url);
+    //$.getJSON(url, generatePalette);
+    legend = new L.control.legend(url, {summarizeBy: glbSummarizeBy});
 
-    legend = new L.control.legend(url, {
-        summarizeBy: glbSummarizeBy,
-        flyTo: flyTo
-    });
+
+    // var miniLayer = new L.tileLayer('http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/tiles/avg_exp_map/{z}/{x}/{y}.png', {
+    //     minZoom: 0,
+    //     maxZoom: 7,
+    //     attribution: 'Ioannis Kirmitzoglou',
+    //     // tms: true,
+    //     noWrap: true
+    // });
+    //
+    // var miniMap =
+    //     new L.Control.MiniMap(miniLayer, {
+    //         width: 256, height: 192, zoomLevelFixed: 0, toggleDisplay: true,
+    //         centerFixed: [0, 0],
+    //         aimingRectOptions: {
+    //             color: 'black',
+    //             weight: 2,
+    //             fillOpacity: 0
+    //         }
+    //     }).addTo(map);
+
 
     if (rectHighlight !== null) map.removeLayer(rectHighlight);
     rectHighlight = null;
@@ -903,7 +896,7 @@ function initializeSearch() {
         hint: false,
 
         remote: {
-            url: solrTaUrl + $('#SelectView').val() + 'Ac?q=',
+            url: solrTaUrl + $('#view-mode').val() + 'Ac?q=',
             ajax: {
                 dataType: 'jsonp',
                 data: {
@@ -913,7 +906,7 @@ function initializeSearch() {
                 jsonp: 'json.wrf'
             },
             replace: function (url, query) {
-                url = solrTaUrl + $('#SelectView').val() + 'Ac?q=';
+                url = solrTaUrl + $('#view-mode').val() + 'Ac?q=';
                 var match = query.match(/([^@]+)@([^@]*)/);
                 if (match != null) {
                     // matched text: match[0]
@@ -922,9 +915,9 @@ function initializeSearch() {
                     partSearch = match[1];
                     //console.log(url + encodeURI(match[1]));
                     if ($('#world-toggle').prop('checked')) {
-                        return solrTaUrl + $('#SelectView').val() + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
+                        return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
                     } else {
-                        return solrTaUrl + $('#SelectView').val() + 'Acat?q=' + encodeURI(match[1]);
+                        return solrTaUrl + $('#view-mode').val() + 'Acat?q=' + encodeURI(match[1]);
                     }
                 } else {
                     // Match attempt failed
@@ -978,7 +971,7 @@ function initializeSearch() {
         minLength: 3,
 
         remote: {
-            url: solrTaUrl + $('#SelectView').val() + 'Acgrouped?q=',
+            url: solrTaUrl + $('#view-mode').val() + 'Acgrouped?q=',
             ajax: {
                 dataType: 'jsonp',
 
@@ -990,7 +983,7 @@ function initializeSearch() {
                 jsonp: 'json.wrf'
             },
             replace: function (url, query) {
-                url = solrTaUrl + $('#SelectView').val() + 'Acgrouped?q=';
+                url = solrTaUrl + $('#view-mode').val() + 'Acgrouped?q=';
                 if ($('#world-toggle').prop('checked')) {
                     return url + encodeURI(query) + '*';
                 } else {
@@ -1021,7 +1014,13 @@ function initializeSearch() {
         tagClass: function (item) {
             return mapTypeToLabel(item.type);
         },
-        itemValue: 'value',
+        itemValue: function (item) {
+            // item.value = "lakis";
+            item.value = item.value.toString().replace(/^GO:/g, 'GO\\:');
+
+            return item.value;
+        },
+        // itemValue: 'value',
         itemText: function (item) {
             return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
         },
@@ -1059,10 +1058,7 @@ function initializeSearch() {
                             ].join('\n')
                         },
                         suggestion: function (item) {
-                            return '<p>' + item.value +
-                                (item.is_synonym ?
-                                    ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)'
-                                    : '') +
+                            return '<p>' + item.value + (item.is_synonym ? ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)' : '') +
                                 ' <em> in ' + item.type + '</em></p>';
                         }
 
@@ -1087,11 +1083,23 @@ function initializeSearch() {
 
     });
 
-    $('#SelectView').change(function () {
-        // update the export fields dropdown
-        updateExportFields($("#SelectView").val());
+    // Set current view
 
-        var url = solrPopbioUrl + $('#SelectView').val() + 'Palette?q=*:*&geo=geohash_2&term=' +
+    $("#SelectViewDropdown").find(".dropdown-menu li a").click(function () {
+
+        var selText = $(this).text();
+        if (selText === "Samples") {
+            $('#view-mode').val('smpl');
+        } else {
+            $('#view-mode').val('ir');
+        }
+
+        // update the export fields dropdown
+        updateExportFields($("#view-mode").val());
+
+        // var url = solrPopbioUrl + $('#view-mode').val() +
+        // 'Palette?q=*&facet.pivot=geohash_2,species_category&json.wrf=?&callback=?';
+        var url = solrPopbioUrl + $('#view-mode').val() + 'Palette?q=*:*&facet.pivot=geohash_3,' +
             mapSummarizeByToField(glbSummarizeBy).summarize +
             '&json.wrf=?&callback=?';
 
@@ -1101,12 +1109,11 @@ function initializeSearch() {
             resetPlots()
         }, delay);
         $.getJSON(url, function (data) {
-            legend._populateLegend(data, glbSummarizeBy, true)
+            legend._populateLegend(data, glbSummarizeBy)
         });
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
     });
-
 
 }
 
@@ -1307,7 +1314,6 @@ function loadSolr(parameters) {
     "use strict";
     var clear = parameters.clear;
     var zoomLevel = parameters.zoomLevel;
-    var flyTo = parameters.flyTo;
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
@@ -1326,22 +1332,18 @@ function loadSolr(parameters) {
 
     var terms = [];
 
-    // Store the visible marker geo limits to build a bbox
-    var minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
-
     // this function processes the JSON file requested by jquery
-
     var buildMap = function (result) {
         // using the facet.stats we return statistics for lat and lng for each geohash
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
 
-        var viewMode = $('#SelectView').val();
+        var viewMode = $('#view-mode').val();
         // display the number of results
         if (viewMode === "ir") {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
         } else {
-            $("#markersCount").html(result.response.numFound + ' visible samples summarized by ' + glbSummarizeBy + '</u>');
+            $("#markersCount").html(result.response.numFound + ' visible genes summarized by ' + glbSummarizeBy + '</u>');
         }
         // detect empty results set
         if (result.response.numFound === 0) {
@@ -1354,8 +1356,18 @@ function loadSolr(parameters) {
             return;
         }
 
+        var docLat, docLng, docSpc, docPhe;
 
-        var facetResults = result.facets.geo.buckets;
+        var statFields = result.stats.stats_fields;
+        var facetCounts = result.facet_counts;
+
+        var sumField = mapSummarizeByToField(glbSummarizeBy).summarize;
+
+        docLat = statFields.geo_coords_ll_1_coordinate.facets[geohashLevel(zoomLevel)];
+        docLng = statFields.geo_coords_ll_0_coordinate.facets[geohashLevel(zoomLevel)];
+        // docPhe = (viewMode === "ir") ? statFields.phenotype_rescaled_value_f.facets[geohashLevel(zoomLevel)] : null;
+        docPhe = statFields.abs_exp_embryonic_f.facets[geohashLevel(zoomLevel)];
+        docSpc = facetCounts.facet_pivot[geohashLevel(zoomLevel) + "," + sumField];
 
 
         // depending on the zoom level and the count of landmarks in each geohash we are saving
@@ -1369,111 +1381,97 @@ function loadSolr(parameters) {
         var statistics = {}; // keep the species count for each geohash
         var fullStatistics = {}; // keep the species count for each geohash
 
-        facetResults.forEach(function (el) {
-
+        for (var key in docLat) {
             // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be
             // processed later at the same time exclude them from [terms] so as to not display them twice
-            var key = el.val,
-                elStats = [],
-                fullElStats = [],
-                geoCount = el.count,
-                tagsTotalCount = 0;
+            if (docLat.hasOwnProperty(key)) {
+                var count = docLat[key].count;
+                // if (count < 5) {
+                //     smallClusters.push(key);
+                //     continue;
+                // }
 
-            if (viewMode === 'abnd') {
+                // go over the facet pivots and save the population and statistics
+                docSpc.forEach(function (element, array) {
+                    var elStats = [];
+                    var fullElStats = [];
+                    var tagsTotalCount = 0;
+                    // check if pivot is empty
+                    if (element.pivot) {
 
-                var geoAbndSum = 0,
-                    geoAvgAbnd = el.avgAbnd;
-            }
-            ;
+                        element.pivot.forEach(function (innElement) {
+                            var key = innElement.value,
+                                count = innElement.count;
+                            tagsTotalCount += count;
 
-            var geoTerms = el.term.buckets;
+                            elStats[key] = count;
 
-            geoTerms.forEach(function (inEl) {
-                var inKey = inEl.val;
-                if (legend.options.summarizeBy === 'Species') {
+                            if (legend.options.summarizeBy === 'Species') {
 
-                    //FixMe: Remove these replacements when proper names are returned from the popbio API
-                    fullElStats.push({
-                        "label": inKey.replace(/sensu lato/, "sl")
-                            .replace(/chromosomal form/, "cf"),
-                        // store normalised abundance for abundance mode, else store samples/assay counts
-                        "value": (viewMode === 'abnd') ? inEl.avgAbnd : inEl.count,
-                        "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
-                    });
-                } else {
-                    fullElStats.push({
-                        "label": inKey,
-                        // store normalised abundance for abundance mode, else store samples/assay counts
-                        "value": (viewMode === 'abnd') ? inEl.avgAbnd : inEl.count,
-                        "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
-                    });
-                }
-                ;
+                                //FixMe: Remove these replacements when proper names are returned from the popbio API
+                                fullElStats.push({
+                                    "label": key.replace(/sensu lato/, "sl")
+                                        .replace(/chromosomal form/, "cf"),
+                                    //"label": key,
+                                    "value": count,
+                                    "color": (palette[key] ? palette[key] : "#000000")
+                                });
+                            } else {
+                                fullElStats.push({
+                                    "label": key,
+                                    "value": count,
+                                    "color": (palette[key] ? palette[key] : "#000000")
+                                });
+                            }
+                            ;
 
-                // store the total counts
-                tagsTotalCount += inEl.count;
-                if (viewMode === 'abnd') geoAbndSum += inEl.avgAbnd;
+                        });
 
-            });
+                        if (element.count - tagsTotalCount > 0) {
+                            elStats["Unknown"] = element.count - tagsTotalCount;
 
-            if (geoCount - tagsTotalCount > 0) {
+                            fullElStats.push({
+                                "label": 'Unknown',
+                                "value": element.count - tagsTotalCount,
+                                "color": (palette['Unknown'])
+                            });
+                            tagsTotalCount = element.count;
+                        }
 
-                fullElStats.push({
-                    "label": 'Unknown',
-                    "value": geoCount - tagsTotalCount,
-                    "color": (legend.options.palette['Unknown'])
+                    } else {
+                        tagsTotalCount = element.count;
+                        elStats["Unknown"] = tagsTotalCount;
+                        fullElStats.push({
+                            "label": 'Unknown',
+                            "value": tagsTotalCount,
+                            "color": (palette['Unknown'])
+                        });
+
+                        // console.log("ERROR: Pivot for element " + element.value + " appears to be empty");
+                    }
+
+                    // populations[element.value] = element.count;
+                    populations[element.value] = tagsTotalCount;
+
+                    statistics[element.value] = elStats;
+                    fullStatistics[element.value] = fullElStats;
                 });
+
+                // process the JSON returned from SOLR to make it compatible with leaflet-dvf
+                var arr = {};
+                arr.term = key;
+                arr.count = docLat[key].count;
+                arr.latLng = [docLat[key].mean, docLng[key].mean];
+                arr.bounds = [[docLat[key].min, docLng[key].min], [docLat[key].max, docLng[key].max]];
+                arr.population = populations[key];
+                // arr.trafficlight = (viewMode === 'ir') ? docPhe[key].mean : -1;
+                arr.trafficlight = docPhe[key].mean;
+                arr.stats = statistics[key];
+                arr.fullstats = fullStatistics[key];
+                // arr.totalCount = tagsTotalCount;
+                terms.push(arr);
             }
-            ;
-
-
-            fullStatistics[key] = fullElStats;
-
-            var arr = {};
-            arr.term = key;
-            // arr.cumulativeCount = tagsTotalCount
-            arr.count = geoCount;
-            if (viewMode === 'abnd') {
-                arr.normAbnd = geoAvgAbnd.roundDecimals(1);
-                arr.avgDuration = el.avgDur.roundDecimals(1);
-                arr.avgSampleSize = el.avgSmp.roundDecimals(1);
-                arr.abndSum = geoAbndSum;
-            }
-            arr.latLng = [el.ltAvg, el.lnAvg];
-            arr.bounds = [[el.ltMin, el.lnMin], [el.ltMax, el.lnMax]];
-            if (viewMode === 'ir') {
-                arr.trafficlight = el.irAvg;
-            } else if (viewMode === 'abnd') {
-                arr.trafficlight = Math.log10(el.avgAbnd);
-            } else {
-                arr.trafficlight = -1;
-            }
-            arr.fullstats = fullStatistics[key];
-            terms.push(arr);
-
-            // store the limits of the markers, including the bounding boxex of the samples in them
-            if (minLat > el.ltMin) minLat = el.ltMin;
-            if (maxLat < el.ltMax) maxLat = el.ltMax;
-            if (minLon > el.lnMin) minLon = el.lnMin;
-            if (maxLon < el.lnMax) maxLon = el.lnMax;
-
-
-        });
-
-        // update bounding box containing all markers
-        markersBounds = [[minLat, minLon], [maxLat, maxLon]];
-
-
-        if (flyTo) {
-            map.setMinZoom(map.getZoom());
-            var maxZoom = map.getZoom() < 4 ? 6 : map.getZoom();
-            map.fitBounds(markersBounds, {duration: 1, maxZoom: maxZoom});
-            map.setMinZoom(1);
-            map.spin(false);
-            return;
         }
-        ;
-
 
         var convertedJson = {};
         convertedJson.terms = terms;
@@ -1492,29 +1490,24 @@ function loadSolr(parameters) {
             },
 
             setIcon: function (record) {
-                // if in abundance mode then resize the icons based on the samples count
-                var size = (viewMode === 'abnd') ? Math.ceil(40 + 5 * Math.log10(record.count)) : 40;
+                // var size = 40;
+                var size = Math.ceil(16 + 5 * Math.log2(record.count));
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
-                    markerText: (viewMode === 'abnd') ? record.normAbnd : record.count,
                     className: "marker-cluster",
-                    count: (viewMode === 'abnd') ? record.abndSum : record.count,
-                    // cumulativeCount: (viewMode === 'abnd') ? record.normAbnd : record.cumulativeCount,
+                    count: record.count > 1 ? record.count : "",
+                    population: record.population,
                     trafficlight: record.trafficlight,
-                    id: record.term,
-                    stats: record.fullstats,
-                    avgSampleSize: (viewMode === 'abnd') ? record.avgSampleSize : -1,
-                    avgDuration: (viewMode === 'abnd') ? record.avgDuration : -1
+                    stats: record.stats,
+                    id: record.term
                 });
             },
             onEachRecord: function (layer, record) {
-                var tooltip = $('#plotTooltip');
-
                 layer.on("dblclick", function () {
                     clearTimeout(timer);
                     prevent = true;
 
-                    map.fitBounds(record.bounds, {padding: [100, 50]});
+                    map.fitBounds(record.bounds);
                 })
                     .on("click", function () {
 
@@ -1530,7 +1523,7 @@ function loadSolr(parameters) {
 
                             switch (panelId) {
                                 case "graphs":
-                                    updatePieChart(record.count, record.fullstats);
+                                    updatePieChart(record.population, record.fullstats);
                                     panel.data('has-graph', true);
                                     break;
                                 case "swarm-plots":
@@ -1539,6 +1532,10 @@ function loadSolr(parameters) {
                                     break;
                                 case "marker-table":
                                     updateTable("#table-contents", buildBbox(recBounds));
+                                    panel.data('has-graph', true);
+                                    break;
+                                case "wordcloud":
+                                    updateWordCloud("#wordcloud-area", buildBbox(recBounds));
                                     panel.data('has-graph', true);
                                     break;
                                 default:
@@ -1554,7 +1551,7 @@ function loadSolr(parameters) {
                             switch (panelId) {
                                 case "graphs":
                                     if (!panel.data('has-graph')) {
-                                        updatePieChart(record.count, record.fullstats);
+                                        updatePieChart(record.population, record.fullstats);
                                         panel.data('has-graph', true);
                                     }
                                     break;
@@ -1567,6 +1564,12 @@ function loadSolr(parameters) {
                                 case "marker-table":
                                     if (!panel.data('has-graph')) {
                                         updateTable("#table-contents", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                    }
+                                    break;
+                                case "wordcloud":
+                                    if (!panel.data('has-graph')) {
+                                        updateWordCloud("#wordcloud-area", buildBbox(recBounds));
                                         panel.data('has-graph', true);
                                     }
                                     break;
@@ -1600,6 +1603,7 @@ function loadSolr(parameters) {
                                     } else {
                                         $('#swarm-chart-area').empty();
                                         $('#table-contents').empty();
+                                        $('#wordcloud-area').empty();
                                         sidebar.open(panelId);
                                     }
                                 }
@@ -1609,7 +1613,7 @@ function loadSolr(parameters) {
 
                                 switch (panelId) {
                                     case "graphs":
-                                        updatePieChart(record.count, record.fullstats);
+                                        updatePieChart(record.population, record.fullstats);
                                         panel.data('has-graph', true);
                                         break;
                                     case "swarm-plots":
@@ -1621,12 +1625,14 @@ function loadSolr(parameters) {
                                         panel.data('has-graph', true);
                                         break;
                                     case "help":
-                                        updatePieChart(record.count, record.fullstats);
+                                        updatePieChart(record.population, record.fullstats);
                                         panel.data('has-graph', true);
                                         sidebar.open('graphs');
-
                                         break;
-
+                                    case "wordcloud":
+                                        updateWordCloud("#wordcloud-area", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                        break;
                                     default:
                                         break;
                                 }
@@ -1635,7 +1641,7 @@ function loadSolr(parameters) {
                         }, delay);
                         prevent = false;
                     })
-                    .on("mouseover", function (e) {
+                    .on("mouseover", function () {
                         moveTopMarker(layer);
                         var recBounds = L.latLngBounds(record.bounds);
                         if (rectHighlight !== null) map.removeLayer(rectHighlight);
@@ -1647,36 +1653,12 @@ function loadSolr(parameters) {
                             clickable: false
                         }).addTo(map);
 
-                        tooltip.css("left",e.containerPoint.x + 20)
-                            .css("top",e.containerPoint.y - 20)
-                            .clearQueue()
-                            .animate({
-                            opacity: 1
-                        }, 400, function(){
-                            //Animation complete
-                            }
-                        );
-
-                        // tooltip.transition()
-                        //     .duration(100)
-                        //     .style("opacity", 1);
-                        // tooltip.html(html)
-                        //     .style("left", (d3.event.pageX + 5) + "px")
-                        //     .style("top", (d3.event.pageY - 28) + "px")
-
-
                     })
                     .on("mouseout", function () {
                         removeTopMarker(layer);
                         if (rectHighlight !== null) map.removeLayer(rectHighlight);
                         rectHighlight = null;
-                        tooltip.clearQueue()
-                            .animate({
-                                opacity: 0
-                            }, 400, function(){
-                                //Animation complete
-                            }
-                        );
+
                     });
             }
 
@@ -1692,10 +1674,10 @@ function loadSolr(parameters) {
         }
         // map.addLayer(layer);
 
-        // if (smallClusters.length > 0) {
-        //     loadSmall(0, zoomLevel);
-        //
-        // }
+        if (smallClusters.length > 0) {
+            loadSmall(0, zoomLevel);
+
+        }
 
         // inform the user that data is loaded
         if (rectHighlight !== null) map.removeLayer(rectHighlight);
@@ -1704,22 +1686,15 @@ function loadSolr(parameters) {
 
     };
 
+    // hardcoded species_category
+    var url = solrPopbioUrl + $('#view-mode').val() + 'Geoclust?' + qryUrl + buildBbox(map.getBounds()) + "&stats.facet="
+        + geoLevel + "&facet.pivot=" + geoLevel + "," + mapSummarizeByToField(glbSummarizeBy).summarize + "&json.wrf=?&callback=?";
+
+    //console.log(url);
+
     // inform the user that data is loading
     map.spin(true);
-    var qryParams = {
-        bbox: buildBbox(map.getBounds()).replace(/&fq=/, ''),
-        geo: geoLevel,
-        term: mapSummarizeByToField(glbSummarizeBy).summarize
-    };
-    var url = solrPopbioUrl + $('#SelectView').val() + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
-
-
-    $.getJSON(url, {
-        cache: true,
-        headers: {
-            'Cache-Control': 'max-age=2592000'
-        }
-    }, buildMap)
+    $.getJSON(url, buildMap)
         .done(function () {
             $(document).trigger("jsonLoaded");
 
@@ -1791,6 +1766,7 @@ function buildBbox(bounds) {
             east = -180;
         }
         solrBbox = "&fq=geo_coords:[" + south + "," + west + " TO " + north + "," + east + "]";
+        console.log(solrBbox)
     } else {
         console.log("bounds is not an object");
         solrBbox = "&fq=geo_coords:[-90,-180 TO 90, 180]"; // a generic Bbox
@@ -1807,44 +1783,9 @@ function geohashLevel(zoomLevel, type) {
      outputs:
      */
     var geoLevel;
+    return "geohash_" + Math.floor(zoomLevel + 1);
+    console.log("z: " + zoomLevel)
 
-    if (type === "geohash") {
-        switch (zoomLevel) {
-            case 1:
-            case 2:
-                geoLevel = "geohash_1";
-                break;
-            case 3:
-            case 4:
-            case 5:
-                geoLevel = "geohash_2";
-                break;
-            case 6:
-            case 7:
-                geoLevel = "geohash_3";
-                break;
-            case 8:
-            case 9:
-                geoLevel = "geohash_4";
-                break;
-            case 10:
-            case 11:
-                geoLevel = "geohash_5";
-                break;
-            case 12:
-            case 13:
-            case 14:
-                geoLevel = "geohash_6";
-                break;
-            default:
-                geoLevel = "geohash_7";
-                break;
-
-        }
-    } else {
-        // does nothing for now
-        //TODO: Automatically construct the proper facet statistics object based on zoomLevel
-    }
     return (geoLevel);
 }
 
@@ -1923,15 +1864,118 @@ $.fn.redraw = function () {
     });
 };
 
+function updateWordCloud(divid, filter) {
+//ToDO: spin properly
+    var ignoredWords = {
+        "protein": 2158,
+        "subunit": 523,
+        "family": 357,
+        "domain": 337,
+        "like": 314,
+        "containing": 274,
+        "homolog": 177,
+        "related": 151,
+        "associated": 136,
+        "type": 133,
+        "dependent": 124,
+        "and": 122,
+        "putative": 95,
+        "repeat": 86,
+        "class": 84,
+        "chain": 80,
+        "subfamily": 69,
+        "precursor": 56,
+        "interacting": 55,
+        "small": 53,
+        "specific": 40,
+        "component": 39,
+        "peptide": 36,
+        "amino": 35,
+        "long": 34,
+        "pre": 34,
+        "activated": 29,
+        "activating": 29,
+        "glutathione": 29,
+        "short": 29,
+        "gene": 28,
+        "group": 23,
+        "light": 23,
+        "other": 22,
+        "with": 22,
+        "coiled": 20,
+        "epsilon": 20,
+        "very": 19,
+        "specificity": 17,
+        "uncharacterized": 17,
+        "heavy": 15,
+        "molecule": 11,
+        "non": 11,
+        "variant": 11,
+        "18s": 10,
+        "all": 10,
+        "iii": 1
+    };
+
+    // $(divid).empty();
+    var url = solrPopbioUrl + 'expCloud?&' + qryUrl + filter + '&json.wrf=?&callback=?';
+    var list = [];
+
+    PaneSpin(divid, 'start');
+
+    $.getJSON(url)
+        .done(function (json) {
+            if (json.response.numFound && json.response.numFound > 0) {
+                var docs = json.facet_counts.facet_fields.description_ws;
+                var c = 0;
+                var termMaxCount = 0, termMinCount = 99999999;
+
+                for (var key in docs) {
+                    if (docs.hasOwnProperty(key)) {
+                        if (/^\d+$/.test(key) || /^protein$/.test(key) || key.length < 3) {
+                            // Successful match
+                            continue;
+                        }
+
+                        if (ignoredWords[key]) continue;
+
+                        list.push([key, docs[key]]);
+                        c++;
+                        if (termMaxCount < docs[key]) termMaxCount = docs[key];
+                        if (termMinCount > docs[key]) termMinCount = docs[key];
+                        if (c > 59) break;
+                    }
+                }
+
+                setTimeout(function () {
+                    $(divid).empty();
+
+                    drawWordcloud(divid, list, termMaxCount, termMinCount);
+                    PaneSpin(divid, 'stop');
+                }, delay);
+            }
+
+        })
+        .fail(function () {
+            PaneSpin(divid, 'stop');
+            console.log('Failed while loading wordcloud')
+
+        })
+
+}
+
 function updateTable(divid, filter, singleMarker) {
     "use strict";
 
     var header = divid + '-header';
     $(header).empty();
 
-    // generate table's data url
-    var searchHandler = $('#SelectView').val() + 'Table?';
-    var url = solrPopbioUrl + searchHandler + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
+    if ($('#view-mode').val() === 'smpl') {
+        var url = solrPopbioUrl + 'smplTable?&' + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
+
+    } else {
+
+        var url = solrPopbioUrl + 'irTable?&' + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
+    }
 
     // generate a url with cursorMark
     var cursorUrl = url + '&cursorMark=*', cursorMark = '*', nextCursorMark;
@@ -1943,9 +1987,12 @@ function updateTable(divid, filter, singleMarker) {
 
     $('.marker-row').fadeOut();
 
+    // setTimeout(function () {
+    // }, delay);
 
+    // turn off previous scroll event listeners
+    //$('#marker-table').off("scroll");
     $('#marker-table').infiniteScrollHelper('destroy');
-
 
     $.getJSON(cursorUrl)
         .done(function (json) {
@@ -1960,7 +2007,7 @@ function updateTable(divid, filter, singleMarker) {
                 setTimeout(function () {
                     $(divid).empty();
 
-                    tableHtml(divid, docs);
+                    genesTableHtml(divid, docs);
                     PaneSpin('marker-table', 'stop');
                 }, delay);
             }
@@ -1977,7 +2024,6 @@ function updateTable(divid, filter, singleMarker) {
 
                         $.getJSON(cursorUrl)
                             .done(function (json) {
-
                                 if (json.response.numFound && json.response.numFound > 0) {
                                     var docs = json.response.docs;
 
@@ -1986,7 +2032,7 @@ function updateTable(divid, filter, singleMarker) {
                                     cursorUrl = url + '&cursorMark=' + nextCursorMark;
                                     // $(divid).empty();
 
-                                    tableHtml(divid, docs);
+                                    genesTableHtml(divid, docs);
                                     PaneSpin('marker-table', 'stop');
                                     // tableHtml(divid, docs);
                                 }
@@ -2012,6 +2058,132 @@ function updateTable(divid, filter, singleMarker) {
 
 }
 
+function drawWordcloud(divid, words, termMaxCount, termMinCount) {
+
+    var tooltip = d3.select('#plotTooltip');
+    var linearFunction = new L.LinearFunction(new L.Point(Math.log2(termMinCount), 10), new L.Point(Math.log2(termMaxCount), 60));
+
+    $(divid).height($(document).innerHeight() - 100);
+
+    WordCloud($(divid)[0], {
+        list: words,
+        gridSize: 10,
+        weightFactor: function (size) {
+            var weight = 30;
+            if (termMaxCount > termMinCount) {
+
+                weight = Math.round(linearFunction.evaluate(Math.log2(size)));
+            }
+            return weight;
+        },
+        fontFamily: 'Times, serif',
+        color: 'random-dark',
+        rotateRatio: 0.8,
+        rotationSteps: 2,
+        backgroundColor: '#fff',
+        shape: 'circle',
+        ellipticity: 1.8,
+        drawOutOfBound: true,
+        mouseOut: function (event) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        },
+        mouseOver: function (item, dimension, event) {
+
+            if (typeof item === 'undefined' || item === null) {
+                return
+            }
+
+            var html = '<h3 style="background-color: #000000;"><span style="color: white; ">' +
+                item[0] + '</span></h3><p><b>' + item[1] + '</b></p>';
+            tooltip.transition()
+                .duration(delay)
+                .style("opacity", 1)
+                .style("z-index", 1000000);
+
+            tooltip.html(html);
+            var winHeight = window.innerHeight;
+            var tooltipHeight = tooltip.node().getBoundingClientRect().height;
+            var tooltipY;
+            var positionY = event.clientY, positionX = event.clientX;
+            if (positionY - 8 + tooltipHeight > winHeight) {
+                tooltipY = positionY - tooltipHeight + 28;
+            } else {
+                tooltipY = positionY - 28;
+            }
+
+            tooltip.style("left", (positionX + 20) + "px")
+                .style("top", (tooltipY) + "px")
+        }
+    });
+
+}
+
+function genesTableHtml(divid, results) {
+
+    results.forEach(function (element) {
+
+        // hardcoded species_category
+        var species = element.species_category ? element.species_category[0] : 'Unknown';
+        var bgColor;
+        if (glbSummarizeBy === 'Species') {
+            bgColor = palette[species]
+        } else {
+            var field = mapSummarizeByToField(glbSummarizeBy).field;
+            var fieldContents = element[field];
+            if (fieldContents) {
+                typeof fieldContents === 'object' ? bgColor = palette[fieldContents[0]] : bgColor = palette[fieldContents];
+
+            } else {
+                bgColor = palette['Unknown']
+            }
+
+        }
+
+
+        var row = {
+            accession: element.accession,
+            accessionType: 'Stable ID',
+            bundleName: element.bundle_name,
+            sampleTypeType: 'Sample type',
+            geoCoords: element.geo_coords,
+            description: element.description,
+            geolocationType: 'Geography',
+            species: species,
+            symbol: element.symbol,
+            biotype: element.biotype,
+            abs_exp_embryonic_f: element.abs_exp_embryonic_f,
+            abs_exp_bloodMeal_f: element.abs_exp_bloodMeal_f,
+            abs_exp_tissues_f: element.abs_exp_tissues_f,
+            abs_exp_circadian_f: element.abs_exp_circadian_f,
+            domain: (typeof element.domain === 'undefined' || element.domain === null) ?
+                element.domain :
+                element.domain.map(function (x) {
+                    return {name: x}
+                }),
+            go_cvterms: (typeof element.go_cvterms === 'undefined' || element.go_cvterms === null) ?
+                element.go_cvterms :
+                element.go_cvterms.map(function (x) {
+                    return {name: x}
+                }),
+            seq_region_name: element.seq_region_name,
+            seq_region_start: element.seq_region_start,
+            seq_region_end: element.seq_region_end,
+            bgColor: bgColor,
+            textColor: getContrastYIQ(bgColor),
+        };
+
+        var template = $.templates("#smplRowTemplate");
+        var htmlOutput = template.render(row);
+        $(divid).append(htmlOutput);
+        $('.marker-row').fadeIn();
+
+    });
+
+}
+
+
 function tableHtml(divid, results) {
 
     results.forEach(function (element) {
@@ -2020,21 +2192,19 @@ function tableHtml(divid, results) {
 
         if (dates && dates.length > 0) {
             var dateString = dates[0];
-            // Match date ranges such as [2009-10 TO 2009-12]
             if (/TO/.test(dateString)) {
                 // Successful match
                 var myregexp = /\[(\S+)\sTO\s(\S+)\]/;
                 var match = myregexp.exec(dateString);
                 var startDateString = match[1], endDateString = match[2];
                 frmDate = dateResolution(startDateString) + ' to ' + dateResolution(endDateString);
-
-                // match 2009 or 2009-10 but not 2009-10-11 or any longer dates
-            } else if (/^\d{4}(?:-\d{2})?$/.test(dateString)) {
+                // dateResolution(match[2]);
+            } else if (/^\d{4}$/.test(dateString)) {
 
                 frmDate = dateResolution(dateString);
 
-                // Match ISO any other date formats (currently only ISO)
             } else {
+                // Match attempt failed
                 var date = new Date(dateString);
                 frmDate = date.toDateString();
 
@@ -2046,125 +2216,83 @@ function tableHtml(divid, results) {
         var species = element.species_category ? element.species_category[0] : 'Unknown';
         var bgColor;
         if (glbSummarizeBy === 'Species') {
-            bgColor = legend.options.palette[species]
+            bgColor = palette[species]
         } else {
             var field = mapSummarizeByToField(glbSummarizeBy).field;
             var fieldContents = element[field];
             if (fieldContents) {
-                typeof fieldContents === 'object' ? bgColor = legend.options.palette[fieldContents[0]] : bgColor = legend.options.palette[fieldContents];
+                typeof fieldContents === 'object' ? bgColor = palette[fieldContents[0]] : bgColor = palette[fieldContents];
 
             } else {
-                bgColor = legend.options.palette['Unknown']
+                bgColor = palette['Unknown']
             }
 
         }
 
-        var row, template;
+        if ($('#view-mode').val() === 'smpl') {
 
-        switch ($('#SelectView').val()) {
-            case "ir":
-                row = {
-                    accession: element.accession,
-                    accessionType: 'Stable ID',
-                    bundleName: element.bundle_name,
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
-                    geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
-                    bgColor: bgColor,
-                    textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
-                    phenotypeValue: element.phenotype_value_f,
-                    phenotypeValueType: element.phenotype_value_type_s,
-                    phenotypeValueUnit: element.phenotype_value_unit_s,
-                    insecticide: element.insecticide_s,
-                    insecticideType: 'Insecticides',
-                    sampleSize: element.sample_size_i,
-                    concentration: element.concentration_f,
-                    concentrationUnit: element.concentration_unit_s,
-                    duration: element.duration_f,
-                    durationUnit: element.duration_unit_s
+            var row = {
+                accession: element.accession,
+                accessionType: 'Stable ID',
+                bundleName: element.bundle_name,
+                url: element.url,
+                sampleType: element.sample_type,
+                sampleTypeType: 'Sample type',
+                geoCoords: element.geo_coords,
+                geolocation: element.geolocations[0],
+                geolocationType: 'Geography',
+                species: species,
+                speciesType: 'Taxonomy',
+                bgColor: bgColor,
+                textColor: getContrastYIQ(bgColor),
+                collectionDate: frmDate,
+                projects: borderColor('Project', element.projects),
+                projectsType: 'Projects',
+                collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
+                collectionProtocolsType: 'Collection protocols',
+                protocols: borderColor('Protocol', element.protocols),
+                protocolsType: 'Protocols'
+            };
 
-                };
+            var template = $.templates("#smplRowTemplate");
+        } else {
 
-                template = $.templates("#irRowTemplate");
-                break;
+            var row = {
+                accession: element.accession,
+                accessionType: 'Stable ID',
+                bundleName: element.bundle_name,
+                url: element.url,
+                sampleType: element.sample_type,
+                sampleTypeType: 'Sample type',
+                geoCoords: element.geo_coords,
+                geolocation: element.geolocations[0],
+                geolocationType: 'Geography',
+                species: species,
+                speciesType: 'Taxonomy',
+                bgColor: bgColor,
+                textColor: getContrastYIQ(bgColor),
+                collectionDate: frmDate,
+                projects: borderColor('Project', element.projects),
+                projectsType: 'Projects',
+                collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
+                collectionProtocolsType: 'Collection protocols',
+                protocols: borderColor('Protocol', element.protocols),
+                protocolsType: 'Protocols',
+                phenotypeValue: element.phenotype_value_f,
+                phenotypeValueType: element.phenotype_value_type_s,
+                phenotypeValueUnit: element.phenotype_value_unit_s,
+                insecticide: element.insecticide_s,
+                insecticideType: 'Insecticides',
+                sampleSize: element.sample_size_i,
+                concentration: element.concentration_f,
+                concentrationUnit: element.concentration_unit_s,
+                duration: element.duration_f,
+                durationUnit: element.duration_unit_s
 
-            case "abnd":
-                row = {
-                    accession: element.accession,
-                    accessionType: 'Stable ID',
-                    bundleName: element.bundle_name,
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
-                    geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
-                    bgColor: bgColor,
-                    textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
-                    sampleSize: element.sample_size_i,
-                    collectionDuration: element.collection_duration_days_i
-                };
+            };
 
-                row.smplAvgAbnd = row.sampleSize / row.collectionDuration;
-                [row.smplAvgAbndBgColor, row.smplAvgAbndTextColor] = legend.markerColor(Math.log10(row.smplAvgAbnd));
-
-                template = $.templates("#abndRowTemplate");
-
-                break;
-
-            default:
-                row = {
-                    accession: element.accession,
-                    accessionType: 'Stable ID',
-                    bundleName: element.bundle_name,
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
-                    geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
-                    bgColor: bgColor,
-                    textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
-                    sampleSize: element.sample_size_i
-
-                };
-
-                template = $.templates("#smplRowTemplate");
-                break;
+            var template = $.templates("#irRowTemplate");
         }
-        ;
-
-
         var htmlOutput = template.render(row);
         $(divid).append(htmlOutput);
         $('.marker-row').fadeIn();
@@ -2176,11 +2304,11 @@ function tableHtml(divid, results) {
 
 }
 
-function filterMarkers(items, flyTo) {
+function filterMarkers(items) {
     "use strict";
     if (items.length === 0) {
         qryUrl = 'q=*:*';
-        loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo});
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
         return;
     }
 
@@ -2340,9 +2468,7 @@ function filterMarkers(items, flyTo) {
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
 
-
-    loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo})
-
+    loadSolr({clear: 1, zoomLevel: map.getZoom()})
 }
 
 function borderColor(type, element) {
@@ -2352,7 +2478,7 @@ function borderColor(type, element) {
         objWithBorderColors.push(
             {
                 name: 'Unknown',
-                brdColor: type === glbSummarizeBy ? legend.options.palette['Unknown'] : ''
+                brdColor: type === glbSummarizeBy ? palette['Unknown'] : ''
             }
         )
         return objWithBorderColors;
@@ -2364,7 +2490,7 @@ function borderColor(type, element) {
         objWithBorderColors.push(
             {
                 name: obj,
-                brdColor: type === glbSummarizeBy ? legend.options.palette[obj] : ''
+                brdColor: type === glbSummarizeBy ? palette[obj] : ''
             }
         )
 
@@ -2399,6 +2525,14 @@ function mapTypeToField(type) {
             return "projects";
         case "Authors":
             return "project_authors_txt";
+        case "GO-term":
+            return "go_cvterms";
+        case "Domain":
+            return "domain";
+        case "Chromosome":
+            return "seq_region_name";
+        case "Biotype":
+            return "biotype";
         default :
             return type.toLowerCase()
 
@@ -2439,6 +2573,16 @@ function mapSummarizeByToField(type) {
             fields.type = "Projects";
             fields.field = "projects";
             break;
+        case "Chromosome":
+            fields.summarize = "seq_region_name";
+            fields.type = "Chromosome";
+            fields.field = "seq_region_name";
+            break;
+        case "Biotype":
+            fields.summarize = "biotype";
+            fields.type = "Biotype";
+            fields.field = "biotype";
+            break;
         default :
             fields.summarize = "species_category";
             fields.type = "Taxonomy";
@@ -2463,7 +2607,7 @@ function mapTypeToLabel(type) {
         case 'Projects'   :
             return 'label label-success';   // green
         case 'Anywhere'   :
-            return 'label label-default';   // grey
+            return 'label label-primary';   // grey
         case 'Pubmed references' :
             return 'label label-success';
         case 'Insecticides' :
@@ -2471,9 +2615,9 @@ function mapTypeToLabel(type) {
         case 'Collection protocols' :
             return 'label label-success';
         case 'Date' :
-            return 'label label-info'
+            return 'label label-info fa'
         case 'Seasonal' :
-            return 'label label-info'
+            return 'label label-info fa'
         case 'Norm-IR' :
             return 'label label-secondary';
         case 'Stable ID' :
@@ -2536,8 +2680,6 @@ function mapTypeToIcon(type) {
             return 'fa-location-arrow';
         case 'Insecticide':
             return 'fa-eyedropper';
-        case 'Protocols':
-            return 'fa-sort-amount-desc';
         case 'Concentration':
             return 'fa-tachometer';
         case 'Duration':
@@ -2653,36 +2795,44 @@ function resetPlots() {
 
 }
 
+function markerColor(value) {
+    var fillColor, textColor;
+    if (value < 0) {
+        return ["white", '#555'];
+    } else {
+        fillColor = absExprLight.evaluate(value);
+        if (value < 0.4) {
+            textColor = "#555555";
+        } else {
+            textColor = "#fff";
+
+        }
+        //textColor = (value <= 0.5) ? markerText.evaluate(value): markerText.evaluate(1 - value);
+        return [fillColor, textColor];
+    }
+
+}
 
 function getContrastYIQ(hexcolor) {
-    // strip # from the hexcolor
-    hexcolor = hexcolor.replace(/#/, '');
-    // parse RGB values
     var r = parseInt(hexcolor.substr(0, 2), 16);
     var g = parseInt(hexcolor.substr(2, 2), 16);
     var b = parseInt(hexcolor.substr(4, 2), 16);
-
-    // build a yiq represantation that takes into account the sensitivity of our eyes to R, G and B
     var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    // calculate the contrast
-    // the original had a value of 128 for the comparison but I get better results with 200 (more white text)
-    return (yiq >= 200) ? '#000000' : '#ffffff';
+    return (yiq >= 128) ? 'black' : 'white';
 }
 
 String.prototype.capitalizeFirstLetter = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 Number.prototype.roundDecimals = function (decimals) {
-    return Number(Math.round(this.valueOf() + 'e' + decimals) + 'e-' + decimals);
-    //
-    // if (Math.floor(this.valueOf()) === this.valueOf()) return this.valueOf();
-    // var noDecimals = this.toString().split(".")[1].length;
-    //
-    // if (noDecimals < decimals) {
-    //     return this.valueOf()
-    // } else {
-    //     return this.valueOf().toFixed(decimals)
-    // }
+    if (Math.floor(this.valueOf()) === this.valueOf()) return this.valueOf();
+    var noDecimals = this.toString().split(".")[1].length;
+
+    if (noDecimals < decimals) {
+        return this.valueOf()
+    } else {
+        return this.valueOf().toFixed(decimals)
+    }
 
 };
 
@@ -2853,7 +3003,7 @@ String.prototype.truncString = function (max, add) {
 };
 
 // Add an URL parser to JQuery that returns an object
-// This function is meant   to be used with an URL like the window.location
+// This function is meant to be used with an URL like the window.location
 // Use: $.parseParams('http://mysite.com/?var=string') or $.parseParams() to parse the window.location
 // Simple variable:  ?var=abc                        returns {var: "abc"}
 // Simple object:    ?var.length=2&var.scope=123     returns {var: {length: "2", scope: "123"}}
