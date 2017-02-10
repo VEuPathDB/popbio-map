@@ -1277,7 +1277,7 @@
         </lst>
         <lst name="invariants">
             <str name="fl">id,geo_coords,species_category</str>
-            <str name="q.op">OR</str>
+            <!--<str name="q.op">OR</str>-->
         </lst>
 
     </requestHandler>
@@ -1301,7 +1301,7 @@
         </lst>
         <lst name="invariants">
             <str name="fl">id, geo_coords,species_category,phenotype_rescaled_value_f</str>
-            <str name="q.op">OR</str>
+            <!--<str name="q.op">OR</str>-->
         </lst>
 
     </requestHandler>
@@ -1423,7 +1423,7 @@
             <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
                 species_category, collection_protocols, collection_date, collection_date_range, projects, sample_size_i
             </str>
-            <str name="q.op">OR</str>
+            <!--<str name="q.op">OR</str>-->
         </lst>
 
     </requestHandler>
@@ -1451,7 +1451,7 @@
                 phenotype_value_type_s, phenotype_value_unit_s, insecticide_s, sample_size_i, concentration_f,
                 concentration_unit_s, duration_f, duration_unit_s
             </str>
-            <str name="q.op">OR</str>
+            <!--<str name="q.op">OR</str>-->
         </lst>
 
     </requestHandler>
