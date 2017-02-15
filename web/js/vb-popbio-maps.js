@@ -1120,6 +1120,7 @@ function initializeSearch() {
         var selText = $(this).text();
         if (selText === "Samples") {
             $('#view-mode').val('smpl');
+            if (glbSummarizeBy === "Insecticide") glbSummarizeBy = "Species";
         } else {
             $('#view-mode').val('ir');
         }
@@ -1326,8 +1327,8 @@ function updateExportFields(viewMode) {
     }
 
     $('#select-export-fields')
-        .selectpicker('selectAll')
-        .selectpicker('refresh');
+        .selectpicker('refresh')
+        .selectpicker('selectAll');
 }
 
 /**
