@@ -188,7 +188,7 @@
         <dynamicField name="*_s" type="string" indexed="false" stored="true" omitNorms="true"/>
 
         <!-- Fields for compatibility with the VectorBase schema -->
-        <field name="has_geodata" type="boolean" indexed="true" stored="true"/>
+        <field name="has_abundance_data_b" type="boolean" indexed="true" stored="true"/>
         <field name="bundle" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="phenotype_type_s" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="date" type="date" indexed="true" stored="true" multiValued="true"/>

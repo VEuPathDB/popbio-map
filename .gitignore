@@ -49,7 +49,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 /web/hpc-leap/
-../hpc-leap/hpc-leap/
 web/libs/jquery-endless-scroll/
 /web/malaria/
 SOLR/genea_expression/
@@ -60,3 +59,6 @@ Would skip repository web/libs/genea/geohash4
 Would skip repository web/libs/genea/wordcloud2.js
 Would skip repository web/tiles/Leaflet-MiniMap
 /web/libs/genea/
+/js/genea/Leaflet-MiniMap/
+!/web/js/genea/
+!/web/libs/genea/

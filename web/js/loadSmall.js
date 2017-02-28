@@ -165,7 +165,7 @@ function loadSmall(mode, zoomLevel) {
 
             var colors = markerColor(this.trafficlight);
 
-            if ($('#view-mode').val() === 'ir') {
+            if ($('#SelectView').val() === 'ir') {
 
                 canvas.beginPath();
                 canvas.fillStyle = colors[0];
@@ -174,8 +174,8 @@ function loadSmall(mode, zoomLevel) {
                 canvas.closePath();
             }
 
-            canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
-            //canvas.fillStyle = ($('#view-mode').val() === 'ir') ? colors[1] : '#555';
+            canvas.fillStyle = ($('#SelectView').val() === 'ir') ? colors[1] : '#555';
+            //canvas.fillStyle = ($('#SelectView').val() === 'ir') ? colors[1] : '#555';
             canvas.textAlign = 'center';
             canvas.textBaseline = 'middle';
             canvas.font = 'bold 12px sans-serif';
@@ -354,7 +354,7 @@ function loadSmall(mode, zoomLevel) {
 
         for (var key in doc) if (doc.hasOwnProperty(key)) {
             var coords = doc[key].geo_coords.split(" ");
-            var pheVal = ($('#view-mode').val() === 'ir') ? doc[key].phenotype_rescaled_value_f : -1;
+            var pheVal = ($('#SelectView').val() === 'ir') ? doc[key].phenotype_rescaled_value_f : -1;
             var marker = new PruneCluster.Marker(coords[1], coords[0]);
             marker.data.id = doc[key].id;
             if (doc[key].hasOwnProperty("species_category")) {
@@ -390,7 +390,7 @@ function loadSmall(mode, zoomLevel) {
         map.spin(false);
     };
 
-    var url = solrPopbioUrl + $('#view-mode').val() + 'Markers?' + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
+    var url = solrPopbioUrl + $('#SelectView').val() + 'Markers?' + qryUrl + "&fq=" + geoLevel + ":" + geoQuery + buildBbox(map.getBounds()) + "&json.wrf=?&callback=?";
 
     // inform the user that data is loading
 

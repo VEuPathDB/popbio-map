@@ -1,6 +1,10 @@
 L.Icon.Canvas = L.Icon.extend({
     options: {
         iconSize: new L.Point(20, 20), // Have to be supplied
+        /*
+         iconAnchor: (Point)
+         popupAnchor: (Point)
+         */
         className: 'leaflet-canvas-icon',
         population: 0,
         stats: []
@@ -29,20 +33,21 @@ L.Icon.Canvas = L.Icon.extend({
 
         var start = Math.PI * 1.5;
         //var start = Math.PI * 2;
-        var stats = this.options.stats;
-        var markerText = this.options.markerText;
-        var count = this.options.count;
-        // var cumulativeCount = this.options.cumulativeCount;
-        stats.forEach(function (el) {
+        for (var key in this.options.stats) if (this.options.stats.hasOwnProperty(key)) {
 
-
-            var size = el.value / count;
-            var label = el.label;
+            var size = this.options.stats[key] / this.options.population;
+            //console.log(key + "-" + this.options.stats[key]);
 
             if (size > 0) {
                 canvas.beginPath();
                 canvas.moveTo(iconSize2, iconSize2);
-                canvas.fillStyle = el.color;
+                if (palette.hasOwnProperty(key)) {
+                    //console.log(key + '=' + palette[key])
+                    canvas.fillStyle = palette[key];
+                } else {
+                    canvas.fillStyle = palette["others"];
+                    //console.log(key + '*' + palette["others"]);
+                }
 
                 var from = start,
                     to = start + size * pi2;
@@ -58,7 +63,7 @@ L.Icon.Canvas = L.Icon.extend({
                 canvas.closePath();
             }
 
-        });
+        }
 
         // Draw the marker background
 
@@ -68,7 +73,7 @@ L.Icon.Canvas = L.Icon.extend({
         canvas.fill();
         canvas.closePath();
 
-        var colors = legend.markerColor(this.options.trafficlight);
+        var colors = markerColor(this.options.trafficlight);
 
         // Draw the marker fill color (white if now value)
 
@@ -83,7 +88,8 @@ L.Icon.Canvas = L.Icon.extend({
         canvas.textBaseline = 'middle';
         canvas.font = 'bold 12px sans-serif';
 
+        // canvas.fillText(this.options.population, iconSize2, iconSize2, iconSize);
 
-        canvas.fillText(markerText, iconSize2, iconSize2, iconSize);
+        canvas.fillText(this.options.count, iconSize2, iconSize2, iconSize);
     }
 });

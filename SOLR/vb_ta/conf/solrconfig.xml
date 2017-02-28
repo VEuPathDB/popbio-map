@@ -1585,6 +1585,45 @@
         </lst>
     </requestHandler>
 
+    <requestHandler class="solr.SearchHandler" name="/abndAc" default="true">
+        <lst name="defaults">
+            <str name="wt">json</str>
+            <str name="indent">false</str>
+            <str name="wt.nl">"map"</str>
+            <str name="qf">textsuggest^30.0 textnge^20.0 textng^20.0</str>
+            <str name="pf">textnge^30.0</str>
+            <str name="bf">product(log(sum(textboost,1)),100)^20</str>
+            <!-- Define relative importance between types. May be overridden per request by e.g. &personboost=120 -->
+            <str name="boost">
+                product(map(query($type1query),0,0,1,$type1boost),map(query($type2query),0,0,1,$type2boost),map(query($type3query),0,0,1,$type3boost),map(query($type4query),0,0,1,$type4boost),$typeboost)
+            </str>
+            <double name="typeboost">2.0</double>
+            <str name="type1query">type:"Taxonomy"</str>
+            <double name="type1boost">1.6</double>
+            <str name="type2query">type:("Sample type" OR "Geography")</str>
+            <double name="type2boost">1.6</double>
+            <str name="type3query">type:("Title" OR "Description")</str>
+            <double name="type3boost">1.1</double>
+            <str name="type4query">type:("Projects" OR "Stable ID")</str>
+            <double name="type4boost">1.5</double>
+            <str name="debugQuery">false</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_abundance_data_b:true</str>
+        </lst>
+        <lst name="invariants">
+            <str name="defType">edismax</str>
+            <str name="rows">15</str>
+            <str name="fl">id,textsuggest_category,type,field,is_synonym</str>
+            <str name="sort">score desc</str>
+            <str name="group.field">textsuggest_category</str>
+            <str name="group">true</str>
+            <str name="group.limit">1</str>
+            <str name="group.format">simple</str>
+        </lst>
+    </requestHandler>
+
     <requestHandler class="solr.SearchHandler" name="/smplAcat" default="false">
         <lst name="defaults">
             <str name="wt">json</str>
@@ -1623,6 +1662,33 @@
         <lst name="appends">
             <str name="fq">bundle:pop_sample_phenotype</str>
             <str name="fq">phenotype_type_s:"insecticide resistance"</str>
+        </lst>
+        <lst name="invariants">
+            <str name="defType">edismax</str>
+            <str name="rows">15</str>
+            <str name="fl">id,type,field</str>
+            <str name="group">true</str>
+            <str name="group.field">type</str>
+            <str name="group.limit">1</str>
+            <str name="group.format">simple</str>
+            <str name="sort">score desc</str>
+        </lst>
+    </requestHandler>
+
+
+    <requestHandler class="solr.SearchHandler" name="/abndAcat" default="false">
+        <lst name="defaults">
+            <str name="wt">json</str>
+            <str name="indent">off</str>
+            <str name="json.nl">map</str>
+            <str name="qf">textsuggest^30 textnge^20.0 textng^20.0</str>
+            <str name="pf">textnge^30.0</str>
+            <str name="bf">product(log(sum(textboost,1)),100)^20</str>
+            <str name="debugQuery">false</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_abundance_data_b:true</str>
         </lst>
         <lst name="invariants">
             <str name="defType">edismax</str>
@@ -1683,6 +1749,29 @@
         </lst>
     </requestHandler>
 
+    <!-- A request handler to return the number of hits for query faceted by field 'type' and grouped by 'stable_id' -->
+    <requestHandler class="solr.SearchHandler" name="/abndAcgrouped" default="false">
+        <lst name="defaults">
+            <str name="wt">json</str>
+            <str name="indent">off</str>
+            <str name="df">textsuggest</str>
+            <str name="debugQuery">false</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_abundance_data_b:true</str>
+        </lst>
+        <lst name="invariants">
+            <str name="rows">0</str>
+            <str name="json.nl">arrarr</str>
+            <str name="facet">true</str>
+            <str name="facet.field">type</str>
+            <str name="group">true</str>
+            <str name="group.facet">true</str>
+            <str name="group.field">stable_id</str>
+            <str name="group.ngroups">true</str>
+        </lst>
+    </requestHandler>
 
     <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
     <admin>
