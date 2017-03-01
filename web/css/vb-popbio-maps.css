@@ -191,6 +191,8 @@ BODY {
     1px 1px 0 #FFFFFF;
 }
 .highlight-marker {
+    background-clip : padding-box;
+    border-radius: 30px;
     box-shadow : 0px 0px 0px 5px rgba(255, 255, 0, 1);
     z-index    : 9999 !important;
 }
@@ -531,3 +533,26 @@ div.error div, div.warning div, div.info div, div.hint div {
 /*from { opacity: 0; }*/
 /*to   { opacity: 1; }*/
 /*}*/
+
+/*.marker-cluster {*/
+    /*position: relative;*/
+/*}*/
+
+/*.marker-cluster i {*/
+    /*position: absolute;*/
+    /*top: 45%;*/
+    /*left: 45%;*/
+    /*transform: translate(-45%, -45%);*/
+/*}*/
+
+
+/* add the font awesome icon */
+
+.marker-cluster:before {
+    content: '\f0c4';
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    text-decoration: inherit;
+}

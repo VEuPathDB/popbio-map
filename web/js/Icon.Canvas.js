@@ -32,6 +32,9 @@ L.Icon.Canvas = L.Icon.extend({
         var stats = this.options.stats;
         var markerText = this.options.markerText;
         var count = this.options.count;
+        var atomic = this.options.atomic;
+
+
         // var cumulativeCount = this.options.cumulativeCount;
         stats.forEach(function (el) {
 
@@ -60,6 +63,7 @@ L.Icon.Canvas = L.Icon.extend({
 
         });
 
+
         // Draw the marker background
 
         canvas.beginPath();
@@ -82,8 +86,21 @@ L.Icon.Canvas = L.Icon.extend({
         canvas.textAlign = 'center';
         canvas.textBaseline = 'middle';
         canvas.font = 'bold 12px sans-serif';
-
-
         canvas.fillText(markerText, iconSize2, iconSize2, iconSize);
+
+
+        if (atomic) {
+
+            canvas.save();
+            canvas.translate(iconSize - 10, 6);
+            canvas.rotate(Math.PI / 8);
+            canvas.textAlign = "center";
+            canvas.font = '14px FontAwesome';
+            canvas.fillStyle = '#595959';
+            canvas.fillText('\uF08d', 0, 0);
+
+            canvas.restore();
+        }
+
     }
 });

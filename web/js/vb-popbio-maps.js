@@ -1133,13 +1133,12 @@ function initializeSearch() {
 
     $('#SelectView').change(function () {
 
-        var selText = $("#SelectView").val();
-        if (selText === "smpl") {
-            $('#SelectView').val('smpl');
+        var selText = $('#SelectView').val();
+        if (selText !== "ir") {
+            // $('#SelectView').val('smpl');
             if (glbSummarizeBy === "Insecticide") glbSummarizeBy = "Species";
-        } else {
-            $('#SelectView').val('ir');
         }
+
         // update the export fields dropdown
         updateExportFields($("#SelectView").val());
 
@@ -1342,8 +1341,8 @@ function updateExportFields(viewMode) {
     }
 
     $('#select-export-fields')
-        .selectpicker('selectAll')
-        .selectpicker('refresh');
+        .selectpicker('refresh')
+        .selectpicker('selectAll');
 }
 
 /**
@@ -1494,6 +1493,11 @@ function loadSolr(parameters) {
             }
             arr.latLng = [el.ltAvg, el.lnAvg];
             arr.bounds = [[el.ltMin, el.lnMin], [el.ltMax, el.lnMax]];
+            if (el.ltMin === el.ltMax && el.lnMin === el.lnMax) {
+                arr.atomic = true
+            } else {
+                arr.atomic = false
+            }
             if (viewMode === 'ir') {
                 arr.trafficlight = el.irAvg;
             } else if (viewMode === 'abnd') {
@@ -1557,7 +1561,8 @@ function loadSolr(parameters) {
                     id: record.term,
                     stats: record.fullstats,
                     avgSampleSize: (viewMode === 'abnd') ? record.avgSampleSize : -1,
-                    avgDuration: (viewMode === 'abnd') ? record.avgDuration : -1
+                    avgDuration: (viewMode === 'abnd') ? record.avgDuration : -1,
+                    atomic: record.atomic
                 });
             },
             onEachRecord: function (layer, record) {

@@ -364,7 +364,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
             '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
-            ($("#view-mode").val() === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
+            ($("#SelectView").val() === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
             '</div> ' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
@@ -434,7 +434,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
             '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
-            ($("#view-mode").val() === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
+            ($("#SelectView").val() === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
             '</div> ' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
