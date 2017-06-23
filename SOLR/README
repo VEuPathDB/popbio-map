@@ -1,3 +1,1 @@
-How to start the SOLR security server
-
-`npm bin`/solr-security-proxy --port 9090 --backendPort 7997 --validPaths "/solr/vb_ta/smplAc,/solr/vb_ta/smplAcat,/solr/vb_ta/smplAcgrouped,/solr/vb_ta/irAc,/solr/vb_ta/irAcat,/solr/vb_ta/irAcgrouped,/solr/vb_popbio/irGeoclust,/solr/vb_popbio/smplGeoclust,/solr/vb_popbio/smplMarkers,/solr/vb_popbio/irMarkers,/solr/vb_popbio/smplPalette,/solr/vb_popbio/irPalette" &
+#
