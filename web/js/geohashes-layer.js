@@ -3,13 +3,38 @@
  */
 
 
-function addGeohashes(objMap, geolevel) {
+function addGeohashes(objMap, force) {
+
+    var geolevel = geohashLevel(endingZoom, "geohash").slice(-1);
+    var startingGeolevel = geohashLevel(startingZooom, "geohash").slice(-1);
+
+    // if (geolevel === startingGeolevel && !force ) return;
 
     // var geolevel = geohashLevel(zoomLevel, "geohash").slice(-1);
     var mapBounds = objMap.getBounds();
     var South = mapBounds.getSouth(), North = mapBounds.getNorth(), East = mapBounds.getEast(), West = mapBounds.getWest();
 
     if (geohashesGrid) {
+        // setTimeout(function () {
+        var i = 0;
+        // geohashesGrid.eachLayer(function (layer) {
+        //     // //     if (layer.options.className === "fade-in") {
+        //     // //         var pane = geohashesGrid.getPane(layer)
+        //     // //
+        //     // //         L.DomUtil.setOpacity(pane, 0.1)
+        //     // //         setTimeout(function () {
+        //     // //             geohashesGrid.removeLayer(layer);
+        //     if (i < 20) console.dir(layer)
+        //     i++;
+        //
+        //     // //         }, 300)
+        //     // //     }
+        // });
+        // },50)
+
+        // $(".fade-in").fadeOut(300)
+
+
         objMap.removeLayer(geohashesGrid)
     }
 
@@ -28,24 +53,58 @@ function addGeohashes(objMap, geolevel) {
         geohashData.terms.push(
             {
                 //"count": 1,
-                "term": element
+                term: element,
+                selected: markers.isSelected(element)
             }
         )
     }
 
     geohashes.forEach(fillGeohashesCounts);
 
+    var geohashFill = function (value) {
+        if (!value) return "transparent";
+        if (value === "self") return "darkblue";
+
+        return "black";
+    };
+
+    var geohashStroke = function (value) {
+        if (!value) return "grey";
+        // if (value === "self") return "red";
+
+        return "black";
+    };
+
+    var geohashFadeIn = function (value) {
+        if (!value) return "";
+        // if (value === "self") return "red";
+
+        // return "fade-in";
+        return;
+    };
+
     var options = {
         recordsField: 'terms',
         geohashField: 'term',
+        displayOptions: {
+            selected: {
+                fillColor: geohashFill,
+                color: geohashStroke,
+                className: geohashFadeIn
+            }
+        },
         layerOptions: {
-            fill       : false,
-            clickable  : false,
-            fillOpacity: 0,
-            opacity    : 0.3,
-            weight     : 1,
-            //color: "grey"
+            // fill       : false,
+            clickable: false,
+            fillOpacity: 0.2,
+            opacity: 0.4,
+            weight: 0.5,
+            // color: "grey",
+            dashArray: "4, 6",
+            interactive: false
+            // className: "fade-in"
         }
+
     };
 
     geohashesGrid = new L.GeohashDataLayer(geohashData, options);

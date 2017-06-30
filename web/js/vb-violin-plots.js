@@ -46,15 +46,15 @@ function createBeeViolinPlot(divid, filter) {
                     //ToDo: Uncomment next line to convert to a bootstrap-select
                     //.attr('class', "selectpicker");
                     $('<option/>', {
-                        text : 'phenotypes matching search',
+                        text: 'phenotypes matching search',
                         value: 1
                     }).appendTo(bs);
                     $('<option/>', {
-                        text : 'phenotypes visible on map (including the ones behind this panel)',
+                        text: 'phenotypes visible on map (including the ones behind this panel)',
                         value: 2
                     }).appendTo(bs);
                     $('<option/>', {
-                        text : 'all phenotypes',
+                        text: 'all phenotypes',
                         value: 3
                     }).appendTo(bs);
                     label.appendTo($(divid));
@@ -76,14 +76,14 @@ function createBeeViolinPlot(divid, filter) {
                             element.vunits.buckets.forEach(function (innElement) {
                                 var optionText = element.val + ' (' + innElement.val + '): ' + innElement.count + ' phenotypes';
                                 $('<option/>', {
-                                    text : optionText,
+                                    text: optionText,
                                     value: element.val + '-' + innElement.val,
-                                    data : {
+                                    data: {
                                         phenotype_value_type_s: element.val,
                                         phenotype_value_unit_s: innElement.val,
-                                        count                 : innElement.count,
-                                        min                   : innElement.pmin,
-                                        max                   : innElement.pmax
+                                        count: innElement.count,
+                                        min: innElement.pmin,
+                                        max: innElement.pmax
                                     }
                                 }).appendTo(s);
                             })
@@ -640,18 +640,18 @@ function buildPlot(divid, filter, selection) {
                 bgrMax = 100;
             }
             vlJsonFacet = {
-                pmean  : "avg(phenotype_value_f)",
-                pperc  : "percentile(phenotype_value_f,5,25,50,75,95)",
-                pmin   : "min(phenotype_value_f)",
-                pmax   : "max(phenotype_value_f)",
+                pmean: "avg(phenotype_value_f)",
+                pperc: "percentile(phenotype_value_f,5,25,50,75,95)",
+                pmin: "min(phenotype_value_f)",
+                pmax: "max(phenotype_value_f)",
                 //pmin: "percentile(phenotype_value_f,1)",
                 //pmax: "percentile(phenotype_value_f,99)",
                 denplot: {
-                    type   : "range",
-                    field  : "phenotype_value_f",
-                    gap    : (bgrMax - bgrMin) / resolution,
-                    start  : bgrMin,
-                    end    : bgrMax,
+                    type: "range",
+                    field: "phenotype_value_f",
+                    gap: (bgrMax - bgrMin) / resolution,
+                    start: bgrMin,
+                    end: bgrMax,
                     include: 'edge'
                 }
             };
@@ -817,7 +817,8 @@ function buildPlot(divid, filter, selection) {
                 $.when(selBsPromise, selVlPromise).done(function (bsJson, vlJson) {
 
                     // selection graph
-                    var fltPCount = vlJson[0].response.numFound, fltPMin = vlJson[0].facets.pmin, fltPMax = vlJson[0].facets.pmax;
+                    var fltPCount = vlJson[0].response.numFound, fltPMin = vlJson[0].facets.pmin,
+                        fltPMax = vlJson[0].facets.pmax;
 
                     var gs = svg.append("g").attr("transform", "translate(" + (1 * (boxWidth + boxSpacing) + margin.left) + ",0)");
 
@@ -1032,37 +1033,37 @@ function buildDataset(dataset, element) {
     }
 
     dataset.push({
-        x                      : undefined,
-        y                      : element.phenotype_value_f,
-        species                : element.species_category,
-        speciesType            : 'Taxonomy',
-        insecticide            : element.insecticide_s,
-        insecticideType        : 'Insecticides',
-        concentration          : element.concentration_f,
-        duration               : element.duration_f,
-        accession              : element.accession,
-        accessionType          : 'Stable ID',
-        bundleName             : element.bundle_name,
-        url                    : element.url,
-        sampleType             : element.sample_type,
-        sampleTypeType         : 'Sample type',
-        geoCoords              : element.geo_coords,
-        geolocation            : element.geolocations[0],
-        geolocationType        : 'Geography',
-        bgColor                : bgColor,
-        textColor              : getContrastYIQ(bgColor),
-        collectionDate         : element.collection_date,
-        projects               : borderColor('Project', element.projects),
-        projectsType           : 'Projects',
-        collectionProtocols    : borderColor('Collection protocol', element.collection_protocols),
+        x: undefined,
+        y: element.phenotype_value_f,
+        species: element.species_category,
+        speciesType: 'Taxonomy',
+        insecticide: element.insecticide_s,
+        insecticideType: 'Insecticides',
+        concentration: element.concentration_f,
+        duration: element.duration_f,
+        accession: element.accession,
+        accessionType: 'Stable ID',
+        bundleName: element.bundle_name,
+        url: element.url,
+        sampleType: element.sample_type,
+        sampleTypeType: 'Sample type',
+        geoCoords: element.geo_coords,
+        geolocation: element.geolocations[0],
+        geolocationType: 'Geography',
+        bgColor: bgColor,
+        textColor: getContrastYIQ(bgColor),
+        collectionDate: element.collection_date,
+        projects: borderColor('Project', element.projects),
+        projectsType: 'Projects',
+        collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
         collectionProtocolsType: 'Collection protocols',
-        protocols              : borderColor('Protocol', element.protocols),
-        protocolsType          : 'Protocols',
-        phenotypeValue         : element.phenotype_value_f,
-        phenotypeValueType     : element.phenotype_value_type_s,
-        phenotypeValueUnit     : element.phenotype_value_unit_s,
-        sampleSize             : element.sample_size_i,
-        concentrationUnit      : element.concentration_unit_s,
-        durationUnit           : element.duration_unit_s
+        protocols: borderColor('Protocol', element.protocols),
+        protocolsType: 'Protocols',
+        phenotypeValue: element.phenotype_value_f,
+        phenotypeValueType: element.phenotype_value_type_s,
+        phenotypeValueUnit: element.phenotype_value_unit_s,
+        sampleSize: element.sample_size_i,
+        concentrationUnit: element.concentration_unit_s,
+        durationUnit: element.duration_unit_s
     });
 }

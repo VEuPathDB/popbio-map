@@ -679,11 +679,11 @@
              updateRequestProcessorChains that can be used by name
              on each Update Request
           -->
-        <!--
+
            <lst name="defaults">
              <str name="update.chain">dedupe</str>
            </lst>
-           -->
+
     </requestHandler>
 
     <!-- The following are implicitly added
@@ -1350,19 +1350,21 @@
          uniqueness based on that anyway.
 
       -->
-    <!--
-       <updateRequestProcessorChain name="dedupe">
-         <processor class="solr.processor.SignatureUpdateProcessorFactory">
-           <bool name="enabled">true</bool>
-           <str name="signatureField">id</str>
-           <bool name="overwriteDupes">false</bool>
-           <str name="fields">name,features,cat</str>
-           <str name="signatureClass">solr.processor.Lookup3Signature</str>
-         </processor>
-         <processor class="solr.LogUpdateProcessorFactory" />
-         <processor class="solr.RunUpdateProcessorFactory" />
-       </updateRequestProcessorChain>
-      -->
+
+    <updateRequestProcessorChain name="dedupe">
+        <processor class="solr.processor.SignatureUpdateProcessorFactory">
+            <bool name="enabled">true</bool>
+            <str name="signatureField">signatureField</str>
+            <bool name="overwriteDupes">true</bool>
+            <!-- Don't leave spaces between the field names or the signature will only take into account the first field-->
+            <str name="fields">stable_id,bundle,date,geo_coords,textsuggest,type,phenotype_type_s,has_abundance_data_b
+            </str>
+            <str name="signatureClass">solr.processor.Lookup3Signature</str>
+        </processor>
+        <processor class="solr.LogUpdateProcessorFactory"/>
+        <processor class="solr.RunUpdateProcessorFactory"/>
+    </updateRequestProcessorChain>
+
 
     <!-- Language identification
 
@@ -1718,6 +1720,7 @@
             <str name="json.nl">arrarr</str>
             <str name="facet">true</str>
             <str name="facet.field">type</str>
+            <str name="facet.threads">2</str>
             <str name="group">true</str>
             <str name="group.facet">true</str>
             <str name="group.field">stable_id</str>
@@ -1742,6 +1745,7 @@
             <str name="json.nl">arrarr</str>
             <str name="facet">true</str>
             <str name="facet.field">type</str>
+            <str name="facet.threads">2</str>
             <str name="group">true</str>
             <str name="group.facet">true</str>
             <str name="group.field">stable_id</str>
@@ -1766,6 +1770,7 @@
             <str name="json.nl">arrarr</str>
             <str name="facet">true</str>
             <str name="facet.field">type</str>
+            <str name="facet.threads">2</str>
             <str name="group">true</str>
             <str name="group.facet">true</str>
             <str name="group.field">stable_id</str>

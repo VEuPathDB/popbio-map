@@ -226,9 +226,9 @@
     <field name="genotypes_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
     <field name="phenotypes_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
     <field name="annotations_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
-    <field name="species_cvterms" type="string" indexed="true" stored="true" multiValued="true"/>
+    <!--<field name="species_cvterms" type="string" indexed="true" stored="true" multiValued="true"/>-->
     <field name="publications_status" type="string" indexed="true" stored="true" multiValued="true"/>
-    <!--<field name="species_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>-->
+    <field name="species_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
     <field name="sample_type_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
     <field name="collection_protocols_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>
     <field name="study_designs_cvterms" type="text_ws_finer" indexed="true" stored="true" multiValued="true"/>

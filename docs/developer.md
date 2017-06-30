@@ -1,3 +1,60 @@
+### Repository structure
+```shell
+│
+│   # Documentation for development and deployment
+├── docs
+│
+│   # SOLR configuration files
+├── SOLR
+│   │   # SOLR configuration files for the main core of PopBio map
+│   ├── vb_popbio
+│   │   └── conf
+│   │   # SOLR configuration files for the auto-complete core
+│   ├── vb_ta
+│   │   └── conf
+│   │   # SOLR configuration files for the main core of expression Genea
+│   └── genea_expression
+│       └── conf
+│
+│   # Documentation for development and deployment
+└── web
+    ├── css
+    │   # minified CSS and Javascript code for deployment
+    ├── dist
+    │   ├── css
+    │   └── js
+    ├── images
+    ├── js
+    │   └── genea
+    │   # third party libraries. Each of these is a forked repo
+    ├── libs
+    │   ├── beeswarm
+    │   ├── bootstrap-select
+    │   ├── bootstrap-slider
+    │   ├── bootstrap-tagsinput
+    │   ├── bootstrap-toggle
+    │   ├── genea #libs needed for genea
+    │   ├── geohash-js
+    │   ├── jquery-infinite-scroll-helper
+    │   ├── jsrender
+    │   ├── Leaflet.EasyButton
+    │   ├── leaflet.fullscreen
+    │   ├── Leaflet.Spin
+    │   ├── Leaflet.vector-markers
+    │   ├── leaflet-dvf
+    │   ├── leaflet-zoom-min
+    │   ├── node-geohash
+    │   ├── nvd3
+    │   ├── PruneCluster
+    │   ├── sidebar-v2
+    │   ├── spin.js
+    │   └── typeahead.js
+    └── tiles  # folder containing generated map tiles for genea
+```
+
+
+### Adding a new view
+
 ### Displaying dynamic text data using templates
 
 Apart from the search autocomplete, there are 2 other locations where we display AJAX-driven text data in the map:

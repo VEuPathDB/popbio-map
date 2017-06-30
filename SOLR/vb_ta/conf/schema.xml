@@ -184,27 +184,22 @@
         <copyField source="textsuggest" dest="textphon"/>
         <field name="textboost" type="long" indexed="true" stored="true" multiValued="false"/>
 
-        <field name="phonetic" type="text_phonetic_do" indexed="true" stored="false" omitNorms="true"/>
+        <!--<field name="phonetic" type="text_phonetic_do" indexed="true" stored="false" omitNorms="true"/>-->
         <dynamicField name="*_s" type="string" indexed="false" stored="true" omitNorms="true"/>
 
         <!-- Fields for compatibility with the VectorBase schema -->
-        <field name="has_abundance_data_b" type="boolean" indexed="true" stored="true"/>
+        <field name="has_abundance_data_b" type="boolean" indexed="true" stored="true" multiValued="false"/>
         <field name="bundle" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="phenotype_type_s" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="date" type="date" indexed="true" stored="true" multiValued="true"/>
 
 
         <field name="geo_coords" type="location_rpt" indexed="true" stored="true"/>
-        <!--
-               <field name="geo_coords_ll" type="location" indexed="true" stored="true"/>
-               <copyField source="geo_coords" dest="geo_coords_ll"/>
-         -->
-        <field name="geohash_6" type="string" indexed="true" stored="true"/>
-        <field name="geohash_5" type="string" indexed="true" stored="true"/>
-        <field name="geohash_4" type="string" indexed="true" stored="true"/>
-        <field name="geohash_3" type="string" indexed="true" stored="true"/>
-        <field name="geohash_2" type="string" indexed="true" stored="true"/>
-        <field name="geohash_1" type="string" indexed="true" stored="true"/>
+
+
+        <!-- Signature field for de-duplication-->
+        <field name="signatureField" type="string" stored="true" indexed="true" multiValued="false" />
+
     </fields>
     <uniqueKey>id</uniqueKey>
     <defaultSearchField>textng</defaultSearchField>

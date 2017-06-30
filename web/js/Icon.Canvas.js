@@ -14,6 +14,7 @@ L.Icon.Canvas = L.Icon.extend({
         e.width = s.x;
         e.height = s.y;
         e.id = this.options.id;
+        this.options.selected = markers.isSelected(this.options.id);
         this.draw(e.getContext('2d'), s.x, s.y);
         return e;
     },
@@ -33,6 +34,7 @@ L.Icon.Canvas = L.Icon.extend({
         var markerText = this.options.markerText;
         var count = this.options.count;
         var atomic = this.options.atomic;
+        var selected = this.options.selected;
 
 
         // var cumulativeCount = this.options.cumulativeCount;
@@ -88,6 +90,40 @@ L.Icon.Canvas = L.Icon.extend({
         canvas.font = 'bold 12px sans-serif';
         canvas.fillText(markerText, iconSize2, iconSize2, iconSize);
 
+
+
+        if (selected) {
+
+            canvas.beginPath();
+            canvas.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            canvas.arc(iconSize2, iconSize2, iconSize3, 0, Math.PI * 2);
+            canvas.fill();
+            canvas.closePath();
+            canvas.textAlign = "center";
+            // canvas.font = '24px FontAwesome';
+            // canvas.fillStyle = 'white';
+            switch (selected) {
+                case 'parent':
+                    canvas.fillStyle = 'grey';
+                    break;
+
+                case 'child':
+                    canvas.fillStyle = 'grey';
+                    break;
+
+                default:
+                    canvas.fillStyle = 'rgb(0, 120, 215)';
+
+
+
+            }
+
+            // canvas.fillText('\uf111', iconSize2, iconSize2);
+            canvas.font = '18px FontAwesome';
+            // canvas.fillStyle = 'rgb(0, 120, 215)';
+            canvas.fillText('\uf00c', iconSize2, iconSize2);
+
+        }
 
         if (atomic) {
 

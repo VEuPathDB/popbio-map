@@ -21,12 +21,12 @@
 
     <!-- Local CSS styles <replaced with dist/css/VB_popbio_map.min.css when compiled-->
     <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="css/MarkerCluster.Default.css" type="text/css" media="screen"/>
+    <!--<link rel="stylesheet" href="css/MarkerCluster.Default.css" type="text/css" media="screen"/>-->
     <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="libs/nvd3/build/nv.d3.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.css">
+    <!--<link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.css">-->
     <link rel="stylesheet" href="css/typeaheadjs.css">
     <link rel="stylesheet" href="css/bootstrap-yeti.css">
     <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.css"/>
@@ -89,9 +89,11 @@
     <script type="text/javascript" src="libs/jsrender/jsrender.js"></script>
     <script type="text/javascript" src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js"></script>
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
-    <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
+    <script type="text/javascript" src="js/map.popbioMarkers.js"></script>
+    <script type="text/javascript" src="js/map.multipleMarkers.js"></script>
     <!--Added geohashes-layers.js to enable geohashes -->
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
+    <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
 
 
 </head>
@@ -620,7 +622,7 @@
                                 <span class="btn-group btn-group-justified" data-toggle="buttons"
                                       role="group"
                                       style="height: 30px;">
-                                <input id="grid-toggle" type="checkbox" data-toggle="toggle"
+                                <input id="grid-toggle" checked type="checkbox" data-toggle="toggle"
                                        data-on="<i class='fa fa-th'></i> Grid On"
                                        data-off="<i class='fa fa-th'></i> Grid Off">
 
@@ -845,6 +847,9 @@
 <div id="vbEntityTooltip" class="tooltip-bs"></div>
 
 
+
+<!-- jsrender template for sample info in the table slider (samples view)-->
+
 <script type="text/x-jsrender" id="smplRowTemplate">
     <div class="row no-pad marker-row">
 
@@ -984,6 +989,9 @@
 
 
 </script>
+
+
+<!-- jsrender template for sample info in the table slider (IR view)-->
 
 <script type="text/x-jsrender" id="irRowTemplate">
     <div class="row no-pad marker-row">
@@ -1151,6 +1159,8 @@
 
 </script>
 
+<!-- jsrender template for sample info in the table slider (abundance view)-->
+
 <script type="text/x-jsrender" id="abndRowTemplate">
     <div class="row no-pad marker-row">
 
@@ -1306,6 +1316,8 @@
 
 
 </script>
+
+<!-- jsrender template for point info in beeswarm plot (IR view)-->
 
 <script type="text/x-jsrender" id="irBsPointTemplate">
     <div class="row no-pad" style="width: 370px;">
@@ -1477,6 +1489,9 @@
 
 </script>
 
+
+<!-- jsrender template for point info in beeswarm plot (abundance view, not used yet)-->
+
 <script type="text/x-jsrender" id="abndBsPointTemplate">
     <div class="row no-pad" style="width: 370px;">
         <div class="col-md-12" >
@@ -1631,6 +1646,9 @@
         </div>
     </div>
 </script>
+
+
+<!-- jsrender template for Project info in the table view-->
 
 <script type="text/x-jsrender" id="projectInfoTemplate">
     <div class="row no-pad" style="width: 370px;">
@@ -1793,7 +1811,7 @@
     var solrTaUrl = 'asolr/solr/vb_ta/';
     //    var solrTaUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_ta/';
     var map, sidebar;
-    var assetLayerGroup;
+    var assetLayerGroup, tempParentLayerGroup;
     var smallClusters = [], months = [];
     var legendSpecies = 18;
     var qryUrl = 'q=*:*';
@@ -1816,6 +1834,8 @@
     // this is to remember background type selection between markers
     var bgPlotType = 1;
 
+    var startingZooom = -Infinity, endingZoom = Infinity;
+
     // Norm IR slider initiation
     var normIrSlider;
 
@@ -1824,6 +1844,9 @@
     var markersBounds = [];
 
     var resizeId, previousWindowHeight;
+
+    // store markers
+    var markers;
 
 
     initializeSearch();

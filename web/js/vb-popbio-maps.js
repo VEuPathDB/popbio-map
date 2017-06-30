@@ -110,20 +110,21 @@ function applyParameters() {
 function bindEvents() {
     "use strict"
 
+
     // declare timeout function name
     var timeoutHandler;
 
 
     // add event listener to map for movement
     // this is to control Leaflet's annoying behavior when scrolling with a trackpad
-    map.on('moveend', mapMoveHandler);
-    map.on('drag', mapDragHandler);
-
+    map.on('moveend', mapMoveHandler)
+        .on('drag', mapDragHandler);
     function mapMoveHandler() {
         // cancel any timeout currently running
         window.clearTimeout(timeoutHandler);
         // create new timeout to fire sesarch function after 500ms (or whatever you like)
         timeoutHandler = window.setTimeout(function () {
+            endingZoom = map.getZoom();
             loadSolr({clear: 1, zoomLevel: map.getZoom()});
 
             // run some function to get results or update markers or something
@@ -137,6 +138,8 @@ function bindEvents() {
 
     // detect when user changes zoom or pans around the map
     map.on("movestart", function () {
+        startingZooom = map.getZoom();
+
         removeHighlight();
         // close open panels
         $('.collapse').collapse('hide');
@@ -578,7 +581,9 @@ function bindEvents() {
                 highlightedId = false;
             }
 
+
         });
+
 
     // Toggle grid
     $('#grid-toggle').change(function () {
@@ -587,7 +592,7 @@ function bindEvents() {
             map.removeLayer(geohashesGrid);
         } else {
             var geoLevel = geohashLevel(map.getZoom(), "geohash");
-            addGeohashes(map, geoLevel.slice(-1));
+            addGeohashes(map, true);
         }
     });
 
@@ -860,6 +865,10 @@ function initializeMap(parameters) {
 
     map.spin(true);
 
+    startingZooom = map.getZoom();
+    endingZoom = map.getZoom();
+
+
     map.addControl(new L.Control.FullScreen({
         position: "topright",
         forcePseudoFullscreen: true
@@ -878,8 +887,19 @@ function initializeMap(parameters) {
     });
 
     map.addLayer(mapQuestLayers);
-    assetLayerGroup = new L.LayerGroup();
+
+
+    // initialize markers layer
+    markers = new L.Map.SelectMarkers(map);
+
+
+    // assetLayerGroup = new L.LayerGroup();
+    assetLayerGroup = new L.PopbioMarkers();
     assetLayerGroup.addTo(map);
+    // tempParentLayerGroup = new L.PopbioMarkers();
+    // tempParentLayerGroup.addTo(map);
+
+    // assetLayerGroup.initLatLngStorage();
     var layerCtl = new L.Control.Layers({
         'Map': mapQuestLayers,
         'Hybrid': MQ.hybridLayer(),
@@ -890,6 +910,9 @@ function initializeMap(parameters) {
     });
     layerCtl.setPosition('topright');
     layerCtl.addTo(map);
+
+    // add geohashes grid
+    if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
     // Now generate the legend
 
@@ -1036,9 +1059,9 @@ function initializeSearch() {
             replace: function (url, query) {
                 url = solrTaUrl + $('#SelectView').val() + 'Acgrouped?q=';
                 if ($('#world-toggle').prop('checked')) {
-                    return url + encodeURI(query) + '*';
-                } else {
                     return url + encodeURI(query) + '*' + buildBbox(map.getBounds());
+                } else {
+                    return url + encodeURI(query) + '*';
                 }
             },
             filter: function (data) {
@@ -1363,20 +1386,6 @@ function loadSolr(parameters) {
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
-    // build a geohash grid
-    if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, geoLevel.slice(-1));
-    //ToDo: change the grid checkbox value to true when grid is switched on trough a URL parameter
-
-    //we are too deep in, just download the landmarks instead
-
-    // if (zoomLevel > 16) {
-    //     loadSmall(1, zoomLevel);
-    //
-    //     return;
-    //
-    // }
-
-    var terms = [];
 
     // Store the visible marker geo limits to build a bbox
     var minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
@@ -1384,6 +1393,7 @@ function loadSolr(parameters) {
     // this function processes the JSON file requested by jquery
 
     var buildMap = function (result) {
+        var terms = [];
         // using the facet.stats we return statistics for lat and lng for each geohash
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
@@ -1407,19 +1417,10 @@ function loadSolr(parameters) {
         }
 
 
-        var facetResults = result.facets.geo.buckets;
-
-
-        // depending on the zoom level and the count of landmarks in each geohash we are saving
-        // geohashes that contain few enough landmarks to display them using the prune cluster
-        // layer. This needs tweaking to get the right balance of info, performance and transfer times
-        // The following values seem to work well. Most of the latency is due to SOLR taking a long
-        // time to return the landmarks of several geohashes.
-        smallClusters = [];
-
-        var populations = {}; // keep the total marker count for each geohash
-        var statistics = {}; // keep the species count for each geohash
-        var fullStatistics = {}; // keep the species count for each geohash
+        var facetResults = result.facets.geo.buckets,
+            populations = {}, // keep the total marker count for each geohash
+            statistics = {}, // keep the species count for each geohash
+            fullStatistics = {}; // keep the species count for each geohash
 
         facetResults.forEach(function (el) {
 
@@ -1544,7 +1545,8 @@ function loadSolr(parameters) {
                 stroke: false,
                 weight: 0,
                 color: "#80FF00",
-                dropShadow: false
+                dropShadow: false,
+                opacity: 0.2
 
             },
 
@@ -1554,9 +1556,7 @@ function loadSolr(parameters) {
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
                     markerText: (viewMode === 'abnd') ? record.normAbnd : record.count,
-                    className: "marker-cluster",
                     count: (viewMode === 'abnd') ? record.abndSum : record.count,
-                    // cumulativeCount: (viewMode === 'abnd') ? record.normAbnd : record.cumulativeCount,
                     trafficlight: record.trafficlight,
                     id: record.term,
                     stats: record.fullstats,
@@ -1574,95 +1574,23 @@ function loadSolr(parameters) {
 
                     map.fitBounds(record.bounds, {padding: [100, 50]});
                 })
-                    .on("click", function () {
+                    .on("click", function (marker) {
+                        if (marker.originalEvent.ctrlKey) {
+                            if (marker.target instanceof L.Marker) {
+                                markers.toggleMarker(marker.target, assetLayerGroup)
+                                if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
-                        var panel = $('.sidebar-pane.active');
-                        var panelId = panel.attr('id');
-
-                        var recBounds = L.latLngBounds(record.bounds);
-
-                        // was a marker already highlighted?
-                        if (highlightedId) {
-
-                            $('.sidebar-pane').data('has-graph', false);
-
-                            switch (panelId) {
-                                case "graphs":
-                                    updatePieChart(record.count, record.fullstats);
-                                    panel.data('has-graph', true);
-                                    break;
-                                case "swarm-plots":
-                                    createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
-                                    panel.data('has-graph', true);
-                                    break;
-                                case "marker-table":
-                                    updateTable("#table-contents", buildBbox(recBounds));
-                                    panel.data('has-graph', true);
-                                    break;
-                                default:
-                                    break;
                             }
+                        } else {
 
-                            prevent = false;
-                            return;
-                        }
+                            var panel = $('.sidebar-pane.active');
+                            var panelId = panel.attr('id');
 
-                        if (sidebarClick) {
+                            var recBounds = L.latLngBounds(record.bounds);
 
-                            switch (panelId) {
-                                case "graphs":
-                                    if (!panel.data('has-graph')) {
-                                        updatePieChart(record.count, record.fullstats);
-                                        panel.data('has-graph', true);
-                                    }
-                                    break;
-                                case "swarm-plots":
-                                    if (!panel.data('has-graph')) {
-                                        createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
-                                        panel.data('has-graph', true);
-                                    }
-                                    break;
-                                case "marker-table":
-                                    if (!panel.data('has-graph')) {
-                                        updateTable("#table-contents", buildBbox(recBounds));
-                                        panel.data('has-graph', true);
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
+                            // was a marker already highlighted?
+                            if (highlightedId) {
 
-                            prevent = false;
-                            return;
-                        }
-
-                        var wasHighlighted = false;
-                        if (layer._icon === highlight) wasHighlighted = true;
-                        removeHighlight(layer._icon);
-                        highlightMarker(layer._icon);
-                        timer = setTimeout(function () {
-                            if (!prevent) {
-
-                                if (wasHighlighted) {
-                                    removeHighlight();
-                                    sidebar.close();
-                                    setTimeout(function () {
-                                        resetPlots()
-                                    }, delay);
-                                    return;
-                                }
-
-                                if ($('#sidebar').hasClass('collapsed')) {
-                                    if ($('.sidebar-pane.active').attr('id') === 'help') {
-                                        sidebar.open('graphs');
-                                    } else {
-                                        $('#swarm-chart-area').empty();
-                                        $('#table-contents').empty();
-                                        sidebar.open(panelId);
-                                    }
-                                }
-
-                                // Determine the open pane and update the right graph
                                 $('.sidebar-pane').data('has-graph', false);
 
                                 switch (panelId) {
@@ -1678,20 +1606,100 @@ function loadSolr(parameters) {
                                         updateTable("#table-contents", buildBbox(recBounds));
                                         panel.data('has-graph', true);
                                         break;
-                                    case "help":
-                                        updatePieChart(record.count, record.fullstats);
-                                        panel.data('has-graph', true);
-                                        sidebar.open('graphs');
-
-                                        break;
-
                                     default:
                                         break;
                                 }
 
+                                prevent = false;
+                                return;
                             }
-                        }, delay);
-                        prevent = false;
+
+                            if (sidebarClick) {
+
+                                switch (panelId) {
+                                    case "graphs":
+                                        if (!panel.data('has-graph')) {
+                                            updatePieChart(record.count, record.fullstats);
+                                            panel.data('has-graph', true);
+                                        }
+                                        break;
+                                    case "swarm-plots":
+                                        if (!panel.data('has-graph')) {
+                                            createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                            panel.data('has-graph', true);
+                                        }
+                                        break;
+                                    case "marker-table":
+                                        if (!panel.data('has-graph')) {
+                                            updateTable("#table-contents", buildBbox(recBounds));
+                                            panel.data('has-graph', true);
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                prevent = false;
+                                return;
+                            }
+
+                            var wasHighlighted = false;
+                            if (layer._icon === highlight) wasHighlighted = true;
+                            removeHighlight(layer);
+                            highlightMarker(layer);
+                            timer = setTimeout(function () {
+                                if (!prevent) {
+
+                                    if (wasHighlighted) {
+                                        removeHighlight();
+                                        sidebar.close();
+                                        setTimeout(function () {
+                                            resetPlots()
+                                        }, delay);
+                                        return;
+                                    }
+
+                                    if ($('#sidebar').hasClass('collapsed')) {
+                                        if ($('.sidebar-pane.active').attr('id') === 'help') {
+                                            sidebar.open('graphs');
+                                        } else {
+                                            $('#swarm-chart-area').empty();
+                                            $('#table-contents').empty();
+                                            sidebar.open(panelId);
+                                        }
+                                    }
+
+                                    // Determine the open pane and update the right graph
+                                    $('.sidebar-pane').data('has-graph', false);
+
+                                    switch (panelId) {
+                                        case "graphs":
+                                            updatePieChart(record.count, record.fullstats);
+                                            panel.data('has-graph', true);
+                                            break;
+                                        case "swarm-plots":
+                                            createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                            panel.data('has-graph', true);
+                                            break;
+                                        case "marker-table":
+                                            updateTable("#table-contents", buildBbox(recBounds));
+                                            panel.data('has-graph', true);
+                                            break;
+                                        case "help":
+                                            updatePieChart(record.count, record.fullstats);
+                                            panel.data('has-graph', true);
+                                            sidebar.open('graphs');
+
+                                            break;
+
+                                        default:
+                                            break;
+                                    }
+
+                                }
+                            }, delay);
+                            prevent = false;
+                        }
                     })
                     .on("mouseover", function (e) {
                         moveTopMarker(layer);
@@ -1705,22 +1713,15 @@ function loadSolr(parameters) {
                             clickable: false
                         }).addTo(map);
 
-                        tooltip.css("left",e.containerPoint.x + 20)
-                            .css("top",e.containerPoint.y - 20)
+                        tooltip.css("left", e.containerPoint.x + 20)
+                            .css("top", e.containerPoint.y - 20)
                             .clearQueue()
                             .animate({
-                            opacity: 1
-                        }, 400, function(){
-                            //Animation complete
-                            }
-                        );
-
-                        // tooltip.transition()
-                        //     .duration(100)
-                        //     .style("opacity", 1);
-                        // tooltip.html(html)
-                        //     .style("left", (d3.event.pageX + 5) + "px")
-                        //     .style("top", (d3.event.pageY - 28) + "px")
+                                    opacity: 1
+                                }, 400, function () {
+                                    //Animation complete
+                                }
+                            );
 
 
                     })
@@ -1730,35 +1731,135 @@ function loadSolr(parameters) {
                         rectHighlight = null;
                         tooltip.clearQueue()
                             .animate({
-                                opacity: 0
-                            }, 400, function(){
-                                //Animation complete
-                            }
-                        );
+                                    opacity: 0
+                                }, 400, function () {
+                                    //Animation complete
+                                }
+                            );
                     });
             }
 
         };
 
-        var layer = new L.MarkerDataLayer(convertedJson, options);
+        // set options for the main markers layer
+        L.Util.setOptions(assetLayerGroup, options);
 
+        // create a temporary markers layer and load it with SOLR data
+        var tempLayerGroup = new L.PopbioMarkers(convertedJson, options);
+
+        // detect zoom changes
+        var zoomDelta = endingZoom - startingZooom;
+
+
+        // clear the main layer after copying everything to a temp layer to enable animations
         if (clear) {
-            assetLayerGroup.clearLayers();
-            assetLayerGroup.addLayer(layer);
-        } else {
-            assetLayerGroup.addLayer(layer);
-        }
-        // map.addLayer(layer);
+            assetLayerGroup.eachLayer(function (marker) {
+                if (marker instanceof L.Marker) {
 
-        // if (smallClusters.length > 0) {
-        //     loadSmall(0, zoomLevel);
-        //
-        // }
+                    marker.options.remove = true;
+                }
+            })
+            // assetLayerGroup.clearLayers()
+
+        }
+        // initiate storage of marker coordinates on the temp layer but don't attach it on the map
+        //ToDo: move this to the initiliasize function of the library
+        tempLayerGroup.initLatLngStorage();
+
+        // Go through each of the markers in the temp layer
+        tempLayerGroup.eachLayer(function (marker) {
+            if (marker instanceof L.Marker) {
+                // store the final location of the marker based on the values stored/calculated in SOLR
+                var finalLatLng = marker.getLatLng();
+                tempLayerGroup.saveLatLng(marker);
+
+                // has the marker a starting location? If not it will use the final location instead
+                var startingLatLng = assetLayerGroup.startingLatLng(marker);
+
+                // Move the marker to the starting location
+                marker.setLatLng(startingLatLng);
+
+                // Copy the marker to the main layer (but its opacity it's still only 0.2)
+                assetLayerGroup.addLayer(marker);
+                var icon = marker._icon;
+                // add the class needed to enable animation of the marker
+                if (!marker.options.remove) $(icon).addClass("leaflet-marker-icon-anim");
+                $(icon).one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
+                    $(icon).removeClass("leaflet-marker-icon-anim");
+                });
+
+
+            }
+
+
+        });
+        //IMPORTANT: copy the stored coords from the temp layer to the main layer
+        // We'll use this values later to determine the starting location of the marker
+        // assetLayerGroup.initLatLngStorage();
+        assetLayerGroup.storedMarkerCoords = tempLayerGroup.storedMarkerCoords;
+
 
         // inform the user that data is loaded
         if (rectHighlight !== null) map.removeLayer(rectHighlight);
         rectHighlight = null;
         map.spin(false);
+
+
+        // assetLayerGroup.bringToBack();
+        // wrap this around a timeout call since it's not working otherwise
+        setTimeout(function () {
+            assetLayerGroup.eachLayer(function (marker) {
+                // set the final location of the marker
+                if (marker instanceof L.Marker) {
+                    if (marker.options.remove) {
+                        var icon = marker._icon;
+
+                        // zooming in or panning
+                        if (zoomDelta >= 0) {
+
+                            $(icon).addClass("leaflet-marker-icon-fout")
+
+                            setTimeout(function () {
+                                // var lakis = marker.getLatLng
+                                // marker.setLatLng(lakis)
+                                marker.setOpacity(0);
+                                setTimeout(function () {
+                                    assetLayerGroup.removeLayer(marker);
+                                }, 300)
+                            })
+                        } else { // zoomingOut
+                            $(icon).addClass("leaflet-marker-icon-anim")
+                            var finalLatLng = assetLayerGroup.startingLatLng(marker);
+
+
+                            setTimeout(function () {
+                                // var lakis = marker.getLatLng
+                                // marker.setLatLng(lakis)
+                                marker.setLatLng(finalLatLng);
+                                marker.setOpacity(0);
+                                setTimeout(function () {
+                                    assetLayerGroup.removeLayer(marker);
+                                }, 300)
+                            })
+                        }
+                    } else {
+
+                        var finalLatLng = assetLayerGroup.startingLatLng(marker);
+                        marker.setLatLng(finalLatLng);
+
+                        // Set it's opacity to 1. CSS will take care of the rest
+                        marker.setOpacity(1);
+                    }
+                    ;
+                }
+
+            });
+        }, 50)
+
+        // build a geohash grid
+        if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, false);
+        //ToDo: change the grid checkbox value to true when grid is switched on trough a URL parameter
+
 
     };
 
@@ -1780,6 +1881,7 @@ function loadSolr(parameters) {
     }, buildMap)
         .done(function () {
             $(document).trigger("jsonLoaded");
+            console.log("jsonLoaded")
 
         })
         .fail(function () {
@@ -1918,24 +2020,24 @@ function updatePieChart(population, stats) {
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
-                    .x(function (d) {
-                        return d.label.capitalizeFirstLetter();
-                    })
-                    .y(function (d) {
-                        return d.value
-                    })
-                    .color(function (d) {
-                        // return d.data["color"]
-                        return d.color
-                    })
-                    .showLabels(true)     //Display pie labels
-                    .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
-                    .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or
-                    // "percent"
-                    .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
-                    .donutRatio(0.5)     //Configure h ow big you want the donut hole size to be.
-                    .growOnHover(false)
-                ;
+                .x(function (d) {
+                    return d.label.capitalizeFirstLetter();
+                })
+                .y(function (d) {
+                    return d.value
+                })
+                .color(function (d) {
+                    // return d.data["color"]
+                    return d.color
+                })
+                .showLabels(true)     //Display pie labels
+                .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
+                .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or
+                // "percent"
+                .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
+                .donutRatio(0.5)     //Configure h ow big you want the donut hole size to be.
+                .growOnHover(false)
+            ;
 
             chart.legend.vers('classic')
                 .rightAlign(false)
@@ -2295,6 +2397,7 @@ function filterMarkers(items, flyTo) {
 
             } else {
                 // Match attempt failed
+                // terms[element.type].push({"field": element.field, "value": element.value + '*'});
                 terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
 
             }
@@ -2330,10 +2433,12 @@ function filterMarkers(items, flyTo) {
             if (k < alen - 1) {
                 if (obj === 'Anywhere') {
                     qryUrl += 'text:(' + qries['anywhere'] + ') AND ';
+                    // qryUrl += '(text:' + qries['anywhere'] + ') AND ';
                 } else {
                     qryUrl += '(';
                     for (var fieldQry in qries) {
                         qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
                         if (k === alen - 1) {
                             qryUrl += ') AND ';
                             continue;
@@ -2346,10 +2451,12 @@ function filterMarkers(items, flyTo) {
             } else {
                 if (obj === 'Anywhere') {
                     qryUrl += 'text:(' + qries['anywhere'] + ') AND ';
+                    // qryUrl += '(text:' + qries['anywhere'] + ') AND ';
                 } else {
                     for (var fieldQry in qries) {
 
                         qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
                         if (k === alen - 1) {
                             qryUrl += ' AND ';
                             continue;
@@ -2368,8 +2475,9 @@ function filterMarkers(items, flyTo) {
                     qryUrl += '(';
                     for (var fieldQry in qries) {
                         qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
                         if (k === alen - 1) {
-                            qryUrl += '))';
+                            qryUrl += ')';
                             continue;
                         }
                         qryUrl += ' OR ';
@@ -2380,9 +2488,11 @@ function filterMarkers(items, flyTo) {
             } else {
                 if (obj === 'Anywhere') {
                     qryUrl += 'text:(' + qries['anywhere'] + '))';
+                    // qryUrl += '(text:' + qries['anywhere'] + '))';
                 } else {
                     for (var fieldQry in qries) {
                         qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
+                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry] + ')';
                     }
                 }
 
@@ -2457,6 +2567,8 @@ function mapTypeToField(type) {
             return "projects";
         case "Authors":
             return "project_authors_txt";
+        case "Project titles":
+            return "project_titles_txt";
         default :
             return type.toLowerCase()
 
@@ -2520,6 +2632,8 @@ function mapTypeToLabel(type) {
             return 'label label-success';   // green
         case 'Projects'   :
             return 'label label-success';   // green
+        case 'Project titles'   :
+            return 'label label-success';   // green
         case 'Anywhere'   :
             return 'label label-default';   // grey
         case 'Pubmed references' :
@@ -2563,6 +2677,8 @@ function mapTypeToIcon(type) {
         case 'Description':
             return 'fa-info-circle';
         case 'Projects'   :
+            return 'fa-database';
+        case 'Project titles'   :
             return 'fa-database';
         case 'Anywhere'   :
             return 'fa-search';
@@ -2625,10 +2741,10 @@ function PaneSpin(divid, command) {
 }
 
 function highlightMarker(marker) {
-    $(marker).addClass("highlight-marker");
+    // $(marker).addClass("highlight-marker");
     $(marker._icon).addClass("highlight-marker");
 
-    highlight = marker;
+    // highlight = marker;
     if (firstClick) firstClick = false;
 }
 
@@ -2642,11 +2758,12 @@ function removeTopMarker(marker) {
 }
 
 function removeHighlight(marker) {
+    $(".highlight-marker").removeClass("highlight-marker")
     // check for highlight
-    if (highlight !== null) {
-        $(highlight).removeClass("highlight-marker");
-        marker ? highlight = marker : highlight = null;
-    }
+    // if (highlight !== null) {
+    //     $(highlight).removeClass("highlight-marker");
+    //     marker ? highlight = marker : highlight = null;
+    // }
 
 }
 
@@ -2866,6 +2983,10 @@ function setDateRange(elementStart, elementEnd, yearsAgo) {
     $(elementStart).datepicker('setUTCDate', startDate);
     $(elementEnd).datepicker('setUTCDate', endDate);
 
+}
+
+function getRandom(min, max) {
+    return Math.random() * (max - min + 1) + min;
 }
 
 function dateConvert(dateobj, format) {
