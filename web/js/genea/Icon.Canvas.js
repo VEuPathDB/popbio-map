@@ -77,12 +77,13 @@ L.Icon.Canvas = L.Icon.extend({
 
         // Draw the marker fill color (white if now value)
 
-        canvas.beginPath();
-        canvas.fillStyle = colors[0];
-        canvas.arc(iconSize2, iconSize2, iconSize4, 0, Math.PI * 2);
-        canvas.fill();
-        canvas.closePath();
-        canvas.fillStyle = colors[1];
+        // canvas.beginPath();
+        // canvas.fillStyle = colors[0];
+        // canvas.arc(iconSize2, iconSize2, iconSize4, 0, Math.PI * 2);
+        // canvas.fill();
+        // canvas.closePath();
+        // canvas.fillStyle = colors[1];
+        canvas.fillStyle = 'black';
 
         canvas.textAlign = 'center';
         canvas.textBaseline = 'middle';
