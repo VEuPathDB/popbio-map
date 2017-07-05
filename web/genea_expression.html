@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+    <!-- Remote CSS styles -->
+    <link rel="stylesheet" href="css/vectorbase.css" type="text/css" media="screen"/>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
+          rel="stylesheet">
+    <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" type="text/css" media="screen"/>-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
+    <!-- End of remote CSS styles -->
+
+
+    <!-- Local CSS styles <replaced with dist/css/VB_popbio_map.min.css when compiled-->
+    <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/leaflet.fullscreen/Control.FullScreen.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/nvd3/build/nv.d3.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.css">
+    <link rel="stylesheet" href="css/typeaheadjs.css">
+    <link rel="stylesheet" href="css/bootstrap-yeti.css">
+    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.css"/>
+    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css"/>
+
+    <link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.css"/>
+    <link rel="stylesheet" href="libs/PruneCluster/LeafletStyleSheet.css"/>
+
+    <link rel="stylesheet" href="libs/genea/Leaflet-MiniMap/dist/Control.MiniMap.min.css">
+
+
+    <!-- Bootstrap toggles -->
+    <link rel="stylesheet" href="libs/bootstrap-toggle/css/bootstrap-toggle.css"/>
+
+    <!-- Bootstrap slider -->
+    <link rel="stylesheet" href="libs/bootstrap-slider/dist/css/bootstrap-slider.css"/>
+
+    <link rel="stylesheet" href="css/vb-popbio-maps.css">
+    <!-- bootstrap-select -->
+    <link rel="stylesheet" href="libs/bootstrap-select/dist/css/bootstrap-select.min.css">
+    <!-- End of local CSS styles -->
+
+    <!-- Remote Javascript libraries -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>-->
+    <script type="text/javascript" src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"
+            charset="utf-8"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"
+            charset="utf-8"></script>
+    <!-- MapQuest-->
+    <!--<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=NC7FvPNcQKOEloh7oL3ZFOaMTD8iqfQI"></script>-->
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- End of remote Javascript libraries -->
+
+    <!-- Local Javascript libraries-->
+    <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.js"></script>
+    <script type="text/javascript" src="libs/leaflet.fullscreen/Control.FullScreen.js"></script>
+    <script type="text/javascript" src="libs/spin.js/spin.js"></script>
+    <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.js"></script>
+    <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
+    <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
+    <script type="text/javascript" src="libs/genea/Leaflet-MiniMap/dist/Control.MiniMap.min.js"></script>
+
+
+    <!-- Wordcloud-->
+    <script type="text/javascript" src="libs/genea/wordcloud2.js/src/wordcloud2.js"></script>
+
+
+    <!-- Bootstrap toggles -->
+    <script type="text/javascript" src="libs/bootstrap-toggle/js/bootstrap-toggle.js"></script>
+    <!-- Boostrap slider -->
+    <script type="text/javascript" src="libs/bootstrap-slider/dist/bootstrap-slider.js"></script>
+    <!-- Added geohash to enable geohashes layer -->
+    <script type="text/javascript" src="libs/geohash-js/geohash.js"></script>
+    <script type="text/javascript" src="libs/node-geohash/main.js"></script>
+    <script type="text/javascript" src="libs/genea/geohash4/geohash4.js"></script>
+
+    <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.js"></script>
+    <!-- bootstrap-select -->
+    <script type="text/javascript" src="libs/bootstrap-select/dist/js/bootstrap-select.js"></script>
+
+    <script type="text/javascript" src="libs/Leaflet.vector-markers/Leaflet.vector-markers.js"></script>
+    <script type="text/javascript" src="libs/PruneCluster/PruneCluster.js"></script>
+
+    <!-- VB code -->
+    <script type="text/javascript" src="js/genea/genea_map.Legend.js"></script>
+    <script type="text/javascript" src="js/genea/Icon.Canvas.js"></script>
+    <script type="text/javascript" src="libs/nvd3/build/nv.d3.js"></script>
+    <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
+    <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
+    <script type="text/javascript" src="libs/jsrender/jsrender.js"></script>
+    <script type="text/javascript" src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js"></script>
+    <script type="text/javascript" src="js/vb-violin-plots.js"></script>
+    <script type="text/javascript" src="js/genea/genea_maps.js"></script>
+    <!--Added geohashes-layers.js to enable geohashes -->
+    <script type="text/javascript" src="js/geohashes-layer.js"></script>
+    <script type="text/javascript" src="js/loadSmall.js"></script>
+
+    <style>
+        #map {
+            background: #98BEEE !important;
+        }
+    </style>
+
+</head>
+
+
+<body>
+<map name="ribbon">
+    <area shape="poly" coords="0,0,100,100,0,100"
+          title="This resource is currently under development. It may occasionally be unavailable. Please send all feedback to info@vectorbase.org">
+</map>
+<img src="ribbon.png" usemap="#ribbon" alt="beta"
+     style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
+
+<div id="min_width_container">
+
+    <!-- Keep the following line for grunt-->
+    <!-- MAP CUT START -->
+    <div class="no-interactions modal-backdrop fade" id="no-interactions"></div>
+    <div class="modal fade" id="Table-Legend-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <div class="row">
+                        <div class="col-lg-7 col-sm-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="Filter-Terms" placeholder="Filter terms">
+                                <span id="Reset-Filter" class="input-group-addon btn-danger"
+                                      style="cursor: pointer"
+                                      title="Reset search"><i
+                                        class="fa fa-times fa-fw"></i>
+                        </span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-5">
+                            <div id='table-legend-controls' class="btn-group">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="Other-Terms-List">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ir-normalisation-help" tabindex="-1" role="dialog"
+         aria-labelledby="Insecticide Resistance Normalisation Help">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Normalisation of insecticide resistance values</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="ir-normalisation-html">
+
+                        <table class="table table-condensed">
+                            <tbody>
+                            <tr class="active">
+                                <th>Mortality rate</th>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    The colouring of percent mortality values has been inspired by the WHO test
+                                    procedures of Insecticide resistance.
+                                    <img style="display: block; margin: 30px auto auto;"
+                                         src="/images/PM.svg"
+                                         width="70%"/>
+                                </td>
+                            </tr>
+                            <tr class="active">
+                                <th>LC50, LC90, LC95, LT50, LT90, LT95 etc</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Lethal concentration and lethal time values have very skewed distributions. These
+                                    are log-transformed and the top and bottom 2% values are discarded before colour
+                                    scale assignment between the minimum and maximum.
+                                    <img style="display: block; margin: 30px auto auto;"
+                                         src="/images/LC50.svg"
+                                         width="70%"/>
+                                    <img style="display: block; margin: 30px auto auto;"
+                                         src="/images/LC50_logged.svg"
+                                         width="70%"/>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <ul class="sidebar-tabs" role="tablist">
+            <li class="sidebar-icon"><a id="#graphs" role="tab"><i class="fa fa-pie-chart"></i></a></li>
+            <li class="sidebar-icon"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
+            <li class="sidebar-icon"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
+            <li class="sidebar-icon"><a id="#wordcloud" role="tab"><i class="fa fa-cloud"></i></a></li>
+            <li class="sidebar-icon"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
+            <li class="sidebar-icon"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content active" id="active-pane">
+            <div class="sidebar-pane active" id="graphs">
+                <h3>Summary view for selected samples</h3>
+
+                <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
+
+                    <i class="fa fa-pie-chart" style="color: #2c699e; font-size: 12em"></i>
+
+                    <h1>Go on!</h1>
+
+                    <h4>click a marker on the map</h4>
+
+                    <h4>to plot some real data</h4>
+                </div>
+                <div id="pie-chart-area" style="width: 100%; height: 100%;">
+                    <svg></svg>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="swarm-plots">
+                <h3>Insecticide Resistance statistics for selected samples</h3>
+
+                <div id="swarm-chart-area">
+                    <div style="text-align: center; margin-top: 30px">
+                        <i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>
+
+                        <h1>Go on!</h1>
+
+                        <h4>click a marker on the map</h4>
+
+                        <h4>to plot some real data</h4>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="marker-table">
+                <h3>Details for selected samples</h3>
+
+                <div id="table-contents-header" style="text-align: center; margin-top: 30px">
+
+                    <i class="fa fa-table" style="color: #2c699e; font-size: 12em"></i>
+
+                    <h1>Go on!</h1>
+
+                    <h4>click a marker on the map</h4>
+
+                    <h4>to get some real data</h4>
+                </div>
+                <div id="table-contents">
+                </div>
+
+            </div>
+
+
+            <div class="sidebar-pane" id="help">
+                <h3>Usage tips</h3>
+
+                <div id="tips" class="table-responsive">
+                    <h4>Icons and toolbars</h4>
+                    <table class="table table-condensed">
+                        <tbody>
+                        <tr class="active">
+                            <th colspan="2">Search and options</th>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="input-group-addon btn-info" style="cursor: default; width: 40px;">
+                                    <i class="fa fa-bars fa-fw"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Expand advanced search and configuration options
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="input-group-addon btn-danger" style="cursor: default; width: 40px;">
+                                    <i class="fa fa-times fa-fw"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Reset search and clear results
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                 <span style="border-bottom: 1px dotted;">
+                                    Term
+                                </span>
+                            </td>
+                            <td>
+                                Active term, click to add as a search filter
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 110px">
+                                <div class="btn-group dropdown" style="width: 100%;">
+                                    <button class="btn btn-default dropdown-toggle" type="button">
+                                        <i class="fa fa-eye"></i> Samples
+                                        <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                Select map view
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="toggle btn btn-default off" style="height: 30px; width: 100%;">
+                                    <div class="toggle-group">
+                                        <label class="btn btn-default active toggle-off">
+                                            <i class="fa fa-globe"></i>
+                                            Suggestions</label>
+                                        <span class="toggle-handle btn btn-default"></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                Toggle Global or Local (limited to current view) suggestions
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4x">
+                                <span class="leaflet-control-layers leaflet-control">
+                                    <i class="leaflet-control-layers-toggle"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Select source for map tiles
+                            </td>
+                        </tr>
+
+                        <tr class="active">
+                            <th colspan="2">Map</th>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="leaflet-control-zoom-fullscreen fullscreen-icon"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Toggle Fullscreen mode
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-control-zoom leaflet-bar leaflet-control">
+                                    <i class="leaflet-control-zoom-in">+</i>
+                                </span>
+                            </td>
+                            <td>
+                                Zoom in
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                 <span class="leaflet-control-zoom leaflet-bar leaflet-control">
+                                    <i class="leaflet-control-zoom-out">-</i>
+                                </span>
+                            </td>
+                            <td>
+                                Zoom out
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="leaflet-control-zoom-min">Zoom min</i>
+                                </span>
+                            </td>
+                            <td>
+                                Restore zoom
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-md-4x">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa-info fa fa-lg"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Toggle legend On or Off and change categorization and coloring
+                            </td>
+                        </tr>
+
+                        <tr class="active">
+                            <th colspan="2">Panels</th>
+                        </tr>
+
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa fa-pie-chart"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Summary statistics
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa fa-area-chart"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Insecticide Resistance statistics
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa fa-table"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Details tables
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div id="shortcuts" class="table-responsive">
+                    <h4>Keyboard and Mouse Shortcuts</h4>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr class="active">
+                            <th>Shortcut</th>
+                            <th>Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-4">
+                                Click marker
+                            </td>
+                            <td>
+                                Toggle details panel
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                Double-click marker
+                            </td>
+                            <td>
+                                Zoom in and expand marker
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light"><i class="fa fa-arrow-left"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-up"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-down"></i></kbd>
+                                <kbd class="light"><i class="fa fa-arrow-right"></i></kbd>
+                            </td>
+                            <td>
+                                Pan around map
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light"><i class="fa fa-plus"></i></kbd> <kbd class="light"><i
+                                    class="fa fa-minus"></i></kbd>
+                            </td>
+                            <td>
+                                Zoom in or out
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light">Shift</kbd> + Drag
+
+                            </td>
+                            <td>
+                                Select region and zoom
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="sidebar-pane" id="export">
+                <h3>Export data</h3>
+                <div id="export-selection" style="margin-top: 30px;">
+                    <h5>Download a CSV file containing</h5>
+                    <div>
+                        <select id="select-export" class="selectpicker" data-icon-Base="fa fa-fw"
+                                data-tick-Icon="fa-check" data-width="90%">
+                            <option data-icon="fa-globe" value="1">all data</option>
+                            <option data-icon="fa-search" value="2">data matching search</option>
+                            <option data-icon="fa-desktop" value="3">data visible on screen</option>
+                            <option data-icon="fa-dot-circle-o" value="4">data for selected marker on map</option>
+                        </select>
+                        <h5>with the following fields</h5>
+                        <select id="select-export-fields" class="selectpicker" multiple data-actions-box="true"
+                                data-icon-Base="fa fa-fw" data-selected-text-format="count > 2"
+                                data-tick-Icon="fa-check" data-width="90%">
+                        </select>
+                        <div style="margin-top: 20px;">
+                            <a type="button" class="btn btn-primary" id="download-button"><i class='fa fa-floppy-o'></i>
+                                Download
+                            </a></div>
+                    </div>
+
+
+                </div>
+                <div id="export-error" style="margin-top: 30px; display: none;">
+
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="wordcloud">
+                <h3>Wordcloud</h3>
+                <div id="wordcloud-area" style="margin: 0; width: 380px; height: 100%; min-height: 500px">
+                    <!--<canvas id="wordcloud-area" width = "380" height = "500">-->
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Place a floating div above the map for the search controls -->
+    <div class="mapbox">
+        <div class="overlaytop">
+
+            <label class="sr-only" for="search_ac">Search...</label>
+            <div id="search-bar" class="input-group">
+                <span id="expand-menu" class="input-group-addon btn-info"
+                      style="cursor: pointer;"
+                      title="Expand menu"
+                      data-toggle="collapse"
+                      data-target="#advanced-options">
+                    <i class="rotate fa fa-bars fa-fw" id="bars-icon">
+                    </i>
+                </span>
+                <input type="text" class="form-control" placeholder="Search..." id="search_ac"
+                       data-role="tagsinput"/>
+                <span id="reset-search" class="input-group-addon btn-danger"
+                      style="cursor: pointer"
+                      title="Reset search"><i
+                        class="fa fa-times fa-fw"></i>
+                </span>
+            </div>
+
+            <div class="collapse" style="margin-top:5px; width: 100%;padding: 10px 10px 10px 10px; background: #ffffff;"
+                 id="advanced-options">
+
+                <div class="table-responsive">
+                    <h4>Advanced search</h4>
+                    <table class="table table-condensed">
+                        <tbody>
+                        <!--<thead>-->
+                        <tr class="active">
+                            <th colspan="3">Normalised Insecticide Resistance</th>
+                            <th></th>
+                        </tr>
+                        <!--</thead>-->
+                        <tr>
+                            <td class="col-md-2" style="vertical-align: bottom; text-align: left;">
+                                Low
+                            </td>
+                            <td class="col-md-1" style="vertical-align: bottom; text-align: right;">
+                                High
+                            </td>
+                            <td class="col-md-1" style="vertical-align: bottom; text-align: right;">
+                            </td>
+                            <td class="col-md-8"></td>
+
+                        </tr>
+                        <tr style="border-top: 0;">
+                            <td colspan="2" class="col-md-3" style="vertical-align: top; border-top: 0;">
+                                <div id="menu-scale-bars" class="scale-bars">
+
+                                </div>
+                                <div>
+                                    <input type="text" id="pre-norm-ir-slider">
+                                </div>
+                            </td>
+                            <td class="col-md-1" style="vertical-align: top; border-top: 0;">
+                                <button
+                                        id="add-norm-ir" type="button" class="btn btn-default"
+                                        title="Add Insecticide Resistance filter">
+                                    <i
+                                            class="fa fa-plus">
+
+                                    </i>
+                                </button>
+
+                            </td>
+                            <td class="col-md-8" style="vertical-align: top; border-top: 0;">
+                                Filter samples based on their normalised insecticide resistance. <br>
+                                <b>Important note:</b> <br>
+                                All sample values have been rescaled globally and only give a relative indication of
+                                resistance/susceptibility.
+                                <span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">More info</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h4>Configuration options</h4>
+                    <table class="table table-condensed">
+                        <tr class="active">
+                            <th colspan="3">Clustering grid</th>
+                            <th></th>
+                        </tr>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-3">
+                                <span class="btn-group btn-group-justified" data-toggle="buttons"
+                                      role="group"
+                                      style="height: 30px;">
+                                <input id="grid-toggle" type="checkbox" data-toggle="toggle"
+                                       data-on="<i class='fa fa-th'></i> Grid On"
+                                       data-off="<i class='fa fa-th'></i> Grid Off">
+
+                                </span>
+
+                            </td>
+                            <td class="col-md-1">
+                            </td>
+                            <td class="col-md-8">
+                                Show or hide the clustering grid. This only affects the appearance of the map.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--<div class="main-menu" id="menu-bar">-->
+            <!--<div class="btn-group btn-group-justified" data-toggle="buttons" role="group"-->
+            <!--style="margin-top:3px;">-->
+
+            <!--<div class="btn-group dropdown" id="SelectViewDropdown" role="group">-->
+            <!--<button class="btn btn-default dropdown-toggle" type="button" id="SelectView"-->
+            <!--data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+            <!--<i class="fa fa-eye"-->
+            <!--id="view-icon"></i>-->
+            <!--Select View-->
+            <!--<span class="caret"></span>-->
+            <!--</button>-->
+            <!--<ul class="dropdown-menu" aria-labelledby="SelectView">-->
+            <!--<li><a href="#" data-value="<i class='fa fa-eye' id='view-icon'></i> Samples">Samples</a>-->
+            <!--</li>-->
+            <!--<li><a href="#" data-value="<i class='fa fa-eye' id='view-icon'></i> Insectide Resistance">Insecticide-->
+            <!--Resistance</a></li>-->
+            <!--</ul>-->
+            <!--</div>-->
+
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button"-->
+            <!--id="date-select"-->
+            <!--class="btn btn-default"-->
+            <!--title="Search by date"-->
+            <!--data-toggle="collapse"-->
+            <!--data-target="#daterange"-->
+            <!--&gt;-->
+            <!--<i class="rotate fa fa-calendar"-->
+            <!--id="calendar-icon"></i> Date search-->
+            <!--</button>-->
+            <!--</span>-->
+
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button"-->
+            <!--id="season-select"-->
+            <!--class="btn btn-default"-->
+            <!--title="Seasonal search"-->
+            <!--data-toggle="collapse"-->
+            <!--data-target="#seasonal"-->
+            <!--&gt;-->
+            <!--<i class="rotate fa fa-calendar-check-o"-->
+            <!--id="seasonal-icon"></i> Seasonal search-->
+            <!--</button>-->
+            <!--</span>-->
+
+            <!--&lt;!&ndash;<input id="world-toggle" type="checkbox" data-toggle="toggle"&ndash;&gt;-->
+            <!--&lt;!&ndash;data-on="<i class='fa fa-globe'></i> Local suggestions"&ndash;&gt;-->
+            <!--&lt;!&ndash;data-off="<i class='fa fa-globe'></i> Global suggestions">&ndash;&gt;-->
+
+
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="collapse main-menu" style="margin-top:0;" id="daterange">-->
+
+            <!--<div class="input-daterange input-group" id="datepicker" style="margin-top: 5px;">-->
+            <!--<span class="input-group-addon"-->
+            <!--title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>-->
+            <!--<input id="date-start" type="text" class="form-control" name="start"/>-->
+            <!--<span class="input-group-addon">to</span>-->
+            <!--<input id="date-end" type="text" class="form-control" name="end"/>-->
+            <!--<span class="input-group-btn" style="width: 3px;"></span>-->
+            <!--<span class="input-group-btn">-->
+            <!--<button-->
+            <!--id="add-dates" type="button" class="btn btn-default"-->
+            <!--title="Add date filter"-->
+            <!--disabled-->
+            <!--data-toggle="collapse"-->
+            <!--data-target="#daterange">-->
+            <!--<i-->
+            <!--class="fa fa-plus fa-fw">-->
+
+            <!--</i>-->
+            <!--</button>-->
+            <!--</span>-->
+            <!--<span class="input-group-btn">-->
+            <!--<button-->
+            <!--id="clear-dates" type="button" class="btn btn-default"-->
+            <!--title="Cancel"-->
+            <!--data-toggle="collapse"-->
+            <!--data-target="#daterange">-->
+            <!--<i-->
+            <!--class="fa fa-times fa-fw">-->
+
+            <!--</i>-->
+            <!--</button>-->
+            <!--</span>-->
+
+
+            <!--</div>-->
+
+            <!--&lt;!&ndash; predefined date ranges&ndash;&gt;-->
+
+            <!--<div class="input-group" style="margin-top: 3px;">-->
+            <!--<span class="input-group-addon" title="Display most recently collected samples"><i-->
+            <!--class="fa fa-long-arrow-left fa-fw"></i></span>-->
+
+            <!--<span class="btn-group btn-group-justified" role="group">-->
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button" class="btn btn-default date-shortcut" value="50">50 years</button>-->
+            <!--</span>-->
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button" class="btn btn-default date-shortcut" value="40">40 years</button>-->
+            <!--</span>-->
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button" class="btn btn-default date-shortcut" value="30">30 years</button>-->
+            <!--</span>-->
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button" class="btn btn-default date-shortcut" value="20">20 years</button>-->
+            <!--</span>-->
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button" class="btn btn-default date-shortcut" value="15">15 years</button>-->
+            <!--</span>-->
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button" class="btn btn-default date-shortcut" value="10">10 years</button>-->
+            <!--</span>-->
+            <!--<span class="btn-group" role="group">-->
+            <!--<button type="button" class="btn btn-default date-shortcut" value="5">5 years</button>-->
+            <!--</span>-->
+            <!--</span>-->
+
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="collapse main-menu" style="margin-top:0;" id="seasonal">-->
+
+            <!--<div id="date-seasonal" class="input-group" style="margin-top: 5px;">-->
+            <!--&lt;!&ndash;<span class="input-group-addon" title="Display samples collected during the following months">&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="fa fa-repeat fa-fw"></i></i>&ndash;&gt;-->
+            <!--&lt;!&ndash;</span>&ndash;&gt;-->
+
+            <!--<span class="btn-group btn-group-justified" data-toggle="buttons" role="group"-->
+            <!--style="height: 30px;">-->
+            <!--<input type="checkbox" name="January" value="1" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Jan" data-off="Jan">-->
+            <!--<input type="checkbox" name="February" value="2" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Feb" data-off="Feb">-->
+            <!--<input type="checkbox" name="March" value="3" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Mar" data-off="Mar">-->
+            <!--<input type="checkbox" name="April" value="4" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Apr" data-off="Apr">-->
+            <!--<input type="checkbox" name="May" value="5" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="May" data-off="May">-->
+            <!--<input type="checkbox" name="June" value="6" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Jun" data-off="Jun">-->
+            <!--<input type="checkbox" name="July" value="7" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Jul" data-off="Jul">-->
+            <!--<input type="checkbox" name="August" value="8" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Aug" data-off="Aug">-->
+            <!--<input type="checkbox" name="September" value="9" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Sep" data-off="Sep">-->
+            <!--<input type="checkbox" name="October" value="10" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Oct" data-off="Oct">-->
+            <!--<input type="checkbox" name="November" value="11" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Nov" data-off="Nov">-->
+            <!--<input type="checkbox" name="December" value="12" data-toggle="toggle"-->
+            <!--class="season-toggle" data-on="Dec" data-off="Dec">-->
+
+            <!--</span>-->
+            <!--<span class="input-group-btn" style="width: 3px;"></span>-->
+
+            <!--<span class="input-group-btn">-->
+            <!--<button-->
+            <!--id="add-season" type="button" class="btn btn-default"-->
+            <!--title="Apply seasonal filter"-->
+            <!--disabled-->
+            <!--data-toggle="collapse"-->
+            <!--data-target="#seasonal">-->
+            <!--<i-->
+            <!--class="fa fa-check">-->
+
+            <!--</i>-->
+            <!--</button>-->
+            <!--</span>-->
+            <!--<span class="input-group-btn">-->
+            <!--<button-->
+            <!--id="clear-season" type="button" class="btn btn-default"-->
+            <!--title="Cancel"-->
+            <!--data-toggle="collapse"-->
+            <!--data-target="#seasonal">-->
+            <!--<i-->
+            <!--class="fa fa-times">-->
+
+            <!--</i>-->
+            <!--</button>-->
+            <!--</span>-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--<input type="hidden" id="world-search" name="world-search" value="1">-->
+            <input type="hidden" id="view-mode" name="view-mode" value="smpl">
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="mapbox">
+        <div class="overlaybottom" id="markersCount">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Add a tooltip div to use as a mouse-over info div for the beeswarm charts-->
+
+<div id="plotTooltip" class="tooltip" style="opacity: 0;"></div>
+<div id="beeswarmPointTooltip" class="tooltip-bs" style="opacity: 0;"></div>
+<div id="vbEntityTooltip" class="tooltip-bs"></div>
+
+<script type="text/x-jsrender" id="smplRowTemplate">
+    <div class="row no-pad marker-row">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+            <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                {{html:accession}}
+                {{if symbol}}
+                    <span type="Symbol" value="{{attr:symbol}}">
+                        (<i>{{html:symbol}}</i>)
+                    </span>
+                {{/if}}
+                </h3>
+            </span>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <i class="fa fa-tag fa-fw"" style="color: {{attr:bgColor}};"></i>
+                        <span>
+                           {{html:description}}
+                        </span>
+                    </p>
+                    <p>Overall embryonic differential expression:
+                        <span>
+                            {{html:abs_exp_embryonic_f}}
+                        </span>
+                    </p>
+                    <p>Overall tissues differential expression:
+                        <span>
+                            {{html:abs_exp_tissues_f}}
+                        </span>
+                    </p>
+                    <p>Overall circadian differential expression:
+                        <span>
+                            {{html:abs_exp_circadian_f}}
+                        </span>
+                    </p>
+                    <p>Overall blood meal differential expression:
+                        <span>
+                            {{html:abs_exp_bloodMeal_f}}
+                        </span>
+                    </p>
+            </div>
+        </div>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+                <p>
+                    <i class="fa fa-map-marker fa-fw"" style="color: {{attr:bgColor}};"></i>
+                    <span>
+                        Location: <span class="active-term" type="Chromosome" value="{{attr:seq_region_name}}">
+                             <b>{{html:seq_region_name}}</b>
+                         </span>
+                         : {{html:seq_region_start}}-{{html:seq_region_end}}
+                         <span class="active-term" type="Biotype" value="{{attr:biotype}}">
+                            ({{html:biotype}})
+                         </span>
+                    </span>
+                 </p>
+            </div>
+            <div class="col-md-12">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-database fa-fw" title="Domains"></i><b> Domain(s)</b>
+                </p>
+                {{for domain}}
+
+                        <span class="active-term" type="Domain" value="{{attr:#data.name}}">
+
+                            {{html:#data.name}},&nbsp
+                        </span>
+
+
+                {{/for}}
+            </div>
+            <div class="col-md-12">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-database fa-fw" title="GO Terms"></i><b> GO Term(s)</b>
+                </p>
+                {{for go_cvterms}}
+
+                        <span class="active-term" type="GO-term" value="{{attr:#data.name}}">
+
+                            {{html:#data.name}},&nbsp
+                        </span>
+
+
+                {{/for}}
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</script>
+
+<script id="irRowTemplate" type="text/x-jsrender">
+
+    <div class="row no-pad marker-row">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
+                    <i> {{html:species}}</i>
+                </span>
+            </h3>
+            <p>{{html:bundleName}}
+                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                    {{html:accession}}
+                </span>
+                <a href="{{url:url}}" target="_blank">
+                    <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                </a>
+                {{if sampleSize}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}})
+                </span></p>
+            {{/if}}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                        {{html:geolocation}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
+                </p>
+                <ul>
+                {{for projects}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                </p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Insecticide Resistance data</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    <i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="Insecticides" value="{{attr:insecticide}}">
+                        {{html:insecticide}}
+                    </span>
+                </p>
+                {{if concentration && concentrationUnit}}
+                    <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
+                {{/if}}
+                {{if duration && durationUnit}}
+                    <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
+                {{/if}}
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+</script>
+
+<script type="text/x-jsrender" id="irBsPointTemplate">
+    <div class="row no-pad" style="width: 370px;">
+        <div class="col-md-12" >
+            <div class="cancel" id="cancel-hover"><i class="fa fa-times"></i></div>
+            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
+                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
+                    <i> {{html:species}}</i>
+                </span>
+            </h3>
+            <p>{{html:bundleName}}
+                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                    {{html:accession}}
+                </span>
+                <a href="{{url:url}}" target="_blank">
+                    <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                </a>            {{if sampleSize}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}})
+                </span></p>
+            {{/if}}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                        {{html:geolocation}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
+                </p>
+                <ul>
+                {{for projects}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                </p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Insecticide Resistance data</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    <i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="Insecticides" value="{{attr:insecticide}}">
+                        {{html:insecticide}}
+                    </span>
+                </p>
+                {{if concentration && concentrationUnit}}
+                    <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
+                {{/if}}
+                {{if duration && durationUnit}}
+                    <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
+                {{/if}}
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/x-jsrender" id="projectInfoTemplate">
+    <div class="row no-pad" style="width: 370px;">
+        <div class="col-md-12" >
+            <div class="cancel" id="entity-cancel-hover" style="display: inline;"><i class="fa fa-times"></i></div>
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
+                <span class="active-term" type="{{attr:entityType}}" value="{{attr:id}}">
+                    {{html:id}}
+                </span>
+                <a href={{url:entityURL}} target="_blank">
+                    <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                </a>
+            </h3>
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-12" >
+                <h5>{{attr:name}}</h5>
+            </div>
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-12">
+                <p style="font-size: smaller;">
+                {{attr:description}}
+                </p>
+            </div>
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center;">
+                <i class="fa fa-files-o fa-fw" title="Publications"></i>
+                Publications</h5>
+            </div>
+        </div>
+        <div class="row">
+            {{if publications.length === 0}}
+            <div class="col-md-12">
+            <p>No publications stored for this project</p>
+            </div>
+            {{else}}
+            <div class="col-md-12">
+                <ol>
+                {{for publications}}
+                <li>
+                    {{if #data.status.accession === 'EFO:0001796'}}
+                        <p>{{attr:#data.title}}</p>
+                        <p style="font-size: smaller">
+                        {{if #data.authors.length > 2}}
+                            {{attr:#data.authors.slice(0, 3).join(', ')}} <i> et al.</i>
+                        {{else}}
+                            {{attr:#data.authors.join(', ')}}
+                        {{/if}}
+                        </p>
+                        <p style="font-size: smaller">
+                        {{if (#data.pubmed_id || #data.doi}}
+                            <i class="fa fa-link fa-fw" title="External links"></i>
+                        {{/if}}
+                        {{if #data.pubmed_id}}
+                        <a href=http://www.ncbi.nlm.nih.gov/pubmed/{{url:#data.pubmed_id}} target="_blank">
+                            Pubmed
+                        </a>
+                        {{/if}}
+                        {{if #data.doi}}
+                        <a href=http://dx.doi.org/{{url:#data.doi}} target="_blank">
+                            Journal
+                        </a>
+                        {{/if}}
+
+                        </p>
+                    {{else #data.status.accession === 'EFO:0001795'}}
+                        <p>{{attr:#data.title}}</p>
+                        <p style="font-size: smaller">
+                        {{if #data.authors.length > 2}}
+                            {{attr:#data.authors.slice(0, 3).join(', ')}} <i> et al.</i>
+                        {{else}}
+                            {{attr:#data.authors.join(', ')}}
+                        {{/if}}
+                        </p>
+                        <p style="font-size: smaller">
+                        In preparation
+                        </p>
+                    {{else #data.status.accession === 'VBcv:0000233'}}
+                        <p>{{attr:#data.title}}</p>
+                        <p style="font-size: smaller">
+                        {{if #data.authors.length > 2}}
+                            {{attr:#data.authors.slice(0, 3).join(', ')}} <i> et al.</i>
+                        {{else}}
+                            {{attr:#data.authors.join(', ')}}
+                        {{/if}}
+                        </p>
+                        <p style="font-size: smaller">
+                            Unpublished
+                        </p>
+                        {{if #data.url}}
+                            <i class="fa fa-link fa-fw" title="External links"></i>
+                        <a href={{url:#data.url}} target="_blank">
+                            {{attr:#data.url}}
+                        </a>
+                        {{/if}}
+                    {{else #data.status.accession === 'VBcv:0000667'}}
+                        <p>{{attr:#data.title}}</p>
+                        <p style="font-size: smaller">
+                        {{if #data.authors.length > 2}}
+                            {{attr:#data.authors.slice(0, 3).join(', ')}} <i> et al.</i>
+                        {{else}}
+                            {{attr:#data.authors.join(', ')}}
+                        {{/if}}
+                        </p>
+                        {{if #data.url}}
+                            <i class="fa fa-link fa-fw" title="External links"></i>
+                        <a href={{url:#data.url}} target="_blank">
+                            {{attr:#data.url}}
+                        </a>
+                        {{/if}}
+                    {{/if}}
+                </li>
+                {{/for}}
+                </ol>
+            </div>
+            {{/if}}
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-calendar fa-fw" title="In VectorBase since"></i><b> In VectorBase since</b>
+                </p>
+                <ul><li>
+                {{attr:creation_date}}
+                </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-calendar fa-fw" title="Last modification date"></i><b> Last modified on</b>
+                </p>
+                <ul><li>
+                {{attr:last_modified_date}}
+                </li></ul>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</script>
+
+<!-- Stop cutting here for Map stuff -->
+<script language="JavaScript">
+
+    "use strict";
+
+    // Global vars
+    // Should minimize them
+
+    //    var solrPopbioUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_popbio/';
+    //    var solrTaUrl = 'http://vb-dev.bio.ic.ac.uk:9779/asolr/solr/vb_ta/';
+    //    var solrPopbioUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_popbio/';
+    var solrPopbioUrl = 'asolr/solr/genea_expression/';
+    var solrExportUrl = 'esolr/solr/genea_expression/';
+
+    var solrTaUrl = 'asolr/solr/vb_ta/';
+    var map, sidebar;
+    var assetLayerGroup;
+    var smallClusters = [], months = [];
+    var palette = {};
+    var legendSpecies = 18;
+    var qryUrl = 'q=*:*';
+    var partSearch = false;
+    var legend;
+    var PaneSpinner = null;
+    var highlight = null, rectHighlight = null, firstClick = true;
+    var highlightedId = false, sidebarClick = false, selectedPlotType = 'none'; // these are to help refresh the panel properly after clicking active terms
+    var geohashesGrid = null;
+
+    // map scaled values from 0-1 to colors green to red
+    //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
+    var colorBrewer = L.ColorBrewer.Diverging.RdYlBu[10].slice(); // using slice() to copy array by value
+    var absExprBrewer = L.ColorBrewer.Sequential.Blues[9].slice(); // using slice() to copy array by value
+    var terrainColors = ["#26A63A", "#68AC20", "#92B106", "#B4B61A", "#D3BA3D", "#EFBD60", "#FFC183", "#FFC6A7", "#FFCDC9", "#F1F1F1"]
+
+    var trafficLight = new L.CustomColorFunction(0, 1, colorBrewer, {interpolate: true});
+    var absExprLight = new L.CustomColorFunction(0, 1, absExprBrewer, {interpolate: true});
+
+    // Hack to prevent single click events firing when double clicking
+    var timer = 0;
+    var delay = 400;
+
+    var prevent = false, stickyHover = false;
+    // this is to remember background type selection between markers
+    var bgPlotType = 1;
+
+    // Norm IR slider initiation
+    var normIrSlider;
+
+    var glbSummarizeBy = 'Species';
+
+    var markerBounds = [];
+
+    var resizeId, previousWindowHeight;
+
+
+    initializeSearch();
+
+
+    // set view according to the value of the view url parameter. Otherwise default to smpl
+    var urlParams = $.parseParams();
+
+    $(window).load(function () {
+
+
+        $('.sidebar-pane').data('has-graph', false);
+
+
+        var windowHeight = $(window).height();
+        $('#map_container').height(windowHeight - 166 - 55);
+        previousWindowHeight = windowHeight;
+
+        $(window).resize(function () {
+            clearTimeout(resizeId);
+            resizeId = setTimeout(doneResizing, 500);
+        });
+
+
+        function doneResizing() {
+            //whatever we want to do
+            var windowHeight = $(window).height();
+            if (windowHeight != previousWindowHeight) {
+                $('#map_container').height(windowHeight - 166 - 55);
+                previousWindowHeight = windowHeight;
+                map.invalidateSize();
+
+
+            }
+        }
+
+
+        initializeMap();
+        bindEvents();
+
+        // declare timeout function name
+        var timeoutHandler;
+
+
+        // add event listener to map for movement
+        // this is to control Leaflet's annoying behavior when scrolling with a trackpad
+        map.on('moveend', mapMoveHandler);
+        map.on('drag', mapDragHandler);
+
+        function mapMoveHandler() {
+            // cancel any timeout currently running
+            window.clearTimeout(timeoutHandler);
+            // create new timeout to fire sesarch function after 500ms (or whatever you like)
+            timeoutHandler = window.setTimeout(function () {
+                loadSolr({clear: 1, zoomLevel: map.getZoom()});
+
+                // run some function to get results or update markers or something
+            }, 500);
+        }
+
+        function mapDragHandler() {
+            // cancel any timeout currently running
+            window.clearTimeout(timeoutHandler);
+        }
+
+        // detect when user changes zoom or pans around the map
+        map.on("movestart", function () {
+            removeHighlight();
+            // close open panels
+            $('.collapse').collapse('hide');
+            sidebar.close();
+            setTimeout(function () {
+                resetPlots()
+            }, delay);
+        })
+        //                .on("moveend", function () {
+        //
+        //                    loadSolr({clear: 1, zoomLevel: map.getZoom()});
+        //                })
+            .on("click", function () {
+                removeHighlight();
+                sidebar.close();
+                // close open panels
+                $('.collapse').collapse('hide');
+                setTimeout(function () {
+                    resetPlots()
+                }, delay);
+            });
+
+    });
+
+
+</script>
+<!-- MAP CUT END -->
+<!-- Keep the above line for grunt-->
+</body>
+</html>
+
+
+
+
+
+
+
+

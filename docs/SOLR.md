@@ -144,7 +144,7 @@ resistance, _abnd_ for abundance, etc):
 
    Parameters supplied are:
    - `q`: a valid SOLR query built using the search terms present in the search bar of the map
-   - `bbob`: the bounding box of the map. Syntax is `bbox=geo_coords:[-90,-180 TO 90,180]` where
+   - `bbox`: the bounding box of the map. Syntax is `bbox=geo_coords:[-90,-180 TO 90,180]` where
      `geo_coords` is the name of the field where the co-ordinates of the sample are stored
    - `geo`: the geohash level used for faceting the terms. The level changes based on the zoom
      level of the map
@@ -221,10 +221,10 @@ resistance, _abnd_ for abundance, etc):
      More details about SOLR cursors
      [here](https://cwiki.apache.org/confluence/display/solr/Pagination+of+Results).
 
-    Example results for IR view (with comments):
+   Example results for IR view (with comments):
 
-    ``` javascript
-    {
+   ``` javascript
+   {
       // response header excluded from the example
       "response": {
         // number of results
@@ -272,12 +272,23 @@ resistance, _abnd_ for abundance, etc):
       // cursorMark value to get the next set of results
       "nextCursorMark": "AoEwVkJBMDExNzg4OC4xNDI3OA=="
     }
-    ```
+   ```
+
+4. **xxxxExport** is the handler used to supply data to the JSON to CSV nodejs converter. This
+   handler utilises streaming and can export million of documents within seconds. The results
+   are in JSON format which are not very useful for scientists. For this reason we convert them
+   to CSV when a user requests to export data from the map.
+
+   Parameters supplied are:
+   - `q`: a valid SOLR query built using the search terms present in the search bar of the map.
+     This query string is the same as the one used for **xxxxGeoclust**
 
 
-4. **xxxxExport**
-
-   abndBeeswarm
+5. **irViolinStats**, **irViolin**, **irBeeswarm** are search handlers specific to IR view. They
+   are used for dynamically generating violin and beeswarm plots for the selected marker(s).
+   **irViolin** and **irBeeswarm** both utilise the rather new json.facet SOLR functionality but
+   query generation can be optimised in the same way as with xxxxGeoclust using named
+   parameters.
 
 
 ## Description of the auto-complete (vb_ta) core

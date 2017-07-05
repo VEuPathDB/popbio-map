@@ -62,3 +62,5 @@ Would skip repository web/tiles/Leaflet-MiniMap
 /js/genea/Leaflet-MiniMap/
 !/web/js/genea/
 !/web/libs/genea/
+!/web/genea_expression.html
+!/web/genea_prototype.html
