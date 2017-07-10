@@ -12,6 +12,16 @@ map currently relies on 2 SOLR cores:
 
 ## Description of the main (vp_popbio) core
 
+The **vb_popbio** core stores contains all the data stored in Chado for every PopBio sample in a
+flattened and optimised for search format. It uses the exact same JSON dump as the core powering
+VectorBase's search. For this reason most of the schema definitions are identical to the VB
+search core, although over time we kept adding additional information at the JSON dump which was
+only meant to be utilised in the map. As a result one should not assume that the files are
+identical anymore. Ideally, both **vp_popbio** and the VB search core should have identical
+*schema.xml*, *schema_extra_types.xml* and *schema_extra_fields.xml* files with all the extra
+bits required defined in a separate config!
+
+
 ### Configuration files
 
 | Filename                                                                  | Purpose                                                                                | Wiki                                                                |
@@ -22,14 +32,6 @@ map currently relies on 2 SOLR cores:
 | [solrconfig.xml](../SOLR/vb_popbio/conf/solrconfig.xml)                   | Core configuration, including search handlers                                          | [link](https://wiki.apache.org/solr/SolrConfigXml)                  |
 | [configoverlay.json](../SOLR/vb_popbio/conf/configoverlay.json)           | Newer type core configuration, allows defining search handler in JSON using a rest API | [link](https://cwiki.apache.org/confluence/display/solr/Config+API) |
 
-
-The vb_popbio core uses the exact same JSON dump as the core powering VectorBase's search. For
-this reason most of the schema definitions are identical to the VB search core, although over
-time we kept adding additional information at the JSON dump which was only meant to be utilised
-in the map. As a result one should not assume that the files are identical anymore. Ideally,
-both vp_popbio and the VB search core should have identical *schema.xml*,
-*schema_extra_types.xml* and *schema_extra_fields.xml* files with all the extra bits required
-defined in a separate config!
 
 ### Search handlers
 
@@ -85,6 +87,11 @@ resistance, _abnd_ for abundance, etc):
      interested in the global popularity of the terms for the purposes of palette creation
    - `geo`: the geohash level used for faceting the terms. Default is `geohash_2`
    - `term`: the field to summarise by. Default is `species_category`
+
+
+   | ![palette](images/palette.png) |
+   |:-------------------------------:|
+   | The PopBio Map palette         |
 
    Example results (with comments):
 
@@ -149,6 +156,10 @@ resistance, _abnd_ for abundance, etc):
    - `geo`: the geohash level used for faceting the terms. The level changes based on the zoom
      level of the map
    - `term`: the field to summarise by. Default is `species_category`
+
+   | ![pie_charts](images/pie_charts.png)  |
+   |:--------------------------------------:|
+   | A pie chart for a selected map marker |
 
    Example results for IR view (with comments):
 
@@ -221,6 +232,10 @@ resistance, _abnd_ for abundance, etc):
      More details about SOLR cursors
      [here](https://cwiki.apache.org/confluence/display/solr/Pagination+of+Results).
 
+    | ![table](images/table.png)  |
+    |:---:|
+    | Table for a selected marker (grouped by collection protocol)  |
+
    Example results for IR view (with comments):
 
    ``` javascript
@@ -283,6 +298,9 @@ resistance, _abnd_ for abundance, etc):
    - `q`: a valid SOLR query built using the search terms present in the search bar of the map.
      This query string is the same as the one used for **xxxxGeoclust**
 
+    | ![export_options](images/export_options.png)  |
+    |---|
+    | Data export options  |
 
 5. **irViolinStats**, **irViolin**, **irBeeswarm** are search handlers specific to IR view. They
    are used for dynamically generating violin and beeswarm plots for the selected marker(s).
@@ -293,3 +311,94 @@ resistance, _abnd_ for abundance, etc):
 
 ## Description of the auto-complete (vb_ta) core
 
+The **vb_ta** core is specifically designed to offer fast and smart auto-complete suggestions
+for the map. Usually, auto-complete in SOLR is achieved by storing all interesting terms into a
+text field and then faceting over it. While it works, it's not the fastest way to get
+suggestions and there's no easy way to associate suggestions with categories.
+
+What we are doing with the auto-complete core instead is take every term of interest from every
+sample and store it as a different document, along with relevant metadata, such as the category
+of the term and whether is a synonym or not. The result is a core with millions of very small
+documents. To cut down on the number of docs and improve performance, we are using a signature
+field to detect duplicate documents (usually samples belonging to the same project, that have
+the same date and coordinates)
+
+| ![auto_suggestions](images/ac_suggestions.png) |
+|:-----------------------------------------------|
+| Auto-complete suggestions for `anoph`          |
+
+Example JSON document with comments
+
+``` javascript
+{
+    "stable_id":"VBS0046002", // Stable ID of sample, same as in Chado
+    "bundle":"pop_sample", // Bundle type. Used to suggest the right terms for the right map view
+    "date":["1989-05-01T00:00:00Z"],
+    "textboost":100, // Boost document. The value is determined when dumping the json file from 
+                     // Chado. Highest is 100. If this was a synonym, it would have been 20
+    "is_synonym":false,
+    "geo_coords":["7.673,81.0177"], // Used to enable location-aware suggestions
+    "textsuggest":"Anopheles culicifacies sensu lato", // Tokenized version of the term
+    "textsuggest_category":"Anopheles culicifacies sensu lato", // Non-tokenized version
+    "id":"VBS0046002_taxon_0", // SOLR-specific ID. Assigned when generating the JSON file
+    "type":"Taxonomy", // Suggestion type. This allows us to provide smart suggestions to the user
+    "field":"species_cvterms", // The vp_popbio core field associated with this term
+    "signatureField":"a3ecc7b9a6e26c81" // Allows us to remove duplicates. Increases indexing time
+                                        // but greatly decreases search times. 
+}
+```
+
+### Configuration files
+
+| Filename                                            | Purpose                                                    | Wiki                                               |
+|:----------------------------------------------------|:-----------------------------------------------------------|:---------------------------------------------------|
+| [schema.xml](../SOLR/vb_ta/conf/schema.xml)         | Schema configuration and definitions for basic field types | [link](https://wiki.apache.org/solr/SchemaXml)     |
+| [solrconfig.xml](../SOLR/vb_ta/conf/solrconfig.xml) | Core configuration, including definition of de-duplication | [link](https://wiki.apache.org/solr/SolrConfigXml) |
+
+
+### Search handlers
+
+
+There are two search handlers defined for each map view in vb_ta (where xxxx is replaced by the
+internal name of the view -_smpl_ for sample, _ir_ for insecticide resistance, _abnd_ for
+abundance, etc):
+
+1. **xxxxAc** handler returns a list of (7 by default) suggestions for any string entered in the
+   search bar that had a length greater than 3. Each result also includes the category it
+   belongs and the field name that the term is stored in the **vb_popbio** core.
+
+   Example JSON document returned for `anoph`
+
+``` javascript
+    {
+        "docs": [
+            {
+                "is_synonym": false,
+                "textsuggest_category": "Anopheles culicifacies sensu lato",
+                "id": "VBS0046002_taxon_0",
+                "type": "Taxonomy",
+                "field": "species_cvterms"
+            },
+            {
+                "is_synonym": false,
+                "textsuggest_category": "Anopheles gambiae",
+                "id": "VBS0038771_taxon_0",
+                "type": "Taxonomy",
+                "field": "species_cvterms"
+            },
+            {
+                "is_synonym": false,
+                "textsuggest_category": "Anopheles funestus",
+                "id": "VBS0038772_taxon_0",
+                "type": "Taxonomy",
+                "field": "species_cvterms"
+            }
+        ]
+    }
+
+```
+
+1. **xxxxAcgrouped** handler returns the number of matching documents grouped (not faceted, more
+   about group-faceting vs faceting
+   [here](https://cwiki.apache.org/confluence/display/solr/Result+Grouping)) by category. This
+   allows us to provide the user with estimates on the number of results per category.
