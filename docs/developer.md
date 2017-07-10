@@ -1,5 +1,6 @@
 ### Repository structure
-```shell
+
+``` shell
 │
 │   # Documentation for development and deployment
 ├── docs
@@ -57,14 +58,17 @@
 
 ### Displaying dynamic text data using templates
 
-Apart from the search autocomplete, there are 2 other locations where we display AJAX-driven text data in the map:
+Apart from the search autocomplete, there are 2 other locations where we display AJAX-driven
+text data in the map:
 * The table view
 * The point tooltips for the beeswarm plots
 * The project info tooltip in the table view
 
-Tooltips and tables are generated dynamically using [JsRender](https://www.jsviews.com/) templates. These templates are defined in the [main html document](../web/vb_geohashes_mean.html) as follows
+Tooltips and tables are generated dynamically using [JsRender](https://www.jsviews.com/)
+templates. These templates are defined in the
+[main html document](../web/vb_geohashes_mean.html) as follows
 
-```html
+``` html
 <script type="text/x-jsrender" id="projectInfoTemplate">
     <div class="row no-pad" style="width: 370px;">
         <div class="row less-margin">
@@ -85,7 +89,7 @@ which is a mix of HTML with dynamic text linked to parameters in double curly br
 
 Then you can populate the HTML element of choice (e.g. tooltip)
 
-```javascript
+``` javascript
 // select the DOM element to be updated
 var entityTooltip = $('#vbEntityTooltip');
 
