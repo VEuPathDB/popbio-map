@@ -13,7 +13,7 @@ L.Control.MapLegend = L.Control.extend({
 
     // add the legend to the DOM tree
     addLegendIcon: function () {
-        this._legendDiv = L.DomUtil.create('div', 'info legend');
+        this._legendDiv = L.DomUtil.create('div', 'info legend active');
         legendDiv = this._legendDiv;
 
         L.easyButton('fa-info',
