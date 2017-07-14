@@ -12,10 +12,14 @@ function applyParameters() {
             switch (key) {
                 case "view":
                     var view = urlParams[key];
-                    if (view === 'ir' || view === 'smpl' || view === 'abnd') {
+                    if (view === 'ir' || view === 'smpl') {
 
                         $('#SelectView').selectpicker('val', view);
+                        viewMode = view;
                         // $('#view-mode').val(view);
+                    } else if (view === 'abnd') {
+
+                        viewMode = view;
                     }
                     break;
                 case "stableID":
@@ -101,7 +105,7 @@ function applyParameters() {
     }
 
     // update the export fields dropdown
-    updateExportFields($("#SelectView").val());
+    updateExportFields(viewMode);
 
     return hasParameters;
 }
@@ -192,7 +196,7 @@ function bindEvents() {
             case 'summByDropdown':
                 glbSummarizeBy = selValue;
 
-                var url = solrPopbioUrl + $('#SelectView').val() + 'Palette?q=*:*&geo=geohash_2&term=' +
+                var url = solrPopbioUrl + viewMode  + 'Palette?q=*:*&geo=geohash_2&term=' +
                     mapSummarizeByToField(glbSummarizeBy).summarize +
                     '&json.wrf=?&callback=?';
 
@@ -239,7 +243,7 @@ function bindEvents() {
     // download data
     $('#download-button').click(function () {
         var selectedOption = $('#select-export').val(),
-            viewMode = $("#SelectView").val(),
+            // viewMode = $("#SelectView").val(),
             url = solrExportUrl,
             viewBox = buildBbox(map.getBounds()),
             fieldsStr = '&fl=';
@@ -320,7 +324,7 @@ function bindEvents() {
 
     // add the IR scale bars in the advanced options pane
     var inHtml = '';
-    $.each(legend.options.trafficlight.colorBrewer.slice().reverse(), function (index, value) {
+    $.each(legend.options.trafficlight.colorBrewer.reverse(), function (index, value) {
         inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10%; background-color: ' + value + ' ;"></i>';
     });
     $('#menu-scale-bars').html(inHtml);
@@ -721,8 +725,8 @@ function bindEvents() {
         var firstVal = normIrValues[0], secondVal = normIrValues[1];
 
         var inHtml = '';
-        console.log(firstVal + ' - ' + secondVal);
-        $.each(colorBrewer.slice().reverse().slice(firstVal, secondVal + 1), function (index, value) {
+        // console.log(firstVal + ' - ' + secondVal);
+        $.each(legend.options.trafficlight.colorBrewer.reverse().slice(firstVal, secondVal + 1), function (index, value) {
             inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value +
                 ';width: 6px; background - color: ' + value +
                 ';>&nbsp &nbsp</i>';
@@ -733,7 +737,7 @@ function bindEvents() {
         // normIrValues = (1 - (secondVal / 10 + 0.1)).roundDecimals(1) + ' TO ' + (1 - (firstVal /
         // 10)).roundDecimals(1);
         normIrValues = scaleToIrMap[secondVal] + ' TO ' + scaleToIrMap[firstVal];
-        console.log(normIrValues);
+        // console.log(normIrValues);
 
         $('#search_ac').tagsinput('add', {
             value: normIrValues,
@@ -775,7 +779,7 @@ function bindEvents() {
     });
 
     $('.date-shortcut').click(function () {
-        console.log(this.value);
+        // console.log(this.value);
         setDateRange('#date-start', "#date-end", this.value);
 
     });
@@ -917,7 +921,7 @@ function initializeMap(parameters) {
     // Now generate the legend
 
     // hardcoded species_category
-    var url = solrPopbioUrl + $('#SelectView').val() + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
+    var url = solrPopbioUrl +viewMode + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
 
     legend = new L.control.legend(url, {
         summarizeBy: glbSummarizeBy,
@@ -970,7 +974,7 @@ function initializeSearch() {
         hint: false,
 
         remote: {
-            url: solrTaUrl + $('#SelectView').val() + 'Ac?q=',
+            url: solrTaUrl + viewMode + 'Ac?q=',
             ajax: {
                 dataType: 'jsonp',
                 data: {
@@ -980,7 +984,7 @@ function initializeSearch() {
                 jsonp: 'json.wrf'
             },
             replace: function (url, query) {
-                url = solrTaUrl + $('#SelectView').val() + 'Ac?q=';
+                url = solrTaUrl + viewMode + 'Ac?q=';
                 var match = query.match(/([^@]+)@([^@]*)/);
                 if (match != null) {
                     // matched text: match[0]
@@ -989,9 +993,9 @@ function initializeSearch() {
                     partSearch = match[1];
                     //console.log(url + encodeURI(match[1]));
                     if ($('#world-toggle').prop('checked')) {
-                        return solrTaUrl + $('#SelectView').val() + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
+                        return solrTaUrl + viewMode + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
                     } else {
-                        return solrTaUrl + $('#SelectView').val() + 'Acat?q=' + encodeURI(match[1]);
+                        return solrTaUrl + viewMode + 'Acat?q=' + encodeURI(match[1]);
                     }
                 } else {
                     // Match attempt failed
@@ -1045,7 +1049,7 @@ function initializeSearch() {
         minLength: 3,
 
         remote: {
-            url: solrTaUrl + $('#SelectView').val() + 'Acgrouped?q=',
+            url: solrTaUrl + viewMode + 'Acgrouped?q=',
             ajax: {
                 dataType: 'jsonp',
 
@@ -1057,7 +1061,7 @@ function initializeSearch() {
                 jsonp: 'json.wrf'
             },
             replace: function (url, query) {
-                url = solrTaUrl + $('#SelectView').val() + 'Acgrouped?q=';
+                url = solrTaUrl + viewMode + 'Acgrouped?q=';
                 if ($('#world-toggle').prop('checked')) {
                     return url + encodeURI(query) + '*' + buildBbox(map.getBounds());
                 } else {
@@ -1156,17 +1160,18 @@ function initializeSearch() {
 
     $('#SelectView').change(function () {
 
-        var selText = $('#SelectView').val();
-        if (selText !== "ir") {
+        viewMode = $('#SelectView').val()
+
+        if (viewMode !== "ir") {
             // $('#SelectView').val('smpl');
             if (glbSummarizeBy === "Insecticide") glbSummarizeBy = "Species";
         }
 
         // update the export fields dropdown
-        updateExportFields($("#SelectView").val());
+        updateExportFields(viewMode);
 
 
-        var url = solrPopbioUrl + $('#SelectView').val() + 'Palette?q=*:*&geo=geohash_2&term=' +
+        var url = solrPopbioUrl + viewMode + 'Palette?q=*:*&geo=geohash_2&term=' +
             mapSummarizeByToField(glbSummarizeBy).summarize +
             '&json.wrf=?&callback=?';
 
@@ -1387,6 +1392,10 @@ function loadSolr(parameters) {
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
 
+    // viewMode = $('#SelectView').val();
+    //
+    // if (hiddenViewMode) {viewMode = hiddenViewMode};
+
     // Store the visible marker geo limits to build a bbox
     var minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
 
@@ -1398,7 +1407,7 @@ function loadSolr(parameters) {
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
 
-        var viewMode = $('#SelectView').val();
+
         // display the number of results
         if (viewMode === "ir") {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
@@ -1419,10 +1428,11 @@ function loadSolr(parameters) {
 
         var facetResults = result.facets.geo.buckets,
             populations = {}, // keep the total marker count for each geohash
-            statistics = {}, // keep the species count for each geohash
-            fullStatistics = {}; // keep the species count for each geohash
+            statistics = {}, // keep the species/term count for each geohash
+            fullStatistics = {}; // keep the species/term count for each geohash
 
         facetResults.forEach(function (el) {
+
 
             // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be
             // processed later at the same time exclude them from [terms] so as to not display them twice
@@ -1430,12 +1440,12 @@ function loadSolr(parameters) {
                 elStats = [],
                 fullElStats = [],
                 geoCount = el.count,
-                tagsTotalCount = 0;
+                tagsTotalCount = 0,
+                geoAvgAbnd = 0;
 
             if (viewMode === 'abnd') {
 
-                var geoAbndSum = 0,
-                    geoAvgAbnd = el.avgAbnd;
+                geoAvgAbnd = el.avgAbnd; // colour markers by average abundance
             }
             ;
 
@@ -1450,14 +1460,14 @@ function loadSolr(parameters) {
                         "label": inKey.replace(/sensu lato/, "sl")
                             .replace(/chromosomal form/, "cf"),
                         // store normalised abundance for abundance mode, else store samples/assay counts
-                        "value": (viewMode === 'abnd') ? inEl.avgAbnd : inEl.count,
+                        "value": inEl.count,
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
                 } else {
                     fullElStats.push({
                         "label": inKey,
                         // store normalised abundance for abundance mode, else store samples/assay counts
-                        "value": (viewMode === 'abnd') ? inEl.avgAbnd : inEl.count,
+                        "value": inEl.count,
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
                 }
@@ -1465,7 +1475,7 @@ function loadSolr(parameters) {
 
                 // store the total counts
                 tagsTotalCount += inEl.count;
-                if (viewMode === 'abnd') geoAbndSum += inEl.avgAbnd;
+                // if (viewMode === 'abnd') geoAbndSum += inEl.avgAbnd;
 
             });
 
@@ -1488,9 +1498,9 @@ function loadSolr(parameters) {
             arr.count = geoCount;
             if (viewMode === 'abnd') {
                 arr.normAbnd = geoAvgAbnd.roundDecimals(1);
-                arr.avgDuration = el.avgDur.roundDecimals(1);
-                arr.avgSampleSize = el.avgSmp.roundDecimals(1);
-                arr.abndSum = geoAbndSum;
+                // arr.avgDuration = el.avgDur.roundDecimals(1);
+                // arr.avgSampleSize = el.avgSmp.roundDecimals(1);
+                // arr.abndSum = geoAbndSum;
             }
             arr.latLng = [el.ltAvg, el.lnAvg];
             arr.bounds = [[el.ltMin, el.lnMin], [el.ltMax, el.lnMax]];
@@ -1503,6 +1513,7 @@ function loadSolr(parameters) {
                 arr.trafficlight = el.irAvg;
             } else if (viewMode === 'abnd') {
                 arr.trafficlight = Math.log10(el.avgAbnd);
+                console.log(arr.trafficlight);
             } else {
                 arr.trafficlight = -1;
             }
@@ -1552,16 +1563,17 @@ function loadSolr(parameters) {
 
             setIcon: function (record) {
                 // if in abundance mode then resize the icons based on the samples count
-                var size = (viewMode === 'abnd') ? Math.ceil(40 + 5 * Math.log10(record.count)) : 40;
+                var size = 40;
+                if (viewMode === 'abnd') { size = 60 };
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
-                    markerText: (viewMode === 'abnd') ? record.normAbnd : record.count,
-                    count: (viewMode === 'abnd') ? record.abndSum : record.count,
+                    markerText: record.count,
+                    count: record.count,
                     trafficlight: record.trafficlight,
                     id: record.term,
                     stats: record.fullstats,
-                    avgSampleSize: (viewMode === 'abnd') ? record.avgSampleSize : -1,
-                    avgDuration: (viewMode === 'abnd') ? record.avgDuration : -1,
+                    // avgSampleSize: (viewMode === 'abnd') ? record.avgSampleSize : -1,
+                    // avgDuration: (viewMode === 'abnd') ? record.avgDuration : -1,
                     atomic: record.atomic
                 });
             },
@@ -1713,15 +1725,15 @@ function loadSolr(parameters) {
                             clickable: false
                         }).addTo(map);
 
-                        tooltip.css("left", e.containerPoint.x + 20)
-                            .css("top", e.containerPoint.y - 20)
-                            .clearQueue()
-                            .animate({
-                                    opacity: 1
-                                }, 400, function () {
-                                    //Animation complete
-                                }
-                            );
+                        // tooltip.css("left", e.containerPoint.x + 20)
+                        //     .css("top", e.containerPoint.y - 20)
+                        //     .clearQueue()
+                        //     .animate({
+                        //             opacity: 1
+                        //         }, 400, function () {
+                        //             //Animation complete
+                        //         }
+                        //     );
 
 
                     })
@@ -1870,7 +1882,7 @@ function loadSolr(parameters) {
         geo: geoLevel,
         term: mapSummarizeByToField(glbSummarizeBy).summarize
     };
-    var url = solrPopbioUrl + $('#SelectView').val() + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
+    var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
 
 
     $.getJSON(url, {
@@ -1881,11 +1893,11 @@ function loadSolr(parameters) {
     }, buildMap)
         .done(function () {
             $(document).trigger("jsonLoaded");
-            console.log("jsonLoaded")
+            // console.log("jsonLoaded")
 
         })
         .fail(function () {
-            console.log("Ahhh");
+            console.log("Failed to load json");
             map.spin(false);
 
         });
@@ -2090,7 +2102,7 @@ function updateTable(divid, filter, singleMarker) {
     $(header).empty();
 
     // generate table's data url
-    var searchHandler = $('#SelectView').val() + 'Table?';
+    var searchHandler = viewMode + 'Table?';
     var url = solrPopbioUrl + searchHandler + qryUrl + filter + '&sort=id asc&json.wrf=?&callback=?';
 
     // generate a url with cursorMark
@@ -2221,7 +2233,7 @@ function tableHtml(divid, results) {
 
         var row, template;
 
-        switch ($('#SelectView').val()) {
+        switch (viewMode) {
             case "ir":
                 row = {
                     accession: element.accession,
@@ -2963,7 +2975,7 @@ function dateResolution(dateString) {
     }
 
     return false;
-    console.log(match[1] + '-' + match[5] + '-' + match[7]);
+    // console.log(match[1] + '-' + match[5] + '-' + match[7]);
 
 }
 

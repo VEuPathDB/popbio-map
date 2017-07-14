@@ -6,9 +6,7 @@ L.Control.MapLegend = L.Control.extend({
         sortBy: 'Color',
         lum: 0.7,
         trafficlight: {
-            colorBrewer: $('#SelectView').val() === 'ir' ?
-                L.ColorBrewer.Diverging.RdYlBu[10].slice() :
-                L.ColorBrewer.Sequential.BuPu[9].slice()
+            colorBrewer: L.ColorBrewer.Diverging.RdYlBu[10].slice()
         },
         palette: {}
     },
@@ -364,7 +362,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
             '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
-            ($("#SelectView").val() === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
+            (viewMode === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
             '</div> ' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
@@ -384,7 +382,6 @@ L.Control.MapLegend = L.Control.extend({
 
             if (obj1 === 'no data') break;
             // if (obj1 === 'no data') break;
-            // console.log(obj1);
             if (options.summarizeBy === 'Species') {
 
                 inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
@@ -434,7 +431,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
             '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
-            ($("#SelectView").val() === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
+            (viewMode === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
             '</div> ' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
@@ -467,7 +464,7 @@ L.Control.MapLegend = L.Control.extend({
             cntLegend++; // update the counter of legend entries
         }
         // add others
-        if (numOfItems > options.numberOfColors ) {
+        if (numOfItems > options.numberOfColors) {
 
             var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")";
             inHtml += '<span class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></span>';
@@ -481,7 +478,7 @@ L.Control.MapLegend = L.Control.extend({
 
         var colorsArr = options.trafficlight.colorBrewer;
         // if in IR mode add the IR resistance color scale
-        if ($('#SelectView').val() === 'ir') {
+        if (viewMode === 'ir') {
 
             inHtml += '<div class="data-layer-legend" style="border: 0">';
             inHtml += '<p style="text-align: left">Resistance</p>';
@@ -501,12 +498,12 @@ L.Control.MapLegend = L.Control.extend({
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
                 'More info</span></p>';
 
-        } else if ($('#SelectView').val() === 'abnd') {
+        } else if (viewMode === 'abnd') {
             // abundance view
             inHtml += '<div class="data-layer-legend" style="border: 0">';
             inHtml += '<p style="text-align: left">Average abundance</p>';
             inHtml += '<div id="legend-ir-scale-bar">';
-            inHtml += '<div class="min-value" style="border: 0">' + Math.floor(Math.pow(10, options.trafficlight.min)) + '</div>';
+            inHtml += '<div class="min-value" style="border: 0">' + 0 + '</div>';
             inHtml += '<div class="scale-bars">';
             // var colorsArr = this.trafficlight.colorBrewer; // using slice to copy array by value
             $.each(colorsArr, function (index, value) {
@@ -514,7 +511,7 @@ L.Control.MapLegend = L.Control.extend({
             });
 
             inHtml += '</div></div>' +
-                '<div class="max-value" style="border: 0;">' + Math.ceil(Math.pow(10, options.trafficlight.max)) + '</div></div>' +
+                '<div class="max-value" style="border: 0;">' + Math.ceil(this.options.trafficlight.max) + '</div></div>' +
                 '<p style="font-size: smaller; word-wrap: break-word; width: 100%; max-width: 190px; margin-top: 5px;">' +
                 'Individuals per day of sampling<br>Values used for coloring have been log-transformed</p>';
         }
@@ -584,33 +581,30 @@ L.Control.MapLegend = L.Control.extend({
         // var doc = result.facet_counts.facet_pivot[pivotParams];
         var facets = result.facets;
         var facetResults = facets.geo.buckets;
-        var minAbnd = (facets.minAbnd) ? facets.minAbnd : 0;
-        var maxAbnd = (facets.maxAbnd) ? facets.maxAbnd : 1;
 
-        // set trafficlight options
-        var trafficlight = options.trafficlight;
-
-        trafficlight.colorBrewer = $('#SelectView').val() === 'ir' ?
-            L.ColorBrewer.Diverging.RdYlBu[10].slice() :
-            L.ColorBrewer.Sequential.BuPu[9].slice()
-
-        trafficlight.scale = new L.CustomColorFunction(minAbnd, maxAbnd, options.trafficlight.colorBrewer, {interpolate: true});
-        trafficlight.min = minAbnd;
-        trafficlight.max = maxAbnd;
-
+        // save max and min abundance
+        if (viewMode === 'abnd') {
+            var minAbnd = 0, maxAbnd = 0;
+        }
 
         var items = [];
-        // for (var obj in doc) if (doc.hasOwnProperty(obj)) {
-        //     var count = doc[obj].count;
 
+        // parse results
         facetResults.forEach(function (el) {
             var geoTerms = el.terms.buckets;
             var i = 1;
             var count = el.count;
+            if (viewMode === 'abnd') {
+                if (maxAbnd < el.maxAbnd) {
+                    maxAbnd = el.maxAbnd
+                }
+            }
+
             geoTerms.forEach(function (inEl) {
                 var ratio = inEl.count / count;
                 var sumField = inEl.val;
                 // var index = parseInt(i);
+
                 var points;
                 // Use a scoring scheme to make sure species with a good presence per region get a proper color (we
                 // only have 20 good colours)
@@ -642,6 +636,26 @@ L.Control.MapLegend = L.Control.extend({
             });
 
         });
+
+
+        // set trafficlight options
+        var trafficlight = options.trafficlight;
+
+
+        trafficlight.colorBrewer = viewMode === 'ir' ?
+            L.ColorBrewer.Diverging.RdYlBu[10].slice() :
+            L.ColorBrewer.Sequential.BuPu[9].slice()
+
+        if (viewMode === 'ir') {
+
+            trafficlight.scale = new L.CustomColorFunction(0, 1, options.trafficlight.colorBrewer, {interpolate: true});
+        } else if (viewMode === 'abnd') {
+            trafficlight.scale = new L.CustomColorFunction(0, Math.log(maxAbnd), options.trafficlight.colorBrewer, {interpolate: true});
+
+
+        }
+        trafficlight.min = 0;
+        trafficlight.max = maxAbnd;
 
 
         // this is where the legend items are scored and sorted based on their frequency/abundance

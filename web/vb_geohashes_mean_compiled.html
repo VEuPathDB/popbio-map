@@ -8,10 +8,11 @@
 
     <!-- Remote CSS styles -->
     <link rel="stylesheet" href="css/vectorbase.css" type="text/css" media="screen"/>
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
           rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" type="text/css" media="screen"/>
+    <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" type="text/css" media="screen"/>-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
@@ -22,7 +23,8 @@
 
     <!-- Remote Javascript libraries -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
-    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>-->
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"
             charset="utf-8"></script>
@@ -41,10 +43,16 @@
 </head>
 
 <body>
+<map name="ribbon">
+    <area shape="poly" coords="0,0,100,100,0,100"
+          title="This resource is currently under development. It may occasionally be unavailable. Please send all feedback to info@vectorbase.org">
+</map>
+<img src="ribbon.png" usemap="#ribbon" alt="beta"
+     style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
+
 <div id="min_width_container">
 
-
-    <!-- Cut here for Map stuff -->
+    <!-- Keep the following line for grunt-->
     <!-- MAP PASTE START -->
     <div class="no-interactions modal-backdrop fade" id="no-interactions"></div>
     <div class="modal fade" id="Table-Legend-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
@@ -65,7 +73,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-5">
-                            <div id='table-legend-controls' class="btn-group">
+                            <div id="table-legend-controls" class="btn-group">
                             </div>
                         </div>
 
@@ -198,7 +206,6 @@
                 </div>
 
             </div>
-
 
             <div class="sidebar-pane" id="help">
                 <h3>Usage tips</h3>
@@ -453,7 +460,7 @@
                                 data-tick-Icon="fa-check" data-width="90%">
                         </select>
                         <div style="margin-top: 20px;">
-                            <a type="button" class="btn btn-primary" id="download-button"><i class='fa fa-floppy-o'></i>
+                            <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
                                 Download
                             </a></div>
                     </div>
@@ -558,7 +565,7 @@
                                 <span class="btn-group btn-group-justified" data-toggle="buttons"
                                       role="group"
                                       style="height: 30px;">
-                                <input id="grid-toggle" type="checkbox" data-toggle="toggle"
+                                <input id="grid-toggle" checked type="checkbox" data-toggle="toggle"
                                        data-on="<i class='fa fa-th'></i> Grid On"
                                        data-off="<i class='fa fa-th'></i> Grid Off">
 
@@ -579,21 +586,16 @@
                 <div class="btn-group btn-group-justified" data-toggle="buttons" role="group"
                      style="margin-top:3px;">
 
-                    <div class="btn-group dropdown" id="SelectViewDropdown" role="group">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="SelectView"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <i class="fa fa-eye"
-                               id="view-icon"></i>
-                            Select View
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="SelectView">
-                            <li><a href="#" data-value="<i class='fa fa-eye' id='view-icon'></i> Samples">Samples</a>
-                            </li>
-                            <li><a href="#" data-value="<i class='fa fa-eye' id='view-icon'></i> Insectide Resistance">Insecticide
-                                Resistance</a></li>
-                        </ul>
-                    </div>
+                    <span class="btn-group" role="group">
+
+
+                    <select id="SelectView" class="selectpicker" style="text-align: center;"
+                            data-width="100%" data-icon-Base="fa fa-fw">
+                        <option data-icon="fa-tags" value="smpl">Samples</option>
+                        <option data-icon="fa-eyedropper" value="ir">Insecticide Resistance</option>
+                        <!--<option data-icon="fa-line-chart" value="abnd">Abundance</option>-->
+                    </select>
+                    </span>
 
                     <span class="btn-group" role="group">
                         <button type="button"
@@ -766,7 +768,7 @@
 
             </div>
             <input type="hidden" id="world-search" name="world-search" value="1">
-            <input type="hidden" id="view-mode" name="view-mode" value="smpl">
+            <!--<input type="hidden" id="view-mode" name="view-mode" value="smpl">-->
         </div>
     </div>
 
@@ -787,9 +789,12 @@
 <div id="beeswarmPointTooltip" class="tooltip-bs" style="opacity: 0;"></div>
 <div id="vbEntityTooltip" class="tooltip-bs"></div>
 
+
+
+<!-- jsrender template for sample info in the table slider (samples view)-->
+
 <script type="text/x-jsrender" id="smplRowTemplate">
     <div class="row no-pad marker-row">
-
 
         <div class="col-md-12" >
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
@@ -801,7 +806,7 @@
                     {{html:accession}}
                 </span>
                 <a href="{{url:url}}" target="_blank">
-                    <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
                 </a>
             {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -817,7 +822,7 @@
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    <i class="fa fa-calendar fa-fw" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                    <i class="fa fa-fw fa-calendar " title="Collection date" style="color: {{attr:bgColor}};"></i>
                     {{for collectionDate}}
                         {{>#data}}
                     {{else}}
@@ -827,7 +832,7 @@
             </div>
             <div class="col-md-6">
                 <p>
-                    <i class="fa fa-map-marker fa-fw" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <i class="fa fa-fw fa-map-marker " title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
@@ -837,14 +842,18 @@
         <div class="row">
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
+                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Projects" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                             <span class="active-term" type="Projects" value="{{attr:#data.name}}">
 
@@ -852,7 +861,7 @@
                         {{>#data.name}}
                         </span>
                         <span style="padding-left: 5px;">
-                            <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -862,7 +871,7 @@
                             ></i>
                         </span>
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa fa-external-link fa-fw " aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-external-link  " aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -870,14 +879,18 @@
             </div>
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
 
@@ -891,13 +904,17 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-fw fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
 
@@ -914,17 +931,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 </script>
+
+
+<!-- jsrender template for sample info in the table slider (IR view)-->
 
 <script type="text/x-jsrender" id="irRowTemplate">
     <div class="row no-pad marker-row">
@@ -941,7 +951,7 @@
                     {{html:accession}}
                 </span>
                 <a href="{{url:url}}" target="_blank">
-                    <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
                 </a>
             {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -956,7 +966,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                <p><i class="fa fa-fw fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
                 {{for collectionDate}}
                     {{>#data}}
                 {{else}}
@@ -965,7 +975,7 @@
                 </p>
             </div>
             <div class="col-md-6">
-                <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                <p><i class="fa fa-fw fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
@@ -975,14 +985,18 @@
         <div class="row">
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
+                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Projects" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Projects" value="{{attr:#data.name}}">
 
@@ -990,7 +1004,7 @@
                             {{>#data.name}}
                             </span>
                         <span style="padding-left: 5px;">
-                            <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1000,7 +1014,7 @@
                             ></i>
                         </span>
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -1008,14 +1022,18 @@
             </div>
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
 
@@ -1041,26 +1059,30 @@
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    <i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
+                    <i class="fa fa-fw fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="Insecticides" value="{{attr:insecticide}}">
                         {{html:insecticide}}
                     </span>
                 </p>
                 {{if concentration && concentrationUnit}}
-                    <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
+                    <p><i class="fa fa-fw fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
                 {{/if}}
                 {{if duration && durationUnit}}
-                    <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
+                    <p><i class="fa fa-fw fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
                 {{/if}}
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-fw fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
 
@@ -1078,21 +1100,172 @@
 
 
 
+</script>
+
+<!-- jsrender template for sample info in the table slider (abundance view)-->
+
+<script type="text/x-jsrender" id="abndRowTemplate">
+    <div class="row no-pad marker-row">
 
 
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
+                    <i> {{html:species}}</i>
+                </span>
+            </h3>
+            <p>{{html:bundleName}}
+                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                    {{html:accession}}
+                </span>
+                <a href="{{url:url}}" target="_blank">
+                    <i class="fa  fa-external-link " aria-hidden="true"></i>
+                </a>
+            {{if sampleSize}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}})
+                </span></p>
+            {{/if}}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa  fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa  fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                        {{html:geolocation}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa  fa-database " title="Projects"></i><b> Project(s)</b>
+                </p>
+                <ul>
+                {{for projects}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
 
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa  fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa  fa-external-link " aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa  fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                </p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
 
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+		<div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Abundance data</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><b>Abundance:</b> {{html:smplAvgAbnd}} individual(s) per day</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+				<p><i class="fa  fa-bug" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:sampleSize}} individual(s)</p>
+				<p><i class="fa  fa-calendar-check-o" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:collectionDuration}} day(s)</p>
 
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+    </div>
 
 
 
 
 </script>
 
+<!-- jsrender template for point info in beeswarm plot (IR view)-->
+
 <script type="text/x-jsrender" id="irBsPointTemplate">
     <div class="row no-pad" style="width: 370px;">
         <div class="col-md-12" >
-            <div class="cancel" id="cancel-hover"><i class="fa fa-times"></i></div>
+            <div class="cancel" id="cancel-hover"><i class="fa fa-fw fa-times"></i></div>
             <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
                 <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
@@ -1104,7 +1277,7 @@
                     {{html:accession}}
                 </span>
                 <a href="{{url:url}}" target="_blank">
-                    <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
                 </a>            {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}}
@@ -1118,7 +1291,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="fa fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                <p><i class="fa fa-fw fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
                 {{for collectionDate}}
                     {{>#data}}
                 {{else}}
@@ -1127,7 +1300,7 @@
                 </p>
             </div>
             <div class="col-md-6">
-                <p><i class="fa fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                <p><i class="fa fa-fw fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
@@ -1137,14 +1310,18 @@
         <div class="row">
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-database fa-fw" title="Projects"></i><b> Project(s)</b>
+                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Projects" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Projects" value="{{attr:#data.name}}">
 
@@ -1152,7 +1329,7 @@
                             {{>#data.name}}
                             </span>
                         <span style="padding-left: 5px;">
-                            <i class="fa fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1162,7 +1339,7 @@
                             ></i>
                         </span>
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -1170,14 +1347,18 @@
             </div>
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-shopping-cart fa-fw" title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
 
@@ -1203,26 +1384,30 @@
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    <i class="fa fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
+                    <i class="fa fa-fw fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="Insecticides" value="{{attr:insecticide}}">
                         {{html:insecticide}}
                     </span>
                 </p>
                 {{if concentration && concentrationUnit}}
-                    <p><i class="fa fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
+                    <p><i class="fa fa-fw fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
                 {{/if}}
                 {{if duration && durationUnit}}
-                    <p><i class="fa fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
+                    <p><i class="fa fa-fw fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
                 {{/if}}
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-fw fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
                         {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
                                 <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
-                                <i class="fa fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
 
@@ -1236,7 +1421,7 @@
         </div>
         <div class="row">
             <div class="col-md-12" >
-                <h5 style="text-align: center;"><i class="fa fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
+                <h5 style="text-align: center;"><i class="fa fa-fw fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
             </div>
         </div>
     </div>
@@ -1245,28 +1430,179 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 </script>
+
+
+<!-- jsrender template for point info in beeswarm plot (abundance view, not used yet)-->
+
+<script type="text/x-jsrender" id="abndBsPointTemplate">
+    <div class="row no-pad" style="width: 370px;">
+        <div class="col-md-12" >
+            <div class="cancel" id="cancel-hover"><i class="fa fa-fw fa-times"></i></div>
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
+                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
+                    <i> {{html:species}}</i>
+                </span>
+            </h3>
+            <p>{{html:bundleName}}
+                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                    {{html:accession}}
+                </span>
+                <a href="{{url:url}}" target="_blank">
+                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                </a>            {{if sampleSize}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}})
+                </span></p>
+            {{/if}}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa fa-fw fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-fw fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                        {{html:geolocation}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
+                </p>
+                <ul>
+                {{for projects}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                </p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Abundance data</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><b>Abundance:</b> {{html:smplAvgAbnd}} individual(s) per day</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+				<p><i class="fa  fa-bug" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:sampleSize}} individual(s)</p>
+				<p><i class="fa  fa-calendar-check-o" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:collectionDuration}} day(s)</p>
+
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><i class="fa fa-fw fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<!-- jsrender template for Project info in the table view-->
 
 <script type="text/x-jsrender" id="projectInfoTemplate">
     <div class="row no-pad" style="width: 370px;">
         <div class="col-md-12" >
-            <div class="cancel" id="entity-cancel-hover" style="display: inline;"><i class="fa fa-times"></i></div>
+            <div class="cancel" id="entity-cancel-hover" style="display: inline;"><i class="fa fa-fw fa-times"></i></div>
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
                 <span class="active-term" type="{{attr:entityType}}" value="{{attr:id}}">
                     {{html:id}}
                 </span>
                 <a href={{url:entityURL}} target="_blank">
-                    <i class="fa fa-external-link fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-external-link" style="color: {{attr:textColor}};" aria-hidden="true"></i>
                 </a>
             </h3>
         </div>
@@ -1285,7 +1621,7 @@
         <div class="row less-margin">
             <div class="col-md-12" >
                 <h5 style="color: {{attr:bgColor}}; text-align: center;">
-                <i class="fa fa-files-o fa-fw" title="Publications"></i>
+                <i class="fa fa-fw fa-files-o " title="Publications"></i>
                 Publications</h5>
             </div>
         </div>
@@ -1310,7 +1646,7 @@
                         </p>
                         <p style="font-size: smaller">
                         {{if (#data.pubmed_id || #data.doi}}
-                            <i class="fa fa-link fa-fw" title="External links"></i>
+                            <i class="fa fa-fw fa-link " title="External links"></i>
                         {{/if}}
                         {{if #data.pubmed_id}}
                         <a href=http://www.ncbi.nlm.nih.gov/pubmed/{{url:#data.pubmed_id}} target="_blank">
@@ -1349,7 +1685,7 @@
                             Unpublished
                         </p>
                         {{if #data.url}}
-                            <i class="fa fa-link fa-fw" title="External links"></i>
+                            <i class="fa fa-fw fa-link " title="External links"></i>
                         <a href={{url:#data.url}} target="_blank">
                             {{attr:#data.url}}
                         </a>
@@ -1364,7 +1700,7 @@
                         {{/if}}
                         </p>
                         {{if #data.url}}
-                            <i class="fa fa-link fa-fw" title="External links"></i>
+                            <i class="fa fa-fw fa-link " title="External links"></i>
                         <a href={{url:#data.url}} target="_blank">
                             {{attr:#data.url}}
                         </a>
@@ -1379,7 +1715,7 @@
         <div class="row less-margin">
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-calendar fa-fw" title="In VectorBase since"></i><b> In VectorBase since</b>
+                    <i class="fa fa-fw fa-calendar " title="In VectorBase since"></i><b> In VectorBase since</b>
                 </p>
                 <ul><li>
                 {{attr:creation_date}}
@@ -1387,7 +1723,7 @@
             </div>
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-calendar fa-fw" title="Last modification date"></i><b> Last modified on</b>
+                    <i class="fa fa-fw fa-calendar " title="Last modification date"></i><b> Last modified on</b>
                 </p>
                 <ul><li>
                 {{attr:last_modified_date}}
@@ -1397,22 +1733,8 @@
         </div>
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
+
 
 <!-- Stop cutting here for Map stuff -->
 <script language="JavaScript">
@@ -1432,9 +1754,8 @@
     var solrTaUrl = 'asolr/solr/vb_ta/';
     //    var solrTaUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_ta/';
     var map, sidebar;
-    var assetLayerGroup;
+    var assetLayerGroup, tempParentLayerGroup;
     var smallClusters = [], months = [];
-    var palette = {};
     var legendSpecies = 18;
     var qryUrl = 'q=*:*';
     var partSearch = false;
@@ -1445,8 +1766,8 @@
     var geohashesGrid = null;
     // map scaled values from 0-1 to colors green to red
     //    var trafficLight = new L.HSLHueFunction(new L.Point(0,120), new L.Point(1,0));
-    var colorBrewer = L.ColorBrewer.Diverging.RdYlBu[10].slice(); // using slice() to copy array by value
-    var trafficLight = new L.CustomColorFunction(0, 1, colorBrewer, {interpolate: true});
+    //    var colorBrewer = L.ColorBrewer.Diverging.RdYlBu[10].slice(); // using slice() to copy array by value
+    //    var trafficLight = new L.CustomColorFunction(0, 1, colorBrewer, {interpolate: true});
 
     // Hack to prevent single click events firing when double clicking
     var timer = 0;
@@ -1455,6 +1776,8 @@
     var prevent = false, stickyHover = false;
     // this is to remember background type selection between markers
     var bgPlotType = 1;
+
+    var startingZooom = -Infinity, endingZoom = Infinity;
 
     // Norm IR slider initiation
     var normIrSlider;
@@ -1465,6 +1788,12 @@
 
     var resizeId, previousWindowHeight;
 
+    // store markers
+    var markers;
+
+    // quick hack to enable hidden view mode
+
+    var viewMode = $('#SelectView').val();
 
     initializeSearch();
 
@@ -1501,6 +1830,7 @@
             }
         }
 
+
         initializeMap({flyTo: applyParameters()});
 
 //        if (applyParameters()) {
@@ -1512,11 +1842,10 @@
         bindEvents();
 
 
-
     });
-
 
 </script>
 <!-- MAP PASTE END -->
+<!-- Keep the above line for grunt-->
 </body>
 </html>

@@ -1521,6 +1521,7 @@
             <str name="fq">bundle:pop_sample</str>
             <str name="fq">has_geodata:true</str>
             <str name="fq">has_abundance_data_b:true</str>
+            <str name="fq">!sample_size_i:0</str>
         </lst>
         <lst name="invariants">
             <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
