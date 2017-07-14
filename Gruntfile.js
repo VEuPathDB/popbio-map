@@ -32,18 +32,20 @@ module.exports = function (grunt) {
                         'web/libs/geohash-js/geohash.js',
                         'web/libs/node-geohash/main.js',
                         'web/libs/Leaflet.EasyButton/easy-button.js',
+                        'web/libs/bootstrap-select/dist/js/bootstrap-select.js',
                         'web/js/map.Legend.js',
                         'web/js/Icon.Canvas.js',
                         'web/libs/nvd3/build/nv.d3.js',
                         'web/libs/typeahead.js/dist/typeahead.bundle.js',
                         'web/libs/bootstrap-tagsinput/bootstrap-tagsinput.js',
-                        'web/libs/bootstrap-select/dist/js/bootstrap-select.js',
                         'web/libs/beeswarm/beeswarm.js',
                         'web/libs/jsrender/jsrender.js',
                         'web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js',
                         'web/js/vb-violin-plots.js',
-                        'web/js/vb-popbio-maps.js',
-                        'web/js/geohashes-layer.js'
+                        'web/js/map.popbioMarkers.js',
+                        'web/js/map.multipleMarkers.js',
+                        'web/js/geohashes-layer.js',
+                        'web/js/vb-popbio-maps.js'
 
                     ],
                     // 'web/dist/js/<%= pkg.name %>.js': [
@@ -68,20 +70,20 @@ module.exports = function (grunt) {
                 files: [{
                     'web/dist/css/<%= pkg.name %>.min.css': [
                         'web/libs/leaflet-dvf/css/dvf.css',
-                        'web/css/MarkerCluster.Default.css',
+                        // 'web/css/MarkerCluster.Default.css',
                         'web/libs/leaflet.fullscreen/Control.FullScreen.css',
                         'web/libs/leaflet-zoom-min/L.Control.ZoomMin.css',
                         'web/libs/sidebar-v2/leaflet-sidebar.css',
                         'web/libs/nvd3/build/nv.d3.css',
-                        'web/libs/Leaflet.vector-markers/Leaflet.vector-markers.css',
+                        // 'web/libs/Leaflet.vector-markers/Leaflet.vector-markers.css',
                         'web/css/typeaheadjs.css',
                         'web/css/bootstrap-yeti.css',
                         'web/libs/bootstrap-tagsinput/bootstrap-tagsinput.css',
                         'web/libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css',
                         'web/libs/bootstrap-toggle/css/bootstrap-toggle.css',
                         'web/libs/bootstrap-slider/dist/css/bootstrap-slider.css',
-                        'web/libs/bootstrap-select/dist/css/bootstrap-select.css',
-                        'web/css/vb-popbio-maps.css'
+                        'web/css/vb-popbio-maps.css',
+                        'web/libs/bootstrap-select/dist/css/bootstrap-select.css'
                     ]
 
                 }

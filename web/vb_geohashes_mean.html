@@ -650,7 +650,7 @@
                             data-width="100%" data-icon-Base="fa fa-fw">
                         <option data-icon="fa-tags" value="smpl">Samples</option>
                         <option data-icon="fa-eyedropper" value="ir">Insecticide Resistance</option>
-                        <option data-icon="fa-line-chart" value="abnd">Abundance</option>
+                        <!--<option data-icon="fa-line-chart" value="abnd">Abundance</option>-->
                     </select>
                     </span>
 
@@ -1848,6 +1848,9 @@
     // store markers
     var markers;
 
+    // quick hack to enable hidden view mode
+
+    var viewMode = $('#SelectView').val();
 
     initializeSearch();
 
@@ -1884,6 +1887,7 @@
             }
         }
 
+
         initializeMap({flyTo: applyParameters()});
 
 //        if (applyParameters()) {
@@ -1896,7 +1900,6 @@
 
 
     });
-
 
 </script>
 <!-- MAP CUT END -->

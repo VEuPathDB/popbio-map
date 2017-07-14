@@ -90,8 +90,8 @@ resistance, _abnd_ for abundance, etc):
 
 
    | ![palette](images/palette.png) |
-   |:-------------------------------:|
-   | The PopBio Map palette         |
+   |:------------------------------:|
+   |     The PopBio Map palette     |
 
    Example results (with comments):
 
@@ -158,7 +158,7 @@ resistance, _abnd_ for abundance, etc):
    - `term`: the field to summarise by. Default is `species_category`
 
    | ![pie_charts](images/pie_charts.png)  |
-   |:--------------------------------------:|
+   |:-------------------------------------:|
    | A pie chart for a selected map marker |
 
    Example results for IR view (with comments):
@@ -232,9 +232,9 @@ resistance, _abnd_ for abundance, etc):
      More details about SOLR cursors
      [here](https://cwiki.apache.org/confluence/display/solr/Pagination+of+Results).
 
-    | ![table](images/table.png)  |
-    |:---:|
-    | Table for a selected marker (grouped by collection protocol)  |
+   |                  ![table](images/table.png)                  |
+   |:------------------------------------------------------------:|
+   | Table for a selected marker (grouped by collection protocol) |
 
    Example results for IR view (with comments):
 
@@ -298,9 +298,9 @@ resistance, _abnd_ for abundance, etc):
    - `q`: a valid SOLR query built using the search terms present in the search bar of the map.
      This query string is the same as the one used for **xxxxGeoclust**
 
-    | ![export_options](images/export_options.png)  |
-    |---|
-    | Data export options  |
+   | ![export_options](images/export_options.png) |
+   |:---------------------------------------------|
+   | Data export options                          |
 
 5. **irViolinStats**, **irViolin**, **irBeeswarm** are search handlers specific to IR view. They
    are used for dynamically generating violin and beeswarm plots for the selected marker(s).
@@ -323,9 +323,10 @@ documents. To cut down on the number of docs and improve performance, we are usi
 field to detect duplicate documents (usually samples belonging to the same project, that have
 the same date and coordinates)
 
-| ![auto_suggestions](images/ac_suggestions.png) |
-|:-----------------------------------------------|
-| Auto-complete suggestions for `anoph`          |
+| ![ac_suggestions](images/ac_suggestions.png) |
+|:---------------------------------------------|
+| Auto-complete suggestions for term `anoph`   |
+
 
 Example JSON document with comments
 
@@ -359,8 +360,8 @@ Example JSON document with comments
 ### Search handlers
 
 
-There are two search handlers defined for each map view in vb_ta (where xxxx is replaced by the
-internal name of the view -_smpl_ for sample, _ir_ for insecticide resistance, _abnd_ for
+There are three search handlers defined for each map view in vb_ta (where xxxx is replaced by
+the internal name of the view -_smpl_ for sample, _ir_ for insecticide resistance, _abnd_ for
 abundance, etc):
 
 1. **xxxxAc** handler returns a list of (7 by default) suggestions for any string entered in the
@@ -402,3 +403,42 @@ abundance, etc):
    about group-faceting vs faceting
    [here](https://cwiki.apache.org/confluence/display/solr/Result+Grouping)) by category. This
    allows us to provide the user with estimates on the number of results per category.
+
+2. **xxxxAcat** handler returns the categories for in which a certain term exists. This handler
+   is called when the user is specifically asking for matching categories using the `@` symbol
+   such as in `anoph@`. See also the following screenshot.
+
+   | ![ac_suggestions_1](images/ac_suggestions_1.png) |
+   |:-------------------------------------------------|
+   | Categories a search term exists in               |
+
+   Example JSON document returned for `anoph@`
+
+``` javascript
+    {
+        "docs": [
+            {
+                "id": "VBS0046002_taxon_0",
+                "type": "Taxonomy",
+                "field": "species_cvterms"
+            },
+            {
+                "id": "VBS0046002_desc",
+                "type": "Description",
+                "field": "description"
+            },
+            {
+                "id": "VBS0057017_proj_0_title",
+                "type": "Project titles",
+                "field": "project_titles_txt"
+            },
+            {
+                "id": "VBS0065811_title",
+                "type": "Title",
+                "field": "label"
+            }
+        ]
+    }
+
+```
+
