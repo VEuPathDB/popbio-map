@@ -6,6 +6,7 @@
 function createBeeViolinPlot(divid, filter) {
 
     "use strict";
+    $('#swarm-plots h3').text('Insecticide Resistance statistics for selected samples');
 
     // Only proceed if in IR mode, otherwise clear the graph
     if ($('#SelectView').val() === 'smpl') {
