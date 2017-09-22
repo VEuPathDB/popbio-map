@@ -498,22 +498,6 @@ L.Control.MapLegend = L.Control.extend({
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
                 'More info</span></p>';
 
-        } else if (viewMode === 'NOTabnd') {
-            // abundance view // SHADING IS DISABLED FOR NOW
-            inHtml += '<div class="data-layer-legend" style="border: 0">';
-            inHtml += '<p style="text-align: left">Average abundance</p>';
-            inHtml += '<div id="legend-ir-scale-bar">';
-            inHtml += '<div class="min-value" style="border: 0">' + 0 + '</div>';
-            inHtml += '<div class="scale-bars">';
-            // var colorsArr = this.trafficlight.colorBrewer; // using slice to copy array by value
-            $.each(colorsArr, function (index, value) {
-                inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10px; background-color: ' + value + ' ;"></i>';
-            });
-
-            inHtml += '</div></div>' +
-                '<div class="max-value" style="border: 0;">' + Math.ceil(this.options.trafficlight.max) + '</div></div>' +
-                '<p style="font-size: smaller; word-wrap: break-word; width: 100%; max-width: 190px; margin-top: 5px;">' +
-                'Individuals per day of sampling<br>Values used for coloring have been log-transformed</p>';
         }
 
         // Populate legend when added to map
@@ -649,13 +633,7 @@ L.Control.MapLegend = L.Control.extend({
         if (viewMode === 'ir') {
 
             trafficlight.scale = new L.CustomColorFunction(0, 1, options.trafficlight.colorBrewer, {interpolate: true});
-        } else if (viewMode === 'NOTabnd') { // not currently showing a colour scale in legend
-            trafficlight.scale = new L.CustomColorFunction(0, Math.log(maxAbnd), options.trafficlight.colorBrewer, {interpolate: true});
-            trafficlight.min = 0;
-            trafficlight.max = maxAbnd;
         }
-
-
 
         // this is where the legend items are scored and sorted based on their frequency/abundance
         var sortedItems = this._sortHashByValue(items);
