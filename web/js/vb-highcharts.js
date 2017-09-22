@@ -16,20 +16,13 @@
         PopulationBiologyMap.data.highcharts[project_id] = [];
 
         //Construct URL used to retrieve data from solr
-        var abundanceUrl = "/popbio/map/asolr/solr/vb_popbio/query?";
-
-	//Quick way of taking into consideration search terms in the serarch box
-	if (qryUrl == "q=*:*") {
-            var query = "q=has_abundance_data_b:true%20AND%20-sample_size_i:0%20AND%20projects_category:" + project_id;
-	} else {
-	    var query = qryUrl + "%20AND%20has_abundance_data_b:true%20AND%20-sample_size_i:0%20AND%20projects_category:" + project_id;
-	}
-
-        var json_facet = '&json.facet={species:{type:terms,limit:-1,field:species_category,facet:{collection_dates:{type:terms,limit:-1,sort:index,field:collection_date,facet:{sumAbnd:"sum(div(sample_size_i,collection_duration_days_i))"}}}}}';
-        var queryParameters = query + "&rows=1&wt=json&fl=project_titles_txt";
-        //Get filter of the record
-        var filter = PopulationBiologyMap.data.filter + "&fq=bundle:pop_sample";
-        var queryUrl = abundanceUrl + queryParameters + json_facet + filter; 
+        var abundanceUrl = "/popbio/map/asolr/solr/vb_popbio/abndGraphdata?";
+	var project = "&project=projects_category:" + project_id;
+        //var json_facet = '&json.facet={species:{type:terms,limit:-1,field:species_category,facet:{collection_dates:{type:terms,limit:-1,sort:index,field:collection_date,facet:{sample_size:{type:terms, field:sample_size_i}}}}}}';
+        
+	//Get filter of the record
+        var filter = PopulationBiologyMap.data.filter;
+        var queryUrl = abundanceUrl + qryUrl + project + filter; 
 
         $.ajax({
             url: queryUrl,
@@ -47,7 +40,18 @@
                     collections_info = species_collections.collection_dates.buckets;
                     collections_info.forEach(function (collection) {
                         var unix_date = new Date(collection.val).getTime();
-                        PopulationBiologyMap.data.single_species_data.data.push([unix_date, collection.sumAbnd]); 
+                        sample_sizes = collection.sample_size.buckets;
+                        if (collection.count > 1) {
+                            console.log("In collection");
+                            console.log(collection.count);
+                        }
+                        sample_sizes.forEach(function (sample_size) {
+                            if (sample_size.count > 1) {
+                                console.log("In sample size");
+                                console.log(sample_size.count);
+                            }
+                            PopulationBiologyMap.data.single_species_data.data.push([unix_date, sample_size.val]);
+                        });
                         //console.log(collection);
                     });
                     //Putting project_id in local variable to not type out original
@@ -92,17 +96,8 @@
 	$('#swarm-plots h3').text('Population Abundance');
         //How the URL will be constructed
         //var abundanceUrl = solrPopbioUrl + 'abndProjects?&
-        var abundanceUrl = "/popbio/map/asolr/solr/vb_popbio/query?";
-
-        //Quick way of taking into consideration search terms in the serarch box
-        if (qryUrl == "q=*:*") {
-            var query = "q=has_abundance_data_b:true%20AND%20-sample_size_i:0";
-        } else {
-            var query = qryUrl + "%20AND%20has_abundance_data_b:true%20AND%20-sample_size_i:0";
-        }
-
-        var queryParameters = "&rows=0&wt=json&facet=true&facet.mincount=1&facet.field=projects_category&fq=bundle:pop_sample";
-        var queryUrl = abundanceUrl + query + queryParameters + filter; // + "&json.wrf=?&callback=?";
+        var abundanceUrl = "/popbio/map/asolr/solr/vb_popbio/abndProjects?";
+        var queryUrl = abundanceUrl + qryUrl + filter;
 
         PopulationBiologyMap.data.filter = filter;
 
@@ -135,8 +130,7 @@
                         var label = $('<label>').text('Select Project to View Abundance Graph: ');
                         var aps = $('<select />').attr('id', 'agSelectProject')
                             .attr('class', 'form-control');
-
-                        projects_list.forEach(function (project) {
+                        for (var project in projects_list) {
                             if (typeof project == 'string') {
                                 //console.log(project);
                                 $('<option/>', {
@@ -146,7 +140,7 @@
                                 label.appendTo($(divid));
                                 aps.appendTo($(divid));
                             }
-                        });
+                        }
 
                         //Build graph using the first option in the drop-down
                         //console.log("Adding graph");
@@ -174,6 +168,9 @@
             rangeSelector: {
                 enabled: false
             },*/
+	    rangeSelector: {
+                enabled: false
+	    },
             legend: {
                 enabled: true
             },
@@ -182,8 +179,13 @@
                 text: title
             },
             chart: {
-                height: "120%"
+		type: 'scatter',
+	        zoomType: 'xy',
+                height: "200%"
             },
+	    navigator: {
+                enabled: false
+	    },
            /* navigator: {
                 xAxis: {
                     labels: {

@@ -873,7 +873,9 @@ function initializeMap(parameters) {
 
     map.addControl(new L.Control.ZoomMin({position: "topright"}));
     sidebar = L.control.sidebar('sidebar').addTo(map);
-
+    //Adding scale to map
+    L.control.scale({position: "bottomright"}).addTo(map);
+    
     var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: 15,
