@@ -12,15 +12,8 @@ function applyParameters() {
             switch (key) {
                 case "view":
                     var view = urlParams[key];
-                    if (view === 'ir' || view === 'smpl') {
-
-                        $('#SelectView').selectpicker('val', view);
-                        viewMode = view;
-                        // $('#view-mode').val(view);
-                    } else if (view === 'abnd') {
-
-                        viewMode = view;
-                    }
+                    $('#SelectView').selectpicker('val', view);
+                    viewMode = view;
                     break;
                 case "stableID":
                     // have we passed multiple stable IDs??
@@ -1409,8 +1402,11 @@ function loadSolr(parameters) {
 
 
         // display the number of results
+
         if (viewMode === "ir") {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
+        } else if (viewMode === "abnd") {
+            $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>');
         } else {
             $("#markersCount").html(result.response.numFound + ' visible samples summarized by ' + glbSummarizeBy + '</u>');
         }
@@ -1439,42 +1435,26 @@ function loadSolr(parameters) {
             var key = el.val,
                 elStats = [],
                 fullElStats = [],
-                geoCount = el.count,
-                tagsTotalCount = 0,
-                geoAvgAbnd = 0;
-
-            if (viewMode === 'abnd') {
-
-                geoAvgAbnd = el.avgAbnd; // colour markers by average abundance
-            }
-            ;
+                geoCount = viewMode === 'abnd' ? el.sumSmp : el.count,
+                tagsTotalCount = 0;
 
             var geoTerms = el.term.buckets;
 
             geoTerms.forEach(function (inEl) {
                 var inKey = inEl.val;
-                if (legend.options.summarizeBy === 'Species') {
+                var inCount = viewMode === 'abnd' ? inEl.sumSmp : inEl.count;
 
-                    //FixMe: Remove these replacements when proper names are returned from the popbio API
-                    fullElStats.push({
-                        "label": inKey.replace(/sensu lato/, "sl")
-                            .replace(/chromosomal form/, "cf"),
-                        // store normalised abundance for abundance mode, else store samples/assay counts
-                        "value": inEl.count,
-                        "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
-                    });
-                } else {
+                if (inCount > 0) {
                     fullElStats.push({
                         "label": inKey,
                         // store normalised abundance for abundance mode, else store samples/assay counts
-                        "value": inEl.count,
+                        "value": inCount,
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
                 }
-                ;
 
                 // store the total counts
-                tagsTotalCount += inEl.count;
+                tagsTotalCount += inCount;
                 // if (viewMode === 'abnd') geoAbndSum += inEl.avgAbnd;
 
             });
@@ -1497,7 +1477,7 @@ function loadSolr(parameters) {
             // arr.cumulativeCount = tagsTotalCount
             arr.count = geoCount;
             if (viewMode === 'abnd') {
-                arr.normAbnd = geoAvgAbnd.roundDecimals(1);
+                // arr.normAbnd = geoAvgAbnd.roundDecimals(1);
                 // arr.avgDuration = el.avgDur.roundDecimals(1);
                 // arr.avgSampleSize = el.avgSmp.roundDecimals(1);
                 // arr.abndSum = geoAbndSum;
@@ -1511,9 +1491,6 @@ function loadSolr(parameters) {
             }
             if (viewMode === 'ir') {
                 arr.trafficlight = el.irAvg;
-            } else if (viewMode === 'abnd') {
-                arr.trafficlight = Math.log10(el.avgAbnd);
-                console.log(arr.trafficlight);
             } else {
                 arr.trafficlight = -1;
             }
@@ -1564,10 +1541,14 @@ function loadSolr(parameters) {
             setIcon: function (record) {
                 // if in abundance mode then resize the icons based on the samples count
                 var size = 40;
-                if (viewMode === 'abnd') { size = 60 };
+                // if (viewMode === 'abnd') { size = 60 };
+                var markerText = record.count;
+                if (viewMode === 'abnd' && record.count > 999) {
+                    markerText = Math.round(record.count/1000)+"k";
+                }
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
-                    markerText: record.count,
+                    markerText: markerText,
                     count: record.count,
                     trafficlight: record.trafficlight,
                     id: record.term,
@@ -2037,10 +2018,12 @@ function updatePieChart(population, stats) {
 
         $('#pie-chart-header').empty();
 
+        var vSize = 400 + 10*stats.length;
+
         d3.select("#pie-chart-area svg")
             .attr("width", "100%")
-            .attr("height", "500px")
-            .style({width: "100%", height: "500px"});
+            .attr("height", vSize+"px")
+            .style({width: "100%" , height: vSize+"px"});
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
