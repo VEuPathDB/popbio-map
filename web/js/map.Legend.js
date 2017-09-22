@@ -498,8 +498,8 @@ L.Control.MapLegend = L.Control.extend({
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
                 'More info</span></p>';
 
-        } else if (viewMode === 'abnd') {
-            // abundance view
+        } else if (viewMode === 'NOTabnd') {
+            // abundance view // SHADING IS DISABLED FOR NOW
             inHtml += '<div class="data-layer-legend" style="border: 0">';
             inHtml += '<p style="text-align: left">Average abundance</p>';
             inHtml += '<div id="legend-ir-scale-bar">';
@@ -649,13 +649,12 @@ L.Control.MapLegend = L.Control.extend({
         if (viewMode === 'ir') {
 
             trafficlight.scale = new L.CustomColorFunction(0, 1, options.trafficlight.colorBrewer, {interpolate: true});
-        } else if (viewMode === 'abnd') {
+        } else if (viewMode === 'NOTabnd') { // not currently showing a colour scale in legend
             trafficlight.scale = new L.CustomColorFunction(0, Math.log(maxAbnd), options.trafficlight.colorBrewer, {interpolate: true});
-
-
+            trafficlight.min = 0;
+            trafficlight.max = maxAbnd;
         }
-        trafficlight.min = 0;
-        trafficlight.max = maxAbnd;
+
 
 
         // this is where the legend items are scored and sorted based on their frequency/abundance

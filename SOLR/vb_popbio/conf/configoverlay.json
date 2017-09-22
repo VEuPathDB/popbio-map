@@ -40,7 +40,7 @@
         "json.nl": "map",
         "rows": 0,
         "facet.threads": 2,
-        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"-sample_size_i:0\",\"has_geodata:true\",\"${bbox}\"],facet:{geo:{type:terms,field:${geo:geohash_2},limit:2000,mincount:1,sort:{count:desc},facet:{ltAvg:\"avg(geo_coords_ll_0_coordinate)\",ltMin:\"min(geo_coords_ll_0_coordinate)\",ltMax:\"max(geo_coords_ll_0_coordinate)\",lnAvg:\"avg(geo_coords_ll_1_coordinate)\",lnMin:\"min(geo_coords_ll_1_coordinate)\",lnMax:\"max(geo_coords_ll_1_coordinate)\",sumSmp:\"sum(sample_size_i)\",avgDur:\"avg(collection_duration_days_i)\",avgAbnd:\"sum(div(sample_size_i,collection_duration_days_i))\",term:{type:terms,field:${term:species_category},limit:2000,mincount:1,sort:{count:desc},facet:{sumSmp:\"sum(sample_size_i)\",test:{type:query,q:\"-sample_size_i:0\",facet:{testsum:\"sum(sample_size_i)\"}}}}}}}}"
+        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\",\"${bbox}\"],facet:{sumSmp:\"sum(sample_size_i)\",geo:{type:terms,field:${geo:geohash_2},limit:2000,mincount:1,sort:{count:desc},facet:{ltAvg:\"avg(geo_coords_ll_0_coordinate)\",ltMin:\"min(geo_coords_ll_0_coordinate)\",ltMax:\"max(geo_coords_ll_0_coordinate)\",lnAvg:\"avg(geo_coords_ll_1_coordinate)\",lnMin:\"min(geo_coords_ll_1_coordinate)\",lnMax:\"max(geo_coords_ll_1_coordinate)\",sumSmp:\"sum(sample_size_i)\",term:{type:terms,field:${term:species_category},limit:2000,mincount:1,sort:{count:desc},facet:{sumSmp:\"sum(sample_size_i)\"}}}}}}"
       }
     },
     "/abndPalette": {
