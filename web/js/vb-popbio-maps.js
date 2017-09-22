@@ -12,15 +12,8 @@ function applyParameters() {
             switch (key) {
                 case "view":
                     var view = urlParams[key];
-                    if (view === 'ir' || view === 'smpl') {
-
-                        $('#SelectView').selectpicker('val', view);
-                        viewMode = view;
-                        // $('#view-mode').val(view);
-                    } else if (view === 'abnd') {
-
-                        viewMode = view;
-                    }
+                    $('#SelectView').selectpicker('val', view);
+                    viewMode = view;
                     break;
                 case "stableID":
                     // have we passed multiple stable IDs??
@@ -1449,7 +1442,7 @@ function loadSolr(parameters) {
 
             geoTerms.forEach(function (inEl) {
                 var inKey = inEl.val;
-                var inCount = viewMode === 'abnd' ? inEl.sumSmp : InEl.count;
+                var inCount = viewMode === 'abnd' ? inEl.sumSmp : inEl.count;
 
                 if (inCount > 0) {
                     fullElStats.push({
