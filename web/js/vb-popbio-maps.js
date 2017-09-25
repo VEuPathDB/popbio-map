@@ -1594,7 +1594,7 @@ function loadSolr(parameters) {
                                         panel.data('has-graph', true);
                                         break;
                                     case "swarm-plots":
-                                        if (PopulationBiologyMap.methods.qs('view') === 'abnd') {
+                                        if (viewMode === 'abnd') {
                                             PopulationBiologyMap.methods.createProjectSelect("#swarm-plots", buildBbox(recBounds));
                                         } else {
                                           createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -1623,7 +1623,7 @@ function loadSolr(parameters) {
                                         }
                                         break;
                                     case "swarm-plots":
-					if (PopulationBiologyMap.methods.qs('view') === 'abnd') {
+					if (viewMode === 'abnd') {
                                             PopulationBiologyMap.methods.createProjectSelect("#swarm-plots", buildBbox(recBounds));
                                         } else if (!panel.data('has-graph')) {
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -1679,7 +1679,7 @@ function loadSolr(parameters) {
                                             panel.data('has-graph', true);
                                             break;
                                         case "swarm-plots":
-                                            if (PopulationBiologyMap.methods.qs('view') === 'abnd') {
+                                            if (viewMode === 'abnd') {
                                                 //var data = [{"data": [[1951, 1308], [1951, 0], [1952, 1201], [1953, 937], [1954, 1037], [1955, 1023], [1956, 959], [1957, 928], [1958, 1024], [1959, 814], [1960, 939], [1961, 1114], [1962, 1563], [1963, 948], [1964, 995], [1965, 1038], [1966, 892], [1967, 1153], [1968, 821], [1969, 930], [1969, 0]], "name": "Elkhart"}, {"data": [[1951, 1579], [1952, 1741], [1953, 1465], [1954, 1072], [1955, 1122], [1956, 1025], [1957, 1414], [1958, 1338], [1959, 1163], [1960, 1715], [1961, 1230], [1962, 1523], [1963, 1525], [1964, 1618], [1965, 1368], [1966, 1131], [1967, 1045], [1968, 1343], [1969, 1024]], "name": "South Bend"}];
                                                 PopulationBiologyMap.methods.createProjectSelect("#swarm-plots", buildBbox(recBounds));
 
