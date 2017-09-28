@@ -87,7 +87,7 @@
         "rows": 1,
         "facet": "true",
         "fl": "project_titles_txt",
-        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\",\"-sample_size_i:0\",\"${project}\"],\"facet\":{\"species\":{\"type\":\"terms\",\"limit\":-1,\"field\":\"species_category\",\"facet\":{\"collection_dates\":{\"type\":\"terms\",\"limit\":-1,\"sort\":\"index\",\"field\":\"collection_date\",\"facet\":{\"sample_size\":{\"type\":\"terms\",\"field\":\"sample_size_i\"}}}}}}}"
+        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\",\"-sample_size_i:0\",\"${project}\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":-1,\"field\":\"${term:species_category}\",\"facet\":{\"collection_dates\":{\"type\":\"terms\",\"limit\":-1,\"sort\":\"index\",\"field\":\"collection_date\",\"facet\":{\"sample_size\":{\"type\":\"terms\",\"field\":\"sample_size_i\"}}}}}}}"
       }
     },
     "/smplPalette": {
