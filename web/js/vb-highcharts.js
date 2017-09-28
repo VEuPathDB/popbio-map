@@ -76,9 +76,9 @@
                 //Construct graph with ajax call to Solr servr
                 var data = PopulationBiologyMap.data.highcharts[project_id];
                 var project_title = PopulationBiologyMap.data.project_title;
-		        var title = "<a href=/popbio/project?id=" + project_id + ">" + project_title + "</a>";
+                var title = "<a href=/popbio/project?id=" + project_id + ">" + project_title + "</a>";
                 PopulationBiologyMap.methods.createStockchart(data, title); 
-		        //Add tooltip to the title of the chart
+                //Add tooltip to the title of the chart
                 $(".highcharts-title").tooltip({placement: "bottom", title:project_title});
                 PaneSpin('swarm-plots', 'stop');
                 $('#swarm-chart-area').show()
