@@ -198,11 +198,8 @@ function bindEvents() {
                 setTimeout(function () {
                     resetPlots()
                 }, delay);
-                //Doing quick fix for now, might be better to use L.control.legend
                 $.getJSON(url, function (data) {
                     legend._populateLegend(data, glbSummarizeBy)
-                    //Moving refreshLegend out of populateLegend so that _populateLegend can be used on its own
-                    legend.refreshLegend(legend.options.palette);
                 });
                 $('#Filter-Terms').val('');
                 break;
@@ -1178,11 +1175,8 @@ function initializeSearch() {
         setTimeout(function () {
             resetPlots()
         }, delay);
-        //Doing quick fix for now, might be better to use L.control.legend
         $.getJSON(url, function (data) {
             legend._populateLegend(data, glbSummarizeBy, true)
-            //Moving refreshLegend out of populateLegend so that _populateLegend can be used on its own
-            legend.refreshLegend(legend.options.palette);
         });
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);

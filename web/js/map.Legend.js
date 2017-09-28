@@ -637,7 +637,10 @@ L.Control.MapLegend = L.Control.extend({
 
         // this is where the legend items are scored and sorted based on their frequency/abundance
         var sortedItems = this._sortHashByValue(items);
-        options.palette = this.generatePalette(sortedItems); 
+        options.palette = this.generatePalette(sortedItems);
+
+        this.refreshLegend(options.palette);
+
         // moved this here to avoid querying SOLR before the palette is done building
         filterMarkers($("#search_ac").tagsinput('items'), flyTo)
 
@@ -658,8 +661,6 @@ L.control.legend = function (url, options) {
 
     $.getJSON(url, function (data) {
         newLegend._populateLegend(data, options.summarizeBy)
-        //Moving refreshLegend out of populateLegend so that _populateLegend can be used on its own
-        newLegend.refreshLegend(newLegend.options.palette);
     });
 
     return newLegend;
