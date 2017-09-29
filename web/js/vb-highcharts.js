@@ -16,28 +16,37 @@
         PopulationBiologyMap.data.highcharts[project_id] = [];
 
         //Construct URL used to retrieve data from solr
-        var abundanceUrl = "/popbio/map/asolr/solr/vb_popbio/abndGraphdata?";
-	var project = "&project=projects_category:" + project_id;
-        //var json_facet = '&json.facet={species:{type:terms,limit:-1,field:species_category,facet:{collection_dates:{type:terms,limit:-1,sort:index,field:collection_date,facet:{sample_size:{type:terms, field:sample_size_i}}}}}}';
+        var abundanceUrl = solrPopbioUrl + viewMode + "Graphdata?";
+        var project = "&project=projects_category:" + project_id;
+        // unfortunately 'term' seems to be a misnomer.  'field' would be better!
+        var facet_term = "&term=" + mapSummarizeByToField(glbSummarizeBy).summarize;
         
-	//Get filter of the record
+	    //Get filter of the record
         var filter = PopulationBiologyMap.data.filter;
-        var queryUrl = abundanceUrl + qryUrl + project + filter; 
+        var queryUrl = abundanceUrl + qryUrl + project + facet_term + filter; 
 
         $.ajax({
             url: queryUrl,
             dataType: 'json',
             success: function(json) {
-                //Get species collection info from response
-                var species_collections_list = json.facets.species.buckets;
+                //Get species (or protocols etc) collection info from response
+                var term_collections_list = json.facets.term.buckets;
                 PopulationBiologyMap.data.project_title = json.response.docs[0].project_titles_txt;
 
-                species_collections_list.forEach(function (species_collections) {
-                    //console.log(species_collections);
+                term_collections_list.forEach(function (term_collections) {
+                    //console.log(term_collections); 
+                    //Used to hold the formatted data for a single species (or protocol, etc)  chart
+                    var marker_color = legend.options.palette[term_collections.val];
+                    var single_term_data = {
+                        "name": term_collections.val, 
+                        "marker": {
+                            "symbol": "circle"
+                        },
+                        "color": marker_color,
+                        "data": []
+                    };
 
-                    //Used to hold the formatted data for a single species chart
-                    PopulationBiologyMap.data.single_species_data = {"name": species_collections.val, "data": []};
-                    collections_info = species_collections.collection_dates.buckets;
+                    collections_info = term_collections.collection_dates.buckets;
                     collections_info.forEach(function (collection) {
                         var unix_date = new Date(collection.val).getTime();
                         sample_sizes = collection.sample_size.buckets;
@@ -50,27 +59,27 @@
                                 console.log("In sample size");
                                 console.log(sample_size.count);
                             }
-                            PopulationBiologyMap.data.single_species_data.data.push([unix_date, sample_size.val]);
+                            single_term_data.data.push([unix_date, sample_size.val]);
                         });
                         //console.log(collection);
                     });
                     //Putting project_id in local variable to not type out original
                     var project_id = PopulationBiologyMap.data.selected_project;
-                    PopulationBiologyMap.data.highcharts[project_id].push(PopulationBiologyMap.data.single_species_data);
+                    PopulationBiologyMap.data.highcharts[project_id].push(single_term_data);
                 });
             },
             error: function() {
-                 //PaneSpin('swarm-plots', 'stop');
+                //PaneSpin('swarm-plots', 'stop');
                 console.log("An error has occurred");
             },
             complete: function() {
                 //Construct graph with ajax call to Solr servr
                 var data = PopulationBiologyMap.data.highcharts[project_id];
                 var project_title = PopulationBiologyMap.data.project_title;
-		var title = "<a href=/popbio/project?id=" + project_id + ">" + project_title + "</a>";
+                var title = "<a href=/popbio/project?id=" + project_id + ">" + project_title + "</a>";
                 PopulationBiologyMap.methods.createStockchart(data, title); 
-		//Add tooltip to the title of the chart
-		$(".highcharts-title").tooltip({placement: "bottom", title:project_title});
+                //Add tooltip to the title of the chart
+                $(".highcharts-title").tooltip({placement: "bottom", title:project_title});
                 PaneSpin('swarm-plots', 'stop');
                 $('#swarm-chart-area').show()
             }
@@ -83,13 +92,6 @@
             var project_id = $("#agSelectProject").val();
             createAbundanceGraph(project_id);
         });
-    }
-
-
-    PopulationBiologyMap.methods.qs = function(key) {
-        key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
-        var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
-        return match && decodeURIComponent(match[1].replace(/\+/g, " "));
     }
 
     PopulationBiologyMap.methods.createProjectSelect = function(divid, filter) {
@@ -179,26 +181,26 @@
                 text: title
             },
             chart: {
-		type: 'scatter',
-	        zoomType: 'xy',
+                type: 'scatter',
+                //zoomType: 'xy',
                 height: "200%"
             },
-	    navigator: {
+	    /*navigator: {
                 enabled: false
-	    },
-           /* navigator: {
-                xAxis: {
+	    },*/
+            navigator: {
+                /*xAxis: {
                     labels: {
                         formatter: function () {
                             return this.value;
                         }
                     }
-                },
+                },*/
                 series: {
                     data: []
                 },
                 height: 20
-            },*/
+            },
             /*tooltip: {
                 formatter: function () {
                     var headerHTML = '<span style="font-size: 10px">Year '+ this.x;
