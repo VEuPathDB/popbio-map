@@ -2296,7 +2296,6 @@ function tableHtml(divid, results) {
                 };
 
                 row.smplAvgAbnd = row.sampleSize / row.collectionDuration;
-                [row.smplAvgAbndBgColor, row.smplAvgAbndTextColor] = legend.markerColor(Math.log10(row.smplAvgAbnd));
 
                 template = $.templates("#abndRowTemplate");
 
