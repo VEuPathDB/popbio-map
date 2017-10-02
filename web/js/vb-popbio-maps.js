@@ -239,7 +239,14 @@ function bindEvents() {
             // viewMode = $("#SelectView").val(),
             url = solrExportUrl,
             viewBox = buildBbox(map.getBounds()),
-            fieldsStr = '&fl=';
+            fieldsStr = '&fl=',
+            zeroFilter = '';
+
+        if (viewMode === 'abnd') {
+            zeroFilter = '&zeroFilter=' + ($('#checkbox-export-zeroes').is(":checked") ? '' : '-sample_size_i:0');
+        }
+
+        // console.log("zeroFilter is: "+zeroFilter+ " and mode is:"+viewMode);
 
         // clear the error area
         $('#export-error').fadeOut();
@@ -264,17 +271,17 @@ function bindEvents() {
         switch (selectedOption) {
             //download all data
             case "1":
-                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break
             // data matching search
             case "2":
-                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data visible on screen
             case "3":
-                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data for selected marker
@@ -298,7 +305,7 @@ function bindEvents() {
                         .html('');
 
                     // build the url and download the data
-                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc';
+                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                     //console.log(url);
                     this.href = url;
                 } else { // no marker is selected
@@ -1456,6 +1463,13 @@ function updateExportFields(viewMode) {
                         .data('icon', obj.icon)
                 );
         })
+    }
+
+    var checkboxDiv = $('#div-export-zeroes');
+    if (viewMode === 'abnd') {
+        checkboxDiv.show();
+    } else {
+        checkboxDiv.hide();
     }
 
     $('#select-export-fields')

@@ -930,7 +930,7 @@
         </arr>
     </requestHandler>
 
-    <requestHandler name="/abndExport" class="solr.SearchHandler">
+<!--    <requestHandler name="/abndExport" class="solr.SearchHandler">
         <lst name="defaults">
             <str name="fl">
                 exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_sample_size_i,exp_collection_duration_days_i,exp_citations_ss
@@ -939,7 +939,8 @@
         <lst name="appends">
             <str name="fq">bundle:pop_sample</str>
             <str name="fq">has_geodata:true</str>
-            <str name="fq">-sample_size_i:0</str>
+            <str name="fq">has_abundance_data_b:true</str>
+            <str name="fq">${zeroFilter:sample_size_i:1}</str>
         </lst>
         <lst name="invariants">
             <str name="rq">{!xport}</str>
@@ -951,7 +952,7 @@
             <str>query</str>
         </arr>
     </requestHandler>
-
+-->
 
 
 
