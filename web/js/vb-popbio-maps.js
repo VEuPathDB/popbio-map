@@ -239,7 +239,14 @@ function bindEvents() {
             // viewMode = $("#SelectView").val(),
             url = solrExportUrl,
             viewBox = buildBbox(map.getBounds()),
-            fieldsStr = '&fl=';
+            fieldsStr = '&fl=',
+            zeroFilter = '';
+
+        if (viewMode === 'abnd') {
+            zeroFilter = '&zeroFilter=' + ($('#checkbox-export-zeroes').is(":checked") ? '' : '-sample_size_i:0');
+        }
+
+        // console.log("zeroFilter is: "+zeroFilter+ " and mode is:"+viewMode);
 
         // clear the error area
         $('#export-error').fadeOut();
@@ -249,7 +256,7 @@ function bindEvents() {
 
         if ($('#select-export-fields').val()) {
             fieldsStr += $('#select-export-fields').val().join();
-
+            fieldsStr += ',exp_citations_ss'; // mandatory citations field
         } else {
             // no marker is selected
             // inform the user that there are no selected markers
@@ -264,17 +271,17 @@ function bindEvents() {
         switch (selectedOption) {
             //download all data
             case "1":
-                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break
             // data matching search
             case "2":
-                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data visible on screen
             case "3":
-                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data for selected marker
@@ -298,7 +305,7 @@ function bindEvents() {
                         .html('');
 
                     // build the url and download the data
-                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc';
+                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                     //console.log(url);
                     this.href = url;
                 } else { // no marker is selected
@@ -1190,11 +1197,13 @@ function initializeSearch() {
  Given the view mode update the fields selection dropdown
  **/
 
+// these fields do not contain the obligatory Citations field
+// which is always appended
 function updateExportFields(viewMode) {
     var smplFields = [
         {
-            value: 'exp_accession_s',
-            label: 'Accession',
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
             icon: mapTypeToIcon('Stable ID')
         },
         {
@@ -1216,6 +1225,11 @@ function updateExportFields(viewMode) {
             value: 'exp_label_s',
             label: 'Label',
             icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Stable ID')
         },
         {
             value: 'exp_collection_date_range_ss',
@@ -1251,8 +1265,13 @@ function updateExportFields(viewMode) {
     ];
     var irFields = [
         {
-            value: 'exp_accession_s',
-            label: 'Accession',
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Stable ID')
+        },
+        {
+            value: 'exp_assay_id_s',
+            label: 'Assay ID',
             icon: mapTypeToIcon('Stable ID')
         },
         {
@@ -1274,6 +1293,11 @@ function updateExportFields(viewMode) {
             value: 'exp_label_s',
             label: 'Label',
             icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Stable ID')
         },
         {
             value: 'exp_collection_date_range_ss',
@@ -1333,13 +1357,87 @@ function updateExportFields(viewMode) {
             subtext: 'value, unit, type',
             icon: mapTypeToIcon('Phenotype')
         }
-
-    ]
+    ];
+    var abndFields = [
+        {
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Stable ID')
+        },
+        {
+            value: 'exp_bundle_name_s',
+            label: 'Record type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_species_s',
+            label: 'Species',
+            icon: mapTypeToIcon('Taxonomy')
+        },
+        {
+            value: 'exp_sample_type_s',
+            label: 'Sample type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_label_s',
+            label: 'Label',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Stable ID')
+        },
+        {
+            value: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            icon: mapTypeToIcon('Date')
+        },
+        {
+            value: 'exp_collection_protocols_ss',
+            label: 'Collection protocols',
+            icon: mapTypeToIcon('Collection protocols')
+        },
+        {
+            value: 'exp_projects_ss',
+            label: 'Projects',
+            icon: mapTypeToIcon('Projects')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
+        },
+        {
+            value: 'exp_geolocations_ss',
+            label: 'Locations',
+            icon: mapTypeToIcon('Location')
+        },
+        {
+            value: 'exp_protocols_ss',
+            label: 'Protocols',
+            icon: mapTypeToIcon('Protocols')
+        },
+        {
+            value: 'exp_sample_size_i',
+            label: 'Specimens collected',
+            icon: mapTypeToIcon('Count')
+        },
+        {
+            value: 'exp_collection_duration_days_i',
+            label: 'Collection duration (days)',
+            icon: mapTypeToIcon('Duration')
+        }
+    ];
 
     // empty the dropdown
     $('#select-export-fields').empty();
 
     if (viewMode === 'ir') {
+        // IR fields have grouped fields, with subtext, e.g.
+        // text: Concentration
+        // subtext: value, unit
         $.each(irFields, function (index, obj) {
             $('#select-export-fields')
                 .append(
@@ -1352,7 +1450,11 @@ function updateExportFields(viewMode) {
         })
 
     } else {
-        $.each(smplFields, function (index, obj) {
+        // Other view modes have only simple fields:
+        // (but we can probably consolidate these as obj.subtext above is often empty anyway)
+        var simpleFields = smplFields;
+        if (viewMode === 'abnd') simpleFields = abndFields;
+        $.each(simpleFields, function (index, obj) {
             $('#select-export-fields')
                 .append(
                     $("<option></option>")
@@ -1361,6 +1463,13 @@ function updateExportFields(viewMode) {
                         .data('icon', obj.icon)
                 );
         })
+    }
+
+    var checkboxDiv = $('#div-export-zeroes');
+    if (viewMode === 'abnd') {
+        checkboxDiv.show();
+    } else {
+        checkboxDiv.hide();
     }
 
     $('#select-export-fields')
@@ -2726,6 +2835,8 @@ function mapTypeToIcon(type) {
             return 'fa-clock-o';
         case 'Phenotype':
             return 'fa-eye';
+        case 'Count':
+            return 'fa-hashtag';
         default :
             return 'fa-search';
 
