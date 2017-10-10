@@ -178,21 +178,4 @@
     $(document).ready(function () {
         PopulationBiologyMap.extra.init();
     });
-    
-    $(window).load(function (){
-         //Selecting the marker that was selected if passed as parameter
-        if (urlParams.hasOwnProperty('marker_coord')) {
-            var marker_coord = urlParams['marker_coord'];
-            var marker_bounds = L.latLngBounds(marker_coord);
-            assetLayerGroup.eachLayer(function(marker) {
-                if (marker instanceof L.Marker) {
-                    if (marker_bounds.contains(marker.getLatLng())) {
-                        highlightMarker(marker);
-                        marker.fireEvent('click');
-                    } 
-                }
-            });
-        } 
-    });
-
 })(window.PopulationBiologyMap = window.PopulationBiologyMap || {}, jQuery);
