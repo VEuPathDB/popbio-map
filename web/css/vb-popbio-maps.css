@@ -603,3 +603,21 @@ div.error div, div.warning div, div.info div, div.hint div {
     -moz-animation-duration:0.3s;
     animation-duration:0.3s;
 }
+
+
+/* VB-6377 new additions for Bootstrap tooltip*/
+.detailedTip {
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    /*border-bottom: 1px dotted;*/
+}
+
+/* Decoration of tooptip, if necessary */
+/*.detailedTip + .tooltip > .tooltip-inner {
+    background-color: #73AD21;
+    color: #FFFFFF;
+    border: 1px solid green;
+    padding: 10px;
+    font-size: 12px;
+}*/
