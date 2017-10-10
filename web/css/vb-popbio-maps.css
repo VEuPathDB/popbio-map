@@ -610,6 +610,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
+    line-height: 17px;
     /*border-bottom: 1px dotted;*/
 }
 

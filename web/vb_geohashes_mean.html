@@ -886,6 +886,21 @@
 </div>
 
 
+<!-- VB-6377 Bootstrap tooltip -->
+<script language="JavaScript">
+ $(document).on('mouseenter', ".detailedTip", function () {
+     var $this = $(this);
+     if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+         $this.tooltip({
+             title: $this.text(),
+             placement: "bottom"
+         });
+         $this.tooltip('show');
+     }
+ });
+</script>
+
+
 <!-- jsrender template for sample info in the table slider (samples view)-->
 
 <script type="text/x-jsrender" id="smplRowTemplate">
