@@ -1,109 +1,3 @@
-function applyParameters() {
-    // parse the URL parameters and update views and search terms
-    var hasParameters = false;
-    if (typeof urlParams.view === 'undefined' || urlParams.view === null) {
-
-        $('#SelectView').selectpicker('val', 'smpl');
-        // $('#view-mode').val('smpl');
-    }
-
-    for (var key in urlParams) {
-        if (urlParams.hasOwnProperty(key)) {
-            switch (key) {
-                case "view":
-                    var view = urlParams[key];
-                    $('#SelectView').selectpicker('val', view);
-                    viewMode = view;
-                    break;
-                case "stableID":
-                    // have we passed multiple stable IDs??
-                    var param = urlParams[key];
-                    if (Array.isArray(param)) {
-                        param.forEach(function (element) {
-                            $('#search_ac').tagsinput('add', {
-                                value: element,
-                                activeTerm: true,
-                                type: 'Stable ID',
-                                field: mapTypeToField('Stable ID'),
-                                qtype: 'exact'
-
-                            });
-                        })
-                    } else {
-                        $('#search_ac').tagsinput('add', {
-                            value: urlParams[key],
-                            activeTerm: true,
-                            type: 'Stable ID',
-                            field: mapTypeToField('Stable ID'),
-                            qtype: 'exact'
-
-                        });
-                    }
-                    break;
-                case "projectID":
-                    // have we passed multiple project IDs??
-                    var param = urlParams[key];
-                    if (Array.isArray(param)) {
-                        param.forEach(function (element) {
-                            $('#search_ac').tagsinput('add', {
-                                value: element,
-                                activeTerm: true,
-                                type: 'Projects',
-                                field: mapTypeToField('Projects'),
-                                qtype: 'exact'
-
-                            });
-                        })
-                    } else {
-
-                        $('#search_ac').tagsinput('add', {
-                            value: urlParams[key],
-                            activeTerm: true,
-                            type: 'Projects',
-                            field: mapTypeToField('Projects'),
-                            qtype: 'exact'
-
-                        });
-                    }
-
-                    break;
-                case "species":
-                    var param = urlParams[key];
-                    if (Array.isArray(param)) {
-                        param.forEach(function (element) {
-                            $('#search_ac').tagsinput('add', {
-                                value: element,
-                                activeTerm: true,
-                                type: 'Taxonomy',
-                                field: mapTypeToField('Taxonomy'),
-                                qtype: 'exact'
-
-                            });
-                        })
-                    } else {
-                        $('#search_ac').tagsinput('add', {
-                            value: urlParams[key],
-                            activeTerm: true,
-                            type: 'Taxonomy',
-                            field: mapTypeToField('Taxonomy'),
-                            qtype: 'exact'
-
-                        });
-                    }
-                    break;
-                default :
-                    break;
-            }
-        }
-    }
-
-    // update the export fields dropdown
-    updateExportFields(viewMode);
-
-    return hasParameters;
-}
-
-
 function bindEvents() {
     "use strict"
 
@@ -573,6 +467,9 @@ function bindEvents() {
         .on("jsonLoaded", function () {
             if (highlightedId) {
                 var marker = $('#' + highlightedId);
+                //In order to avoid changing the click event code, unsetting highlightedID
+                highlightedId = false
+
                 if (marker.length > 0) {
                     $(marker).trigger("click");
                     highlightMarker(marker);
@@ -584,8 +481,6 @@ function bindEvents() {
                 }
                 highlightedId = false;
             }
-
-
         });
 
 
@@ -855,12 +750,33 @@ function initializeMap(parameters) {
     // new MapQuest way of adding layers
     var mapQuestLayers = MQ.mapLayer();
     var flyTo = parameters.flyTo;
+
+    //Getting zoom level and center point to initialize the map
+    var zoomLevel = PopulationBiologyMap.data.zoomLevel;
+    var center = PopulationBiologyMap.data.center
+    var maxZoom = 15;
+
+    //Check if zoomLevel was sent as parameter
+    if (zoomLevel == undefined) {
+        zoomLevel = 3;
+    }
+
+    //Check if center was sent as parameter
+    if (center == undefined) {
+        center = [23.079, 3.515];
+    }
+
+    //Set the maximum zoom level depending on view
+    if (viewMode == "abnd") {
+        maxZoom = 11;
+    }
+
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
-        center: [23.079, 3.515],
+        center: center,
         minZoom: 1,
-        maxZoom: 15,
-        zoom: 3,
+        maxZoom: maxZoom,
+        zoom: zoomLevel,
         zoomControl: false,
         zoomAnimationThreshold: 16,
         worldCopyJump: true  //  the map tracks when you pan to another "copy" of the world and seamlessly jumps to the
@@ -1167,6 +1083,13 @@ function initializeSearch() {
         if (viewMode !== "ir") {
             // $('#SelectView').val('smpl');
             if (glbSummarizeBy === "Insecticide") glbSummarizeBy = "Species";
+        }
+
+        //Change the maximum zoom level depending on view
+        if (viewMode == 'abnd') {
+            map.options.maxZoom(11);
+        } else {
+            map.options.maxZoom(15);
         }
 
         // update the export fields dropdown
@@ -1679,7 +1602,8 @@ function loadSolr(parameters) {
                     map.fitBounds(record.bounds, {padding: [100, 50]});
                 })
                     .on("click", function (marker) {
-                        if (marker.originalEvent.ctrlKey) {
+                        //Checking if originalEvent is undefined so we can fire the click event and not cause and error
+                        if (marker.originalEvent != undefined && marker.originalEvent.ctrlKey) {
                             if (marker.target instanceof L.Marker) {
                                 markers.toggleMarker(marker.target, assetLayerGroup)
                                 if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
@@ -2624,10 +2548,7 @@ function filterMarkers(items, flyTo) {
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
-
-
     loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo})
-
 }
 
 function borderColor(type, element) {
