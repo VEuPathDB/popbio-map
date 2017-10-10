@@ -523,9 +523,7 @@
                             <label><input id="checkbox-export-zeroes" type="checkbox" value="1">Include zero count samples</label>
                         </div>
                         <div style="margin-top: 20px;">
-                            <!-- VB-6938 add Bootstrap modal -->
-                            <!-- <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i> -->
-                            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#DownloadModal"><i class="fa fa-floppy-o"></i>
+                            <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
                                 Download
                             </a></div>
                     </div>
@@ -853,37 +851,6 @@
 <div id="plotTooltip" class="tooltip" style="opacity: 0;"></div>
 <div id="beeswarmPointTooltip" class="tooltip-bs" style="opacity: 0;"></div>
 <div id="vbEntityTooltip" class="tooltip-bs"></div>
-
-
-<!-- VB-6938 Create file download popup using Bootstrap Modal -->
-<div id="DownloadModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Citation</h4>
-            </div>
-            <div class="modal-body" style="font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.7; color: inherit;">
-                Do your part to encourage further data sharing!<br><br>
-                The data you are downloading was generated using the resources of others. Please do your part to ensure future data deposition - and give credit where credit is due - by citing the work appropriately. <br><br>
-                Citation information for each record can be found in the downloaded file.<br><br>
-                We also encourage users to support VectorBase’s data collation and open data efforts. Please see <a href="https://www.vectorbase.org/faqs/how-cite-vectorbase" target="windows"><font style="color:#BD4646;font-weight:bold">here</font></a> for information on how to acknowledge VectorBase. <br>
-
-               <div style="margin-top: 30px;">
-                   <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
-                                    Download
-                   </a>
-               </div>
-
-            </div>
-<!--      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
--->
-        </div>
-    </div>
-</div>
-
 
 <!-- jsrender template for sample info in the table slider (samples view)-->
 

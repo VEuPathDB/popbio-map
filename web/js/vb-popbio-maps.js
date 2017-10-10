@@ -1602,8 +1602,7 @@ function loadSolr(parameters) {
                     map.fitBounds(record.bounds, {padding: [100, 50]});
                 })
                     .on("click", function (marker) {
-                        //Checking if originalEvent is undefined so we can fire the click event and not cause and error
-                        if (marker.originalEvent != undefined && marker.originalEvent.ctrlKey) {
+                        if (marker.originalEvent.ctrlKey) {
                             if (marker.target instanceof L.Marker) {
                                 markers.toggleMarker(marker.target, assetLayerGroup)
                                 if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
