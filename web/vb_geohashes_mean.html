@@ -98,8 +98,7 @@
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
     <script type="text/javascript" src="js/vb-highcharts.js"></script>
-
-
+    <script type="text/javascript" src="js/vb-popbio-maps-extra.js"></script>
 </head>
 
 
@@ -852,8 +851,6 @@
 <div id="plotTooltip" class="tooltip" style="opacity: 0;"></div>
 <div id="beeswarmPointTooltip" class="tooltip-bs" style="opacity: 0;"></div>
 <div id="vbEntityTooltip" class="tooltip-bs"></div>
-
-
 
 <!-- jsrender template for sample info in the table slider (samples view)-->
 
@@ -1894,8 +1891,7 @@
             }
         }
 
-
-        initializeMap({flyTo: applyParameters()});
+        initializeMap({flyTo: PopulationBiologyMap.methods.applyParameters()});
 
 //        if (applyParameters()) {
 //            initializeMap({flyTo: true});
