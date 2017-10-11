@@ -855,48 +855,6 @@
 <div id="vbEntityTooltip" class="tooltip-bs"></div>
 
 
-<!-- VB-6938 Create file download popup using Bootstrap Modal -->
-<div id="DownloadModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><b>Data reuse policy</b></h4>
-            </div>
-            <div class="modal-body" style="font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.7; color: inherit;">
-                It is important for crediting data publishers and for the reputation of the data users to cite data correctly. Citation information for each record can be found in the downloaded file.<br><br>
-                We also encourage users to support VectorBase’s data collation and open data efforts. Please see <a href="https://www.vectorbase.org/faqs/how-cite-vectorbase" target="windows"><font style="color:#BD4646;font-weight:bold">here</font></a> for information on how to acknowledge VectorBase. <br>
-               <div style="margin-top: 30px;">
-                   <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
-                                    Download
-                   </a>
-               </div>
-
-            </div>
-<!--      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
--->
-        </div>
-    </div>
-</div>
-
-
-<!-- VB-6377 Bootstrap tooltip -->
-<script language="JavaScript">
- $(document).on('mouseenter', ".detailedTip", function () {
-     var $this = $(this);
-     if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
-         $this.tooltip({
-             title: $this.text(),
-             placement: "bottom"
-         });
-         $this.tooltip('show');
-     }
- });
-</script>
-
-
 <!-- jsrender template for sample info in the table slider (samples view)-->
 
 <script type="text/x-jsrender" id="smplRowTemplate">
