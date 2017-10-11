@@ -448,18 +448,32 @@ L.Control.MapLegend = L.Control.extend({
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
             if (cntLegend === options.numberOfColors + 1) break;
 
+            // VB-6377 use full name, but ellipsis supporting tooltip
+            // if (options.summarizeBy === 'Species') {
+            //     var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An.
+            //                                                                     // gambiae
+
+            //     inHtml += '<span class="active-legend" type="' + type + '" value="' + obj1 + '"> ' +
+            //         '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + abbrSpecies.capitalizeFirstLetter() + '</em><br>' : '+');
+            // } else {
+            //     inHtml += '<span class="active-legend" type="' + type + '" value="' + obj1 + '"> ' +
+            //         '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
+
+            // }
+            // inHtml += '</span>';
+
             if (options.summarizeBy === 'Species') {
-                var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An.
+                // var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An.
                                                                                 // gambiae
 
-                inHtml += '<span class="active-legend" type="' + type + '" value="' + obj1 + '"> ' +
-                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + abbrSpecies.capitalizeFirstLetter() + '</em><br>' : '+');
+                inHtml += '<div class="active-legend detailedTip" type="' + type + '" value="' + obj1 + '"> ' +
+                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + obj1.capitalizeFirstLetter() + '</em><br>' : '+');
             } else {
-                inHtml += '<span class="active-legend" type="' + type + '" value="' + obj1 + '"> ' +
+                inHtml += '<div class="active-legend detailedTip" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
 
             }
-            inHtml += '</span>';
+            inHtml += '</div>';
 
             cntLegend++; // update the counter of legend entries
         }
@@ -467,7 +481,8 @@ L.Control.MapLegend = L.Control.extend({
         if (numOfItems > options.numberOfColors) {
 
             var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")";
-            inHtml += '<span class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></span>';
+            // inHtml += '<span class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></span>';
+            inHtml += '<div class="active-others detailedTip" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></div>';
         }
 
         // add Unknown
