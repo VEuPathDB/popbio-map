@@ -98,8 +98,7 @@
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
     <script type="text/javascript" src="js/vb-highcharts.js"></script>
-
-
+    <script type="text/javascript" src="js/vb-popbio-maps-extra.js"></script>
 </head>
 
 
@@ -862,14 +861,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Citation</h4>
+                <h4 class="modal-title"><b>Data reuse policy</b></h4>
             </div>
             <div class="modal-body" style="font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.7; color: inherit;">
-                Do your part to encourage further data sharing!<br><br>
-                The data you are downloading was generated using the resources of others. Please do your part to ensure future data deposition - and give credit where credit is due - by citing the work appropriately. <br><br>
-                Citation information for each record can be found in the downloaded file.<br><br>
+                It is important for crediting data publishers and for the reputation of the data users to cite data correctly. Citation information for each record can be found in the downloaded file.<br><br>
                 We also encourage users to support VectorBase’s data collation and open data efforts. Please see <a href="https://www.vectorbase.org/faqs/how-cite-vectorbase" target="windows"><font style="color:#BD4646;font-weight:bold">here</font></a> for information on how to acknowledge VectorBase. <br>
-
                <div style="margin-top: 30px;">
                    <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
                                     Download
@@ -1940,8 +1936,7 @@
             }
         }
 
-
-        initializeMap({flyTo: applyParameters()});
+        initializeMap({flyTo: PopulationBiologyMap.methods.applyParameters()});
 
 //        if (applyParameters()) {
 //            initializeMap({flyTo: true});
