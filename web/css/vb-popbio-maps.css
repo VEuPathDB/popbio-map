@@ -97,6 +97,7 @@ BODY {
     border-radius : 0 !important;
     min-width     : 170px;
     min-height    : 300px;
+    max-width     : 225px;
 }
 .legend i, #Other-Terms-List i, #table-legend-controls i {
     width         : 14px;
