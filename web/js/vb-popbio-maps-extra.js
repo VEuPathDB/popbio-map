@@ -158,7 +158,7 @@
                         $('[id="#' + panelId + '"]').parent().addClass("active");
                         $("#" + panelId).addClass("active");
                         break;
-                    default :
+                    default:
                         break;
                 }
             }
@@ -169,10 +169,90 @@
         return hasParameters;
     }
 
+    //Private function to map the field types to the URL query parameters that we accept
+    function mapTypeToURLParam(type) {
+        switch (type) {
+            case "Projects":
+                return "projectID";
+            case "Anywhere":
+                return "text";
+            case "Collection protocols":
+                return "collection_protocol";
+            case "Taxonomy":
+                return "species";
+            default:
+                break;
+        }
+    }
 
     //Tasks that need to be done or events defined  when the page loads
     PopulationBiologyMap.extra.init = function() {
+        new Clipboard('#generate-link');
         //PopulationBiologyMap.methods.applyParameters();
+        $("#generate-link").click(function () {
+            var view_param = "view=" + viewMode;
+            var zoom_param = "&zoom_level=" + map.getZoom();
+            var center = map.getCenter();
+            var center_param = "&center=" + center.lat.toString() + "," + center.lng.toString();
+            var highlighted_id = $(".highlight-marker").attr("id");
+            var marker_param = '';
+            var panel_param = "";
+            var url = window.location.origin + window.location.pathname + "?";
+            var search_items = $('#search_ac').tagsinput('items');
+            //Using an object to store search terms that will be used to generate link
+            var search_terms = {};
+            var query_parameters = '';
+
+            //Retrieve all the terms that were entered in the search box and organize them by type
+            search_items.forEach(function(search_item) {
+                console.log(search_item);
+                if (search_terms[search_item.type] == undefined) {
+                    search_terms[search_item.type] = [];
+                }
+
+                search_terms[search_item.type].push(search_item.value);
+            });
+
+            //Go through the search terms and add them to the correct query parameter
+            $.each(search_terms, function(index, values) {
+                if (values.length > 1) {
+                    values.forEach(function(value) {
+                        query_parameters = query_parameters + mapTypeToURLParam(index) + "[]=" + value + "&";
+                    });
+                } else {
+                    query_parameters = query_parameters + mapTypeToURLParam(index) + "=" + values[0] + "&";
+                }
+            });
+
+            //Set the selected marker and panel that was being viewed
+            if (highlighted_id != undefined) {
+                marker_param = "&markerID=" + highlighted_id;
+                panel_param = "&panelID=" + $(".sidebar-pane.active").attr("id");
+            }
+
+            query_parameters = query_parameters + view_param + zoom_param + center_param + marker_param + panel_param;
+
+            url = url + query_parameters;
+
+            //Add URL to attribute used to copy to clipboard
+            $("#generate-link").attr("data-clipboard-text", url);
+            $("#generate-link-msg").show();
+        });
+        
+        $("#generate-link").mousemove(function (){
+            $("#generate-link-msg").fadeOut();
+        });
+
+        $(document).on('mouseenter', ".detailedTip", function () {
+            var $this = $(this);
+            if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+                $this.tooltip({
+                    title: $this.text(),
+                    placement: "bottom"
+                });
+                $this.tooltip('show');
+            }
+        });
     }
 
     $(document).ready(function () {

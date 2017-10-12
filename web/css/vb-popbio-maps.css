@@ -97,7 +97,7 @@ BODY {
     border-radius : 0 !important;
     min-width     : 170px;
     min-height    : 300px;
-    max-width     : 225px;
+    max-width     : 230px;
 }
 .legend i, #Other-Terms-List i, #table-legend-controls i {
     width         : 14px;
@@ -605,7 +605,6 @@ div.error div, div.warning div, div.info div, div.hint div {
     animation-duration:0.3s;
 }
 
-
 /* VB-6377 new additions for Bootstrap tooltip*/
 .detailedTip {
     overflow:hidden;
@@ -615,7 +614,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     /*border-bottom: 1px dotted;*/
 }
 
-/* Decoration of tooptip, if necessary */
+/* Decoration of tooltip, if necessary */
 /*.detailedTip + .tooltip > .tooltip-inner {
     background-color: #73AD21;
     color: #FFFFFF;
@@ -623,3 +622,12 @@ div.error div, div.warning div, div.info div, div.hint div {
     padding: 10px;
     font-size: 12px;
 }*/
+
+#generate-link-msg {
+    position: absolute;
+    top: 30px;
+    width: 350px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: none;
+}

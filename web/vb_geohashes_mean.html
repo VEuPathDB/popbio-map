@@ -91,6 +91,7 @@
     <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
     <script type="text/javascript" src="libs/jsrender/jsrender.js"></script>
     <script type="text/javascript" src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js"></script>
+    <script type="text/javascript" src="libs/clipboard.js/dist/clipboard.js"></script>
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
     <script type="text/javascript" src="js/map.popbioMarkers.js"></script>
     <script type="text/javascript" src="js/map.multipleMarkers.js"></script>
@@ -691,6 +692,15 @@
                     <input id="world-toggle" type="checkbox" data-toggle="toggle"
                            data-on="<i class='fa fa-globe'></i> Local suggestions"
                            data-off="<i class='fa fa-globe'></i> Global suggestions">
+                    <span class="btn-group" role="group">
+                        <button type="button" id="generate-link" class="btn btn-primary" title="Share view">
+                            <i class="fa fa-link"></i> Share view
+                        </button>
+                        <!--Message that will appear when clicking on the button-->
+                        <div id="generate-link-msg" class="alert alert-success" role="alert">
+                            The link has been generated and copied to your clipboard!
+                        </div>
+                    </span>
 
 
                 </div>
@@ -879,20 +889,6 @@
         </div>
     </div>
 </div>
-
-<!-- VB-6377 Bootstrap tooltip -->
-<script language="JavaScript">
- $(document).on('mouseenter', ".detailedTip", function () {
-     var $this = $(this);
-     if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
-         $this.tooltip({
-             title: $this.text(),
-             placement: "bottom"
-         });
-         $this.tooltip('show');
-     }
- });
-</script>
 
 <!-- jsrender template for sample info in the table slider (samples view)-->
 
