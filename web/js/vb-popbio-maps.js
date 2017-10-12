@@ -1087,9 +1087,9 @@ function initializeSearch() {
 
         //Change the maximum zoom level depending on view
         if (viewMode == 'abnd') {
-            map.options.maxZoom(11);
+            map.options.maxZoom = 11;
         } else {
-            map.options.maxZoom(15);
+            map.options.maxZoom = 15;
         }
 
         // update the export fields dropdown
