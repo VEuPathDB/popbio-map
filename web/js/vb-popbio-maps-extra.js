@@ -205,7 +205,6 @@
 
             //Retrieve all the terms that were entered in the search box and organize them by type
             search_items.forEach(function(search_item) {
-                console.log(search_item);
                 if (search_terms[search_item.type] == undefined) {
                     search_terms[search_item.type] = [];
                 }
