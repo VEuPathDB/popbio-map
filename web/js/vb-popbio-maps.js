@@ -1518,11 +1518,8 @@ function loadSolr(parameters) {
             }
             arr.latLng = [el.ltAvg, el.lnAvg];
             arr.bounds = [[el.ltMin, el.lnMin], [el.ltMax, el.lnMax]];
-            if (el.ltMin === el.ltMax && el.lnMin === el.lnMax) {
-                arr.atomic = true
-            } else {
-                arr.atomic = false
-            }
+            arr.atomic = el.atomicCount === 1;
+
             if (viewMode === 'ir') {
                 arr.trafficlight = el.irAvg;
             } else {
@@ -1907,6 +1904,7 @@ function loadSolr(parameters) {
     var qryParams = {
         bbox: buildBbox(map.getBounds()).replace(/&fq=/, ''),
         geo: geoLevel,
+        geomax: geohashLevel(map.options.maxZoom, "geohash"),
         term: mapSummarizeByToField(glbSummarizeBy).summarize
     };
     var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
