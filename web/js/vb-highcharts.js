@@ -97,8 +97,8 @@
     PopulationBiologyMap.methods.createProjectSelect = function(divid, filter) {
 	$('#swarm-plots h3').text('Population Abundance');
         //How the URL will be constructed
-        //var abundanceUrl = solrPopbioUrl + 'abndProjects?&
-        var abundanceUrl = "/popbio/map/asolr/solr/vb_popbio/abndProjects?";
+        var abundanceUrl = solrPopbioUrl + 'abndProjects?';
+        // var abundanceUrl = "/popbio/map/asolr/solr/vb_popbio/abndProjects?";
         var queryUrl = abundanceUrl + qryUrl + filter;
 
         PopulationBiologyMap.data.filter = filter;
