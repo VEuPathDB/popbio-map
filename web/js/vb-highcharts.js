@@ -50,15 +50,15 @@
                     collections_info.forEach(function (collection) {
                         var unix_date = new Date(collection.val).getTime();
                         sample_sizes = collection.sample_size.buckets;
-                        if (collection.count > 1) {
+                        /*if (collection.count > 1) {
                             console.log("In collection");
                             console.log(collection.count);
-                        }
+                        }*/
                         sample_sizes.forEach(function (sample_size) {
-                            if (sample_size.count > 1) {
+                            /*if (sample_size.count > 1) {
                                 console.log("In sample size");
                                 console.log(sample_size.count);
-                            }
+                            }*/
                             single_term_data.data.push([unix_date, sample_size.val]);
                         });
                         //console.log(collection);
