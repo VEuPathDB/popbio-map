@@ -631,3 +631,13 @@ div.error div, div.warning div, div.info div, div.hint div {
     padding-bottom: 5px;
     display: none;
 }
+
+.highcharts-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
+}
+
+#projects-notice {
+    display: none;
+}

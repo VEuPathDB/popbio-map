@@ -71,7 +71,7 @@
         "facet.field": "projects_category",
         "facet.mincount": "1",
         "facet": "true",
-        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\",\"-sample_size_i:0\"]}"
+        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\"]}"
       }
     },
     "/abndGraphdata": {
