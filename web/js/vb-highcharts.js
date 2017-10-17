@@ -164,7 +164,8 @@
                 enabled: false
 	    },
             legend: {
-                enabled: true
+                enabled: true,
+                labelFormat: "<i>{name}</i>"
             },
             title: {
                 useHTML: true,

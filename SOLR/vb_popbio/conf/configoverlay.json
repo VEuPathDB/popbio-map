@@ -11,7 +11,7 @@
         "wt": "json",
         "json.nl": "map",
         "rows": 0,
-        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_geodata:true\",\"-sample_size_i:0\",\"${bbox}\"],\"facet\":{\"geo\":{\"type\":\"terms\",\"field\":\"${geo:geohash_2}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"},\"facet\":{\"ltAvg\":\"avg(geo_coords_ll_0_coordinate)\",\"ltMin\":\"min(geo_coords_ll_0_coordinate)\",\"ltMax\":\"max(geo_coords_ll_0_coordinate)\",\"lnAvg\":\"avg(geo_coords_ll_1_coordinate)\",\"lnMin\":\"min(geo_coords_ll_1_coordinate)\",\"lnMax\":\"max(geo_coords_ll_1_coordinate)\",atomicCount:\"unique(${geomax:geohash_7})\",\"term\":{\"type\":\"terms\",\"field\":\"${term:species_category}\",\"limit\":2000,\"mincount\":1}}}}}"
+        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_geodata:true\",\"-sample_size_i:0\",\"${bbox}\",\"-projects:VBP0000194\"],\"facet\":{\"geo\":{\"type\":\"terms\",\"field\":\"${geo:geohash_2}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"},\"facet\":{\"ltAvg\":\"avg(geo_coords_ll_0_coordinate)\",\"ltMin\":\"min(geo_coords_ll_0_coordinate)\",\"ltMax\":\"max(geo_coords_ll_0_coordinate)\",\"lnAvg\":\"avg(geo_coords_ll_1_coordinate)\",\"lnMin\":\"min(geo_coords_ll_1_coordinate)\",\"lnMax\":\"max(geo_coords_ll_1_coordinate)\",atomicCount:\"unique(${geomax:geohash_7})\",\"term\":{\"type\":\"terms\",\"field\":\"${term:species_category}\",\"limit\":2000,\"mincount\":1}}}}}"
       }
     },
     "/irGeoclust": {
@@ -101,7 +101,7 @@
         "wt": "json",
         "json.nl": "map",
         "rows": 0,
-        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_geodata:true\",\"-sample_size_i:0\"],\"facet\":{\"geo\":{\"type\":\"terms\",\"field\":\"${geo:geohash_2}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"},\"facet\":{\"terms\":{\"type\":\"terms\",\"field\":\"${term:species_category}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"}}}}}}"
+        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_geodata:true\",\"-sample_size_i:0\",\"-projects:VBP0000194\"],\"facet\":{\"geo\":{\"type\":\"terms\",\"field\":\"${geo:geohash_2}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"},\"facet\":{\"terms\":{\"type\":\"terms\",\"field\":\"${term:species_category}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"}}}}}}"
       }
     },
     "/irPalette": {
