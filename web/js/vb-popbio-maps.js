@@ -768,7 +768,11 @@ function initializeMap(parameters) {
 
     //Set the maximum zoom level depending on view
     if (viewMode == "abnd") {
-        maxZoom = 11;
+        maxZoom = 12;
+        // Cover case where user might pass a higher zoom level in abnd view
+        if (zoomLevel > 12) {
+            zoomLevel = 12;
+        }
     }
 
     // create a map in the "map" div, set the view to a given place and zoom
@@ -801,7 +805,7 @@ function initializeMap(parameters) {
     
     var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         minZoom: 2,
-        maxZoom: 15,
+        maxZoom: maxZoom,
         noWrap: 0,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -1087,7 +1091,11 @@ function initializeSearch() {
 
         //Change the maximum zoom level depending on view
         if (viewMode == 'abnd') {
-            map.options.maxZoom = 11;
+            map.options.maxZoom = 12;
+            // Covering case where a user might be in a different view zoomed in all the way
+            if (map.getZoom() > 12) {
+                map.setZoom(12);
+            }
         } else {
             map.options.maxZoom = 15;
         }
