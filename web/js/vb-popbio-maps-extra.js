@@ -32,16 +32,16 @@
                         $('#SelectView').selectpicker('val', view);
                         viewMode = view;
                         break;
-                    case "stableID":
-                        // have we passed multiple stable IDs??
+                    case "collectionID":
+                        // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
                                 $('#search_ac').tagsinput('add', {
                                     value: element,
                                     activeTerm: true,
-                                    type: 'Stable ID',
-                                    field: mapTypeToField('Stable ID'),
+                                    type: 'Collection ID',
+                                    field: mapTypeToField('Collection ID'),
                                     qtype: 'exact'
                                 });
                             })
@@ -49,8 +49,8 @@
                             $('#search_ac').tagsinput('add', {
                                 value: urlParams[key],
                                 activeTerm: true,
-                                type: 'Stable ID',
-                                field: mapTypeToField('Stable ID'),
+                                type: 'Collection ID',
+                                field: mapTypeToField('Collection ID'),
                                 qtype: 'exact'
                             });
                         }

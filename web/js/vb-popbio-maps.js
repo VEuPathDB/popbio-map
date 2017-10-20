@@ -2598,8 +2598,8 @@ function mapTypeToField(type) {
             return "collection_protocols_cvterms";
         case "Protocols":
             return "protocols_cvterms";
-        case "Stable ID":
-            return "accession";
+        case "Collection ID":
+            return "collection_assay_id_s";
         case "Insecticides":
             return "insecticide_cvterms";
         case "Collection date":
@@ -2691,7 +2691,7 @@ function mapTypeToLabel(type) {
             return 'label label-info'
         case 'Norm-IR' :
             return 'label label-secondary';
-        case 'Stable ID' :
+        case 'Collection ID' :
             return 'label label-warning';
         case 'Sample' :
             return 'label label-warning';
@@ -2737,7 +2737,7 @@ function mapTypeToIcon(type) {
             return 'fa-calendar-check-o';
         case 'Norm-IR' :
             return 'fa-bolt';
-        case 'Stable ID' :
+        case 'Collection ID' :
             return 'fa-tag';
         case 'Sample' :
             return 'fa-map-pin';
