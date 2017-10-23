@@ -14,6 +14,19 @@
         PopulationBiologyMap.methods = {};
     }
 
+    //Thhis code was used in multiple locations, thought it would be a good
+    //idea to make its own function.  Name can be changed, couldn't think of
+    //a better one
+    PopulationBiologyMap.methods.resetMap = function() {
+        removeHighlight();
+        sidebar.close();
+        // close open panels
+        $('.collapse').collapse('hide');
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+    }
+
     //Might change to private function, but making it public for now until I know
     //that it is not needed anywhere else
     PopulationBiologyMap.methods.applyParameters = function () {
