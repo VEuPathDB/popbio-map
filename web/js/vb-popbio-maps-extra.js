@@ -45,8 +45,8 @@
                         $('#SelectView').selectpicker('val', view);
                         viewMode = view;
                         break;
-                    case "stableID":
-                        // have we passed multiple stable IDs??
+                    case "collectionID":
+                        // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
