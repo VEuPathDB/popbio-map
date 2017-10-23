@@ -53,8 +53,8 @@
                                 $('#search_ac').tagsinput('add', {
                                     value: element,
                                     activeTerm: true,
-                                    type: 'Stable ID',
-                                    field: mapTypeToField('Stable ID'),
+                                    type: 'Collection ID',
+                                    field: mapTypeToField('Collection ID'),
                                     qtype: 'exact'
                                 });
                             })
@@ -62,8 +62,8 @@
                             $('#search_ac').tagsinput('add', {
                                 value: urlParams[key],
                                 activeTerm: true,
-                                type: 'Stable ID',
-                                field: mapTypeToField('Stable ID'),
+                                type: 'Collection ID',
+                                field: mapTypeToField('Collection ID'),
                                 qtype: 'exact'
                             });
                         }

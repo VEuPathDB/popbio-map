@@ -640,7 +640,7 @@ L.Control.MapLegend = L.Control.extend({
 
     //Will need to add the click handler as a passable property so this reset map code does not look hacky
     _clicked: function() {
-        console.log("i got clicked");
+        //console.log("i got clicked");
         //Only way I could think of that will allow the click event to clear the markers when selecting an empty spot
         //But allow the legend values to also interact with the map
         map.off("click", PopulationBiologyMap.methods.resetMap);
