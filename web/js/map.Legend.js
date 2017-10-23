@@ -11,8 +11,18 @@ L.Control.MapLegend = L.Control.extend({
         palette: {}
     },
 
+    //Click event handler of legend would fire after map click event
+    //Adding click even this way allows legend click event to fire first
+    //and cancel the lick event for the map
+    initialize: function(options) {
+        this._legendDiv = {};
+        //Right now passing options does not affect anything, but adding it since the 
+        //correct way of implementing a new control is to use options to modify the object
+        this.addLegendIcon(options);
+    },
+
     // add the legend to the DOM tree
-    addLegendIcon: function () {
+    addLegendIcon: function (options) {
         this._legendDiv = L.DomUtil.create('div', 'info legend active');
         legendDiv = this._legendDiv;
 
@@ -25,11 +35,15 @@ L.Control.MapLegend = L.Control.extend({
                     legend.addTo(map);
                     L.DomUtil.addClass(legendDiv, "active");
                 }
-
             },
             'Toggle legend ON of OFF'
         );
+        L.DomEvent
+            //.addListener(legendDiv, 'click', L.DomEvent.stop)
+            .addListener(legendDiv, 'click', this._clicked, this);
+        //L.DomEvent.disableClickPropagation(legendDiv);
 
+        return legendDiv;
     },
 
     bindTableFilter: function () {
@@ -42,7 +56,6 @@ L.Control.MapLegend = L.Control.extend({
                 return !~text.indexOf(val);
             }).hide();
         });
-
     },
 
     markerColor: function (value) {
@@ -55,9 +68,8 @@ L.Control.MapLegend = L.Control.extend({
 
         fillColor = options.trafficlight.scale.evaluate(value);
         textColor = getContrastYIQ(fillColor);
+
         return [fillColor, textColor];
-
-
     },
 
     /*
@@ -124,7 +136,6 @@ L.Control.MapLegend = L.Control.extend({
             stNumItems = numItems, // store the number of items
             hasNoData = false;
 
-
         for (var i = 0; i < stNumItems; i++) {
             // if (typeof items[i] === 'object') {
             if (i === options.numberOfColors) break;
@@ -139,7 +150,6 @@ L.Control.MapLegend = L.Control.extend({
 
             newPalette[item] = kelly_colors_hex[i];
             numItems--; // track how many items need a grayscale color
-
         }
 
         if (hasNoData) {
@@ -149,14 +159,13 @@ L.Control.MapLegend = L.Control.extend({
 
         var lumInterval = 0.5 / numItems;
         this.lum = 0.7;
+
         for (var c = 0; c < numItems; c++) {
             var element = stNumItems - numItems + c;
             var item = items[element][0];
             newPalette[item] = this._colorLuminance("#FFFFFF", -this.lum);
             this.lum -= lumInterval;
-
         }
-
 
         return newPalette;
     },
@@ -218,6 +227,7 @@ L.Control.MapLegend = L.Control.extend({
         colorObj.red = parseInt(hex.substring(0, 2), 16);
         colorObj.green = parseInt(hex.substring(2, 4), 16);
         colorObj.blue = parseInt(hex.substring(4, 6), 16);
+
         return colorObj;
     },
 
@@ -256,8 +266,6 @@ L.Control.MapLegend = L.Control.extend({
      */
 
     _colorLuminance: function (hex, lum) {
-
-
         // validate hex string
         "use strict";
 
@@ -305,8 +313,8 @@ L.Control.MapLegend = L.Control.extend({
         });
 
         if (hasNoData) sortedArray['no data'] = '#000000';
+        
         return sortedArray;
-
     },
 
     // Sort palette items by colour
@@ -328,19 +336,15 @@ L.Control.MapLegend = L.Control.extend({
         if (hasNoData) {
             var color = new this._Color('#000000');
             colors['no data'] = this._constructColor(color);
-
         }
 
-
         return this._sortColorsByHue(colors);
-
     },
 
     // build the HTML for the table
     _generateTableHtml: function (sortedPalette) {
         var options = this.options;
         var inHtml = ""; // store HTML here
-
         var sortByHTML = '';
 
         if (options.sortBy === 'Name') {
@@ -379,21 +383,18 @@ L.Control.MapLegend = L.Control.extend({
         var type = mapSummarizeByToField(options.summarizeBy).type;
 
         for (var obj1 in sortedPalette) if (sortedPalette.hasOwnProperty(obj1)) {
-
             if (obj1 === 'no data') break;
             // if (obj1 === 'no data') break;
             if (options.summarizeBy === 'Species') {
-
                 inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + obj1.capitalizeFirstLetter() + '</em><br>' : '+');
             } else {
                 inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
-
             }
             inHtml += '</span>';
-
         }
+
         $('#Other-Terms-List').html(inHtml).removeClass();
 
         if (type === "Projects") {
@@ -401,7 +402,6 @@ L.Control.MapLegend = L.Control.extend({
         } else {
             $('#Other-Terms-List').addClass('multiColumn-3')
         }
-
     },
 
     // build the HTML for the legend node
@@ -465,21 +465,17 @@ L.Control.MapLegend = L.Control.extend({
             if (options.summarizeBy === 'Species') {
                 // var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An.
                                                                                 // gambiae
-
                 inHtml += '<div class="active-legend detailedTip" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + obj1.capitalizeFirstLetter() + '</em><br>' : '+');
             } else {
                 inHtml += '<div class="active-legend detailedTip" type="' + type + '" value="' + obj1 + '"> ' +
                     '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
-
             }
             inHtml += '</div>';
-
             cntLegend++; // update the counter of legend entries
         }
         // add others
         if (numOfItems > options.numberOfColors) {
-
             var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")";
             // inHtml += '<span class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></span>';
             inHtml += '<div class="active-others detailedTip" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '"><i style="background:' + othersBg + ';"></i> ' + 'Others<br></div>';
@@ -494,7 +490,6 @@ L.Control.MapLegend = L.Control.extend({
         var colorsArr = options.trafficlight.colorBrewer;
         // if in IR mode add the IR resistance color scale
         if (viewMode === 'ir') {
-
             inHtml += '<div class="data-layer-legend" style="border: 0">';
             inHtml += '<p style="text-align: left">Resistance</p>';
             inHtml += '<div id="legend-ir-scale-bar">';
@@ -512,7 +507,6 @@ L.Control.MapLegend = L.Control.extend({
                 ' resistance/susceptibility. ' +
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
                 'More info</span></p>';
-
         }
 
         // Populate legend when added to map
@@ -526,7 +520,6 @@ L.Control.MapLegend = L.Control.extend({
             legend.remove();
             legend.addTo(map);
         }
-
     },
 
     /*
@@ -536,16 +529,13 @@ L.Control.MapLegend = L.Control.extend({
      inputs: unsortedPalette: usually the global palette of the map
      outputs: it calls _generateLegendHtml with the sorted palette and updates the legend
      */
-
     refreshLegend: function (unsortedPalette) {
         var options = this.options;
         var sortedPalette = [];
         var paletteSize = _.size(unsortedPalette);
         if (options.sortBy === 'Name') {
             sortedPalette = this._outputNames(unsortedPalette, options.numberOfColors);
-
         } else {    // sort by color
-
             sortedPalette = this._outputColors(unsortedPalette, options.numberOfColors);
         }
 
@@ -553,15 +543,12 @@ L.Control.MapLegend = L.Control.extend({
 
         if (options.sortBy === 'Name') {
             sortedPalette = this._outputNames(unsortedPalette);
-
         } else {    // sort by color
-
             sortedPalette = this._outputColors(unsortedPalette);
         }
 
         // this._generateLegendHtml(sortedPalette, paletteSize);
         this._generateTableHtml(sortedPalette, paletteSize);
-
     },
 
     _populateLegend: function (result, fieldName, flyTo) {
@@ -620,47 +607,44 @@ L.Control.MapLegend = L.Control.extend({
                     default:
                         points = 0;
                         break
-
                 }
 
                 if (items.hasOwnProperty(sumField)) {
                     items[sumField] += points;
-
                 } else {
-
                     items[sumField] = points;
-
                 }
                 i++;
             });
-
         });
-
 
         // set trafficlight options
         var trafficlight = options.trafficlight;
-
 
         trafficlight.colorBrewer = viewMode === 'ir' ?
             L.ColorBrewer.Diverging.RdYlBu[10].slice() :
             L.ColorBrewer.Sequential.BuPu[9].slice()
 
         if (viewMode === 'ir') {
-
             trafficlight.scale = new L.CustomColorFunction(0, 1, options.trafficlight.colorBrewer, {interpolate: true});
         }
 
         // this is where the legend items are scored and sorted based on their frequency/abundance
         var sortedItems = this._sortHashByValue(items);
         options.palette = this.generatePalette(sortedItems);
-
         this.refreshLegend(options.palette);
 
         // moved this here to avoid querying SOLR before the palette is done building
         filterMarkers($("#search_ac").tagsinput('items'), flyTo)
+    },
 
-    }
-
+    //Will need to add the click handler as a passable property so this reset map code does not look hacky
+    _clicked: function() {
+        console.log("i got clicked");
+        //Only way I could think of that will allow the click event to clear the markers when selecting an empty spot
+        //But allow the legend values to also interact with the map
+        map.off("click", PopulationBiologyMap.methods.resetMap);
+    }   
 });
 
 L.control.legend = function (url, options) {
@@ -670,8 +654,6 @@ L.control.legend = function (url, options) {
     if (options.summarizeBy) newLegend.options.summarizeBy = options.summarizeBy;
     newLegend.options.numberOfColors = legendSpecies;
     newLegend.options.flyTo = options.flyTo;
-
-    newLegend.addLegendIcon();
     newLegend.bindTableFilter();
 
     $.getJSON(url, function (data) {

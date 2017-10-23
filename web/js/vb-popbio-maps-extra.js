@@ -14,6 +14,19 @@
         PopulationBiologyMap.methods = {};
     }
 
+    //Thhis code was used in multiple locations, thought it would be a good
+    //idea to make its own function.  Name can be changed, couldn't think of
+    //a better one
+    PopulationBiologyMap.methods.resetMap = function() {
+        removeHighlight();
+        sidebar.close();
+        // close open panels
+        $('.collapse').collapse('hide');
+        setTimeout(function () {
+            resetPlots()
+        }, delay);
+    }
+
     //Might change to private function, but making it public for now until I know
     //that it is not needed anywhere else
     PopulationBiologyMap.methods.applyParameters = function () {
@@ -32,16 +45,16 @@
                         $('#SelectView').selectpicker('val', view);
                         viewMode = view;
                         break;
-                    case "collectionID":
-                        // have we passed multiple IDs??
+                    case "stableID":
+                        // have we passed multiple stable IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
                                 $('#search_ac').tagsinput('add', {
                                     value: element,
                                     activeTerm: true,
-                                    type: 'Collection ID',
-                                    field: mapTypeToField('Collection ID'),
+                                    type: 'Stable ID',
+                                    field: mapTypeToField('Stable ID'),
                                     qtype: 'exact'
                                 });
                             })
@@ -49,8 +62,8 @@
                             $('#search_ac').tagsinput('add', {
                                 value: urlParams[key],
                                 activeTerm: true,
-                                type: 'Collection ID',
-                                field: mapTypeToField('Collection ID'),
+                                type: 'Stable ID',
+                                field: mapTypeToField('Stable ID'),
                                 qtype: 'exact'
                             });
                         }

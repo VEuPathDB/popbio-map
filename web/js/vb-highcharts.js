@@ -61,8 +61,10 @@
                 projects_list = PopulationBiologyMap.data.projects_list;
                 if (projects_list  && Object.keys(projects_list).length > 1) {
                     $("#projects-notice").show();
+                    PopulationBiologyMap.data.project_title = undefined;
                 } else {
                     $("#projects-notice").hide();;
+                    PopulationBiologyMap.data.project_title = '';
                 }
                 
                 $.ajax({
@@ -83,7 +85,12 @@
                     success: function(json) {
                         //Get species (or protocols etc) collection info from response
                         var term_collections_list = json.facets.term.buckets;
-                        PopulationBiologyMap.data.project_title = json.response.docs[0].project_titles_txt;
+
+                        if (PopulationBiologyMap.data.project_title != undefined) {
+                            PopulationBiologyMap.data.project_title = json.response.docs[0].project_titles_txt;
+                        } else {
+                            PopulationBiologyMap.data.project_title = '';
+                        }
 
                         term_collections_list.forEach(function (term_collections) {
                             //console.log(term_collections); 
