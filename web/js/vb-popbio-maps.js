@@ -459,23 +459,12 @@ function bindEvents() {
     })
     // This is here to trigger an update of the graphs when an active-term is clicked
     // FixMe: Have to solve the issue with pruneclusters first
+    // With the code change I have done, it seems that this function might not be needed anymore
+    // I could add this code somwhere else and it would work fine, but keeping it for now
+    // in case it is needed again
     .on("jsonLoaded", function () {
         if (highlightedId && PopulationBiologyMap.data.highlightedId == undefined) {
-            var marker = $('#' + highlightedId);
-            //In order to avoid changing the click event code, unsetting highlightedID
-            highlightedId = false
-
-            if (marker.length > 0) {
-                $(marker).trigger("click");
-                highlightMarker(marker);
-            } else {
-                removeHighlight();
-                sidebar.close();
-                setTimeout(function () {
-                    resetPlots()
-                }, delay);
-            }
-            highlightedId = false;
+            PopulationBiologyMap.data.highlightedId = highlightedId;
         }
     });
 
@@ -1847,7 +1836,7 @@ function loadSolr(parameters) {
                 } else {
                     PopulationBiologyMap.methods.resetMap();
                 }
-            }, 400);
+            }, 800);
         }, 50)
 
         // build a geohash grid
