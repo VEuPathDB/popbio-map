@@ -890,7 +890,7 @@
     <requestHandler name="/smplExport" class="solr.SearchHandler">
         <lst name="defaults">
             <str name="fl">
-                exp_accession_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss
+                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_citations_ss
             </str>
         </lst>
         <lst name="appends">
@@ -912,7 +912,7 @@
     <requestHandler name="/irExport" class="solr.SearchHandler">
         <lst name="defaults">
             <str name="fl">
-                exp_accession_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_sample_size_i,exp_label_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_phenotype_type_s,exp_insecticide_s,exp_protocols_ss,exp_concentration_f,exp_concentration_unit_s,exp_duration_f,exp_duration_unit_s,exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s
+                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_id_s,exp_sample_type_s,exp_sample_size_i,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_phenotype_type_s,exp_insecticide_s,exp_protocols_ss,exp_concentration_f,exp_concentration_unit_s,exp_duration_f,exp_duration_unit_s,exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s,exp_citations_ss
             </str>
         </lst>
         <lst name="appends">
@@ -929,6 +929,31 @@
             <str>query</str>
         </arr>
     </requestHandler>
+
+<!--    <requestHandler name="/abndExport" class="solr.SearchHandler">
+        <lst name="defaults">
+            <str name="fl">
+                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_sample_size_i,exp_collection_duration_days_i,exp_citations_ss
+            </str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample</str>
+            <str name="fq">has_geodata:true</str>
+            <str name="fq">has_abundance_data_b:true</str>
+            <str name="fq">${zeroFilter:sample_size_i:1}</str>
+        </lst>
+        <lst name="invariants">
+            <str name="rq">{!xport}</str>
+            <str name="wt">xsort</str>
+            <str name="distrib">false</str>
+        </lst>
+
+        <arr name="components">
+            <str>query</str>
+        </arr>
+    </requestHandler>
+-->
+
 
 
     <!--
@@ -2109,7 +2134,8 @@
          plain text so that they are easy to read in *any* browser.
          If you expect a MIME type of "application/json" just remove this override.
         -->
-        <str name="content-type">text/plain; charset=UTF-8</str>
+        <!-- removed 2017-10-13 due to Chrome dev tools being picky all of a sudden -->
+        <!-- <str name="content-type">text/plain; charset=UTF-8</str> -->
     </queryResponseWriter>
 
     <!--

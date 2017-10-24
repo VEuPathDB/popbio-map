@@ -41,13 +41,15 @@ module.exports = function (grunt) {
                         'web/libs/beeswarm/beeswarm.js',
                         'web/libs/jsrender/jsrender.js',
                         'web/libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js',
+                        'web/libs/clipboard.js/dist/clipboard.js',
                         'web/js/vb-violin-plots.js',
                         'web/js/map.popbioMarkers.js',
                         'web/js/map.multipleMarkers.js',
                         'web/js/geohashes-layer.js',
-                        'web/js/vb-popbio-maps.js'
-
-                    ],
+                        'web/js/vb-popbio-maps.js',
+                        'web/js/vb-highcharts.js',
+                        'web/js/vb-popbio-maps-extra.js'
+                    ]
                     // 'web/dist/js/<%= pkg.name %>.js': [
                     //     'web/js/*.js'
                     // ]

@@ -57,6 +57,9 @@
     <!-- Include Date Range Picker -->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- adding highcharts -->
+    <!-- <script type="text/javascript" src="https://code.highcharts.come/highcharts.src.js"></script> -->
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <!-- End of remote Javascript libraries -->
 
     <!-- Local Javascript libraries-->
@@ -77,9 +80,6 @@
     <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.js"></script>
     <!-- bootstrap-select -->
     <script type="text/javascript" src="libs/bootstrap-select/dist/js/bootstrap-select.js"></script>
-    <!-- adding highcharts -->
-    <!-- <script type="text/javascript" src="https://code.highcharts.come/highcharts.src.js"></script> -->
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
 
 
     <!-- VB code -->
@@ -91,6 +91,7 @@
     <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
     <script type="text/javascript" src="libs/jsrender/jsrender.js"></script>
     <script type="text/javascript" src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js"></script>
+    <script type="text/javascript" src="libs/clipboard.js/dist/clipboard.js"></script>
     <script type="text/javascript" src="js/vb-violin-plots.js"></script>
     <script type="text/javascript" src="js/map.popbioMarkers.js"></script>
     <script type="text/javascript" src="js/map.multipleMarkers.js"></script>
@@ -98,8 +99,7 @@
     <script type="text/javascript" src="js/geohashes-layer.js"></script>
     <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
     <script type="text/javascript" src="js/vb-highcharts.js"></script>
-
-
+    <script type="text/javascript" src="js/vb-popbio-maps-extra.js"></script>
 </head>
 
 
@@ -234,8 +234,8 @@
             </div>
 
             <div class="sidebar-pane" id="swarm-plots">
-                <h3>Population Biology Plotting</h3>
-
+                <h3>Population Biology Map Graph Area</h3>
+                <div id="projects-notice">Multiple projects are in the marker that is being graphed</div>
                 <div id="swarm-chart-area">
                     <div style="text-align: center; margin-top: 30px">
                         <i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>
@@ -520,8 +520,13 @@
                                 data-icon-Base="fa fa-fw" data-selected-text-format="count > 2"
                                 data-tick-Icon="fa-check" data-width="90%">
                         </select>
+                        <div id="div-export-zeroes" class="checkbox">
+                            <label><input id="checkbox-export-zeroes" type="checkbox" value="1">Include zero count samples</label>
+                        </div>
                         <div style="margin-top: 20px;">
-                            <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
+                            <!-- VB-6938 add Bootstrap modal -->
+                            <!-- <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i> -->
+                            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#DownloadModal"><i class="fa fa-floppy-o"></i>
                                 Download
                             </a></div>
                     </div>
@@ -654,7 +659,7 @@
                             data-width="100%" data-icon-Base="fa fa-fw">
                         <option data-icon="fa-tags" value="smpl">Samples</option>
                         <option data-icon="fa-eyedropper" value="ir">Insecticide Resistance</option>
-                        <!--<option data-icon="fa-line-chart" value="abnd">Abundance</option>-->
+                        <option data-icon="fa-line-chart" value="abnd">Abundance</option>
                     </select>
                     </span>
 
@@ -687,6 +692,15 @@
                     <input id="world-toggle" type="checkbox" data-toggle="toggle"
                            data-on="<i class='fa fa-globe'></i> Local suggestions"
                            data-off="<i class='fa fa-globe'></i> Global suggestions">
+                    <span class="btn-group" role="group">
+                        <button type="button" id="generate-link" class="btn btn-default" title="Share view">
+                            <i class="fa fa-share-alt"></i> Share view
+                        </button>
+                        <!--Message that will appear when clicking on the button-->
+                        <div id="generate-link-msg" class="alert alert-success" role="alert">
+                            The link has been generated and copied to your clipboard!
+                        </div>
+                    </span>
 
 
                 </div>
@@ -850,7 +864,31 @@
 <div id="beeswarmPointTooltip" class="tooltip-bs" style="opacity: 0;"></div>
 <div id="vbEntityTooltip" class="tooltip-bs"></div>
 
+<!-- VB-6938 Create file download popup using Bootstrap Modal -->
+<div id="DownloadModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b>Data reuse policy</b></h4>
+            </div>
+            <div class="modal-body" style="font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.7; color: inherit;">
+                It is important for data publishers and for the reputation of data users that data is cited correctly. Citation information for each record can be found in the downloaded file.<br><br>
+                We also encourage users to support VectorBase’s data collation and open data efforts. Please see <a href="https://www.vectorbase.org/faqs/how-cite-vectorbase" target="windows"><font style="color:#BD4646;font-weight:bold">here</font></a> for information on how to acknowledge VectorBase. <br>
+               <div style="margin-top: 30px;">
+                   <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
+                                    Download
+                   </a>
+               </div>
 
+            </div>
+<!--      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+-->
+        </div>
+    </div>
+</div>
 
 <!-- jsrender template for sample info in the table slider (samples view)-->
 
@@ -1891,8 +1929,7 @@
             }
         }
 
-
-        initializeMap({flyTo: applyParameters()});
+        initializeMap({flyTo: PopulationBiologyMap.methods.applyParameters()});
 
 //        if (applyParameters()) {
 //            initializeMap({flyTo: true});

@@ -250,13 +250,25 @@
     <!-- ====================================== -->
     <!-- field copies with docValues for export-->
     <!-- ====================================== -->
-    <!-- accession-->
+    <!-- id - used for sorting -->
     <field name="exp_id_s" type="string" indexed="false" stored="false" docValues="true"/>
     <copyField source="id" dest="exp_id_s"/>
 
-    <!-- accession-->
+    <!-- accession - DEPRECATED since 2017-09-28 -->
     <field name="exp_accession_s" type="string" indexed="false" stored="false" docValues="true"/>
     <copyField source="accession" dest="exp_accession_s"/>
+
+    <!-- sample_id_s -->
+    <field name="exp_sample_id_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="sample_id_s" dest="exp_sample_id_s"/>
+
+    <!-- assay_id_s -->
+    <field name="exp_assay_id_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="assay_id_s" dest="exp_assay_id_s"/>
+
+    <!-- collection_assay_id_s -->
+    <field name="exp_collection_assay_id_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="collection_assay_id_s" dest="exp_collection_assay_id_s"/>
 
     <!-- sample/phenotype/genotype? -->
     <field name="exp_bundle_name_s" type="string" indexed="false" stored="false" docValues="true"/>
@@ -270,9 +282,13 @@
     <field name="exp_sample_type_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
     <copyField source="sample_type" dest="exp_sample_type_s"/>
 
-    <!-- sample size for pools and populations-->
+    <!-- sample size for phenotype assays and abundance samples -->
     <field name="exp_sample_size_i" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
     <copyField source="sample_size_i" dest="exp_sample_size_i"/>
+
+    <!-- collection duration for abundance-->
+    <field name="exp_collection_duration_days_i" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="collection_duration_days_i" dest="exp_collection_duration_days_i"/>
 
     <!-- Short description -->
     <field name="exp_label_s" type="string" indexed="false" stored="false" docValues="true"/>
@@ -337,6 +353,10 @@
            docValues="true"/>
     <copyField source="phenotype_value_type_s" dest="exp_phenotype_value_type_s"/>
 
+
+    <!-- citations that could be DOI or PMID - DIRECTLY PROVIDED IN SOLR DOCS (no copyField) -->
+    <field name="exp_citations_ss" type="string" indexed="false" stored="false" multiValued="true"
+           docValues="true"/>
 
     <!-- =================================== -->
     <!-- FUNCGEN: site = "funcgen" -->

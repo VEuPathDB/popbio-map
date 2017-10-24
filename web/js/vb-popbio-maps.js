@@ -1,116 +1,3 @@
-function applyParameters() {
-    // parse the URL parameters and update views and search terms
-    var hasParameters = false;
-    if (typeof urlParams.view === 'undefined' || urlParams.view === null) {
-
-        $('#SelectView').selectpicker('val', 'smpl');
-        // $('#view-mode').val('smpl');
-    }
-
-    for (var key in urlParams) {
-        if (urlParams.hasOwnProperty(key)) {
-            switch (key) {
-                case "view":
-                    var view = urlParams[key];
-                    if (view === 'ir' || view === 'smpl') {
-
-                        $('#SelectView').selectpicker('val', view);
-                        viewMode = view;
-                        // $('#view-mode').val(view);
-                    } else if (view === 'abnd') {
-
-                        viewMode = view;
-                    }
-                    break;
-                case "stableID":
-                    // have we passed multiple stable IDs??
-                    var param = urlParams[key];
-                    if (Array.isArray(param)) {
-                        param.forEach(function (element) {
-                            $('#search_ac').tagsinput('add', {
-                                value: element,
-                                activeTerm: true,
-                                type: 'Stable ID',
-                                field: mapTypeToField('Stable ID'),
-                                qtype: 'exact'
-
-                            });
-                        })
-                    } else {
-                        $('#search_ac').tagsinput('add', {
-                            value: urlParams[key],
-                            activeTerm: true,
-                            type: 'Stable ID',
-                            field: mapTypeToField('Stable ID'),
-                            qtype: 'exact'
-
-                        });
-                    }
-                    break;
-                case "projectID":
-                    // have we passed multiple project IDs??
-                    var param = urlParams[key];
-                    if (Array.isArray(param)) {
-                        param.forEach(function (element) {
-                            $('#search_ac').tagsinput('add', {
-                                value: element,
-                                activeTerm: true,
-                                type: 'Projects',
-                                field: mapTypeToField('Projects'),
-                                qtype: 'exact'
-
-                            });
-                        })
-                    } else {
-
-                        $('#search_ac').tagsinput('add', {
-                            value: urlParams[key],
-                            activeTerm: true,
-                            type: 'Projects',
-                            field: mapTypeToField('Projects'),
-                            qtype: 'exact'
-
-                        });
-                    }
-
-                    break;
-                case "species":
-                    var param = urlParams[key];
-                    if (Array.isArray(param)) {
-                        param.forEach(function (element) {
-                            $('#search_ac').tagsinput('add', {
-                                value: element,
-                                activeTerm: true,
-                                type: 'Taxonomy',
-                                field: mapTypeToField('Taxonomy'),
-                                qtype: 'exact'
-
-                            });
-                        })
-                    } else {
-                        $('#search_ac').tagsinput('add', {
-                            value: urlParams[key],
-                            activeTerm: true,
-                            type: 'Taxonomy',
-                            field: mapTypeToField('Taxonomy'),
-                            qtype: 'exact'
-
-                        });
-                    }
-                    break;
-                default :
-                    break;
-            }
-        }
-    }
-
-    // update the export fields dropdown
-    updateExportFields(viewMode);
-
-    return hasParameters;
-}
-
-
 function bindEvents() {
     "use strict"
 
@@ -144,6 +31,7 @@ function bindEvents() {
     map.on("movestart", function () {
         startingZooom = map.getZoom();
 
+        //highlightedId = $('.highlight-marker').attr('id');
         removeHighlight();
         // close open panels
         $('.collapse').collapse('hide');
@@ -153,16 +41,7 @@ function bindEvents() {
         }, delay);
     })
 
-        .on("click", function () {
-            removeHighlight();
-            sidebar.close();
-            // close open panels
-            $('.collapse').collapse('hide');
-            setTimeout(function () {
-                resetPlots()
-            }, delay);
-        });
-
+        .on("click", PopulationBiologyMap.methods.resetMap);
     // if we are in abundance view and the zoom level exceeds 8 then switch to open street maps layer
 
     // map.on('zoomend', function() {
@@ -200,11 +79,12 @@ function bindEvents() {
                     mapSummarizeByToField(glbSummarizeBy).summarize +
                     '&json.wrf=?&callback=?';
 
-                removeHighlight();
+                highlightedId = $('.highlight-marker').attr('id');
+                /*removeHighlight();
                 sidebar.close();
                 setTimeout(function () {
                     resetPlots()
-                }, delay);
+                }, delay);*/
                 $.getJSON(url, function (data) {
                     legend._populateLegend(data, glbSummarizeBy)
                 });
@@ -246,7 +126,14 @@ function bindEvents() {
             // viewMode = $("#SelectView").val(),
             url = solrExportUrl,
             viewBox = buildBbox(map.getBounds()),
-            fieldsStr = '&fl=';
+            fieldsStr = '&fl=',
+            zeroFilter = '';
+
+        if (viewMode === 'abnd') {
+            zeroFilter = '&zeroFilter=' + ($('#checkbox-export-zeroes').is(":checked") ? '' : '-sample_size_i:0');
+        }
+
+        // console.log("zeroFilter is: "+zeroFilter+ " and mode is:"+viewMode);
 
         // clear the error area
         $('#export-error').fadeOut();
@@ -256,7 +143,7 @@ function bindEvents() {
 
         if ($('#select-export-fields').val()) {
             fieldsStr += $('#select-export-fields').val().join();
-
+            fieldsStr += ',exp_citations_ss'; // mandatory citations field
         } else {
             // no marker is selected
             // inform the user that there are no selected markers
@@ -271,17 +158,17 @@ function bindEvents() {
         switch (selectedOption) {
             //download all data
             case "1":
-                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break
             // data matching search
             case "2":
-                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data visible on screen
             case "3":
-                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc';
+                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data for selected marker
@@ -305,7 +192,7 @@ function bindEvents() {
                         .html('');
 
                     // build the url and download the data
-                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc';
+                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                     //console.log(url);
                     this.href = url;
                 } else { // no marker is selected
@@ -545,53 +432,44 @@ function bindEvents() {
 
         }
     })
-        .on("click", '.active-legend', function () {
+    .on("click", '.active-legend', function () {
+        highlightedId = $('.highlight-marker').attr('id');
+        PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
 
-            $('#search_ac').tagsinput('add', {
-                value: $(this).attr('value'),
-                activeTerm: true,
-                type: $(this).attr('type'),
-                field: mapTypeToField($(this).attr('type')),
-                qtype: 'exact'
-
-            });
-
-            var tooltip = d3.select('#beeswarmPointTooltip');
-            if ($('#no-interactions').hasClass("foreground")) {
-
-                tooltip.transition()
-                    .duration(500)
-                    .style("opacity", 0)
-                    .style("z-index", -1000000);
-                $('#no-interactions').removeClass("foreground");
-                stickyHover = false;
-
-            }
-        })
-        // This is here to trigger an update of the graphs when an active-term is clicked
-        // FixMe: Have to solve the issue with pruneclusters first
-        .on("jsonLoaded", function () {
-            if (highlightedId) {
-                var marker = $('#' + highlightedId);
-                if (marker.length > 0) {
-                    $(marker).trigger("click");
-                    highlightMarker(marker);
-                } else {
-                    sidebar.close();
-                    setTimeout(function () {
-                        resetPlots()
-                    }, delay);
-                }
-                highlightedId = false;
-            }
-
-
+        $('#search_ac').tagsinput('add', {
+            value: $(this).attr('value'),
+            activeTerm: true,
+            type: $(this).attr('type'),
+            field: mapTypeToField($(this).attr('type')),
+            qtype: 'exact'
         });
 
+        var tooltip = d3.select('#beeswarmPointTooltip');
+        if ($('#no-interactions').hasClass("foreground")) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0)
+                .style("z-index", -1000000);
+            $('#no-interactions').removeClass("foreground");
+            stickyHover = false;
+        }
+
+        //Adding the click event for the map
+        map.on("click", PopulationBiologyMap.methods.resetMap);
+    })
+    // This is here to trigger an update of the graphs when an active-term is clicked
+    // FixMe: Have to solve the issue with pruneclusters first
+    // With the code change I have done, it seems that this function might not be needed anymore
+    // I could add this code somwhere else and it would work fine, but keeping it for now
+    // in case it is needed again
+    .on("jsonLoaded", function () {
+        if (highlightedId && PopulationBiologyMap.data.highlightedId == undefined) {
+            PopulationBiologyMap.data.highlightedId = highlightedId;
+        }
+    });
 
     // Toggle grid
     $('#grid-toggle').change(function () {
-
         if (!$(this).prop('checked')) {
             map.removeLayer(geohashesGrid);
         } else {
@@ -601,17 +479,15 @@ function bindEvents() {
     });
 
     // collapse open panels
-
     // hide the main menu bar and other panels when advanced options are expanded
-
     $('#advanced-options').on('show.bs.collapse', function () {
         // $('.main-menu').collapse('hide');
         $('#bars-icon').toggleClass('down');
     })
-        .on('hide.bs.collapse', function () {
-            // $('#menu-bar').collapse('show');
-            $('#bars-icon').toggleClass('down');
-        });
+    .on('hide.bs.collapse', function () {
+        // $('#menu-bar').collapse('show');
+        $('#bars-icon').toggleClass('down');
+    });
 
     // clear the date selection panel once collapsed
     $('#daterange').on('hidden.bs.collapse', function () {
@@ -626,12 +502,11 @@ function bindEvents() {
         if (checkSeasonal()) return;
 
         $('.season-toggle').each(function () {
-//                console.log($(this).prop('checked'));
+            //console.log($(this).prop('checked'));
             if ($(this).prop('checked')) {
                 $(this).bootstrapToggle('off');
             }
         })
-
     });
 
     $('#date-select, #SelectView').click(function () {
@@ -641,7 +516,6 @@ function bindEvents() {
     });
 
     $('#season-select, #SelectView').click(function () {
-
         if ($('#daterange').attr("aria-expanded") == 'true') {
             $('#daterange').collapse('hide');
         }
@@ -679,7 +553,6 @@ function bindEvents() {
         // add the filter, by keeping the value the same ('seasonal') we ensure
         // that there's only one seasonal filter enabled at any given point
         if (checkSeasonal()) {
-
             // adding the item with replace: true will prevent the map from updating
             // it will update once we remove the old tag
             $('#search_ac').tagsinput('add', {
@@ -688,9 +561,7 @@ function bindEvents() {
                 replace: true,
                 type: 'Seasonal',
                 field: 'collection_season'
-
             });
-
             $('#search_ac').tagsinput('remove', checkSeasonal());
         } else {
             $('#search_ac').tagsinput('add', {
@@ -699,14 +570,12 @@ function bindEvents() {
                 replace: false,
                 type: 'Seasonal',
                 field: 'collection_season'
-
             });
         }
     });
 
     // add the normalized IR filters into search
     $('#add-norm-ir').click(function () {
-
         // Map the values returned by the slider to Normalised IR values
         var scaleToIrMap = {
             0: 1,
@@ -745,15 +614,14 @@ function bindEvents() {
             normIrValues: normIrValues,
             type: 'Norm-IR',
             field: 'phenotype_rescaled_value_f'
-
         });
     });
 
     // Enable the add dates button only if the date fields are populated
     $("#date-start").datepicker()
-        .on('changeDate', function (e) {
-            $("#add-dates").prop('disabled', false);
-        });
+    .on('changeDate', function (e) {
+        $("#add-dates").prop('disabled', false);
+    });
 
     // add the date filter into search
     $("#add-dates").click(function () {
@@ -771,11 +639,9 @@ function bindEvents() {
             dateStart: dateStart,
             dateEnd: dateEnd,
             type: 'Date',
-//                field: 'collection_date',
+            //field: 'collection_date',
             field: 'collection_date_range'
-
         });
-
     });
 
     $('.date-shortcut').click(function () {
@@ -812,10 +678,13 @@ function bindEvents() {
             return;
         }
 
-        sidebar.close();
+        //sidebar.close();
         setTimeout(function () {
-            removeHighlight();
-            resetPlots()
+            highlightedId = $('.highlight-marker').attr('id');
+            PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
+            /*removeHighlight();
+
+            resetPlots()*/
             filterMarkers($("#search_ac").tagsinput('items'));
         }, delay);
 
@@ -831,13 +700,14 @@ function bindEvents() {
             })
         }
 
-        sidebar.close();
+        //sidebar.close();
         setTimeout(function () {
-            removeHighlight();
-            resetPlots()
+            highlightedId = $('.highlight-marker').attr('id');
+            PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
+            /*removeHighlight();
+            resetPlots()*/
             filterMarkers($("#search_ac").tagsinput('items'));
         }, delay);
-
     });
 }
 
@@ -848,19 +718,43 @@ function bindEvents() {
  inputs:
  outputs:
  */
-
 function initializeMap(parameters) {
     "use strict";
 
     // new MapQuest way of adding layers
     var mapQuestLayers = MQ.mapLayer();
     var flyTo = parameters.flyTo;
+
+    //Getting zoom level and center point to initialize the map
+    var zoomLevel = PopulationBiologyMap.data.zoomLevel;
+    var center = PopulationBiologyMap.data.center
+    var maxZoom = 15;
+
+    //Check if zoomLevel was sent as parameter
+    if (zoomLevel == undefined) {
+        zoomLevel = 3;
+    }
+
+    //Check if center was sent as parameter
+    if (center == undefined) {
+        center = [23.079, 3.515];
+    }
+
+    //Set the maximum zoom level depending on view
+    if (viewMode == "abnd") {
+        maxZoom = 12;
+        // Cover case where user might pass a higher zoom level in abnd view
+        if (zoomLevel > 12) {
+            zoomLevel = 12;
+        }
+    }
+
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
-        center: [23.079, 3.515],
+        center: center,
         minZoom: 1,
-        maxZoom: 15,
-        zoom: 3,
+        maxZoom: maxZoom,
+        zoom: zoomLevel,
         zoomControl: false,
         zoomAnimationThreshold: 16,
         worldCopyJump: true  //  the map tracks when you pan to another "copy" of the world and seamlessly jumps to the
@@ -868,10 +762,8 @@ function initializeMap(parameters) {
     });
 
     map.spin(true);
-
     startingZooom = map.getZoom();
     endingZoom = map.getZoom();
-
 
     map.addControl(new L.Control.FullScreen({
         position: "topright",
@@ -880,10 +772,13 @@ function initializeMap(parameters) {
 
     map.addControl(new L.Control.ZoomMin({position: "topright"}));
     sidebar = L.control.sidebar('sidebar').addTo(map);
-
+    //L.DomEvent.disableClickPropagation(sidebar);
+    //Adding scale to map
+    L.control.scale({position: "bottomright"}).addTo(map);
+    
     var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         minZoom: 2,
-        maxZoom: 15,
+        maxZoom: maxZoom,
         noWrap: 0,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -892,10 +787,8 @@ function initializeMap(parameters) {
 
     map.addLayer(mapQuestLayers);
 
-
     // initialize markers layer
     markers = new L.Map.SelectMarkers(map);
-
 
     // assetLayerGroup = new L.LayerGroup();
     assetLayerGroup = new L.PopbioMarkers();
@@ -919,7 +812,6 @@ function initializeMap(parameters) {
     if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
     // Now generate the legend
-
     // hardcoded species_category
     var url = solrPopbioUrl +viewMode + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
 
@@ -965,7 +857,6 @@ function initializeSearch() {
     //FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case
     // handling update: the issue was with the number of results Anywhere. When within a certain categories the results
     // seem to match will keep an eye on it ToDo: Add copy/paste support of IDs (low priority)
-
     var acSuggestions = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -1007,7 +898,6 @@ function initializeSearch() {
                         return url + encodeURI(query);
                     }
                 }
-
             },
             filter: function (data) {
                 if (partSearch) {
@@ -1034,7 +924,6 @@ function initializeSearch() {
 
                         };
                     });
-
                 }
             }
         }
@@ -1159,7 +1048,6 @@ function initializeSearch() {
     });
 
     $('#SelectView').change(function () {
-
         viewMode = $('#SelectView').val()
 
         if (viewMode !== "ir") {
@@ -1167,14 +1055,25 @@ function initializeSearch() {
             if (glbSummarizeBy === "Insecticide") glbSummarizeBy = "Species";
         }
 
+        //Change the maximum zoom level depending on view
+        if (viewMode == 'abnd') {
+            map.options.maxZoom = 12;
+            // Covering case where a user might be in a different view zoomed in all the way
+            if (map.getZoom() > 12) {
+                map.setZoom(12);
+            }
+        } else {
+            map.options.maxZoom = 15;
+        }
+
         // update the export fields dropdown
         updateExportFields(viewMode);
-
 
         var url = solrPopbioUrl + viewMode + 'Palette?q=*:*&geo=geohash_2&term=' +
             mapSummarizeByToField(glbSummarizeBy).summarize +
             '&json.wrf=?&callback=?';
 
+        //highlightedId = $('.highlight-marker').attr('id');
         removeHighlight();
         sidebar.close();
         setTimeout(function () {
@@ -1186,21 +1085,20 @@ function initializeSearch() {
         acSuggestions.initialize(true);
         acOtherResults.initialize(true);
     });
-
-
 }
 
 /**
  Created by Ioannis on 11/08/2016
  Given the view mode update the fields selection dropdown
  **/
-
+// these fields do not contain the obligatory Citations field
+// which is always appended
 function updateExportFields(viewMode) {
     var smplFields = [
         {
-            value: 'exp_accession_s',
-            label: 'Accession',
-            icon: mapTypeToIcon('Stable ID')
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Collection ID')
         },
         {
             value: 'exp_bundle_name_s',
@@ -1221,6 +1119,11 @@ function updateExportFields(viewMode) {
             value: 'exp_label_s',
             label: 'Label',
             icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Collection ID')
         },
         {
             value: 'exp_collection_date_range_ss',
@@ -1256,9 +1159,14 @@ function updateExportFields(viewMode) {
     ];
     var irFields = [
         {
-            value: 'exp_accession_s',
-            label: 'Accession',
-            icon: mapTypeToIcon('Stable ID')
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_assay_id_s',
+            label: 'Assay ID',
+            icon: mapTypeToIcon('Collection ID')
         },
         {
             value: 'exp_bundle_name_s',
@@ -1279,6 +1187,11 @@ function updateExportFields(viewMode) {
             value: 'exp_label_s',
             label: 'Label',
             icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Collection ID')
         },
         {
             value: 'exp_collection_date_range_ss',
@@ -1338,13 +1251,87 @@ function updateExportFields(viewMode) {
             subtext: 'value, unit, type',
             icon: mapTypeToIcon('Phenotype')
         }
-
-    ]
+    ];
+    var abndFields = [
+        {
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_bundle_name_s',
+            label: 'Record type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_species_s',
+            label: 'Species',
+            icon: mapTypeToIcon('Taxonomy')
+        },
+        {
+            value: 'exp_sample_type_s',
+            label: 'Sample type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_label_s',
+            label: 'Label',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            icon: mapTypeToIcon('Date')
+        },
+        {
+            value: 'exp_collection_protocols_ss',
+            label: 'Collection protocols',
+            icon: mapTypeToIcon('Collection protocols')
+        },
+        {
+            value: 'exp_projects_ss',
+            label: 'Projects',
+            icon: mapTypeToIcon('Projects')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
+        },
+        {
+            value: 'exp_geolocations_ss',
+            label: 'Locations',
+            icon: mapTypeToIcon('Location')
+        },
+        {
+            value: 'exp_protocols_ss',
+            label: 'Protocols',
+            icon: mapTypeToIcon('Protocols')
+        },
+        {
+            value: 'exp_sample_size_i',
+            label: 'Specimens collected',
+            icon: mapTypeToIcon('Count')
+        },
+        {
+            value: 'exp_collection_duration_days_i',
+            label: 'Collection duration (days)',
+            icon: mapTypeToIcon('Duration')
+        }
+    ];
 
     // empty the dropdown
     $('#select-export-fields').empty();
 
     if (viewMode === 'ir') {
+        // IR fields have grouped fields, with subtext, e.g.
+        // text: Concentration
+        // subtext: value, unit
         $.each(irFields, function (index, obj) {
             $('#select-export-fields')
                 .append(
@@ -1357,7 +1344,11 @@ function updateExportFields(viewMode) {
         })
 
     } else {
-        $.each(smplFields, function (index, obj) {
+        // Other view modes have only simple fields:
+        // (but we can probably consolidate these as obj.subtext above is often empty anyway)
+        var simpleFields = smplFields;
+        if (viewMode === 'abnd') simpleFields = abndFields;
+        $.each(simpleFields, function (index, obj) {
             $('#select-export-fields')
                 .append(
                     $("<option></option>")
@@ -1366,6 +1357,13 @@ function updateExportFields(viewMode) {
                         .data('icon', obj.icon)
                 );
         })
+    }
+
+    var checkboxDiv = $('#div-export-zeroes');
+    if (viewMode === 'abnd') {
+        checkboxDiv.show();
+    } else {
+        checkboxDiv.hide();
     }
 
     $('#select-export-fields')
@@ -1379,7 +1377,6 @@ function updateExportFields(viewMode) {
  * As my knowledge of javascript gets better I will try to optimize and include as much functionality in this
  * library as possible.
  */
-
 function loadSolr(parameters) {
 
     //ToDo: Add AJAX error and timeout handling
@@ -1391,26 +1388,23 @@ function loadSolr(parameters) {
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
-
     // viewMode = $('#SelectView').val();
-    //
     // if (hiddenViewMode) {viewMode = hiddenViewMode};
 
     // Store the visible marker geo limits to build a bbox
     var minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
 
     // this function processes the JSON file requested by jquery
-
     var buildMap = function (result) {
         var terms = [];
         // using the facet.stats we return statistics for lat and lng for each geohash
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
-
-
         // display the number of results
         if (viewMode === "ir") {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
+        } else if (viewMode === "abnd") {
+            $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>');
         } else {
             $("#markersCount").html(result.response.numFound + ' visible samples summarized by ' + glbSummarizeBy + '</u>');
         }
@@ -1425,70 +1419,46 @@ function loadSolr(parameters) {
             return;
         }
 
-
         var facetResults = result.facets.geo.buckets,
             populations = {}, // keep the total marker count for each geohash
             statistics = {}, // keep the species/term count for each geohash
             fullStatistics = {}; // keep the species/term count for each geohash
 
         facetResults.forEach(function (el) {
-
-
             // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be
             // processed later at the same time exclude them from [terms] so as to not display them twice
             var key = el.val,
                 elStats = [],
                 fullElStats = [],
-                geoCount = el.count,
-                tagsTotalCount = 0,
-                geoAvgAbnd = 0;
-
-            if (viewMode === 'abnd') {
-
-                geoAvgAbnd = el.avgAbnd; // colour markers by average abundance
-            }
-            ;
-
+                geoCount = viewMode === 'abnd' ? el.sumSmp : el.count,
+                tagsTotalCount = 0;
             var geoTerms = el.term.buckets;
 
             geoTerms.forEach(function (inEl) {
                 var inKey = inEl.val;
-                if (legend.options.summarizeBy === 'Species') {
+                var inCount = viewMode === 'abnd' ? inEl.sumSmp : inEl.count;
 
-                    //FixMe: Remove these replacements when proper names are returned from the popbio API
-                    fullElStats.push({
-                        "label": inKey.replace(/sensu lato/, "sl")
-                            .replace(/chromosomal form/, "cf"),
-                        // store normalised abundance for abundance mode, else store samples/assay counts
-                        "value": inEl.count,
-                        "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
-                    });
-                } else {
+                if (inCount > 0) {
                     fullElStats.push({
                         "label": inKey,
                         // store normalised abundance for abundance mode, else store samples/assay counts
-                        "value": inEl.count,
+                        "value": inCount,
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
                 }
-                ;
 
                 // store the total counts
-                tagsTotalCount += inEl.count;
+                tagsTotalCount += inCount;
                 // if (viewMode === 'abnd') geoAbndSum += inEl.avgAbnd;
-
             });
 
             if (geoCount - tagsTotalCount > 0) {
-
                 fullElStats.push({
                     "label": 'Unknown',
                     "value": geoCount - tagsTotalCount,
                     "color": (legend.options.palette['Unknown'])
                 });
             }
-            ;
-
 
             fullStatistics[key] = fullElStats;
 
@@ -1497,23 +1467,17 @@ function loadSolr(parameters) {
             // arr.cumulativeCount = tagsTotalCount
             arr.count = geoCount;
             if (viewMode === 'abnd') {
-                arr.normAbnd = geoAvgAbnd.roundDecimals(1);
+                // arr.normAbnd = geoAvgAbnd.roundDecimals(1);
                 // arr.avgDuration = el.avgDur.roundDecimals(1);
                 // arr.avgSampleSize = el.avgSmp.roundDecimals(1);
                 // arr.abndSum = geoAbndSum;
             }
             arr.latLng = [el.ltAvg, el.lnAvg];
             arr.bounds = [[el.ltMin, el.lnMin], [el.ltMax, el.lnMax]];
-            if (el.ltMin === el.ltMax && el.lnMin === el.lnMax) {
-                arr.atomic = true
-            } else {
-                arr.atomic = false
-            }
+            arr.atomic = el.atomicCount === 1;
+
             if (viewMode === 'ir') {
                 arr.trafficlight = el.irAvg;
-            } else if (viewMode === 'abnd') {
-                arr.trafficlight = Math.log10(el.avgAbnd);
-                console.log(arr.trafficlight);
             } else {
                 arr.trafficlight = -1;
             }
@@ -1525,13 +1489,10 @@ function loadSolr(parameters) {
             if (maxLat < el.ltMax) maxLat = el.ltMax;
             if (minLon > el.lnMin) minLon = el.lnMin;
             if (maxLon < el.lnMax) maxLon = el.lnMax;
-
-
         });
 
         // update bounding box containing all markers
         markersBounds = [[minLat, minLon], [maxLat, maxLon]];
-
 
         if (flyTo) {
             map.setMinZoom(map.getZoom());
@@ -1541,8 +1502,6 @@ function loadSolr(parameters) {
             map.spin(false);
             return;
         }
-        ;
-
 
         var convertedJson = {};
         convertedJson.terms = terms;
@@ -1564,10 +1523,14 @@ function loadSolr(parameters) {
             setIcon: function (record) {
                 // if in abundance mode then resize the icons based on the samples count
                 var size = 40;
-                if (viewMode === 'abnd') { size = 60 };
+                // if (viewMode === 'abnd') { size = 60 };
+                var markerText = record.count;
+                if (viewMode === 'abnd' && record.count > 999) {
+                    markerText = Math.round(record.count/1000)+"k";
+                }
                 return new L.Icon.Canvas({
                     iconSize: new L.Point(size, size),
-                    markerText: record.count,
+                    markerText: markerText,
                     count: record.count,
                     trafficlight: record.trafficlight,
                     id: record.term,
@@ -1586,23 +1549,102 @@ function loadSolr(parameters) {
 
                     map.fitBounds(record.bounds, {padding: [100, 50]});
                 })
-                    .on("click", function (marker) {
-                        if (marker.originalEvent.ctrlKey) {
-                            if (marker.target instanceof L.Marker) {
-                                markers.toggleMarker(marker.target, assetLayerGroup)
-                                if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
+                .on("click", function (marker) {
+                    if (marker.originalEvent.ctrlKey) {
+                        if (marker.target instanceof L.Marker) {
+                            markers.toggleMarker(marker.target, assetLayerGroup)
+                            if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
+                        }
+                    } else {
+                        var panel = $('.sidebar-pane.active');
+                        var panelId = panel.attr('id');
+                        var recBounds = L.latLngBounds(record.bounds);
 
+                        // was a marker already highlighted?
+                        if (highlightedId) {
+                            $('.sidebar-pane').data('has-graph', false);
+
+                            switch (panelId) {
+                                case "graphs":
+                                    updatePieChart(record.count, record.fullstats);
+                                    panel.data('has-graph', true);
+                                    break;
+                                case "swarm-plots":
+                                    if (viewMode === 'abnd') {
+                                        PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                    } else {
+                                        createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                    } 
+                                    break;
+                                case "marker-table":
+                                    updateTable("#table-contents", buildBbox(recBounds));
+                                    panel.data('has-graph', true);
+                                    break;
+                                default:
+                                    break;
                             }
-                        } else {
 
-                            var panel = $('.sidebar-pane.active');
-                            var panelId = panel.attr('id');
+                            prevent = false;
+                            return;
+                        }
 
-                            var recBounds = L.latLngBounds(record.bounds);
+                        if (sidebarClick) {
+                            switch (panelId) {
+                                case "graphs":
+                                    if (!panel.data('has-graph')) {
+                                        updatePieChart(record.count, record.fullstats);
+                                        panel.data('has-graph', true);
+                                    }
+                                    break;
+                                case "swarm-plots":
+                                    if (viewMode === 'abnd') {
+                                        PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                    } else if (!panel.data('has-graph')) {
+                                        createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                    }
+                                    break;
+                                case "marker-table":
+                                    if (!panel.data('has-graph')) {
+                                        updateTable("#table-contents", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
 
-                            // was a marker already highlighted?
-                            if (highlightedId) {
+                            prevent = false;
+                            return;
+                        }
 
+                        var wasHighlighted = false;
+                        if (layer._icon === highlight) wasHighlighted = true;
+                        removeHighlight(layer);
+                        highlightMarker(layer);
+                        timer = setTimeout(function () {
+                            if (!prevent) {
+                                if (wasHighlighted) {
+                                    removeHighlight();
+                                    sidebar.close();
+                                    setTimeout(function () {
+                                        resetPlots()
+                                    }, delay);
+                                    return;
+                                }
+
+                                if ($('#sidebar').hasClass('collapsed')) {
+                                    if ($('.sidebar-pane.active').attr('id') === 'help') {
+                                       sidebar.open('graphs');
+                                    } else {
+                                        $('#swarm-chart-area').empty();
+                                        $('#table-contents').empty();
+                                        sidebar.open(panelId);
+                                    }
+                                }
+
+                                // Determine the open pane and update the right graph
                                 $('.sidebar-pane').data('has-graph', false);
 
                                 switch (panelId) {
@@ -1611,158 +1653,63 @@ function loadSolr(parameters) {
                                         panel.data('has-graph', true);
                                         break;
                                     case "swarm-plots":
-                                        if (PopulationBiologyMap.methods.qs('view') === 'abnd') {
-                                            PopulationBiologyMap.methods.createProjectSelect("#swarm-plots", buildBbox(recBounds));
+                                        if (viewMode === 'abnd') {
+                                            PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
                                         } else {
-                                          createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
-                                          panel.data('has-graph', true);
-                                        } 
-                                        break;
-                                    case "marker-table":
-                                        updateTable("#table-contents", buildBbox(recBounds));
-                                        panel.data('has-graph', true);
-                                        break;
-                                    default:
-                                        break;
-                                }
-
-                                prevent = false;
-                                return;
-                            }
-
-                            if (sidebarClick) {
-
-                                switch (panelId) {
-                                    case "graphs":
-                                        if (!panel.data('has-graph')) {
-                                            updatePieChart(record.count, record.fullstats);
-                                            panel.data('has-graph', true);
-                                        }
-                                        break;
-                                    case "swarm-plots":
-					if (PopulationBiologyMap.methods.qs('view') === 'abnd') {
-                                            PopulationBiologyMap.methods.createProjectSelect("#swarm-plots", buildBbox(recBounds));
-                                        } else if (!panel.data('has-graph')) {
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                             panel.data('has-graph', true);
                                         }
                                         break;
                                     case "marker-table":
-                                        if (!panel.data('has-graph')) {
-                                            updateTable("#table-contents", buildBbox(recBounds));
-                                            panel.data('has-graph', true);
-                                        }
+                                        updateTable("#table-contents", buildBbox(recBounds));
+                                        panel.data('has-graph', true);
+                                        break;
+                                    case "help":
+                                        updatePieChart(record.count, record.fullstats);
+                                        panel.data('has-graph', true);
+                                        sidebar.open('graphs');
                                         break;
                                     default:
                                         break;
                                 }
-
-                                prevent = false;
-                                return;
                             }
+                        }, delay);
+                        prevent = false;
+                    }
+                })
+                .on("mouseover", function (e) {
+                    moveTopMarker(layer);
+                    var recBounds = L.latLngBounds(record.bounds);
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                    rectHighlight = L.rectangle(recBounds, {
+                        color: "grey",
+                        weight: 1,
+                        fill: true,
+                        clickable: false
+                    }).addTo(map);
 
-                            var wasHighlighted = false;
-                            if (layer._icon === highlight) wasHighlighted = true;
-                            removeHighlight(layer);
-                            highlightMarker(layer);
-                            timer = setTimeout(function () {
-                                if (!prevent) {
-
-                                    if (wasHighlighted) {
-                                        removeHighlight();
-                                        sidebar.close();
-                                        setTimeout(function () {
-                                            resetPlots()
-                                        }, delay);
-                                        return;
-                                    }
-
-                                    if ($('#sidebar').hasClass('collapsed')) {
-                                        if ($('.sidebar-pane.active').attr('id') === 'help') {
-                                            sidebar.open('graphs');
-                                        } else {
-                                            $('#swarm-chart-area').empty();
-                                            $('#table-contents').empty();
-                                            sidebar.open(panelId);
-                                        }
-                                    }
-
-                                    // Determine the open pane and update the right graph
-                                    $('.sidebar-pane').data('has-graph', false);
-
-                                    switch (panelId) {
-                                        case "graphs":
-                                            updatePieChart(record.count, record.fullstats);
-                                            panel.data('has-graph', true);
-                                            break;
-                                        case "swarm-plots":
-                                            if (PopulationBiologyMap.methods.qs('view') === 'abnd') {
-                                                //var data = [{"data": [[1951, 1308], [1951, 0], [1952, 1201], [1953, 937], [1954, 1037], [1955, 1023], [1956, 959], [1957, 928], [1958, 1024], [1959, 814], [1960, 939], [1961, 1114], [1962, 1563], [1963, 948], [1964, 995], [1965, 1038], [1966, 892], [1967, 1153], [1968, 821], [1969, 930], [1969, 0]], "name": "Elkhart"}, {"data": [[1951, 1579], [1952, 1741], [1953, 1465], [1954, 1072], [1955, 1122], [1956, 1025], [1957, 1414], [1958, 1338], [1959, 1163], [1960, 1715], [1961, 1230], [1962, 1523], [1963, 1525], [1964, 1618], [1965, 1368], [1966, 1131], [1967, 1045], [1968, 1343], [1969, 1024]], "name": "South Bend"}];
-                                                PopulationBiologyMap.methods.createProjectSelect("#swarm-plots", buildBbox(recBounds));
-
-                                            } else {
-                                                createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
-                                                panel.data('has-graph', true);
-                                            }
-                                            break;
-                                        case "marker-table":
-                                            updateTable("#table-contents", buildBbox(recBounds));
-                                            panel.data('has-graph', true);
-                                            break;
-                                        case "help":
-                                            updatePieChart(record.count, record.fullstats);
-                                            panel.data('has-graph', true);
-                                            sidebar.open('graphs');
-
-                                            break;
-
-                                        default:
-                                            break;
-                                    }
-
-                                }
-                            }, delay);
-                            prevent = false;
-                        }
-                    })
-                    .on("mouseover", function (e) {
-                        moveTopMarker(layer);
-                        var recBounds = L.latLngBounds(record.bounds);
-                        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-
-                        rectHighlight = L.rectangle(recBounds, {
-                            color: "grey",
-                            weight: 1,
-                            fill: true,
-                            clickable: false
-                        }).addTo(map);
-
-                        // tooltip.css("left", e.containerPoint.x + 20)
-                        //     .css("top", e.containerPoint.y - 20)
-                        //     .clearQueue()
-                        //     .animate({
-                        //             opacity: 1
-                        //         }, 400, function () {
-                        //             //Animation complete
-                        //         }
-                        //     );
-
-
-                    })
-                    .on("mouseout", function () {
-                        removeTopMarker(layer);
-                        if (rectHighlight !== null) map.removeLayer(rectHighlight);
-                        rectHighlight = null;
-                        tooltip.clearQueue()
-                            .animate({
-                                    opacity: 0
-                                }, 400, function () {
-                                    //Animation complete
-                                }
-                            );
+                    // tooltip.css("left", e.containerPoint.x + 20)
+                    //     .css("top", e.containerPoint.y - 20)
+                    //     .clearQueue()
+                    //     .animate({
+                    //             opacity: 1
+                    //         }, 400, function () {
+                    //             //Animation complete
+                    //         }
+                    //     );
+                })
+                .on("mouseout", function () {
+                    removeTopMarker(layer);
+                    if (rectHighlight !== null) map.removeLayer(rectHighlight);
+                    rectHighlight = null;
+                    tooltip.clearQueue()
+                        .animate({
+                            opacity: 0
+                        }, 400, function () {
+                            //Animation complete
                     });
+                });
             }
-
         };
 
         // set options for the main markers layer
@@ -1774,17 +1721,14 @@ function loadSolr(parameters) {
         // detect zoom changes
         var zoomDelta = endingZoom - startingZooom;
 
-
         // clear the main layer after copying everything to a temp layer to enable animations
         if (clear) {
             assetLayerGroup.eachLayer(function (marker) {
                 if (marker instanceof L.Marker) {
-
                     marker.options.remove = true;
                 }
             })
             // assetLayerGroup.clearLayers()
-
         }
         // initiate storage of marker coordinates on the temp layer but don't attach it on the map
         //ToDo: move this to the initiliasize function of the library
@@ -1811,23 +1755,18 @@ function loadSolr(parameters) {
                 $(icon).one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
                     $(icon).removeClass("leaflet-marker-icon-anim");
                 });
-
-
             }
-
-
         });
+        
         //IMPORTANT: copy the stored coords from the temp layer to the main layer
         // We'll use this values later to determine the starting location of the marker
         // assetLayerGroup.initLatLngStorage();
         assetLayerGroup.storedMarkerCoords = tempLayerGroup.storedMarkerCoords;
 
-
         // inform the user that data is loaded
         if (rectHighlight !== null) map.removeLayer(rectHighlight);
         rectHighlight = null;
         map.spin(false);
-
 
         // assetLayerGroup.bringToBack();
         // wrap this around a timeout call since it's not working otherwise
@@ -1840,22 +1779,18 @@ function loadSolr(parameters) {
 
                         // zooming in or panning
                         if (zoomDelta >= 0) {
-
-                            $(icon).addClass("leaflet-marker-icon-fout")
-
+                            $(icon).addClass("leaflet-marker-icon-fout");
                             setTimeout(function () {
                                 // var lakis = marker.getLatLng
                                 // marker.setLatLng(lakis)
                                 marker.setOpacity(0);
                                 setTimeout(function () {
-                                    assetLayerGroup.removeLayer(marker);
+                                    assetLayerGroup.removeLayer(marker);  
                                 }, 300)
                             })
                         } else { // zoomingOut
                             $(icon).addClass("leaflet-marker-icon-anim")
                             var finalLatLng = assetLayerGroup.startingLatLng(marker);
-
-
                             setTimeout(function () {
                                 // var lakis = marker.getLatLng
                                 // marker.setLatLng(lakis)
@@ -1863,28 +1798,50 @@ function loadSolr(parameters) {
                                 marker.setOpacity(0);
                                 setTimeout(function () {
                                     assetLayerGroup.removeLayer(marker);
+                                    if (PopulationBiologyMap.data.highlightedId != undefined) {
+                                        PopulationBiologyMap.data.highlightedId = undefined;
+                                    }
                                 }, 300)
                             })
                         }
                     } else {
-
                         var finalLatLng = assetLayerGroup.startingLatLng(marker);
                         marker.setLatLng(finalLatLng);
 
                         // Set it's opacity to 1. CSS will take care of the rest
                         marker.setOpacity(1);
                     }
-                    ;
-                }
-
+                } 
             });
+
+            //
+            setTimeout(function() {
+                highlightedId = PopulationBiologyMap.data.highlightedId;
+                if (highlightedId) {
+                    var marker = $('#' + highlightedId);
+                    //In order to avoid changing the click event code, unsetting highlightedID
+                    highlightedId = false
+
+                    if (marker.length > 0) {
+                        $(marker).trigger("click");
+                        highlightMarker(marker);
+                    } else {
+                        removeHighlight();
+                        sidebar.close();
+                        setTimeout(function () {
+                            resetPlots()
+                        }, delay);
+                    }
+                    highlightedId = false;
+                } else {
+                    PopulationBiologyMap.methods.resetMap();
+                }
+            }, 800);
         }, 50)
 
         // build a geohash grid
         if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, false);
         //ToDo: change the grid checkbox value to true when grid is switched on trough a URL parameter
-
-
     };
 
     // inform the user that data is loading
@@ -1892,10 +1849,10 @@ function loadSolr(parameters) {
     var qryParams = {
         bbox: buildBbox(map.getBounds()).replace(/&fq=/, ''),
         geo: geoLevel,
+        geomax: geohashLevel(map.options.maxZoom, "geohash"),
         term: mapSummarizeByToField(glbSummarizeBy).summarize
     };
     var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
-
 
     $.getJSON(url, {
         cache: true,
@@ -1903,17 +1860,14 @@ function loadSolr(parameters) {
             'Cache-Control': 'max-age=2592000'
         }
     }, buildMap)
-        .done(function () {
-            $(document).trigger("jsonLoaded");
-            // console.log("jsonLoaded")
-
-        })
-        .fail(function () {
-            console.log("Failed to load json");
-            map.spin(false);
-
-        });
-
+    .done(function () {
+        $(document).trigger("jsonLoaded");
+        // console.log("jsonLoaded")
+    })
+    .fail(function () {
+        console.log("Failed to load json");
+        map.spin(false);
+    });
 }
 
 /*
@@ -2037,10 +1991,12 @@ function updatePieChart(population, stats) {
 
         $('#pie-chart-header').empty();
 
+        var vSize = 400 + 10*stats.length;
+
         d3.select("#pie-chart-area svg")
             .attr("width", "100%")
-            .attr("height", "500px")
-            .style({width: "100%", height: "500px"});
+            .attr("height", vSize+"px")
+            .style({width: "100%" , height: vSize+"px"});
 
         nv.addGraph(function () {
             var chart = nv.models.pieChart()
@@ -2311,7 +2267,6 @@ function tableHtml(divid, results) {
                 };
 
                 row.smplAvgAbnd = row.sampleSize / row.collectionDuration;
-                [row.smplAvgAbndBgColor, row.smplAvgAbndTextColor] = legend.markerColor(Math.log10(row.smplAvgAbnd));
 
                 template = $.templates("#abndRowTemplate");
 
@@ -2531,10 +2486,7 @@ function filterMarkers(items, flyTo) {
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
-
-
     loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo})
-
 }
 
 function borderColor(type, element) {
@@ -2579,8 +2531,8 @@ function mapTypeToField(type) {
             return "collection_protocols_cvterms";
         case "Protocols":
             return "protocols_cvterms";
-        case "Stable ID":
-            return "accession";
+        case "Collection ID":
+            return "collection_assay_id_s";
         case "Insecticides":
             return "insecticide_cvterms";
         case "Collection date":
@@ -2672,7 +2624,7 @@ function mapTypeToLabel(type) {
             return 'label label-info'
         case 'Norm-IR' :
             return 'label label-secondary';
-        case 'Stable ID' :
+        case 'Collection ID' :
             return 'label label-warning';
         case 'Sample' :
             return 'label label-warning';
@@ -2718,7 +2670,7 @@ function mapTypeToIcon(type) {
             return 'fa-calendar-check-o';
         case 'Norm-IR' :
             return 'fa-bolt';
-        case 'Stable ID' :
+        case 'Collection ID' :
             return 'fa-tag';
         case 'Sample' :
             return 'fa-map-pin';
@@ -2742,6 +2694,8 @@ function mapTypeToIcon(type) {
             return 'fa-clock-o';
         case 'Phenotype':
             return 'fa-eye';
+        case 'Count':
+            return 'fa-hashtag';
         default :
             return 'fa-search';
 
