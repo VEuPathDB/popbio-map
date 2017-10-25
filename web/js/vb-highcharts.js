@@ -63,8 +63,9 @@
                     $("#projects-notice").show();
                     PopulationBiologyMap.data.project_title = undefined;
                 } else {
-                    $("#projects-notice").hide();;
+                    $("#projects-notice").hide();
                     PopulationBiologyMap.data.project_title = '';
+                    PopulationBiologyMap.data.project_id = Object.keys(projects_list)[0];
                 }
                 
                 $.ajax({
@@ -133,7 +134,8 @@
                         //Construct graph with ajax call to Solr servr
                         var data = PopulationBiologyMap.data.highcharts;
                         var project_title = PopulationBiologyMap.data.project_title;
-                        var title = "<a href=/popbio/project?id=project_id" + ">" + project_title + "</a>";
+                        var project_id = PopulationBiologyMap.data.project_id;
+                        var title = "<a href=/popbio/project?id=" + project_id + ">" + project_title + "</a>";
                         PopulationBiologyMap.methods.createStockchart(data, title); 
                         //Add tooltip to the title of the chart
                         $(".highcharts-title").tooltip({placement: "bottom", title:project_title});
