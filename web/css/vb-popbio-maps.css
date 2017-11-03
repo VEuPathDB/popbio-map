@@ -166,6 +166,12 @@ BODY {
 .sidebar-icon, circle, path, .boxplot {
     cursor : pointer;
 }
+
+/* fixes a problem from VB-2017-10 postmortem where sidebar icons were heavily obscured on Windows or Linux Chrome */
+.sidebar-tabs > li {
+    overflow: visible;
+}
+
 /*keep the curson inline with the tags if the space left is more than width*/
 /*span.twitter-typeahead {*/
 /*width: 250px;*/
