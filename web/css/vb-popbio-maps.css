@@ -626,15 +626,12 @@ div.error div, div.warning div, div.info div, div.hint div {
     -webkit-border-radius: 100%;
     border-radius: 100%;
     background: transparent;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.5), inset 2px 2px 4px rgba(0,0,0,.5);
-    -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), inset 2px 2px 4px rgba(0,0,0,.5);  
-    -moz-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), inset 2px 2px 4px rgba(0,0,0,.5);
     border: 3px solid;
     z-index: 1;
 }
 
 .scale-bars i{
-    border: 2px solid #ff7500;
+    border: 2px solid #808080;
 }
 
 /* Decoration of tooltip, if necessary */
