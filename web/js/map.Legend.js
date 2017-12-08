@@ -387,10 +387,10 @@ L.Control.MapLegend = L.Control.extend({
             // if (obj1 === 'no data') break;
             if (options.summarizeBy === 'Species') {
                 inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
-                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + obj1.capitalizeFirstLetter() + '</em><br>' : '+');
+                    '<i style="border-color:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + obj1.capitalizeFirstLetter() + '</em><br>' : '+');
             } else {
                 inHtml += '<span class="active-legend table-legend-term" type="' + type + '" value="' + obj1 + '"> ' +
-                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
+                    '<i style="border-color:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
             }
             inHtml += '</span>';
         }
@@ -466,10 +466,10 @@ L.Control.MapLegend = L.Control.extend({
                 // var abbrSpecies = obj1.replace(/^(\w{2})\S+\s(\w+)/, "$1. $2"); // converts Anopheles gambiae to An.
                                                                                 // gambiae
                 inHtml += '<div class="active-legend detailedTip" type="' + type + '" value="' + obj1 + '"> ' +
-                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + obj1.capitalizeFirstLetter() + '</em><br>' : '+');
+                    '<i style="border-color:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? '<em>' + obj1.capitalizeFirstLetter() + '</em><br>' : '+');
             } else {
                 inHtml += '<div class="active-legend detailedTip" type="' + type + '" value="' + obj1 + '"> ' +
-                    '<i style="background:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
+                    '<i style="border-color:' + sortedPalette[obj1] + ';" title="' + obj1.capitalizeFirstLetter() + '"></i> ' + (obj1 ? obj1.capitalizeFirstLetter() + '<br>' : '+');
             }
             inHtml += '</div>';
             cntLegend++; // update the counter of legend entries
@@ -497,7 +497,7 @@ L.Control.MapLegend = L.Control.extend({
             inHtml += '<div class="scale-bars">';
             // var colorsArr = L.ColorBrewer.Diverging.RdYlBu[10].slice(); // using slice to copy array by value
             $.each(colorsArr.reverse(), function (index, value) {
-                inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value + '; width: 10px; background-color: ' + value + ' ;"></i>';
+                inHtml += '<i style="margin: 0; color: ' + value + '; background: ' + value + ' ;"></i>';
             });
 
             inHtml += '</div></div>' +

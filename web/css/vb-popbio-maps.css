@@ -107,6 +107,7 @@ BODY {
     opacity       : 1;
     border-radius : 10px;
 }
+
 .min-value, .max-value {
     vertical-align : middle;
     width          : 25px;
@@ -166,6 +167,12 @@ BODY {
 .sidebar-icon, circle, path, .boxplot {
     cursor : pointer;
 }
+
+/* fixes a problem from VB-2017-10 postmortem where sidebar icons were heavily obscured on Windows or Linux Chrome */
+.sidebar-tabs > li {
+    overflow: visible;
+}
+
 /*keep the curson inline with the tags if the space left is more than width*/
 /*span.twitter-typeahead {*/
 /*width: 250px;*/
@@ -612,6 +619,19 @@ div.error div, div.warning div, div.info div, div.hint div {
     text-overflow:ellipsis;
     line-height: 17px;
     /*border-bottom: 1px dotted;*/
+}
+
+.active-legend i, #Other-Terms-List i{
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    background: transparent;
+    border: 3px solid;
+    z-index: 1;
+}
+
+.scale-bars i{
+    border: 2px solid #808080;
 }
 
 /* Decoration of tooltip, if necessary */
