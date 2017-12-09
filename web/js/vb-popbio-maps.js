@@ -811,6 +811,9 @@ function initializeMap(parameters) {
     // add geohashes grid
     if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
+    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype view here
+    if (viewMode === "geno") glbSummarizeBy = "Allele";
+
     // Now generate the legend
     // hardcoded species_category
     var url = solrPopbioUrl +viewMode + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
@@ -1052,8 +1055,20 @@ function initializeSearch() {
 
         if (viewMode !== "ir") {
             // $('#SelectView').val('smpl');
-            if (glbSummarizeBy === "Insecticide") glbSummarizeBy = "Species";
+            if (glbSummarizeBy === "Insecticide") {
+                if (viewMode === "geno") {
+                    glbSummarizeBy = "Allele";
+                } else {
+                    glbSummarizeBy = "Species";
+                } 
+            }
         }
+
+        if (viewMode !== "geno") {
+            // $('#SelectView').val('smpl');
+            if (glbSummarizeBy === "Allele") glbSummarizeBy = "Species";
+        }
+
 
         //Change the maximum zoom level depending on view
         if (viewMode == 'abnd') {
@@ -1229,6 +1244,11 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Insecticide')
         },
         {
+            value: 'genotype_name_s',
+            label: 'Allele',
+            icon: mapTypeToIcon('Allele')
+        },
+        {
             value: 'exp_protocols_ss',
             label: 'Protocols',
             icon: mapTypeToIcon('Protocols')
@@ -1324,6 +1344,115 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Duration')
         }
     ];
+    var genoFields = [
+        {
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_description_s',
+            label: 'Description',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_bundle_name_s',
+            label: 'Record type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_species_s',
+            label: 'Species',
+            icon: mapTypeToIcon('Taxonomy')
+        },
+        {
+            value: 'exp_sample_type_s',
+            label: 'Sample type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_label_s',
+            label: 'Label',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            icon: mapTypeToIcon('Date')
+        },
+        {
+            value: 'exp_collection_protocols_ss',
+            label: 'Collection protocols',
+            icon: mapTypeToIcon('Collection protocols')
+        },
+        {
+            value: 'exp_projects_ss',
+            label: 'Projects',
+            icon: mapTypeToIcon('Projects')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
+        },
+        {
+            value: 'exp_geolocations_ss',
+            label: 'Locations',
+            icon: mapTypeToIcon('Location')
+        },
+        {
+            value: 'exp_protocols_ss',
+            label: 'Protocols',
+            icon: mapTypeToIcon('Protocols')
+        },
+        {
+            value: 'exp_sample_size_i',
+            label: 'Specimens collected',
+            icon: mapTypeToIcon('Count')
+        },
+        {
+            value: 'exp_assay_id_s',
+            label: 'Assay Id',
+            icon: mapTypeToIcon('Assay Id')
+        },
+        {
+            value: 'exp_phenotypes_ss',
+            label: 'Phenotypes',
+            icon: mapTypeToIcon('Phenotypes')
+        },
+        {
+            value: 'exp_genotype_type_s',
+            label: 'Genotype Type',
+            icon: mapTypeToIcon('Genotype Type')
+        },
+        {
+            value: 'exp_genotype_name_s',
+            label: 'Genotype Name',
+            icon: mapTypeToIcon('Genotype Name')
+        },
+        /* Not needed for now 
+        {
+            value: 'exp_genotype_inverted_allele_count_i',
+            label: 'Inverted Allele Count',
+            icon: mapTypeToIcon('Inverted Allele Count')
+        },
+        {
+            value: 'exp_genotype_microsatellite_length_i',
+            label: 'Microsatellite Length',
+            icon: mapTypeToIcon('Microsatellite Length')
+        },
+        */
+        {
+            value: 'exp_genotype_mutated_protein_value_f',
+            label: 'Mutated Protein Value',
+            icon: mapTypeToIcon('Mutated Protein Value')
+        }
+    ];
 
     // empty the dropdown
     $('#select-export-fields').empty();
@@ -1347,7 +1476,9 @@ function updateExportFields(viewMode) {
         // Other view modes have only simple fields:
         // (but we can probably consolidate these as obj.subtext above is often empty anyway)
         var simpleFields = smplFields;
+        // Need to update this code since it is just repetivie
         if (viewMode === 'abnd') simpleFields = abndFields;
+        if (viewMode === 'geno') simpleFields = genoFields;
         $.each(simpleFields, function (index, obj) {
             $('#select-export-fields')
                 .append(
@@ -1405,6 +1536,8 @@ function loadSolr(parameters) {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
         } else if (viewMode === "abnd") {
             $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>');
+        } else if (viewMode === "geno") {
+            $("#markersCount").html(result.facets.alleleCount.roundDecimals(0) + ' visible genotypes summarized by ' + glbSummarizeBy + '</u>');  
         } else {
             $("#markersCount").html(result.response.numFound + ' visible samples summarized by ' + glbSummarizeBy + '</u>');
         }
@@ -1427,16 +1560,37 @@ function loadSolr(parameters) {
         facetResults.forEach(function (el) {
             // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be
             // processed later at the same time exclude them from [terms] so as to not display them twice
+            
+            //Will remove if not necessary, but just for testing
+            if (viewMode === 'abnd') { // || viewMode === 'geno') {
+                var geoCount = el.sumSmp;
+            } else if (viewMode === 'geno') {
+                //Using this to return a number
+                //el.alleleCount = Math.round(el.alleleCount * 10) / 10;
+                var geoCount = el.alleleCount.roundDecimals(0);  
+            } else {
+                var geoCount = el.count;
+            }
+
             var key = el.val,
                 elStats = [],
                 fullElStats = [],
-                geoCount = viewMode === 'abnd' ? el.sumSmp : el.count,
+                //geoCount = viewMode === 'abnd' ? el.sumSmp : el.count,
                 tagsTotalCount = 0;
             var geoTerms = el.term.buckets;
 
             geoTerms.forEach(function (inEl) {
                 var inKey = inEl.val;
-                var inCount = viewMode === 'abnd' ? inEl.sumSmp : inEl.count;
+
+                if (viewMode === 'abnd') { // || viewMode ==='geno') {
+                    var inCount = inEl.sumSmp;
+                } else if (viewMode === 'geno') {
+                    //Using this to return a number
+                    var inCount = inEl.alleleCount.roundDecimals(0);  
+                } else {
+                    var inCount = inEl.count;
+                }
+                //var inCount = viewMode === 'abnd' ? inEl.sumSmp : inEl.count;
 
                 if (inCount > 0) {
                     fullElStats.push({
@@ -1525,6 +1679,8 @@ function loadSolr(parameters) {
                 var size = 40;
                 // if (viewMode === 'abnd') { size = 60 };
                 var markerText = record.count;
+
+                //if ((viewMode === 'abnd' || viewMode === 'geno') && record.count > 999) {
                 if (viewMode === 'abnd' && record.count > 999) {
                     markerText = Math.round(record.count/1000)+"k";
                 }
@@ -1570,6 +1726,7 @@ function loadSolr(parameters) {
                                     panel.data('has-graph', true);
                                     break;
                                 case "swarm-plots":
+                                    // Geno viewmode will say that it is not availble in that mode
                                     if (viewMode === 'abnd') {
                                         PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
                                     } else {
@@ -1598,6 +1755,7 @@ function loadSolr(parameters) {
                                     }
                                     break;
                                 case "swarm-plots":
+                                    // Geno viewmode will say that it is not availble in that mode
                                     if (viewMode === 'abnd') {
                                         PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
                                     } else if (!panel.data('has-graph')) {
@@ -1653,6 +1811,7 @@ function loadSolr(parameters) {
                                         panel.data('has-graph', true);
                                         break;
                                     case "swarm-plots":
+                                        // Geno viewmode will say that it is not availble in that mode
                                         if (viewMode === 'abnd') {
                                             PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
                                         } else {
@@ -2272,6 +2431,41 @@ function tableHtml(divid, results) {
 
                 break;
 
+            case "geno":
+                row = {
+                    accession: element.accession,
+                    accessionType: 'Stable ID',
+                    bundleName: element.bundle_name,
+                    url: element.url,
+                    sampleType: element.sample_type,
+                    sampleTypeType: 'Sample type',
+                    geoCoords: element.geo_coords,
+                    geolocation: element.geolocations[0],
+                    geolocationType: 'Geography',
+                    species: species,
+                    speciesType: 'Taxonomy',
+                    bgColor: bgColor,
+                    textColor: getContrastYIQ(bgColor),
+                    collectionDate: frmDate,
+                    projects: borderColor('Project', element.projects),
+                    projectsType: 'Projects',
+                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
+                    collectionProtocolsType: 'Collection protocols',
+                    protocols: borderColor('Protocol', element.protocols),
+                    protocolsType: 'Protocols',
+                    sampleSize: element.sample_size_i,
+                    label: element.label,
+                    genotypeName: element.genotype_name_s,
+                    mutatedProteinValue: element.genotype_mutated_protein_value_f,
+                    mutatedProteinUnit: element.genotype_mutated_protein_unit_s
+                };
+
+                row.alleleCount = (element.sample_size_i * element.genotype_mutated_protein_value_f / 50).roundDecimals(0);
+
+                template = $.templates("#genoRowTemplate");
+
+                break;
+
             default:
                 row = {
                     accession: element.accession,
@@ -2535,6 +2729,8 @@ function mapTypeToField(type) {
             return "collection_assay_id_s";
         case "Insecticides":
             return "insecticide_cvterms";
+        case "Alleles":
+            return "genotype_name_s";
         case "Collection date":
             return "collection_date_range";
         case "Normalised IR":
@@ -2580,6 +2776,11 @@ function mapSummarizeByToField(type) {
             fields.type = "Insecticides";
             fields.field = "insecticide_s";
             break;
+        case "Allele":
+            fields.summarize = "genotype_name_s";
+            fields.type = "Alleles";
+            fields.field = "genotype_name_s";
+            break;
         case "Project":
             fields.summarize = "projects_category";
             fields.type = "Projects";
@@ -2615,6 +2816,9 @@ function mapTypeToLabel(type) {
         case 'Pubmed references' :
             return 'label label-success';
         case 'Insecticides' :
+            return 'label label-success';
+        //Color of the text
+        case 'Alleles' :
             return 'label label-success';
         case 'Collection protocols' :
             return 'label label-success';
@@ -2685,6 +2889,9 @@ function mapTypeToIcon(type) {
         case 'Location':
             return 'fa-location-arrow';
         case 'Insecticide':
+            return 'fa-eyedropper';
+        //Modifies what gets used as the icon in the search bar
+        case 'Alleles':
             return 'fa-eyedropper';
         case 'Protocols':
             return 'fa-sort-amount-desc';

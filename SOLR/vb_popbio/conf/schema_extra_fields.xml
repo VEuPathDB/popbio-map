@@ -349,11 +349,38 @@
            docValues="true"/>
     <copyField source="phenotype_value_unit_s" dest="exp_phenotype_value_unit_s"/>
 
-    <field name="exp_phenotype_value_type_s" type="string" indexed="false" stored="false" multiValued="false"
+    <field name="exp_description_s" type="string" indexed="false" stored="false" multiValued="false"
            docValues="true"/>
-    <copyField source="phenotype_value_type_s" dest="exp_phenotype_value_type_s"/>
+    <copyField source="description" dest="exp_description_s"/>
 
+    <field name="exp_phenotypes_ss" type="string" indexed="false" stored="false" multiValued="true"
+           docValues="true"/>
+    <copyField source="phenotypes" dest="exp_phenotypes_ss"/>
 
+    <field name="exp_annotations_ss" type="string" indexed="false" stored="false" multiValued="true"/>
+          <!-- For some reason get error with this set to true docValues="true"/>-->
+    <copyField source="annotations" dest="exp_annotations_ss"/>
+
+    <field name="exp_genotype_type_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="genotype_type_s" dest="exp_genotype_type_s"/>
+
+    <field name="exp_genotype_name_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="genotype_name_s" dest="exp_genotype_name_s"/>
+
+    <field name="exp_genotype_inverted_allele_count_i" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="genotype_inverted_allele_count_i" dest="exp_genotype_inverted_allele_count_i"/>
+
+    <field name="exp_genotype_microsatellite_length_i" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="genotype_microsatellite_length_i" dest="exp_genotype_microsatellite_length_i"/>
+
+    <field name="exp_genotype_mutated_protein_value_f" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="genotype_mutated_protein_value_f" dest="exp_genotype_mutated_protein_value_f"/>
+ 
     <!-- citations that could be DOI or PMID - DIRECTLY PROVIDED IN SOLR DOCS (no copyField) -->
     <field name="exp_citations_ss" type="string" indexed="false" stored="false" multiValued="true"
            docValues="true"/>
