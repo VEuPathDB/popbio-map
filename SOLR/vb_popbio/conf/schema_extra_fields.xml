@@ -349,6 +349,10 @@
            docValues="true"/>
     <copyField source="phenotype_value_unit_s" dest="exp_phenotype_value_unit_s"/>
 
+    <field name="exp_phenotype_value_type_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="phenotype_value_type_s" dest="exp_phenotype_value_type_s"/>
+
     <field name="exp_description_s" type="string" indexed="false" stored="false" multiValued="false"
            docValues="true"/>
     <copyField source="description" dest="exp_description_s"/>
