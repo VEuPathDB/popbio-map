@@ -661,3 +661,15 @@ div.error div, div.warning div, div.info div, div.hint div {
 #projects-notice {
     display: none;
 }
+
+#sidebar {
+    min-width: 400px;
+}
+
+#sidebar .sidebar-pane {
+    min-width: 400px;
+}
+
+#sidebar.collapsed {
+    min-width: 0px;
+}
