@@ -1650,7 +1650,6 @@
             <str name="type4query">type:("Projects" OR "Stable ID")</str>
             <double name="type4boost">1.5</double>
             <str name="debugQuery">false</str>
-            <str name="echoParams">all</str>
         </lst>
         <lst name="appends">
             <str name="fq">bundle:pop_sample_genotype</str>
@@ -1749,7 +1748,6 @@
 
     <requestHandler class="solr.SearchHandler" name="/genoAcat" default="false">
         <lst name="defaults">
-            <str name="echoParams">all</str>
             <str name="wt">json</str>
             <str name="indent">off</str>
             <str name="json.nl">map</str>
@@ -1851,7 +1849,6 @@
 
     <requestHandler class="solr.SearchHandler" name="/genoAcgrouped" default="false">
         <lst name="defaults">
-            <str name="echoParams">all</str>
             <str name="wt">json</str>
             <str name="indent">off</str>
             <str name="df">textsuggest</str>
