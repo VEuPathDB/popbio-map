@@ -1558,6 +1558,35 @@
 
     </requestHandler>
 
+    <requestHandler name="/genoTable" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="df">text</str>
+            <int name="rows">20</int>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_genotype</str>
+            <str name="fq">has_geodata:true</str>
+            <str name="fq">!sample_size_i:0</str>
+            <str name="fq">sample_size_i:*</str>
+            <str name="fq">genotype_type_s:"mutated protein"</str>
+            <str name="fq">genotype_cvterms:variant_frequency</str>
+        </lst>
+        <lst name="invariants">
+            <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
+                species_category, collection_protocols, collection_date, collection_date_range, projects, genotype_name_s, label, sample_size_i, genotype_mutated_protein_value_f, genotype_mutated_protein_unit_s
+            </str>
+            <str name="q.op">OR</str>
+        </lst>
+
+    </requestHandler>
+
+
     <!-- Search Components
 
          Search components are registered to SolrCore and used by

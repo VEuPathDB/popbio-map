@@ -3,7 +3,7 @@ L.Control.MapLegend = L.Control.extend({
         position: 'bottomright',
         numberOfColors: 20,  // still not using this :(
         summarizeBy: 'Species',
-        sortBy: 'Color',
+        sortBy: 'Name',
         lum: 0.7,
         trafficlight: {
             colorBrewer: L.ColorBrewer.Diverging.RdYlBu[10].slice()
@@ -361,6 +361,7 @@ L.Control.MapLegend = L.Control.extend({
             '<span class="caret"></span>' +
             ' </button > ' +
             '<ul class = "dropdown-menu" aria-labelledby="summByDropdown"> ' +
+            (viewMode === 'geno' ? '<li><a href="#" data-value="Allele">Allele</a></li> ' : '') +
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
@@ -426,6 +427,7 @@ L.Control.MapLegend = L.Control.extend({
             '<span class="caret"></span>' +
             ' </button > ' +
             '<ul class = "dropdown-menu dropdown-menu-right" aria-labelledby="summByDropdown"> ' +
+            (viewMode === 'geno' ? '<li><a href="#" data-value="Allele">Allele</a></li> ' : '') +
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +

@@ -60,6 +60,7 @@
     <!-- adding highcharts -->
     <!-- <script type="text/javascript" src="https://code.highcharts.come/highcharts.src.js"></script> -->
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <!-- End of remote Javascript libraries -->
 
     <!-- Local Javascript libraries-->
@@ -660,6 +661,7 @@
                         <option data-icon="fa-tags" value="smpl">Samples</option>
                         <option data-icon="fa-eyedropper" value="ir">Insecticide Resistance</option>
                         <option data-icon="fa-line-chart" value="abnd">Abundance</option>
+                        <option data-icon="fa-database" value="geno">Genotypes</option>
                     </select>
                     </span>
 
@@ -1359,6 +1361,183 @@
 
 </script>
 
+<!-- jsrender template for sample info in the table slider (Genotype view)-->
+
+<script type="text/x-jsrender" id="genoRowTemplate">
+    <div class="row no-pad marker-row">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
+                    <i> {{html:species}}</i>
+                </span>
+            </h3>
+            <p>{{html:bundleName}}
+                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                    {{html:accession}}
+                </span>
+                <a href="{{url:url}}" target="_blank">
+                    <i class="fa  fa-external-link " aria-hidden="true"></i>
+                </a>
+            {{if sampleSize}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}})
+                </span></p>
+            {{/if}}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa  fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa  fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                        {{html:geolocation}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa  fa-database " title="Projects"></i><b> Project(s)</b>
+                </p>
+                <ul>
+                {{for projects}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa  fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa  fa-external-link " aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa  fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                </p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+		<div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Genotype data</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><b>Allele Count:</b> {{html:alleleCount}} mutated proteins</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+				<p><i class="fa  fa-bug" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:sampleSize}} individual(s)</p>
+				<p><i class="fa  fa-book" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:label}}</p>
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-archive" title="Genotype Name"></i><b> Genotype Name</b></p>
+                <ul>
+                    <li>
+                        {{html:genotypeName}}
+                    </li>
+                </ul>
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-file" title="Protein Value"></i><b> Protein Value</b></p>
+                <ul>
+                    <li>
+                        {{html:mutatedProteinValue}}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+                <p style="color: {{attr:bgColor}};"><i class="fa fa-file" title="Protein Unit"></i><b> Protein Unit</b></p>
+                <ul>
+                    <li>
+                        {{html:mutatedProteinUnit}}
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</script>
+
+
 <!-- jsrender template for point info in beeswarm plot (IR view)-->
 
 <script type="text/x-jsrender" id="irBsPointTemplate">
@@ -1688,6 +1867,164 @@
         </div>
     </div>
 </script>
+
+<!-- jsrender template for point info in beeswarm plot (Genotypes view, not used yet)-->
+
+<script type="text/x-jsrender" id="genoBsPointTemplate">
+    <div class="row no-pad" style="width: 370px;">
+        <div class="col-md-12" >
+            <div class="cancel" id="cancel-hover"><i class="fa fa-fw fa-times"></i></div>
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
+                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
+                    <i> {{html:species}}</i>
+                </span>
+            </h3>
+            <p>{{html:bundleName}}
+                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                    {{html:accession}}
+                </span>
+                <a href="{{url:url}}" target="_blank">
+                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                </a>            {{if sampleSize}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}})
+                </span></p>
+            {{/if}}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="fa fa-fw fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-fw fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                        {{html:geolocation}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
+                </p>
+                <ul>
+                {{for projects}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                </p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Abundance data</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><b>Abundance:</b> {{html:smplAvgAbnd}} individual(s) per day</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+				<p><i class="fa  fa-bug" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:sampleSize}} individual(s)</p>
+				<p><i class="fa  fa-calendar-check-o" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:collectionDuration}} day(s)</p>
+
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="text-align: center;"><i class="fa fa-fw fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
+            </div>
+        </div>
+    </div>
+</script>
+
 
 
 <!-- jsrender template for Project info in the table view-->
