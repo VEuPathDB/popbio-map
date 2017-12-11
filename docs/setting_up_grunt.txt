@@ -1,0 +1,7 @@
+  739  2017-12-10 11:28:52 npm
+  743  2017-12-10 11:30:21 npm install 
+  746  2017-12-10 11:32:44 sudo npm install -g grunt-cli
+  749  2017-12-10 11:33:09 sudo npm install -g grunt-text-replace
+  751  2017-12-10 11:33:27 sudo npm install grunt-text-replace
+ 1030  2017-12-11 11:16:03 history | grep npm
+ 1031  2017-12-11 11:16:19 history | grep npm > setting_up_grunt.txt

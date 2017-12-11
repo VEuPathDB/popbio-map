@@ -6,20 +6,21 @@
 function createBeeViolinPlot(divid, filter) {
 
     "use strict";
-    $('#swarm-plots h3').text('Insecticide Resistance statistics for selected samples');
-
-    // Only proceed if in IR mode, otherwise clear the graph
-    if ($('#SelectView').val() === 'smpl') {
+        // Only proceed if in IR mode, otherwise clear the graph
+    if ($('#SelectView').val() !== 'ir') {
+        $('#swarm-plots h3').text('Population Biology Map Graph Area');
 
         $(divid).html(
             '<div style="text-align: center; margin-top: 30px">' +
             '<i class="fa fa-area-chart" style="color: #C3312D; font-size: 12em"></i>' +
-            '<h1>Ooops</h1>' +
-            '<h4>this plot type only works with Insecticide Resistance data</h4>' +
-            '<h4>switch to IR phenotypes view and try again</h4>' +
+            '<h4>this plot type only works in the</h4>' +
+            '<h4>Insecticide Resistance and Abundance views</h4>' +
+            '<h4>switch to IR phenotypes or Abundance view and try again</h4>' +
             '</div>'
         );
         return;
+    } else {
+        $('#swarm-plots h3').text('Insecticide Resistance statistics for selected samples');
     }
 
     var self = this;
