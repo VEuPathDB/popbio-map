@@ -270,10 +270,10 @@
                 <ul>
                     <li> {{html:genotypeName}} </li>
                 </ul>
-            </div>
+              </div>
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
-                <ul> {{for protocols}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Protocols" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} {{#data.name}} </span>
+                <ul> {{for protocols}} <li> {{if #data.brdColor}} {{if #data.brdColor === '#000000'}} <span type="Protocols" value="{{attr:#data.name}}"> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i> {{else}} <span class="active-term" type="Protocols" value="{{attr:#data.name}}"> {{/if}} {{>#data.name}} </span>
                     </li> {{/for}} </ul>
             </div>
         </div>
