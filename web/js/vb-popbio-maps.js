@@ -1535,8 +1535,18 @@ function loadSolr(parameters) {
         if (viewMode === "ir") {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
         } else if (viewMode === "abnd") {
+
+            if (result.facets.sumSmp === undefined) {
+                result.facets.sumSmp = 0;
+            }
+
             $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>');
         } else if (viewMode === "geno") {
+
+            if (result.facets.alleleCount === undefined) {
+                result.facets.alleleCount = 0;
+            }
+
             $("#markersCount").html(result.facets.alleleCount.roundDecimals(0) + ' visible genotypes summarized by ' + glbSummarizeBy + '</u>');  
         } else {
             $("#markersCount").html(result.response.numFound + ' visible samples summarized by ' + glbSummarizeBy + '</u>');
