@@ -1530,7 +1530,7 @@
             <double name="type2boost">1.6</double>
             <str name="type3query">type:("Title" OR "Description")</str>
             <double name="type3boost">1.1</double>
-            <str name="type4query">type:("Projects" OR "Stable ID")</str>
+            <str name="type4query">type:("Project" OR "Stable ID" or "PubMed")</str>
             <double name="type4boost">1.5</double>
             <str name="debugQuery">false</str>
         </lst>
@@ -1565,12 +1565,12 @@
             <double name="typeboost">2.0</double>
             <str name="type1query">type:"Taxonomy"</str>
             <double name="type1boost">1.6</double>
-            <str name="type2query">type:("Sample type" OR "Geography")</str>
-            <double name="type2boost">1.6</double>
-            <str name="type3query">type:("Title" OR "Description")</str>
-            <double name="type3boost">1.1</double>
-            <str name="type4query">type:("Projects" OR "Stable ID")</str>
-            <double name="type4boost">1.5</double>
+            <str name="type2query">type:("Protocol" OR "Insecticide")</str>
+            <double name="type2boost">1.4</double>
+            <str name="type3query">type:("Project" OR "Stable ID" or "PubMed")</str>
+            <double name="type3boost">1.2</double>
+            <str name="type4query">type:("Title" OR "Description")</str>
+            <double name="type4boost">1.0</double>
             <str name="debugQuery">false</str>
         </lst>
         <lst name="appends">
@@ -1608,7 +1608,7 @@
             <double name="type2boost">1.6</double>
             <str name="type3query">type:("Title" OR "Description")</str>
             <double name="type3boost">1.1</double>
-            <str name="type4query">type:("Projects" OR "Stable ID")</str>
+            <str name="type4query">type:("Project" OR "Stable ID")</str>
             <double name="type4boost">1.5</double>
             <str name="debugQuery">false</str>
         </lst>
@@ -1641,19 +1641,19 @@
                 product(map(query($type1query),0,0,1,$type1boost),map(query($type2query),0,0,1,$type2boost),map(query($type3query),0,0,1,$type3boost),map(query($type4query),0,0,1,$type4boost),$typeboost)
             </str>
             <double name="typeboost">2.0</double>
-            <str name="type1query">type:"Taxonomy"</str>
-            <double name="type1boost">1.6</double>
-            <str name="type2query">type:("Sample type" OR "Geography" OR "Allele")</str>
+            <str name="type1query">type:"Locus"</str>
+            <double name="type1boost">1.8</double>
+            <str name="type2query">type:("Allele" OR "Geography")</str>
             <double name="type2boost">1.6</double>
-            <str name="type3query">type:("Title" OR "Description")</str>
-            <double name="type3boost">1.1</double>
-            <str name="type4query">type:("Projects" OR "Stable ID")</str>
-            <double name="type4boost">1.5</double>
+            <str name="type3query">type:("Title" OR "Description" OR "Taxonomy")</str>
+            <double name="type3boost">1.2</double>
+            <str name="type4query">type:("Projects" OR "Stable ID" or "Taxonomy")</str>
+            <double name="type4boost">1.4</double>
             <str name="debugQuery">false</str>
         </lst>
         <lst name="appends">
             <str name="fq">bundle:pop_sample_genotype</str>
-            <!--<str name="fq">genotype_type_s:"mutated protein"</str>-->
+            <!-- for some reason this field is stored but not indexed: <str name="fq">genotype_type_s:"mutated protein"</str> -->
         </lst>
         <lst name="invariants">
             <str name="defType">edismax</str>

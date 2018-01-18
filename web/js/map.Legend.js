@@ -361,6 +361,7 @@ L.Control.MapLegend = L.Control.extend({
             '<span class="caret"></span>' +
             ' </button > ' +
             '<ul class = "dropdown-menu" aria-labelledby="summByDropdown"> ' +
+            (viewMode === 'geno' ? '<li><a href="#" data-value="Locus">Locus</a></li> ' : '') +
             (viewMode === 'geno' ? '<li><a href="#" data-value="Allele">Allele</a></li> ' : '') +
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
@@ -427,6 +428,7 @@ L.Control.MapLegend = L.Control.extend({
             '<span class="caret"></span>' +
             ' </button > ' +
             '<ul class = "dropdown-menu dropdown-menu-right" aria-labelledby="summByDropdown"> ' +
+            (viewMode === 'geno' ? '<li><a href="#" data-value="Locus">Locus</a></li> ' : '') +
             (viewMode === 'geno' ? '<li><a href="#" data-value="Allele">Allele</a></li> ' : '') +
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
