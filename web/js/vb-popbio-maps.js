@@ -304,7 +304,7 @@ function bindEvents() {
         PaneSpin('vbEntityTooltip', 'start');
 
         // bind the events to close the popup
-        $(document).one('click', '#entity-cancel-hover', function (event) {
+        $(document).on('click', '#entity-cancel-hover', function (event) {
 
             entityTooltip.animate(
                 {
@@ -757,6 +757,9 @@ function initializeMap(parameters) {
         zoom: zoomLevel,
         zoomControl: false,
         zoomAnimationThreshold: 16,
+        fullscreenControl: {
+            pseudoFullscreen: true
+        },
         worldCopyJump: true  //  the map tracks when you pan to another "copy" of the world and seamlessly jumps to the
                              // original one so that all overlays like markers and vector layers are still visible.
     });
@@ -764,11 +767,6 @@ function initializeMap(parameters) {
     map.spin(true);
     startingZooom = map.getZoom();
     endingZoom = map.getZoom();
-
-    map.addControl(new L.Control.FullScreen({
-        position: "topright",
-        forcePseudoFullscreen: true
-    }));
 
     map.addControl(new L.Control.ZoomMin({position: "topright"}));
     sidebar = L.control.sidebar('sidebar').addTo(map);
@@ -1803,8 +1801,9 @@ function loadSolr(parameters) {
                                 }
 
                                 if ($('#sidebar').hasClass('collapsed')) {
-                                    if ($('.sidebar-pane.active').attr('id') === 'help') {
+                                    if (panelId === 'help' || panelId === 'vectorbase') {
                                        sidebar.open('graphs');
+                                       panelId = 'graphs';
                                     } else {
                                         $('#swarm-chart-area').empty();
                                         $('#table-contents').empty();
@@ -1832,11 +1831,6 @@ function loadSolr(parameters) {
                                     case "marker-table":
                                         updateTable("#table-contents", buildBbox(recBounds));
                                         panel.data('has-graph', true);
-                                        break;
-                                    case "help":
-                                        updatePieChart(record.count, record.fullstats);
-                                        panel.data('has-graph', true);
-                                        sidebar.open('graphs');
                                         break;
                                     default:
                                         break;
@@ -2970,7 +2964,9 @@ function resetPlots() {
         pieHTML =
             '<h3>Summary view for selected samples</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-pie-chart" style="color: #2C699E; font-size: 12em"></i>' +
+            '<span class="fa-stack fa-stack-lg">' +
+            '<i class="fa fa-chrome fa-stack-2x"></i>' + 
+            '<i class="fa fa-circle fa-stack-1x"/></i></span>' +
             '<h1>Go on!</h1>' +
             '<h4>click a marker on the map</h4>' +
             '<h4>to plot some real data</h4> ' +
@@ -2997,7 +2993,9 @@ function resetPlots() {
         pieHTML =
             '<h3>Summary view for selected samples</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-pie-chart" style="color: #2C699E; font-size: 12em"></i>' +
+            '<span class="fa-stack fa-stack-lg">' +
+            '<i class="fa fa-chrome fa-stack-2x"></i>' + 
+            '<i class="fa fa-circle fa-stack-1x"/></i></span>' +
             '<h4>click a marker on the map</h4>' +
             '</div>' +
             '<div id="pie-chart-area">' +

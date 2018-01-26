@@ -22,7 +22,7 @@ module.exports = function (grunt) {
 
                     'web/dist/js/<%= pkg.name %>_libs.js': [
                         'web/libs/leaflet-dvf/leaflet-dvf.js',
-                        'web/libs/leaflet.fullscreen/Control.FullScreen.js',
+                        'web/libs/leaflet.fullscreen/Leaflet.fullscreen.js',
                         'web/libs/spin.js/spin.js',
                         'web/libs/Leaflet.Spin/leaflet.spin.js',
                         'web/libs/leaflet-zoom-min/L.Control.ZoomMin.js',
@@ -73,7 +73,7 @@ module.exports = function (grunt) {
                     'web/dist/css/<%= pkg.name %>.min.css': [
                         'web/libs/leaflet-dvf/css/dvf.css',
                         // 'web/css/MarkerCluster.Default.css',
-                        'web/libs/leaflet.fullscreen/Control.FullScreen.css',
+                        'web/libs/leaflet.fullscreen/leaflet.fullscreen.css',
                         'web/libs/leaflet-zoom-min/L.Control.ZoomMin.css',
                         'web/libs/sidebar-v2/leaflet-sidebar.css',
                         'web/libs/nvd3/build/nv.d3.css',
