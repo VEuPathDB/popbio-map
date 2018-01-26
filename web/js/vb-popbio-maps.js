@@ -267,7 +267,7 @@ function bindEvents() {
             '</div>';
 
         switch (type) {
-            case 'Projects':
+            case 'Project':
                 template = $.templates("#projectInfoTemplate");
                 entityURL = '/popbio/project/?id=' + id;
                 entityRestURL = '/popbio/REST/project/' + id + '/head';
@@ -620,7 +620,9 @@ function bindEvents() {
     // Enable the add dates button only if the date fields are populated
     $("#date-start").datepicker()
     .on('changeDate', function (e) {
-        $("#add-dates").prop('disabled', false);
+        if (e.dates.length) $("#add-dates").prop('disabled', false);
+        // animating the colours to highlight this button will require adding jquery-ui
+        // animating size/position just looks nasty
     });
 
     // add the date filter into search
@@ -1066,7 +1068,7 @@ function initializeSearch() {
 
         if (viewMode !== "geno") {
             // $('#SelectView').val('smpl');
-            if (glbSummarizeBy === "Allele") glbSummarizeBy = "Species";
+            if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") glbSummarizeBy = "Species";
         }
 
 
@@ -1147,13 +1149,13 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_collection_protocols_ss',
-            label: 'Collection protocols',
-            icon: mapTypeToIcon('Collection protocols')
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
         },
         {
             value: 'exp_projects_ss',
-            label: 'Projects',
-            icon: mapTypeToIcon('Projects')
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
         },
         {
             value: 'exp_geo_coords_s',
@@ -1167,8 +1169,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_protocols_ss',
-            label: 'Protocols',
-            icon: mapTypeToIcon('Protocols')
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
         }
 
     ];
@@ -1181,7 +1183,7 @@ function updateExportFields(viewMode) {
         {
             value: 'exp_assay_id_s',
             label: 'Assay ID',
-            icon: mapTypeToIcon('Collection ID')
+            icon: mapTypeToIcon('Assay ID')
         },
         {
             value: 'exp_bundle_name_s',
@@ -1220,8 +1222,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_projects_ss',
-            label: 'Projects',
-            icon: mapTypeToIcon('Projects')
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
         },
         {
             value: 'exp_geo_coords_s',
@@ -1242,11 +1244,6 @@ function updateExportFields(viewMode) {
             value: 'exp_insecticide_s',
             label: 'Insecticide',
             icon: mapTypeToIcon('Insecticide')
-        },
-        {
-            value: 'genotype_name_s',
-            label: 'Allele',
-            icon: mapTypeToIcon('Allele')
         },
         {
             value: 'exp_protocols_ss',
@@ -1315,8 +1312,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_projects_ss',
-            label: 'Projects',
-            icon: mapTypeToIcon('Projects')
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
         },
         {
             value: 'exp_geo_coords_s',
@@ -1392,8 +1389,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_projects_ss',
-            label: 'Projects',
-            icon: mapTypeToIcon('Projects')
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
         },
         {
             value: 'exp_geo_coords_s',
@@ -1417,8 +1414,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_assay_id_s',
-            label: 'Assay Id',
-            icon: mapTypeToIcon('Assay Id')
+            label: 'Assay ID',
+            icon: mapTypeToIcon('Assay ID')
         },
         {
             value: 'exp_phenotypes_ss',
@@ -1434,6 +1431,11 @@ function updateExportFields(viewMode) {
             value: 'exp_genotype_name_s',
             label: 'Genotype Name',
             icon: mapTypeToIcon('Genotype Name')
+        },
+        {
+            value: 'exp_locus_name_s',
+            label: 'Locus',
+            icon: mapTypeToIcon('Locus')
         },
         /* Not needed for now 
         {
@@ -2388,7 +2390,7 @@ function tableHtml(divid, results) {
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: frmDate,
                     projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
+                    projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                     collectionProtocolsType: 'Collection protocols',
                     protocols: borderColor('Protocol', element.protocols),
@@ -2397,7 +2399,7 @@ function tableHtml(divid, results) {
                     phenotypeValueType: element.phenotype_value_type_s,
                     phenotypeValueUnit: element.phenotype_value_unit_s,
                     insecticide: element.insecticide_s,
-                    insecticideType: 'Insecticides',
+                    insecticideType: 'Insecticide',
                     sampleSize: element.sample_size_i,
                     concentration: element.concentration_f,
                     concentrationUnit: element.concentration_unit_s,
@@ -2426,7 +2428,7 @@ function tableHtml(divid, results) {
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: frmDate,
                     projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
+                    projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                     collectionProtocolsType: 'Collection protocols',
                     protocols: borderColor('Protocol', element.protocols),
@@ -2458,7 +2460,7 @@ function tableHtml(divid, results) {
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: frmDate,
                     projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
+                    projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                     collectionProtocolsType: 'Collection protocols',
                     protocols: borderColor('Protocol', element.protocols),
@@ -2493,7 +2495,7 @@ function tableHtml(divid, results) {
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: frmDate,
                     projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
+                    projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                     collectionProtocolsType: 'Collection protocols',
                     protocols: borderColor('Protocol', element.protocols),
@@ -2737,15 +2739,17 @@ function mapTypeToField(type) {
             return "protocols_cvterms";
         case "Collection ID":
             return "collection_assay_id_s";
-        case "Insecticides":
+        case "Insecticide":
             return "insecticide_cvterms";
-        case "Alleles":
+        case "Allele":
             return "genotype_name_s";
+        case "Locus":
+            return "locus_name_s";
         case "Collection date":
             return "collection_date_range";
         case "Normalised IR":
             return "phenotype_rescaled_value_f";
-        case "Projects":
+        case "Project":
             return "projects";
         case "Authors":
             return "project_authors_txt";
@@ -2783,17 +2787,22 @@ function mapSummarizeByToField(type) {
             break;
         case "Insecticide":
             fields.summarize = "insecticide_s";
-            fields.type = "Insecticides";
+            fields.type = "Insecticide";
             fields.field = "insecticide_s";
             break;
         case "Allele":
             fields.summarize = "genotype_name_s";
-            fields.type = "Alleles";
+            fields.type = "Allele";
             fields.field = "genotype_name_s";
+            break;
+        case "Locus":
+            fields.summarize = "locus_name_s";
+            fields.type = "Locus";
+            fields.field = "locus_name_s";
             break;
         case "Project":
             fields.summarize = "projects_category";
-            fields.type = "Projects";
+            fields.type = "Project";
             fields.field = "projects";
             break;
         default :
@@ -2817,20 +2826,22 @@ function mapTypeToLabel(type) {
             return 'label label-success';    // green
         case 'Description':
             return 'label label-success';   // green
-        case 'Projects'   :
+        case 'Project'   :
             return 'label label-success';   // green
-        case 'Project titles'   :
+        case 'Project title'   :
             return 'label label-success';   // green
         case 'Anywhere'   :
             return 'label label-default';   // grey
-        case 'Pubmed references' :
+        case 'PubMed' :
             return 'label label-success';
-        case 'Insecticides' :
+        case 'Insecticide' :
             return 'label label-success';
         //Color of the text
-        case 'Alleles' :
+        case 'Allele' :
             return 'label label-success';
-        case 'Collection protocols' :
+        case 'Locus' :
+            return 'label label-success';
+        case 'Collection protocol' :
             return 'label label-success';
         case 'Date' :
             return 'label label-info'
@@ -2844,9 +2855,9 @@ function mapTypeToLabel(type) {
             return 'label label-warning';
         case 'Sample type' :
             return 'label label-warning';
-        case 'Protocols' :
+        case 'Protocol' :
             return 'label label-warning';
-        case 'Authors' :
+        case 'Author' :
             return 'label label-success';
         case 'Coordinates':
             return 'label label-success';
@@ -2866,17 +2877,17 @@ function mapTypeToIcon(type) {
             return 'fa-tag';
         case 'Description':
             return 'fa-info-circle';
-        case 'Projects'   :
+        case 'Project'   :
             return 'fa-database';
-        case 'Project titles'   :
+        case 'Project title'   :
             return 'fa-database';
         case 'Anywhere'   :
             return 'fa-search';
-        case 'Pubmed references' :
+        case 'PubMed' :
             return 'fa-book';
-        case 'Insecticides' :
+        case 'Insecticide' :
             return 'fa-eyedropper';
-        case 'Collection protocols' :
+        case 'Collection protocol' :
             return 'fa-shopping-cart';
         case 'Date' :
             return 'fa-calendar';
@@ -2885,14 +2896,15 @@ function mapTypeToIcon(type) {
         case 'Norm-IR' :
             return 'fa-bolt';
         case 'Collection ID' :
+        case 'Assay ID' :
             return 'fa-tag';
         case 'Sample' :
             return 'fa-map-pin';
         case 'Sample type' :
             return 'fa-file-o';
-        case 'Protocols' :
+        case 'Protocol' :
             return 'fa-sort-amount-desc';
-        case 'Authors' :
+        case 'Author' :
             return 'fa-user';
         case 'Coordinates':
             return 'fa-map-marker';
@@ -2901,10 +2913,10 @@ function mapTypeToIcon(type) {
         case 'Insecticide':
             return 'fa-eyedropper';
         //Modifies what gets used as the icon in the search bar
-        case 'Alleles':
-            return 'fa-eyedropper';
-        case 'Protocols':
-            return 'fa-sort-amount-desc';
+        case 'Allele':
+            return 'fa-sliders';
+        case 'Locus':
+            return 'fa-thumb-tack';
         case 'Concentration':
             return 'fa-tachometer';
         case 'Duration':

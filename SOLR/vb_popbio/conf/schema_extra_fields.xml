@@ -369,6 +369,10 @@
            docValues="true"/>
     <copyField source="genotype_type_s" dest="exp_genotype_type_s"/>
 
+    <field name="exp_locus_name_s" type="string" indexed="false" stored="false" multiValued="false"
+           docValues="true"/>
+    <copyField source="locus_name_s" dest="exp_locus_name_s"/>
+
     <field name="exp_genotype_name_s" type="string" indexed="false" stored="false" multiValued="false"
            docValues="true"/>
     <copyField source="genotype_name_s" dest="exp_genotype_name_s"/>
