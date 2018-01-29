@@ -2813,50 +2813,50 @@ function mapSummarizeByToField(type) {
 function mapTypeToLabel(type) {
     switch (type) {
         case 'Taxonomy'   :
-            return 'label label-primary';   // dark blue
+            return 'label label-primary label-taxonomy';   // dark blue
         case 'Geography':
-            return 'label label-primary';  // dark blue
+            return 'label label-primary label-geography';  // dark blue
         case 'Title'  :
-            return 'label label-success';    // green
+            return 'label label-success label-title';    // green
         case 'Description':
-            return 'label label-success';   // green
+            return 'label label-success label-description';   // green
         case 'Project'   :
-            return 'label label-success';   // green
+            return 'label label-success label-project';   // green
         case 'Project title'   :
-            return 'label label-success';   // green
+            return 'label label-success label-project-title';   // green
         case 'Anywhere'   :
-            return 'label label-default';   // grey
+            return 'label label-default label-anywhere';   // grey
         case 'PubMed' :
-            return 'label label-success';
+            return 'label label-success label-pubmed';
         case 'Insecticide' :
-            return 'label label-success';
+            return 'label label-success label-insecticide';
         //Color of the text
         case 'Allele' :
-            return 'label label-success';
+            return 'label label-success label-allele';
         case 'Locus' :
-            return 'label label-success';
+            return 'label label-success label-locus';
         case 'Collection protocol' :
-            return 'label label-success';
+            return 'label label-success label-collection-protocol';
         case 'Date' :
-            return 'label label-info'
+            return 'label label-info label-date'
         case 'Seasonal' :
-            return 'label label-info'
+            return 'label label-info lavel-seasonal'
         case 'Norm-IR' :
-            return 'label label-secondary';
+            return 'label label-secondary label-norm-ir';
         case 'Collection ID' :
-            return 'label label-warning';
+            return 'label label-warning label-collection-id';
         case 'Sample' :
-            return 'label label-warning';
+            return 'label label-warning label-sample';
         case 'Sample type' :
-            return 'label label-warning';
+            return 'label label-warning label-sample-type';
         case 'Protocol' :
-            return 'label label-warning';
+            return 'label label-warning label-protocol';
         case 'Author' :
-            return 'label label-success';
+            return 'label label-success label-author';
         case 'Coordinates':
-            return 'label label-success';
+            return 'label label-success label-coordinates';
         default :
-            return 'label label-warning';
+            return 'label label-warning label-default';
 
     }
 }
