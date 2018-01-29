@@ -2840,7 +2840,7 @@ function mapTypeToLabel(type) {
         case 'Date' :
             return 'label label-info label-date'
         case 'Seasonal' :
-            return 'label label-info lavel-seasonal'
+            return 'label label-info label-seasonal'
         case 'Norm-IR' :
             return 'label label-secondary label-norm-ir';
         case 'Collection ID' :
