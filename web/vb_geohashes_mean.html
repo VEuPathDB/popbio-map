@@ -314,7 +314,13 @@
             </div>
 
             <div class="sidebar-pane" id="help">
-                <h3>Usage tips</h3>
+                <h3>
+                    Usage tips
+                    <a href="/tutorials/tools-and-resources-tutorials/population-biology-popbio" target="_blank" class="title-tutorial-link">
+                        <img src="/sites/default/files/ftp/Tutorial_link_icons/tutorials_orange_25.png">
+                        <span>Tutorials</span>
+                    </a>
+                </h3>
 
                 <div id="tips" class="table-responsive">
                     <h4>Icons and toolbars</h4>
@@ -354,16 +360,40 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="width: 110px">
-                                <div class="btn-group dropdown" style="width: 100%;">
-                                    <button class="btn btn-default dropdown-toggle" type="button">
-                                        <i class="fa fa-eye"></i> Samples
+                            <td class="col-md-4">
+                                <div class="btn-group dropdown" style="width:100%">
+                                    <button class="btn btn-default dropdown-toggle" type="button" style="width:100%">
+                                        <i class="fa fa-fw fa-tags"></i> Samples
                                         <span class="caret"></span>
                                     </button>
                                 </div>
                             </td>
                             <td>
                                 Select map view
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="btn-group" style="width:100%">
+                                    <button type="button" class="btn btn-default" style="width:100%">
+                                        <i class="rotate fa fa-calendar"></i> Date search
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                Search by date
+                            </td>
+                        </tr>
+                        <tr>
+                            <td calss="col-md-4">
+                                <div class="btn-group" style="width:100%">
+                                    <button type="button" class="btn btn-default">
+                                        <i class="rotate fa fa-calendar-check-o"></i> Seasonal search
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                Seasonal search
                             </td>
                         </tr>
                         <tr>
@@ -378,20 +408,9 @@
                                 </div>
                             </td>
                             <td>
-                                Toggle Global or Local (limited to current view) suggestions
+                                Toggle Global or Local (limited to current view) search box auto-complete suggestions
                             </td>
                         </tr>
-                        <tr>
-                            <td class="col-md-4x">
-                                <span class="leaflet-control-layers leaflet-control">
-                                    <i class="leaflet-control-layers-toggle"></i>
-                                </span>
-                            </td>
-                            <td>
-                                Select source for map tiles
-                            </td>
-                        </tr>
-
                         <tr class="active">
                             <th colspan="2">Map</th>
                         </tr>
@@ -435,26 +454,49 @@
                                 Restore zoom
                             </td>
                         </tr>-->
-
                         <tr>
                             <td class="col-md-4x">
-                                <span class="leaflet-bar leaflet-control">
-                                    <i class="fa-info fa fa-lg"></i>
+                                <span class="leaflet-control-layers leaflet-control">
+                                    <i class="leaflet-control-layers-toggle"></i>
                                 </span>
                             </td>
                             <td>
-                                Toggle legend On or Off and change categorization and coloring
+                                Select map type (satellite, street map, etc)
                             </td>
                         </tr>
-
+                        <tr>
+                            <td class="col-md-4x">
+                                <span class="leaflet-bar leaflet-control" style="font-size:25px">
+                                    <i class="fa-caret-right fa fa-lg" style="color:#2C699E"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Toggle legend On or Off to change categorization and coloring
+                            </td>
+                        </tr>
+  
                         <tr class="active">
                             <th colspan="2">Panels</th>
                         </tr>
 
                         <tr>
                             <td class="col-md-4">
-                                <span class="leaflet-bar leaflet-control">
-                                    <i class="fa fa-pie-chart"></i>
+                               <span class="leaflet-bar leaflet-control" style="width:32px;height:32px">
+                                   <img style="display:block;margin:auto;height:100%;padding:5px 0 5px 0"
+                                       src="/sites/default/files/ftp/images/dot_ked_100_trans.png" height=20 width=20 
+                                   />
+                               </span>
+                            </td>
+                            <td>
+                                Return to the main site
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="fa-stack fa-stack-sm leaflet-bar leaflet-control" style="height:32px;width:32px;font-size:8px">
+                                    <i class="fa fa-chrome fa-stack-2x"></i>
+                                    <i class="fa fa-circle fa-stack-1x" style="background:transparent;font-size:1.4em"></i>
                                 </span>
                             </td>
                             <td>
@@ -468,7 +510,7 @@
                                 </span>
                             </td>
                             <td>
-                                Insecticide Resistance statistics
+                                Data visualization
                             </td>
                         </tr>
                         <tr>
@@ -478,7 +520,27 @@
                                 </span>
                             </td>
                             <td>
-                                Details tables
+                                List details
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa fa-download"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Download data
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <span class="leaflet-bar leaflet-control">
+                                    <i class="fa fa-share-alt"></i>
+                                </span>
+                            </td>
+                            <td>
+                                Get URL of what you are seeing copied to the clipboard to share with people
                             </td>
                         </tr>
                         </tbody>
@@ -2210,7 +2272,7 @@
     //    var solrTaUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_ta/';
     var map, sidebar;
     var assetLayerGroup, tempParentLayerGroup;
-    var smallClusters = [], months = [];
+    var smallClusters = [], months = new Array(13).fill(false);
     var legendSpecies = 18;
     var qryUrl = 'q=*:*';
     var partSearch = false;
@@ -2297,6 +2359,14 @@
 
         //Toggle fullscreen through code so that the map is always fitting the page width and height
         map.toggleFullscreen({pseudoFullscreen: true});
+
+        //Wrapping opening up the help sidebar in a timeout function because there is code that resets the map
+        //and it is in a timeout function as well.  So ensuring the last thing that gets done is opening the sidebar
+        if (!highlightedId) {
+            setTimeout(function() {
+                sidebar.open('help');
+            }, 2300);
+        }
     });
 
 </script>
