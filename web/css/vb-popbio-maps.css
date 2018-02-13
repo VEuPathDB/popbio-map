@@ -908,3 +908,9 @@ div.error div, div.warning div, div.info div, div.hint div {
 .title-tutorial-link span:hover {
     text-decoration: underline;
 }
+
+.sidebar-icon a.disabled {
+    color: #000;
+    background-color: #eee;
+    cursor: not-allowed;
+}

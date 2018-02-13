@@ -561,6 +561,13 @@
                
         // update the export fields dropdown
         updateExportFields(viewMode);
+
+        // Add and remove the disabled class for the sidebar
+        if (viewMode !== "ir" && viewMode !== "abnd") {
+            $('#\\#swarm-plots').addClass('disabled');
+        } else {
+            $('#\\#swarm-plots').removeClass('disabled');
+        }
         
         return hasParameters;
     }
@@ -666,6 +673,13 @@
         
         $("#generate-link").mousemove(function (){
             $("#generate-link-msg").fadeOut();
+        });
+
+        //Disable the panel from opening if it was disabled
+        $(".sidebar-icon a").click(function (e) {
+            if ($(this).hasClass("disabled")) {
+                e.stopImmediatePropagation();
+            }
         });
 
         $(document).on("mouseenter", ".detailedTip", function () {
