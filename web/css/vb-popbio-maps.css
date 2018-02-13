@@ -674,7 +674,7 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 #sidebar {
-    min-width: 400px;
+    min-width: 460px;
     background: none;
     border: none;
     display: none;
@@ -682,7 +682,16 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 #sidebar .sidebar-pane {
+    min-width: 420px;
+}
+
+#sidebar .sidebar-pane #table-contents {
     min-width: 400px;
+}
+
+#sidebar .sidebar-pane #table-contents .col-md-6 {
+    width: 50%;
+    float: left;
 }
 
 #sidebar.collapsed {
@@ -751,24 +760,11 @@ div.error div, div.warning div, div.info div, div.hint div {
     bottom: 10px;
 }
 
-/*.leaflet-control-container {
-    height: 100%;
-    position: relative;
-}*/
-
-/*.legend {
-    display: table-cell;
-    vertical-align: middle;
-    float: none !important;
-    padding: 0;
-    background: none;
-    right: -30px;
-}*/
-
 .legend {
     position: absolute;
     bottom: 40px;
     right: 0px;
+    z-index: 10000;
 }
 
 
@@ -883,4 +879,32 @@ div.error div, div.warning div, div.info div, div.hint div {
 #generate-link:hover {
     color: #000;
     background-color: #eee;
+}
+
+.title-tutorial-link {
+    color: #27638C !important;
+    float: right;
+    padding-right: 10px;
+    vertical-align: top;
+    font-size: medium;
+    font-weight: normal;
+    text-decoration: none;*/
+    line-height: 2.4;*/
+}
+
+.title-tutorial-link:hover {
+    text-decoration: none;
+}
+
+.title-tutorial-link img {
+    vertical-align: top !important;
+}
+
+.title-tutorial-link  span {
+    display: inline-block !important;
+    vertical-align: bottom !important;
+}
+
+.title-tutorial-link span:hover {
+    text-decoration: underline;
 }
