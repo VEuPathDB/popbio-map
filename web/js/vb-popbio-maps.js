@@ -1040,7 +1040,15 @@ function initializeSearch() {
             // $('#SelectView').val('smpl');
             if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") glbSummarizeBy = "Species";
         }
-        
+
+        //Add and remove the disabled class for the sidebar
+        if (viewMode !== "ir" && viewMode !== "abnd") {
+            $('#\\#swarm-plots').addClass('disabled');
+        } else {
+            $('#\\#swarm-plots').removeClass('disabled');
+        }
+
+
         //Change the maximum zoom level depending on view
         if (viewMode == 'abnd') {
             map.options.maxZoom = 12;
