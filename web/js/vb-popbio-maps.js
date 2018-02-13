@@ -549,29 +549,7 @@ function bindEvents() {
 
     // add the seasonal filter into search
     $('#add-season').click(function () {
-        var objRanges = constructSeasonal(months);
-        // add the filter, by keeping the value the same ('seasonal') we ensure
-        // that there's only one seasonal filter enabled at any given point
-        if (checkSeasonal()) {
-            // adding the item with replace: true will prevent the map from updating
-            // it will update once we remove the old tag
-            $('#search_ac').tagsinput('add', {
-                value: objRanges.rangesText.toString(),
-                ranges: objRanges.ranges,
-                replace: true,
-                type: 'Seasonal',
-                field: 'collection_season'
-            });
-            $('#search_ac').tagsinput('remove', checkSeasonal());
-        } else {
-            $('#search_ac').tagsinput('add', {
-                value: objRanges.rangesText.toString(),
-                ranges: objRanges.ranges,
-                replace: false,
-                type: 'Seasonal',
-                field: 'collection_season'
-            });
-        }
+        PopulationBiologyMap.methods.addSeason(months);
     });
 
     // add the normalized IR filters into search
@@ -593,13 +571,14 @@ function bindEvents() {
         var normIrValues = normIrSlider.bslider('getValue');
         var firstVal = normIrValues[0], secondVal = normIrValues[1];
 
-        var inHtml = '';
+        //This does not seem to be used anywhere
+        //var inHtml = '';
         // console.log(firstVal + ' - ' + secondVal);
-        $.each(legend.options.trafficlight.colorBrewer.reverse().slice(firstVal, secondVal + 1), function (index, value) {
-            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value +
-                ';width: 6px; background - color: ' + value +
-                ';>&nbsp &nbsp</i>';
-        });
+        //$.each(legend.options.trafficlight.colorBrewer.reverse().slice(firstVal, secondVal + 1), function (index, value) {
+        //    inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value +
+        //        ';width: 6px; background - color: ' + value +
+        //        ';>&nbsp &nbsp</i>';
+        //});
         // $('#menu-scale-bars').html(inHtml);
 
         // reverse the values, 0-> high resistance, 1-> low resistance
@@ -610,7 +589,7 @@ function bindEvents() {
 
         $('#search_ac').tagsinput('add', {
             value: normIrValues,
-            html: inHtml,
+            //html: inHtml,
             normIrValues: normIrValues,
             type: 'Norm-IR',
             field: 'phenotype_rescaled_value_f'
@@ -629,21 +608,8 @@ function bindEvents() {
     $("#add-dates").click(function () {
         var dateStart = new Date($("#date-start").datepicker('getUTCDate'));
         var dateEnd = new Date($("#date-end").datepicker('getUTCDate'));
-        var value;
-        if (dateStart.getTime() === dateEnd.getTime()) {
-            value = dateStart.toLocaleDateString('en-GB')
-        } else {
-            value = dateStart.toLocaleDateString('en-GB') + '-' + dateEnd.toLocaleDateString('en-GB')
-        }
 
-        $('#search_ac').tagsinput('add', {
-            value: value,
-            dateStart: dateStart,
-            dateEnd: dateEnd,
-            type: 'Date',
-            //field: 'collection_date',
-            field: 'collection_date_range'
-        });
+        PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
     });
 
     $('.date-shortcut').click(function () {
@@ -808,8 +774,14 @@ function initializeMap(parameters) {
     layerCtl.setPosition('topright');
     layerCtl.addTo(map);
 
-    // add geohashes grid
-    if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
+    // add geohashes grid or not
+    if ( urlParams.grid === "false" ) {
+        $('#grid-toggle').prop('checked', false);
+        $('#grid-toggle').trigger('change');
+    } else {
+        addGeohashes(map, true);
+    }
+    //if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
     //Default glbSummarizeBy is Species set in the html file, updating it for Genotype view here
     if (viewMode === "geno") glbSummarizeBy = "Allele";
@@ -1068,8 +1040,7 @@ function initializeSearch() {
             // $('#SelectView').val('smpl');
             if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") glbSummarizeBy = "Species";
         }
-
-
+        
         //Change the maximum zoom level depending on view
         if (viewMode == 'abnd') {
             map.options.maxZoom = 12;
@@ -1215,8 +1186,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_collection_protocols_ss',
-            label: 'Collection protocols',
-            icon: mapTypeToIcon('Collection protocols')
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
         },
         {
             value: 'exp_projects_ss',
@@ -1245,8 +1216,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_protocols_ss',
-            label: 'Protocols',
-            icon: mapTypeToIcon('Protocols')
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
         },
         {
             value: 'exp_concentration_f,exp_concentration_unit_s',
@@ -1305,8 +1276,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_collection_protocols_ss',
-            label: 'Collection protocols',
-            icon: mapTypeToIcon('Collection protocols')
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
         },
         {
             value: 'exp_projects_ss',
@@ -1325,8 +1296,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_protocols_ss',
-            label: 'Protocols',
-            icon: mapTypeToIcon('Protocols')
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
         },
         {
             value: 'exp_sample_size_i',
@@ -1382,8 +1353,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_collection_protocols_ss',
-            label: 'Collection protocols',
-            icon: mapTypeToIcon('Collection protocols')
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
         },
         {
             value: 'exp_projects_ss',
@@ -1402,8 +1373,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_protocols_ss',
-            label: 'Protocols',
-            icon: mapTypeToIcon('Protocols')
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
         },
         {
             value: 'exp_sample_size_i',
@@ -1981,6 +1952,7 @@ function loadSolr(parameters) {
 
             //
             setTimeout(function() {
+                //Handles the automatic clicking of a marker when rendering a shared link
                 highlightedId = PopulationBiologyMap.data.highlightedId;
                 if (highlightedId) {
                     var marker = $('#' + highlightedId);
@@ -2005,8 +1977,8 @@ function loadSolr(parameters) {
         }, 50)
 
         // build a geohash grid
-        if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, false);
-        //ToDo: change the grid checkbox value to true when grid is switched on trough a URL parameter
+        // urlParams.grid === "true"
+        if ($('#grid-toggle').prop('checked')) addGeohashes(map, false);
     };
 
     // inform the user that data is loading
@@ -2386,9 +2358,9 @@ function tableHtml(divid, results) {
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
+                    collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
+                    protocolsType: 'Protocol',
                     phenotypeValue: element.phenotype_value_f,
                     phenotypeValueType: element.phenotype_value_type_s,
                     phenotypeValueUnit: element.phenotype_value_unit_s,
@@ -2424,9 +2396,9 @@ function tableHtml(divid, results) {
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
+                    collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
+                    protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i,
                     collectionDuration: element.collection_duration_days_i
                 };
@@ -2456,9 +2428,9 @@ function tableHtml(divid, results) {
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
+                    collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
+                    protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i,
                     label: element.label,
                     genotypeName: element.genotype_name_s,
@@ -2491,9 +2463,9 @@ function tableHtml(divid, results) {
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
+                    collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
+                    protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i
 
                 };
@@ -2545,12 +2517,14 @@ function filterMarkers(items, flyTo) {
 
         if (element.type === 'Seasonal') {
 
-            for (var j = 0; j < element.ranges.length; j++) {
-                var range = element.ranges[j];
-                terms[element.type].push({
-                    "field": element.field, "value": '[' + range + ']'
-                });
-
+            //Check if element.ranges is defined first
+            if (element.ranges) {
+                for (var j = 0; j < element.ranges.length; j++) {
+                    var range = element.ranges[j];
+                    terms[element.type].push({
+                        "field": element.field, "value": '[' + range + ']'
+                    });
+                }
             }
 
             return
@@ -2727,9 +2701,9 @@ function mapTypeToField(type) {
             return "sample_type";
         case "Geography":
             return "geolocations_cvterms";
-        case "Collection protocols":
+        case "Collection protocol":
             return "collection_protocols_cvterms";
-        case "Protocols":
+        case "Protocol":
             return "protocols_cvterms";
         case "Collection ID":
             return "collection_assay_id_s";
@@ -2745,10 +2719,14 @@ function mapTypeToField(type) {
             return "phenotype_rescaled_value_f";
         case "Project":
             return "projects";
-        case "Authors":
+        case "Author":
             return "project_authors_txt";
-        case "Project titles":
+        case "Project title":
             return "project_titles_txt";
+        case "Seasonal":
+            return "collection_season";
+        case "Date":
+            return "collection_date_range";
         default :
             return type.toLowerCase()
 
@@ -2771,12 +2749,12 @@ function mapSummarizeByToField(type) {
             break;
         case "Collection protocol":
             fields.summarize = "collection_protocols_category";
-            fields.type = "Collection protocols";
+            fields.type = "Collection protocol";
             fields.field = "collection_protocols";
             break;
         case "Protocol":
             fields.summarize = "protocols_category";
-            fields.type = "Protocols";
+            fields.type = "Protocol";
             fields.field = "protocols";
             break;
         case "Insecticide":
