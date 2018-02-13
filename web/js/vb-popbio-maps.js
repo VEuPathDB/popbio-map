@@ -156,23 +156,18 @@ function bindEvents() {
         //console.log($('#select-export-fields').val().join());
 
         switch (selectedOption) {
-            //download all data
-            case "1":
-                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
-                this.href = url;
-                break
             // data matching search
-            case "2":
+            case "1":
                 url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data visible on screen
-            case "3":
+            case "2":
                 url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data for selected marker
-            case "4":
+            case "3":
                 // grab the id (geohash) of the highlighted marker
                 var highlightedMarkerId = $('.highlight-marker').attr('id');
 
@@ -203,6 +198,11 @@ function bindEvents() {
 
                 }
                 break;
+            //download all data
+            case "4":
+                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                this.href = url;
+                break
             default:
                 break;
 
