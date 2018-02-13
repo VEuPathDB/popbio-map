@@ -464,6 +464,28 @@
                             });
                         }
                         break;
+                    case "pubmed":
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                $('#search_ac').tagsinput('add', {
+                                    value: element,
+                                    type: 'PubMed',
+                                    field: 'pubmed',
+                                    qtype: 'exact',
+                                    is_synoym: false
+                                });
+                            })
+                        } else {
+                            $('#search_ac').tagsinput('add', {
+                                value: param,
+                                type: 'PubMed',
+                                field: 'pubmed',
+                                qtype: 'exact',
+                                is_synoym: false
+                            });
+                        }
+                        break;
                     case "collection_season":
                         var param = urlParams[key];
 
@@ -503,10 +525,13 @@
                                 PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
                             })
                         } else {
-                            PopulationBiologyMap.methods.retrieveDates(param);
+                            var dateStart;
+                            var dateEnd;
+
+                            [dateStart, dateEnd] = PopulationBiologyMap.methods.retrieveDates(param);
                             PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
                         }
-                                                //Get the date object 
+                        break
                     case "markerID":
                         highlightedId  = urlParams[key];
                         break;
@@ -575,7 +600,10 @@
                 return "title";
             case "Norm-IR":
                 return "norm-ir";
+            case "PubMed":
+                return "pubmed";
             default:
+                return "text"
                 break;
         }
     }
