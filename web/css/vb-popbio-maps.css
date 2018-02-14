@@ -175,6 +175,7 @@ BODY {
 }
 .sidebar-icon, circle, path, .boxplot {
     cursor : pointer;
+    list-style: none;
 }
 
 /* fixes a problem from VB-2017-10 postmortem where sidebar icons were heavily obscured on Windows or Linux Chrome */
@@ -679,6 +680,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     border: none;
     display: none;
     z-index: 3001;
+    overflow: visible;
 }
 
 #sidebar .sidebar-pane {
@@ -909,8 +911,14 @@ div.error div, div.warning div, div.info div, div.hint div {
     text-decoration: underline;
 }
 
-.sidebar-icon a.disabled {
-    color: #000;
-    background-color: #eee;
+.sidebar-icon a.disabled, .sidebar-icon a.disabled:hover {
+    color: #ddd;
+    background-color: #FFFFFF;
     cursor: not-allowed;
+}
+
+.sidebar-icon > .tooltip {
+    background-color: transparent;
+    background: transparent;
+    border: none;
 }

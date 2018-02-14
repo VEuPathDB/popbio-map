@@ -561,12 +561,16 @@
                
         // update the export fields dropdown
         updateExportFields(viewMode);
+        $("#\\#swarm-plots").tooltip({placement: "right", title: "Disabled On This View"});
 
         // Add and remove the disabled class for the sidebar
         if (viewMode !== "ir" && viewMode !== "abnd") {
             $('#\\#swarm-plots').addClass('disabled');
+            $("#\\#swarm-plots").tooltip('enable');
+            
         } else {
             $('#\\#swarm-plots').removeClass('disabled');
+            $("#\\#swarm-plots").tooltip('disable');
         }
         
         return hasParameters;
