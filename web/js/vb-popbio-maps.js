@@ -1043,9 +1043,23 @@ function initializeSearch() {
 
         //Add and remove the disabled class for the sidebar
         if (viewMode !== "ir" && viewMode !== "abnd") {
+            //Get the current sidebar that is active
+            var active_sidebar = $(".sidebar-icon.active a").attr("id");
+
+            //Check if the previous active panel was the plots and switch to the pie panel
+            if (active_sidebar === "#swarm-plots") {
+                $(".sidebar-pane.active").removeClass("active");
+                $(".sidebar-icon.active").removeClass("active");
+                $('[id="#graphs"]').parent().addClass("active");
+                $("#graphs").addClass("active");
+            }
+
             $('#\\#swarm-plots').addClass('disabled');
+            //Add tooltip to the title of the chart
+            $("#\\#swarm-plots").tooltip('enable');
         } else {
             $('#\\#swarm-plots').removeClass('disabled');
+            $("#\\#swarm-plots").tooltip('disable');
         }
 
 
