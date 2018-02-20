@@ -156,23 +156,18 @@ function bindEvents() {
         //console.log($('#select-export-fields').val().join());
 
         switch (selectedOption) {
-            //download all data
-            case "1":
-                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
-                this.href = url;
-                break
             // data matching search
-            case "2":
+            case "1":
                 url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data visible on screen
-            case "3":
+            case "2":
                 url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data for selected marker
-            case "4":
+            case "3":
                 // grab the id (geohash) of the highlighted marker
                 var highlightedMarkerId = $('.highlight-marker').attr('id');
 
@@ -203,6 +198,11 @@ function bindEvents() {
 
                 }
                 break;
+            //download all data
+            case "4":
+                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                this.href = url;
+                break
             default:
                 break;
 
@@ -267,7 +267,7 @@ function bindEvents() {
             '</div>';
 
         switch (type) {
-            case 'Projects':
+            case 'Project':
                 template = $.templates("#projectInfoTemplate");
                 entityURL = '/popbio/project/?id=' + id;
                 entityRestURL = '/popbio/REST/project/' + id + '/head';
@@ -304,7 +304,7 @@ function bindEvents() {
         PaneSpin('vbEntityTooltip', 'start');
 
         // bind the events to close the popup
-        $(document).one('click', '#entity-cancel-hover', function (event) {
+        $(document).on('click', '#entity-cancel-hover', function (event) {
 
             entityTooltip.animate(
                 {
@@ -549,29 +549,7 @@ function bindEvents() {
 
     // add the seasonal filter into search
     $('#add-season').click(function () {
-        var objRanges = constructSeasonal(months);
-        // add the filter, by keeping the value the same ('seasonal') we ensure
-        // that there's only one seasonal filter enabled at any given point
-        if (checkSeasonal()) {
-            // adding the item with replace: true will prevent the map from updating
-            // it will update once we remove the old tag
-            $('#search_ac').tagsinput('add', {
-                value: objRanges.rangesText.toString(),
-                ranges: objRanges.ranges,
-                replace: true,
-                type: 'Seasonal',
-                field: 'collection_season'
-            });
-            $('#search_ac').tagsinput('remove', checkSeasonal());
-        } else {
-            $('#search_ac').tagsinput('add', {
-                value: objRanges.rangesText.toString(),
-                ranges: objRanges.ranges,
-                replace: false,
-                type: 'Seasonal',
-                field: 'collection_season'
-            });
-        }
+        PopulationBiologyMap.methods.addSeason(months);
     });
 
     // add the normalized IR filters into search
@@ -593,13 +571,14 @@ function bindEvents() {
         var normIrValues = normIrSlider.bslider('getValue');
         var firstVal = normIrValues[0], secondVal = normIrValues[1];
 
-        var inHtml = '';
+        //This does not seem to be used anywhere
+        //var inHtml = '';
         // console.log(firstVal + ' - ' + secondVal);
-        $.each(legend.options.trafficlight.colorBrewer.reverse().slice(firstVal, secondVal + 1), function (index, value) {
-            inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value +
-                ';width: 6px; background - color: ' + value +
-                ';>&nbsp &nbsp</i>';
-        });
+        //$.each(legend.options.trafficlight.colorBrewer.reverse().slice(firstVal, secondVal + 1), function (index, value) {
+        //    inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value +
+        //        ';width: 6px; background - color: ' + value +
+        //        ';>&nbsp &nbsp</i>';
+        //});
         // $('#menu-scale-bars').html(inHtml);
 
         // reverse the values, 0-> high resistance, 1-> low resistance
@@ -610,7 +589,7 @@ function bindEvents() {
 
         $('#search_ac').tagsinput('add', {
             value: normIrValues,
-            html: inHtml,
+            //html: inHtml,
             normIrValues: normIrValues,
             type: 'Norm-IR',
             field: 'phenotype_rescaled_value_f'
@@ -620,28 +599,17 @@ function bindEvents() {
     // Enable the add dates button only if the date fields are populated
     $("#date-start").datepicker()
     .on('changeDate', function (e) {
-        $("#add-dates").prop('disabled', false);
+        if (e.dates.length) $("#add-dates").prop('disabled', false);
+        // animating the colours to highlight this button will require adding jquery-ui
+        // animating size/position just looks nasty
     });
 
     // add the date filter into search
     $("#add-dates").click(function () {
         var dateStart = new Date($("#date-start").datepicker('getUTCDate'));
         var dateEnd = new Date($("#date-end").datepicker('getUTCDate'));
-        var value;
-        if (dateStart.getTime() === dateEnd.getTime()) {
-            value = dateStart.toLocaleDateString('en-GB')
-        } else {
-            value = dateStart.toLocaleDateString('en-GB') + '-' + dateEnd.toLocaleDateString('en-GB')
-        }
 
-        $('#search_ac').tagsinput('add', {
-            value: value,
-            dateStart: dateStart,
-            dateEnd: dateEnd,
-            type: 'Date',
-            //field: 'collection_date',
-            field: 'collection_date_range'
-        });
+        PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
     });
 
     $('.date-shortcut').click(function () {
@@ -757,6 +725,9 @@ function initializeMap(parameters) {
         zoom: zoomLevel,
         zoomControl: false,
         zoomAnimationThreshold: 16,
+        fullscreenControl: {
+            pseudoFullscreen: true
+        },
         worldCopyJump: true  //  the map tracks when you pan to another "copy" of the world and seamlessly jumps to the
                              // original one so that all overlays like markers and vector layers are still visible.
     });
@@ -764,11 +735,6 @@ function initializeMap(parameters) {
     map.spin(true);
     startingZooom = map.getZoom();
     endingZoom = map.getZoom();
-
-    map.addControl(new L.Control.FullScreen({
-        position: "topright",
-        forcePseudoFullscreen: true
-    }));
 
     map.addControl(new L.Control.ZoomMin({position: "topright"}));
     sidebar = L.control.sidebar('sidebar').addTo(map);
@@ -808,8 +774,14 @@ function initializeMap(parameters) {
     layerCtl.setPosition('topright');
     layerCtl.addTo(map);
 
-    // add geohashes grid
-    if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
+    // add geohashes grid or not
+    if ( urlParams.grid === "false" ) {
+        $('#grid-toggle').prop('checked', false);
+        $('#grid-toggle').trigger('change');
+    } else {
+        addGeohashes(map, true);
+    }
+    //if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
     //Default glbSummarizeBy is Species set in the html file, updating it for Genotype view here
     if (viewMode === "geno") glbSummarizeBy = "Allele";
@@ -1066,7 +1038,28 @@ function initializeSearch() {
 
         if (viewMode !== "geno") {
             // $('#SelectView').val('smpl');
-            if (glbSummarizeBy === "Allele") glbSummarizeBy = "Species";
+            if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") glbSummarizeBy = "Species";
+        }
+
+        //Add and remove the disabled class for the sidebar
+        if (viewMode !== "ir" && viewMode !== "abnd") {
+            //Get the current sidebar that is active
+            var active_sidebar = $(".sidebar-icon.active a").attr("id");
+
+            //Check if the previous active panel was the plots and switch to the pie panel
+            if (active_sidebar === "#swarm-plots") {
+                $(".sidebar-pane.active").removeClass("active");
+                $(".sidebar-icon.active").removeClass("active");
+                $('[id="#graphs"]').parent().addClass("active");
+                $("#graphs").addClass("active");
+            }
+
+            $('#\\#swarm-plots').addClass('disabled');
+            //Add tooltip to the title of the chart
+            $("#\\#swarm-plots").tooltip('enable');
+        } else {
+            $('#\\#swarm-plots').removeClass('disabled');
+            $("#\\#swarm-plots").tooltip('disable');
         }
 
 
@@ -1147,13 +1140,13 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_collection_protocols_ss',
-            label: 'Collection protocols',
-            icon: mapTypeToIcon('Collection protocols')
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
         },
         {
             value: 'exp_projects_ss',
-            label: 'Projects',
-            icon: mapTypeToIcon('Projects')
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
         },
         {
             value: 'exp_geo_coords_s',
@@ -1167,8 +1160,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_protocols_ss',
-            label: 'Protocols',
-            icon: mapTypeToIcon('Protocols')
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
         }
 
     ];
@@ -1181,7 +1174,7 @@ function updateExportFields(viewMode) {
         {
             value: 'exp_assay_id_s',
             label: 'Assay ID',
-            icon: mapTypeToIcon('Collection ID')
+            icon: mapTypeToIcon('Assay ID')
         },
         {
             value: 'exp_bundle_name_s',
@@ -1215,13 +1208,13 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_collection_protocols_ss',
-            label: 'Collection protocols',
-            icon: mapTypeToIcon('Collection protocols')
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
         },
         {
             value: 'exp_projects_ss',
-            label: 'Projects',
-            icon: mapTypeToIcon('Projects')
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
         },
         {
             value: 'exp_geo_coords_s',
@@ -1244,14 +1237,9 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Insecticide')
         },
         {
-            value: 'genotype_name_s',
-            label: 'Allele',
-            icon: mapTypeToIcon('Allele')
-        },
-        {
             value: 'exp_protocols_ss',
-            label: 'Protocols',
-            icon: mapTypeToIcon('Protocols')
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
         },
         {
             value: 'exp_concentration_f,exp_concentration_unit_s',
@@ -1310,13 +1298,13 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_collection_protocols_ss',
-            label: 'Collection protocols',
-            icon: mapTypeToIcon('Collection protocols')
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
         },
         {
             value: 'exp_projects_ss',
-            label: 'Projects',
-            icon: mapTypeToIcon('Projects')
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
         },
         {
             value: 'exp_geo_coords_s',
@@ -1330,8 +1318,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_protocols_ss',
-            label: 'Protocols',
-            icon: mapTypeToIcon('Protocols')
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
         },
         {
             value: 'exp_sample_size_i',
@@ -1387,13 +1375,13 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_collection_protocols_ss',
-            label: 'Collection protocols',
-            icon: mapTypeToIcon('Collection protocols')
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
         },
         {
             value: 'exp_projects_ss',
-            label: 'Projects',
-            icon: mapTypeToIcon('Projects')
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
         },
         {
             value: 'exp_geo_coords_s',
@@ -1407,8 +1395,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_protocols_ss',
-            label: 'Protocols',
-            icon: mapTypeToIcon('Protocols')
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
         },
         {
             value: 'exp_sample_size_i',
@@ -1417,8 +1405,8 @@ function updateExportFields(viewMode) {
         },
         {
             value: 'exp_assay_id_s',
-            label: 'Assay Id',
-            icon: mapTypeToIcon('Assay Id')
+            label: 'Assay ID',
+            icon: mapTypeToIcon('Assay ID')
         },
         {
             value: 'exp_phenotypes_ss',
@@ -1434,6 +1422,11 @@ function updateExportFields(viewMode) {
             value: 'exp_genotype_name_s',
             label: 'Genotype Name',
             icon: mapTypeToIcon('Genotype Name')
+        },
+        {
+            value: 'exp_locus_name_s',
+            label: 'Locus',
+            icon: mapTypeToIcon('Locus')
         },
         /* Not needed for now 
         {
@@ -1803,8 +1796,9 @@ function loadSolr(parameters) {
                                 }
 
                                 if ($('#sidebar').hasClass('collapsed')) {
-                                    if ($('.sidebar-pane.active').attr('id') === 'help') {
+                                    if (panelId === 'help' || panelId === 'vectorbase') {
                                        sidebar.open('graphs');
+                                       panelId = 'graphs';
                                     } else {
                                         $('#swarm-chart-area').empty();
                                         $('#table-contents').empty();
@@ -1832,11 +1826,6 @@ function loadSolr(parameters) {
                                     case "marker-table":
                                         updateTable("#table-contents", buildBbox(recBounds));
                                         panel.data('has-graph', true);
-                                        break;
-                                    case "help":
-                                        updatePieChart(record.count, record.fullstats);
-                                        panel.data('has-graph', true);
-                                        sidebar.open('graphs');
                                         break;
                                     default:
                                         break;
@@ -1985,6 +1974,7 @@ function loadSolr(parameters) {
 
             //
             setTimeout(function() {
+                //Handles the automatic clicking of a marker when rendering a shared link
                 highlightedId = PopulationBiologyMap.data.highlightedId;
                 if (highlightedId) {
                     var marker = $('#' + highlightedId);
@@ -1993,7 +1983,6 @@ function loadSolr(parameters) {
 
                     if (marker.length > 0) {
                         $(marker).trigger("click");
-                        highlightMarker(marker);
                     } else {
                         removeHighlight();
                         sidebar.close();
@@ -2009,8 +1998,8 @@ function loadSolr(parameters) {
         }, 50)
 
         // build a geohash grid
-        if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, false);
-        //ToDo: change the grid checkbox value to true when grid is switched on trough a URL parameter
+        // urlParams.grid === "true"
+        if ($('#grid-toggle').prop('checked')) addGeohashes(map, false);
     };
 
     // inform the user that data is loading
@@ -2388,16 +2377,16 @@ function tableHtml(divid, results) {
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: frmDate,
                     projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
+                    projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
+                    collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
+                    protocolsType: 'Protocol',
                     phenotypeValue: element.phenotype_value_f,
                     phenotypeValueType: element.phenotype_value_type_s,
                     phenotypeValueUnit: element.phenotype_value_unit_s,
                     insecticide: element.insecticide_s,
-                    insecticideType: 'Insecticides',
+                    insecticideType: 'Insecticide',
                     sampleSize: element.sample_size_i,
                     concentration: element.concentration_f,
                     concentrationUnit: element.concentration_unit_s,
@@ -2426,11 +2415,11 @@ function tableHtml(divid, results) {
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: frmDate,
                     projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
+                    projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
+                    collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
+                    protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i,
                     collectionDuration: element.collection_duration_days_i
                 };
@@ -2458,11 +2447,11 @@ function tableHtml(divid, results) {
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: frmDate,
                     projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
+                    projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
+                    collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
+                    protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i,
                     label: element.label,
                     genotypeName: element.genotype_name_s,
@@ -2493,11 +2482,11 @@ function tableHtml(divid, results) {
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: frmDate,
                     projects: borderColor('Project', element.projects),
-                    projectsType: 'Projects',
+                    projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocols',
+                    collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocols',
+                    protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i
 
                 };
@@ -2549,12 +2538,14 @@ function filterMarkers(items, flyTo) {
 
         if (element.type === 'Seasonal') {
 
-            for (var j = 0; j < element.ranges.length; j++) {
-                var range = element.ranges[j];
-                terms[element.type].push({
-                    "field": element.field, "value": '[' + range + ']'
-                });
-
+            //Check if element.ranges is defined first
+            if (element.ranges) {
+                for (var j = 0; j < element.ranges.length; j++) {
+                    var range = element.ranges[j];
+                    terms[element.type].push({
+                        "field": element.field, "value": '[' + range + ']'
+                    });
+                }
             }
 
             return
@@ -2731,26 +2722,32 @@ function mapTypeToField(type) {
             return "sample_type";
         case "Geography":
             return "geolocations_cvterms";
-        case "Collection protocols":
+        case "Collection protocol":
             return "collection_protocols_cvterms";
-        case "Protocols":
+        case "Protocol":
             return "protocols_cvterms";
         case "Collection ID":
             return "collection_assay_id_s";
-        case "Insecticides":
+        case "Insecticide":
             return "insecticide_cvterms";
-        case "Alleles":
+        case "Allele":
             return "genotype_name_s";
+        case "Locus":
+            return "locus_name_s";
         case "Collection date":
             return "collection_date_range";
         case "Normalised IR":
             return "phenotype_rescaled_value_f";
-        case "Projects":
+        case "Project":
             return "projects";
-        case "Authors":
+        case "Author":
             return "project_authors_txt";
-        case "Project titles":
+        case "Project title":
             return "project_titles_txt";
+        case "Seasonal":
+            return "collection_season";
+        case "Date":
+            return "collection_date_range";
         default :
             return type.toLowerCase()
 
@@ -2773,27 +2770,32 @@ function mapSummarizeByToField(type) {
             break;
         case "Collection protocol":
             fields.summarize = "collection_protocols_category";
-            fields.type = "Collection protocols";
+            fields.type = "Collection protocol";
             fields.field = "collection_protocols";
             break;
         case "Protocol":
             fields.summarize = "protocols_category";
-            fields.type = "Protocols";
+            fields.type = "Protocol";
             fields.field = "protocols";
             break;
         case "Insecticide":
             fields.summarize = "insecticide_s";
-            fields.type = "Insecticides";
+            fields.type = "Insecticide";
             fields.field = "insecticide_s";
             break;
         case "Allele":
             fields.summarize = "genotype_name_s";
-            fields.type = "Alleles";
+            fields.type = "Allele";
             fields.field = "genotype_name_s";
+            break;
+        case "Locus":
+            fields.summarize = "locus_name_s";
+            fields.type = "Locus";
+            fields.field = "locus_name_s";
             break;
         case "Project":
             fields.summarize = "projects_category";
-            fields.type = "Projects";
+            fields.type = "Project";
             fields.field = "projects";
             break;
         default :
@@ -2810,48 +2812,50 @@ function mapSummarizeByToField(type) {
 function mapTypeToLabel(type) {
     switch (type) {
         case 'Taxonomy'   :
-            return 'label label-primary';   // dark blue
+            return 'label label-primary label-taxonomy';   // dark blue
         case 'Geography':
-            return 'label label-primary';  // dark blue
+            return 'label label-primary label-geography';  // dark blue
         case 'Title'  :
-            return 'label label-success';    // green
+            return 'label label-success label-title';    // green
         case 'Description':
-            return 'label label-success';   // green
-        case 'Projects'   :
-            return 'label label-success';   // green
-        case 'Project titles'   :
-            return 'label label-success';   // green
+            return 'label label-success label-description';   // green
+        case 'Project'   :
+            return 'label label-success label-project';   // green
+        case 'Project title'   :
+            return 'label label-success label-project-title';   // green
         case 'Anywhere'   :
-            return 'label label-default';   // grey
-        case 'Pubmed references' :
-            return 'label label-success';
-        case 'Insecticides' :
-            return 'label label-success';
+            return 'label label-default label-anywhere';   // grey
+        case 'PubMed' :
+            return 'label label-success label-pubmed';
+        case 'Insecticide' :
+            return 'label label-success label-insecticide';
         //Color of the text
-        case 'Alleles' :
-            return 'label label-success';
-        case 'Collection protocols' :
-            return 'label label-success';
+        case 'Allele' :
+            return 'label label-success label-allele';
+        case 'Locus' :
+            return 'label label-success label-locus';
+        case 'Collection protocol' :
+            return 'label label-success label-collection-protocol';
         case 'Date' :
-            return 'label label-info'
+            return 'label label-info label-date'
         case 'Seasonal' :
-            return 'label label-info'
+            return 'label label-info label-seasonal'
         case 'Norm-IR' :
-            return 'label label-secondary';
+            return 'label label-secondary label-norm-ir';
         case 'Collection ID' :
-            return 'label label-warning';
+            return 'label label-warning label-collection-id';
         case 'Sample' :
-            return 'label label-warning';
+            return 'label label-warning label-sample';
         case 'Sample type' :
-            return 'label label-warning';
-        case 'Protocols' :
-            return 'label label-warning';
-        case 'Authors' :
-            return 'label label-success';
+            return 'label label-warning label-sample-type';
+        case 'Protocol' :
+            return 'label label-warning label-protocol';
+        case 'Author' :
+            return 'label label-success label-author';
         case 'Coordinates':
-            return 'label label-success';
+            return 'label label-success label-coordinates';
         default :
-            return 'label label-warning';
+            return 'label label-warning label-default';
 
     }
 }
@@ -2866,17 +2870,17 @@ function mapTypeToIcon(type) {
             return 'fa-tag';
         case 'Description':
             return 'fa-info-circle';
-        case 'Projects'   :
+        case 'Project'   :
             return 'fa-database';
-        case 'Project titles'   :
+        case 'Project title'   :
             return 'fa-database';
         case 'Anywhere'   :
             return 'fa-search';
-        case 'Pubmed references' :
+        case 'PubMed' :
             return 'fa-book';
-        case 'Insecticides' :
+        case 'Insecticide' :
             return 'fa-eyedropper';
-        case 'Collection protocols' :
+        case 'Collection protocol' :
             return 'fa-shopping-cart';
         case 'Date' :
             return 'fa-calendar';
@@ -2885,14 +2889,15 @@ function mapTypeToIcon(type) {
         case 'Norm-IR' :
             return 'fa-bolt';
         case 'Collection ID' :
+        case 'Assay ID' :
             return 'fa-tag';
         case 'Sample' :
             return 'fa-map-pin';
         case 'Sample type' :
             return 'fa-file-o';
-        case 'Protocols' :
+        case 'Protocol' :
             return 'fa-sort-amount-desc';
-        case 'Authors' :
+        case 'Author' :
             return 'fa-user';
         case 'Coordinates':
             return 'fa-map-marker';
@@ -2901,10 +2906,10 @@ function mapTypeToIcon(type) {
         case 'Insecticide':
             return 'fa-eyedropper';
         //Modifies what gets used as the icon in the search bar
-        case 'Alleles':
-            return 'fa-eyedropper';
-        case 'Protocols':
-            return 'fa-sort-amount-desc';
+        case 'Allele':
+            return 'fa-sliders';
+        case 'Locus':
+            return 'fa-thumb-tack';
         case 'Concentration':
             return 'fa-tachometer';
         case 'Duration':
@@ -2939,6 +2944,9 @@ function highlightMarker(marker) {
     // $(marker).addClass("highlight-marker");
     $(marker._icon).addClass("highlight-marker");
 
+    //Update the highlightedID variable
+    PopulationBiologyMap.data.highlightedId = marker._icon.id;
+
     // highlight = marker;
     if (firstClick) firstClick = false;
 }
@@ -2970,7 +2978,9 @@ function resetPlots() {
         pieHTML =
             '<h3>Summary view for selected samples</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-pie-chart" style="color: #2C699E; font-size: 12em"></i>' +
+            '<span class="fa-stack fa-stack-lg">' +
+            '<i class="fa fa-chrome fa-stack-2x"></i>' + 
+            '<i class="fa fa-circle fa-stack-1x"/></i></span>' +
             '<h1>Go on!</h1>' +
             '<h4>click a marker on the map</h4>' +
             '<h4>to plot some real data</h4> ' +
@@ -2997,7 +3007,9 @@ function resetPlots() {
         pieHTML =
             '<h3>Summary view for selected samples</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-pie-chart" style="color: #2C699E; font-size: 12em"></i>' +
+            '<span class="fa-stack fa-stack-lg">' +
+            '<i class="fa fa-chrome fa-stack-2x"></i>' + 
+            '<i class="fa fa-circle fa-stack-1x"/></i></span>' +
             '<h4>click a marker on the map</h4>' +
             '</div>' +
             '<div id="pie-chart-area">' +

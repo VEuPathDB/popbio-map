@@ -26,22 +26,41 @@ L.Control.MapLegend = L.Control.extend({
         this._legendDiv = L.DomUtil.create('div', 'info legend active');
         legendDiv = this._legendDiv;
 
-        L.easyButton('fa-info',
-            function () {
-                if (L.DomUtil.hasClass(legendDiv, "active")) {
-                    legend.remove();
-                    L.DomUtil.removeClass(legendDiv, "active");
-                } else {
-                    legend.addTo(map);
-                    L.DomUtil.addClass(legendDiv, "active");
-                }
-            },
-            'Toggle legend ON of OFF'
-        );
-        L.DomEvent
-            //.addListener(legendDiv, 'click', L.DomEvent.stop)
-            .addListener(legendDiv, 'click', this._clicked, this);
-        //L.DomEvent.disableClickPropagation(legendDiv);
+        easyButtonOptions = {
+            id: 'legend-toggle',
+            position: 'bottomright',
+            type: 'replace',
+            leafletClasses: true,
+            states:[{
+                stateName: 'hide-legend',
+                icon: 'fa-caret-right',
+                title: 'Hide Legend',
+                onClick: function(button) {
+                    $(".legend").animate({width:'toggle'},320);
+                    $( ".easy-button-container" ).animate({ "right": "-=245px" }, 350);
+                    $(".legend").removeClass("active");
+                    $(".leaflet-bottom.leaflet-right .leaflet-bar").removeClass("active");
+                    button.state('show-legend');
+                }   
+            }, {
+                stateName: 'show-legend',
+                onClick: function(button) {
+                    $(".legend").animate({width:'toggle'},370);
+                    $( ".easy-button-container" ).animate({ "right": "+=245px" }, 350);
+                    $(".legend").addClass("active");
+                    $(".leaflet-bottom.leaflet-right .leaflet-bar").addClass("active");
+                    button.state('hide-legend');
+                },
+                title: 'Show Legend',
+                icon: 'fa-caret-left'
+            }]
+        }
+
+        L.easyButton(easyButtonOptions).addTo(map);
+
+        //Setting the button to active
+        $(".leaflet-bottom.leaflet-right .leaflet-bar").addClass("active");
+        L.DomEvent.addListener(legendDiv, 'click', this._clicked, this);
 
         return legendDiv;
     },
@@ -361,6 +380,7 @@ L.Control.MapLegend = L.Control.extend({
             '<span class="caret"></span>' +
             ' </button > ' +
             '<ul class = "dropdown-menu" aria-labelledby="summByDropdown"> ' +
+            (viewMode === 'geno' ? '<li><a href="#" data-value="Locus">Locus</a></li> ' : '') +
             (viewMode === 'geno' ? '<li><a href="#" data-value="Allele">Allele</a></li> ' : '') +
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
@@ -427,6 +447,7 @@ L.Control.MapLegend = L.Control.extend({
             '<span class="caret"></span>' +
             ' </button > ' +
             '<ul class = "dropdown-menu dropdown-menu-right" aria-labelledby="summByDropdown"> ' +
+            (viewMode === 'geno' ? '<li><a href="#" data-value="Locus">Locus</a></li> ' : '') +
             (viewMode === 'geno' ? '<li><a href="#" data-value="Allele">Allele</a></li> ' : '') +
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
@@ -486,6 +507,11 @@ L.Control.MapLegend = L.Control.extend({
         // add Unknown
         // inHtml += '<i style="background: #000000;"></i> Unknown<br />';
         // options.palette['Unknown'] = '#000000';
+        
+        //Adding a wrapper div to make vertical-align work correctly
+        if (viewMode !== 'ir') {
+            inHtml = '<div class="legend-contents">' + inHtml + '</div>';
+        }
 
         $("#legend").html(inHtml);
 
@@ -509,6 +535,9 @@ L.Control.MapLegend = L.Control.extend({
                 ' resistance/susceptibility. ' +
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
                 'More info</span></p>';
+
+            //Adding a wrapper div to make vertical-align work correctly
+            inHtml = '<div class="legend-contents">' + inHtml + '</div>'
         }
 
         // Populate legend when added to map

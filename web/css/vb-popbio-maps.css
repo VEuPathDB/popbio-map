@@ -89,15 +89,18 @@ BODY {
     margin : 0 0 5px;
     color  : #777777;
 }
-.legend {
+.legend-contents {
     text-align    : left;
     line-height   : 15px;
     color         : #555555;
     margin-bottom : 5px !important;
     border-radius : 0 !important;
-    min-width     : 170px;
+    width     : 225px;
     min-height    : 300px;
-    max-width     : 230px;
+    /*max-width     : 230px;
+    position: absolute;
+    right: 0px;
+    top: 30%;*/
 }
 .legend i, #Other-Terms-List i, #table-legend-controls i {
     width         : 14px;
@@ -131,12 +134,18 @@ BODY {
     width     : 56%;
     min-width : 250px;
     /*max-width: 500px;*/
-    z-index   : 3000;
+    z-index      : 3000;
 }
+
 .leaflet-pseudo-fullscreen {
     z-index : 2999;
 }
-.mapbox .overlaybottom {
+
+.leaflet-control-fullscreen {
+    display: none;
+}
+
+.mapboxbottom .overlaybottom {
     position   : absolute;
     bottom     : 3px;
     left       : 40%;
@@ -166,6 +175,7 @@ BODY {
 }
 .sidebar-icon, circle, path, .boxplot {
     cursor : pointer;
+    list-style: none;
 }
 
 /* fixes a problem from VB-2017-10 postmortem where sidebar icons were heavily obscured on Windows or Linux Chrome */
@@ -439,7 +449,7 @@ html {
 .leaflet-container {
     font : 12px/1.5 "Open Sans", Arial, Helvetica, sans-serif;
 }
-.leaflet-bar, .leaflet-control-layers, .sidebar {
+.leaflet-bar, .leaflet-control-layers, .sidebar-tabs {
     color            : #333333;
     background-color : #FFFFFF;
     border           : 1px solid #E7E7E7 !important;
@@ -645,11 +655,13 @@ div.error div, div.warning div, div.info div, div.hint div {
 
 #generate-link-msg {
     position: absolute;
-    top: 30px;
+    top: 290px;
     width: 350px;
     padding-top: 5px;
     padding-bottom: 5px;
     display: none;
+    z-index: 3002;
+    left: 10px;
 }
 
 .highcharts-title {
@@ -663,13 +675,250 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 #sidebar {
-    min-width: 400px;
+    min-width: 460px;
+    background: none;
+    border: none;
+    display: none;
+    z-index: 3001;
+    overflow: visible;
 }
 
 #sidebar .sidebar-pane {
+    min-width: 420px;
+}
+
+#sidebar .sidebar-pane #table-contents {
     min-width: 400px;
+}
+
+#sidebar .sidebar-pane #table-contents .col-md-6 {
+    width: 50%;
+    float: left;
 }
 
 #sidebar.collapsed {
     min-width: 0px;
+}
+
+/*.leaflet-bottom.leaflet-right {
+    height: 100%;
+    display: table;
+}*/
+
+/*.leaflet-bottom.leaflet-right .leaflet-bar {
+    display: table-cell;
+    vertical-align: middle;
+    height: 150px;
+    float: none;
+    background: none;
+    border: none !important;
+    z-index: 100;
+}*/
+
+.leaflet-bottom.leaflet-right .easy-button-container {
+    bottom: 42px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.leaflet-bottom.leaflet-right .easy-button-container.active {
+    right: 245px;
+}
+
+.leaflet-bottom.leaflet-right .leaflet-bar button {
+    //display: table-cell;
+    //vertical-align: middle;
+    height: 50px;
+    border: 1px solid #E7E7E7;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 5px;
+}
+
+.leaflet-bottom.leaflet-right .easy-button-container .button-state {
+    font-size: .67em;
+}
+
+.leaflet-bottom.leaflet-right .easy-button-container .fa {
+    color: #2C699E;
+    /*color: #4472C4;*/
+    font-size: 4em;
+    border-bottom: none;
+}
+
+/* Fixes for bottom right controls */
+.mq-attribution-control.leaflet-control {
+    position: absolute;
+    right: 0;
+}
+
+.mq-attribution-control.leaflet-control a {
+    display: inline;
+}
+
+.leaflet-control-scale {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+}
+
+.legend {
+    position: absolute;
+    bottom: 40px;
+    right: 0px;
+    z-index: 10000;
+}
+
+
+.legend-contents {
+    padding: 6px 8px 6px 8px;
+    background: white;
+}
+
+.leaflet-top.leaflet-left {
+    top: -3px;
+    left: 40px;
+}
+
+.leaflet-top.leaflet-left div {
+    margin-left: 16px;
+}
+
+@media(max-width:767px) {
+    .leaflet-top.leaflet-left div {
+        margin-left: 5px;
+    }
+
+    #generate-link-msg {
+        left: 0px;
+        top: 280px;
+    }
+
+    .mapbox .overlaytop {
+        left: 40px;
+        width: 90%;
+    }
+}
+
+.leaflet-top.leaflet-left .leaflet-bar a:focus {
+    color: #000000;
+    text-decoration: none;
+}
+
+.sidebar-tabs {
+    /*height: 70%;*/
+    border-radius: 4px;
+    /*min-height: 300px;*/
+}
+
+/*.leaflet-top.leaflet-left .leaflet-bar {
+    border: none !important;
+}
+
+.leaflet-top.leaflet-left .leaflet-bar a {
+    border: none !important;
+}
+
+
+
+.leaflet-control-layers {
+    border: none !important;
+    width: 30px !important;
+}
+
+.leaflet-control-layers-toggle {
+    width: 16px !important;
+    height: 16px !important;
+    background-size: 16px;
+    margin: auto;
+}
+
+.leaflet-control-layers-expanded {
+    width: 100% !important;
+}*/
+
+.fa-stack-sm {
+    font-size: .6em;
+}
+
+.fa-stack-lg {
+    font-size: 6em;
+    color: #2C699E;
+}
+
+.fa-circle.fa-stack-1x {
+    font-size: 1.5em;
+    color: #FFFFFF;
+}
+
+.sidebar-tabs > li.active .fa-circle.fa-stack-1x {
+    color: #0074D9;
+}
+
+.leaflet-control a {
+    color: #000000 !important;
+}
+
+.leaflet-control-layers-toggle {
+    width: 30px !important;
+    height: 30px !important;
+    background-size: 18px !important;
+}
+
+#generate-link {
+    height: 40px;
+    font-size: 12pt;
+    overflow: hidden;
+    transition: all 80ms;
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    color: inherit;
+    text-decoration: none;
+    text-align: center;
+}
+
+#generate-link:hover {
+    color: #000;
+    background-color: #eee;
+}
+
+.title-tutorial-link {
+    color: #27638C !important;
+    float: right;
+    padding-right: 10px;
+    vertical-align: top;
+    font-size: medium;
+    font-weight: normal;
+    text-decoration: none;*/
+    line-height: 2.4;*/
+}
+
+.title-tutorial-link:hover {
+    text-decoration: none;
+}
+
+.title-tutorial-link img {
+    vertical-align: top !important;
+}
+
+.title-tutorial-link  span {
+    display: inline-block !important;
+    vertical-align: bottom !important;
+}
+
+.title-tutorial-link span:hover {
+    text-decoration: underline;
+}
+
+.sidebar-icon a.disabled, .sidebar-icon a.disabled:hover {
+    color: #ddd;
+    background-color: #FFFFFF;
+    cursor: not-allowed;
+}
+
+.sidebar-icon > .tooltip {
+    background-color: transparent;
+    background: transparent;
+    border: none;
 }
