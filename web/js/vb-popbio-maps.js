@@ -1983,7 +1983,6 @@ function loadSolr(parameters) {
 
                     if (marker.length > 0) {
                         $(marker).trigger("click");
-                        highlightMarker(marker);
                     } else {
                         removeHighlight();
                         sidebar.close();
@@ -2944,6 +2943,9 @@ function PaneSpin(divid, command) {
 function highlightMarker(marker) {
     // $(marker).addClass("highlight-marker");
     $(marker._icon).addClass("highlight-marker");
+
+    //Update the highlightedID variable
+    PopulationBiologyMap.data.highlightedId = marker._icon.id;
 
     // highlight = marker;
     if (firstClick) firstClick = false;
