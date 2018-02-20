@@ -59,12 +59,15 @@
 
     //Gets the dates of the query parameters in a format that can be used by the addDate function
     PopulationBiologyMap.methods.retrieveDates = function (datesRange) {
-        var [dateStartString, dateEndString] = datesRange.split("-");
+        var dateStartString;
+        var dateEndString;
         var dateStart;
         var dateEnd;
         var month;
         var day;
         var year;
+
+        [dateStartString, dateEndString] = datesRange.split("-");
 
         dateStartString.split('/').map( function (value, index) {
             if (index === 0) {

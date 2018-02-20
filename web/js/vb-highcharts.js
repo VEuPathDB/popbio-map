@@ -201,38 +201,13 @@
                 },
                 height: 20
             },
-            /*tooltip: {
+            tooltip: {
                 formatter: function () {
-                    var headerHTML = '<span style="font-size: 10px">Year '+ this.x;
-                    var dataGrouped = false;
-                    var footerHTML = '';
-
-                    //Sort the tooltip points from largest value to lowest
-                    var sortedPoints = this.points.sort(
-                        function(a, b) {
-                            return ((a.y > b.y) ? -1 : ((a.y < b.y) ? 1 : 0));
-                        }
-                    );
-
-
-                    //$.each(this.points, function (i, point) {
-                    $.each(sortedPoints, function (i, point) {
-                        if (point.series.hasGroupedData) {
-                            dataGrouped = true;
-                        }
-                        footerHTML += '<br/><span style="color: ' + point.series.color + '">' +
-                            point.series.name + ':</span><b>' + point.y + '</b>';
-                    });
-
-                    if (dataGrouped) {
-                        headerHTML += '  <i>(Grouped Data)</i></span><br/>'
-                    } else {
-                       headerHTML += '</span><br/>';
-                    }
-
-                    return headerHTML + footerHTML;
-                }  
-            },*/
+                    return  '<b>' + this.series.name +'</b><br/>' +
+                        '<b>Date:</b> ' + Highcharts.dateFormat('%b %e, %Y',new Date(this.x)) + '<br>' + 
+                        '<b>Collected:</b> ' + this.y;
+                }
+            },
 	        /*series: [{
 		    type: 'column',
 		    name: 'USD to EUR',
