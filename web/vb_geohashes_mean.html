@@ -226,7 +226,8 @@
             <li class="sidebar-icon"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
             <li class="sidebar-icon"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
             <!--<li class="sidebar-icon">-->
-                <a class="sidebar-icon" id="generate-link" title="Share view">
+                <!-- add GA -->
+                <a class="sidebar-icon" id="generate-link" title="Share view" onclick="ga(‘send’, ‘event’, ‘Popbio’, ‘shareview’, ‘Share view’);">
                     <i class="fa fa-share-alt"></i>
                 </a>
             <!--</li>-->
@@ -972,7 +973,8 @@
                 It is important for data publishers and for the reputation of data users that data is cited correctly. Citation information for each record can be found in the downloaded file.<br><br>
                 We also encourage users to support VectorBase’s data collation and open data efforts. Please see <a href="https://www.vectorbase.org/faqs/how-cite-vectorbase" target="windows"><font style="color:#BD4646;font-weight:bold">here</font></a> for information on how to acknowledge VectorBase. <br>
                <div style="margin-top: 30px;">
-                   <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
+                   <!-- add GA -->
+                   <a type="button" class="btn btn-primary" id="download-button" onclick="ga(‘send’, ‘event’, ‘Popbio’, ‘download’, ‘File download’);"><i class="fa fa-floppy-o"></i>
                                     Download
                    </a>
                </div>

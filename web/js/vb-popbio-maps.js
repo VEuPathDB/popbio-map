@@ -1709,6 +1709,9 @@ function loadSolr(parameters) {
                     map.fitBounds(record.bounds, {padding: [100, 50]});
                 })
                 .on("click", function (marker) {
+                    // add GA    
+                    ga(‘send’, ‘event’, ‘Popbio’, ‘mappoint’, ‘map point’);
+
                     if (marker.originalEvent.ctrlKey) {
                         if (marker.target instanceof L.Marker) {
                             markers.toggleMarker(marker.target, assetLayerGroup)
