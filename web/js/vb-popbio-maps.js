@@ -1710,7 +1710,7 @@ function loadSolr(parameters) {
                 })
                 .on("click", function (marker) {
                     // add GA    
-                    ga(‘send’, ‘event’, ‘Popbio’, ‘mappoint’, ‘map point’);
+                    ga('send', 'event', 'Popbio', 'mappoint', 'Map point');
 
                     if (marker.originalEvent.ctrlKey) {
                         if (marker.target instanceof L.Marker) {
