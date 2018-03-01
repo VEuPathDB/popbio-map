@@ -1710,7 +1710,8 @@ function loadSolr(parameters) {
                 })
                 .on("click", function (marker) {
                     // add GA    
-                    ga('send', 'event', 'Popbio', 'mappoint', 'Map point');
+                    // ga('send', 'event', 'Popbio', 'mappoint', 'Map point');
+                    gtag('event', 'mappoint', {'event_category': 'Popbio', 'event_label': 'Map point'});
 
                     if (marker.originalEvent.ctrlKey) {
                         if (marker.target instanceof L.Marker) {

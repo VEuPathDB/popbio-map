@@ -227,7 +227,8 @@
             <li class="sidebar-icon"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
             <!--<li class="sidebar-icon">-->
                 <!-- add GA -->
-                <a class="sidebar-icon" id="generate-link" title="Share view" onclick="ga('send', 'event', 'Popbio', 'shareview', 'Share view');">
+                <!-- <a class="sidebar-icon" id="generate-link" title="Share view" onclick="ga('send', 'event', 'Popbio', 'shareview', 'Share view');"> -->
+                <a class="sidebar-icon" id="generate-link" title="Share view" onclick="gtag('event', 'shareview', {'event_category': 'Popbio', 'event_label': 'Share view'});">
                     <i class="fa fa-share-alt"></i>
                 </a>
             <!--</li>-->
@@ -974,7 +975,8 @@
                 We also encourage users to support VectorBase’s data collation and open data efforts. Please see <a href="https://www.vectorbase.org/faqs/how-cite-vectorbase" target="windows"><font style="color:#BD4646;font-weight:bold">here</font></a> for information on how to acknowledge VectorBase. <br>
                <div style="margin-top: 30px;">
                    <!-- add GA -->
-                   <a type="button" class="btn btn-primary" id="download-button" onclick="ga('send', 'event', 'Popbio', 'download', 'File download');"><i class="fa fa-floppy-o"></i>
+                   <!-- <a type="button" class="btn btn-primary" id="download-button" onclick="ga('send', 'event', 'Popbio', 'download', 'File download');"><i class="fa fa-floppy-o"></i> -->
+                   <a type="button" class="btn btn-primary" id="download-button" onclick="gtag('event', 'download', {'event_category': 'Popbio', 'event_label': 'File download'});"><i class="fa fa-floppy-o"></i>
                                     Download
                    </a>
                </div>
@@ -2375,17 +2377,16 @@
 <!-- MAP CUT END -->
 <!-- Keep the above line for grunt-->
 
-<!-- Google Analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-6417661-3"></script>
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-ga('create', 'UA-6417661-3', 'auto');
-ga('send', 'pageview');
+  gtag('config', 'UA-6417661-3');
 </script>
-<!-- End Google Analytics -->
+
 
 </body>
 </html>
