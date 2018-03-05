@@ -34,6 +34,67 @@
             }
         })
         .then(function () {
+            // add GA
+            Highcharts.setOptions({
+                exporting: {
+                  buttons: {
+                    contextButton: {
+                      text: '',
+                      menuItems: [{
+                        text: 'Print this chart',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});
+                          this.print();
+                          // ga('send', 'event', 'Highcharts', 'print', this.options.title.text + ' | ' + document.title);
+                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});
+                        }
+                      }, {
+                        separator: true,
+                      }, {
+                        text: 'Save as PNG',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                          this.exportChart();
+                          // ga('send', 'event', 'Highcharts', 'png', this.options.title.text + ' | ' + document.title);
+                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                        }
+                      }, {
+                        text: 'Save as JPEG',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                          this.exportChart({
+                            type: 'image/jpeg'
+                          });
+                          // ga('send', 'event', 'Highcharts', 'jpeg', this.options.title.text + ' | ' + document.title);
+                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                        }
+                      }, {
+                        text: 'Save as SVG',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                          this.exportChart({
+                            type: 'image/svg+xml'
+                          });
+                          // ga('send', 'event', 'Highcharts', 'svg', this.options.title.text + ' | ' + document.title);
+                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                        }
+                      }, {
+                        text: 'Save as PDF',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});
+                          this.exportChart({
+                            type: 'application/pdf'
+                          });
+                          // ga('send', 'event', 'Highcharts', 'pdf', this.options.title.text + ' | ' + document.title);
+                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                        },
+                        separator: false
+                      }]
+                    }
+                  }
+                }
+            });    
+
             //Get graph data for project and build chart                
             //PopulationBiologyMap.data.selected_project = project_id;
             PopulationBiologyMap.data.highcharts = [];
