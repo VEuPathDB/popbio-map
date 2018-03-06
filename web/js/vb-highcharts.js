@@ -34,59 +34,49 @@
             }
         })
         .then(function () {
-            // add GA
+            // add GA - VB-4680
             Highcharts.setOptions({
                 exporting: {
                   buttons: {
                     contextButton: {
                       text: '',
                       menuItems: [{
-                        text: 'Print this chart',
+                        text: 'Print chart',
                         onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance Print'});
                           this.print();
-                          // ga('send', 'event', 'Highcharts', 'print', this.options.title.text + ' | ' + document.title);
-                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});
                         }
                       }, {
                         separator: true,
                       }, {
-                        text: 'Save as PNG',
+                        text: 'Download PNG image',
                         onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PNG'});                          
                           this.exportChart();
-                          // ga('send', 'event', 'Highcharts', 'png', this.options.title.text + ' | ' + document.title);
-                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
                         }
                       }, {
-                        text: 'Save as JPEG',
+                        text: 'Download JPEG image',
                         onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance JPEG'});                          
                           this.exportChart({
                             type: 'image/jpeg'
                           });
-                          // ga('send', 'event', 'Highcharts', 'jpeg', this.options.title.text + ' | ' + document.title);
-                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
                         }
                       }, {
-                        text: 'Save as SVG',
+                        text: 'Download PDF document',
                         onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
-                          this.exportChart({
-                            type: 'image/svg+xml'
-                          });
-                          // ga('send', 'event', 'Highcharts', 'svg', this.options.title.text + ' | ' + document.title);
-                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
-                        }
-                      }, {
-                        text: 'Save as PDF',
-                        onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PDF'});
                           this.exportChart({
                             type: 'application/pdf'
                           });
-                          // ga('send', 'event', 'Highcharts', 'pdf', this.options.title.text + ' | ' + document.title);
-                          // gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Highcharts Export'});                          
+                        }
+                      }, {
+                        text: 'Download SVG vector image',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance SVG'});                          
+                          this.exportChart({
+                            type: 'image/svg+xml'
+                          });
                         },
                         separator: false
                       }]
