@@ -267,7 +267,7 @@ function bindEvents() {
             '</div>';
 
         switch (type) {
-            case 'Project':
+            case 'Projects':
                 template = $.templates("#projectInfoTemplate");
                 entityURL = '/popbio/project/?id=' + id;
                 entityRestURL = '/popbio/REST/project/' + id + '/head';
