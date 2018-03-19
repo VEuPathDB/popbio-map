@@ -934,7 +934,6 @@ div.error div, div.warning div, div.info div, div.hint div {
     text-decoration: none;
     color: black;
     text-align: center;
-    max-width: 300px;
     margin: -1px auto;
 }
 
