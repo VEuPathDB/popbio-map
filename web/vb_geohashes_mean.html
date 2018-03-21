@@ -2359,14 +2359,6 @@
 
         //Toggle fullscreen through code so that the map is always fitting the page width and height
         map.toggleFullscreen({pseudoFullscreen: true});
-
-        //Wrapping opening up the help sidebar in a timeout function because there is code that resets the map
-        //and it is in a timeout function as well.  So ensuring the last thing that gets done is opening the sidebar
-        if (urlParams.shared_link !== "true") {
-            setTimeout(function() {
-                sidebar.open('help');
-            }, 2300);
-        }
     });
 
 </script>
