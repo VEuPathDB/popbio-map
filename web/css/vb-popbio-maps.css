@@ -922,3 +922,22 @@ div.error div, div.warning div, div.info div, div.hint div {
     background: transparent;
     border: none;
 }
+
+.flash {
+    animation-delay: 2.5s;
+    animation-direction: alternate;
+    animation-duration: 500ms;
+    animation-iteration-count: 6;
+    animation-name: flash;
+}
+
+@keyframes flash {
+    from {
+        background-color: white;
+    }
+
+    to {
+        background-color: #0074d9;
+    }
+}
+
