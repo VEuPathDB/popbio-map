@@ -3390,6 +3390,11 @@ String.prototype.truncString = function (max, add) {
     }
 })(jQuery);
 
+//End the flashing of sidebar icons when any icon is clicked
+$(document).on('click', '.sidebar-icon', function() {
+    $('.sidebar-icon.flash').removeClass('flash');
+});
+
 //fill used in the vb_geohashes_mean.html file is not supported in IE11 so need this function to make it work
 if (!Array.prototype.fill) {
     Object.defineProperty(Array.prototype, 'fill', {
