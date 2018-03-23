@@ -235,6 +235,11 @@
  
         <!-- Tab panes -->
         <div class="sidebar-content active" id="active-pane">
+            <svg class="sidebar-x" height="30" width="30">
+                <line x1="5" y1="5" x2="25" y2="25" />
+                <line x1="25" y1="5" x2="5" y2="25" />
+            </svg>
+
             <div class="sidebar-pane active" id="vectorbase">
                 <h3>VectorBase Main Menu</h3>
 
@@ -2359,6 +2364,11 @@
 
         //Toggle fullscreen through code so that the map is always fitting the page width and height
         map.toggleFullscreen({pseudoFullscreen: true});
+
+        //If the page was opened with a shared link, don't flash icons
+        if (urlParams.shared_link === "true") {
+            $(".sidebar-icon.flash").removeClass("flash");
+        }
     });
 
 </script>

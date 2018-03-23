@@ -3395,6 +3395,10 @@ $(document).on('click', '.sidebar-icon', function() {
     $('.sidebar-icon.flash').removeClass('flash');
 });
 
+$(document).on('click', '.sidebar-x', function() {
+    sidebar.close();
+});
+
 //fill used in the vb_geohashes_mean.html file is not supported in IE11 so need this function to make it work
 if (!Array.prototype.fill) {
     Object.defineProperty(Array.prototype, 'fill', {

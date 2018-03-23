@@ -923,6 +923,17 @@ div.error div, div.warning div, div.info div, div.hint div {
     border: none;
 }
 
+.sidebar-x {
+    float: right;
+    margin: 3px;
+    cursor: pointer;
+}
+
+.sidebar-x line {
+    stroke: #cccccc;
+    stroke-width: 2;
+}
+
 .flash {
     animation-delay: 2.5s;
     animation-direction: alternate;
