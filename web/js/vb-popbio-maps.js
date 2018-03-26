@@ -2242,7 +2242,7 @@ function updateTable(divid, filter, singleMarker) {
     $('.marker-row').fadeOut();
 
 
-    $('#marker-table').infiniteScrollHelper('destroy');
+    $('#table-contents').infiniteScrollHelper('destroy');
 
 
     $.getJSON(cursorUrl)
@@ -2267,7 +2267,7 @@ function updateTable(divid, filter, singleMarker) {
 
             // wait until the table is plotted and animated before setting-up infinite scroll
             setTimeout(function () {
-                $('#marker-table').infiniteScrollHelper({
+                $('#table-contents').infiniteScrollHelper({
                     bottomBuffer: 80,
                     loadMore: function (page, done) {
 
