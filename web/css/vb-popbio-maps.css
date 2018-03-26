@@ -219,14 +219,13 @@ BODY {
 }
 /* for the table */
 #marker-table {
-    overflow-y    : auto;
-    overflow-x    : hidden;
+    overflow      : hidden;
     height        : 100%;
     padding-right : 0;
 }
 .row.no-pad {
     margin-right : 10px;
-    margin-left  : -5px;
+    margin-left  : 0px;
 }
 .tooltip-bs .row.no-pad {
     margin-left : 0px;
@@ -701,6 +700,11 @@ div.error div, div.warning div, div.info div, div.hint div {
 
 #sidebar .sidebar-pane #table-contents {
     min-width: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: absolute;
+    top: 85px;
+    bottom: 0px;
 }
 
 #sidebar .sidebar-pane #table-contents .col-md-6 {
@@ -936,8 +940,9 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 .sidebar-x {
-    float: right;
-    margin: 3px;
+    position: absolute;
+    top: 3px;
+    right: 3px;
     cursor: pointer;
 }
 
