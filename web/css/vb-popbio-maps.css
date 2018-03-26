@@ -951,6 +951,10 @@ div.error div, div.warning div, div.info div, div.hint div {
     stroke-width: 2;
 }
 
+#help td {
+    white-space: normal;
+}
+
 .flash {
     animation-delay: 2.5s;
     animation-direction: alternate;
