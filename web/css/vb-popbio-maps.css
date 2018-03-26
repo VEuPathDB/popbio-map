@@ -683,6 +683,18 @@ div.error div, div.warning div, div.info div, div.hint div {
     overflow: visible;
 }
 
+@media (max-width: 767px) {
+    .sidebar {
+        position: fixed;
+    }
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        position: absolute;
+    }
+}
+
 #sidebar .sidebar-pane {
     min-width: 420px;
 }
