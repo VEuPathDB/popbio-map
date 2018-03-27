@@ -2242,7 +2242,7 @@ function updateTable(divid, filter, singleMarker) {
     $('.marker-row').fadeOut();
 
 
-    $('#marker-table').infiniteScrollHelper('destroy');
+    $('#table-contents').infiniteScrollHelper('destroy');
 
 
     $.getJSON(cursorUrl)
@@ -2267,7 +2267,7 @@ function updateTable(divid, filter, singleMarker) {
 
             // wait until the table is plotted and animated before setting-up infinite scroll
             setTimeout(function () {
-                $('#marker-table').infiniteScrollHelper({
+                $('#table-contents').infiniteScrollHelper({
                     bottomBuffer: 80,
                     loadMore: function (page, done) {
 
@@ -3389,6 +3389,15 @@ String.prototype.truncString = function (max, add) {
             return true;
     }
 })(jQuery);
+
+//End the flashing of sidebar icons when any icon is clicked
+$(document).on('click', '.sidebar-icon', function() {
+    $('.sidebar-icon.flash').removeClass('flash');
+});
+
+$(document).on('click', '.sidebar-x', function() {
+    sidebar.close();
+});
 
 //fill used in the vb_geohashes_mean.html file is not supported in IE11 so need this function to make it work
 if (!Array.prototype.fill) {

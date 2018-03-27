@@ -230,11 +230,16 @@
                     <i class="fa fa-share-alt"></i>
                 </a>
             <!--</li>-->
-            <li class="sidebar-icon"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
+            <li class="sidebar-icon flash"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
         </ul>
  
         <!-- Tab panes -->
         <div class="sidebar-content active" id="active-pane">
+            <svg class="sidebar-x" height="30" width="30">
+                <line x1="5" y1="5" x2="25" y2="25" />
+                <line x1="25" y1="5" x2="5" y2="25" />
+            </svg>
+
             <div class="sidebar-pane active" id="vectorbase">
                 <h3>VectorBase Main Menu</h3>
 
@@ -2367,12 +2372,9 @@
         //Toggle fullscreen through code so that the map is always fitting the page width and height
         map.toggleFullscreen({pseudoFullscreen: true});
 
-        //Wrapping opening up the help sidebar in a timeout function because there is code that resets the map
-        //and it is in a timeout function as well.  So ensuring the last thing that gets done is opening the sidebar
-        if (urlParams.shared_link !== "true") {
-            setTimeout(function() {
-                sidebar.open('help');
-            }, 2300);
+        //If the page was opened with a shared link, don't flash icons
+        if (urlParams.shared_link === "true") {
+            $(".sidebar-icon.flash").removeClass("flash");
         }
     });
 
