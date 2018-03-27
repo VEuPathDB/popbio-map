@@ -951,6 +951,31 @@ div.error div, div.warning div, div.info div, div.hint div {
     stroke-width: 2;
 }
 
+#vectorbase-navigation {
+    margin-top: 20px;
+    font-size: 120%;
+}
+
+#vectorbase-navigation a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    margin: -1px auto;
+}
+
+#vectorbase-navigation a:hover {
+    background: #bcbcbc;
+}
+
+#vectorbase-navigation div {
+    height: 1px;
+    max-width: 30px;
+    margin: auto;
+    background: linear-gradient(to right, #ffffff00, #bcbcbc 20%, #bcbcbc 80%, #ffffff00);
+}
+
 #help td {
     white-space: normal;
 }
