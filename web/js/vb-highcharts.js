@@ -345,7 +345,7 @@
             resolution = "Yearly";
         } else if (number_of_days > 1095 + 60) {
             //More than 3 years but less than 10 years get monthly data
-            resolution = "GraphdataMonthly";
+            resolution = "Monthly";
         } else if (number_of_days > 365 + 14) {
             //More than 1 year, but less than 3 years gets EpiWeekly
             resolution = "EpiWeekly";
@@ -354,8 +354,7 @@
             resolution = "Daily";
         }
 
-        //For now only get data and redraw graph if previous endpoint is different than current endpoint.
-        //Logic might not be what we want, but can change once actual testing gets done.
+        //Construct the URL that will be used to get the new data
         var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
         var date_resolution_field = resolution_to_solr_field[resolution]; 
         var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
@@ -363,6 +362,7 @@
         var queryUrl = abundanceUrl + qryUrl + facet_term + highcharts_filter + "&fq=collection_date:[" + start_date + " TO " + end_date +"]";
 
         //chart.showLoading('Loading data from server...');
+        //Get new data based on the Date range selected with Highcharts' navigator
         $.getJSON(queryUrl, function (json) {
             if (json.facets.term) {
                 chart.showLoading('Loading data from server...');
@@ -370,7 +370,7 @@
                 var data = PopulationBiologyMap.data.highcharts.data;
 
                 //Do not remove the padding data so the navigator does not get messed up
-                while(chart.series.length > 1)
+                while(chart.series.length > 0)
                     chart.series[0].remove(false);
 
                 for (var i = 0; i < data.length; i++) {
@@ -383,6 +383,7 @@
         });
     }
 
+    //Uses the response from SOLR to construct the data array that will be used by Highcharts
     function setHighchartsData(json) {
         PopulationBiologyMap.data.highcharts.data = [];
 
@@ -391,7 +392,6 @@
             var term_collections_list = json.facets.term.buckets;
 
             term_collections_list.forEach(function (term_collections) {
-                //console.log(term_collections); 
                 //Used to hold the formatted data for a single species (or protocol, etc)  chart
                 var marker_color = legend.options.palette[term_collections.val];
                 var single_term_data = {
