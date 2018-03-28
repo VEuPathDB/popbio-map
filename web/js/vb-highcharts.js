@@ -1,4 +1,19 @@
 (function (PopulationBiologyMap, $, undefined) {
+    //Private variables used for the chart
+    var endpoint = "Graphdata";
+    var result_limit = 50000;
+    var highcharts_filter;
+    var resolution;
+    var min_date;
+    var max_date;
+
+    //Object that maps the resolution value to solr field
+    var resolution_to_solr_field = {
+        Yearly:"collection_year_dt",
+        Monthly:"collection_month_dt",
+        EpiWeekly:"collection_epiweek_dt",
+        Daily:"collection_date"
+    }
 
     if (PopulationBiologyMap.data == undefined) {
         PopulationBiologyMap.data = {};
@@ -16,7 +31,8 @@
         var abundanceUrl = solrPopbioUrl + viewMode + "Projects?";
         var queryUrl = abundanceUrl + qryUrl + filter;
 
-        PopulationBiologyMap.data.filter = filter;
+        //Storing filter in object to use later
+         highcharts_filter = filter;
 
         //Will need to find a better way of organizing these ajax calls
         //$('#swarm-chart-area').fadeOut();
@@ -25,7 +41,41 @@
             url: queryUrl,
             dataType: 'json',
             success: function (json) {
-                PopulationBiologyMap.data.projects_list = json.facet_counts.facet_fields.projects_category;
+                //Get the min and max dates of the data
+                var collection_year_list = json.facets.collection_year_dt.buckets;
+                var last_year_position = collection_year_list.length - 1;
+                min_date = new Date(collection_year_list[0].val + '-01-01T00:00:00Z').getTime();
+                max_date = new Date(collection_year_list[last_year_position].val + '-12-31T00:00:00Z').getTime();
+                var number_of_days = (max_date-min_date) / (1000 * 3600 * 24);
+
+                //Decide what resolution of data to get
+                if (number_of_days > 3650) {
+                    //More than 10 years gets yearly data
+                    resolution = "Yearly";
+                    min_date -= (3600 * 1000 * 24 * 365);
+                    max_date += (3600 * 1000 * 24 * 365);
+                } else if (number_of_days > 1095) {
+                    //More than 3 years but less than 10 years get monthly data
+                    resolution = "Monthly";
+                    min_date -= (3600 * 1000 * 24 * 30);
+                    max_date += (3600 * 1000 * 24 * 30);
+
+                } else if (number_of_days > 365) {
+                    //More than 1 year, but less than 3 years gets EpiWeekly
+                    //Using monthly for now since EpiWeekly needs a function to take care of correctly
+                    resolution = "EpiWeekly";
+                    min_date -= (3600 * 1000 * 24 * 7);
+                    max_date += (3600 * 1000 * 24 * 7);
+                    //min_date -= (3600 * 1000 * 24 * 30);
+                    //max_date += (3600 * 1000 * 24 * 30);
+                } else {
+                    //Less than one year gets daily data
+                    resolution = "Daily";
+                    min_date -= (3600 * 1000 * 24);
+                    max_date += (3600 * 1000 * 24);
+                }
+        
+                PopulationBiologyMap.data.projects_list = json.facets.projects_category.buckets;
                 PopulationBiologyMap.data.result_count = json.response.numFound;
             },
             error: function() {
@@ -37,65 +87,66 @@
             // add GA - VB-4680
             Highcharts.setOptions({
                 exporting: {
-                  buttons: {
-                    contextButton: {
-                      text: '',
-                      menuItems: [{
-                        text: 'Print chart',
-                        onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance Print'});
-                          this.print();
+                    buttons: {
+                        contextButton: {
+                            text: '',
+                            menuItems: [{
+                                text: 'Print chart',
+                                onclick: function() {
+                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance Print'});
+                                    this.print();
+                                }
+                            }, {
+                                separator: true,
+                            }, {
+                                text: 'Download PNG image',
+                                onclick: function() {
+                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PNG'});                          
+                                    this.exportChart();
+                                }
+                            }, {
+                                text: 'Download JPEG image',
+                                onclick: function() {
+                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance JPEG'});                          
+                                    this.exportChart({
+                                        type: 'image/jpeg'
+                                    });
+                                }
+                            }, {
+                                text: 'Download PDF document',
+                                onclick: function() {
+                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PDF'});
+                                    this.exportChart({
+                                        type: 'application/pdf'
+                                    });
+                                }
+                            }, {
+                                text: 'Download SVG vector image',
+                                onclick: function() {
+                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance SVG'});                          
+                                    this.exportChart({
+                                        type: 'image/svg+xml'
+                                    });
+                                },
+                                separator: false
+                            }]
                         }
-                      }, {
-                        separator: true,
-                      }, {
-                        text: 'Download PNG image',
-                        onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PNG'});                          
-                          this.exportChart();
-                        }
-                      }, {
-                        text: 'Download JPEG image',
-                        onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance JPEG'});                          
-                          this.exportChart({
-                            type: 'image/jpeg'
-                          });
-                        }
-                      }, {
-                        text: 'Download PDF document',
-                        onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PDF'});
-                          this.exportChart({
-                            type: 'application/pdf'
-                          });
-                        }
-                      }, {
-                        text: 'Download SVG vector image',
-                        onclick: function() {
-                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance SVG'});                          
-                          this.exportChart({
-                            type: 'image/svg+xml'
-                          });
-                        },
-                        separator: false
-                      }]
                     }
-                  }
                 }
             });    
 
             //Get graph data for project and build chart                
-            //PopulationBiologyMap.data.selected_project = project_id;
-            PopulationBiologyMap.data.highcharts = [];
             //Construct URL used to retrieve data from solr
-            var abundanceUrl = solrPopbioUrl + viewMode + "Graphdata?";
+            var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
+            var date_resolution_field = resolution_to_solr_field[resolution]; 
+            var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
             //var project = "&project=projects_category:" + project_id;
             // unfortunately 'term' seems to be a misnomer.  'field' would be better!
-            var facet_term = "&term=" + mapSummarizeByToField(glbSummarizeBy).summarize;
+            //var facet_term = "&term=" + mapSummarizeByToField(glbSummarizeBy).summarize + "&date_resolution;
+            var facet_term = "&term=" + term + "&date_resolution=" + date_resolution_field;
             var queryUrl = abundanceUrl + qryUrl + facet_term + filter;
-            var result_limit = 50000;
 
+            //Hopefully this will not be needed anymore
             if (PopulationBiologyMap.data.result_count > result_limit) {
                 $("#swarm-chart-area").html(
                     '<div style="text-align: center; margin-top: 30px">' +
@@ -110,13 +161,13 @@
                 //This variable does not get populated fast enough so need to get it before creating the grap
                 //Seems like I will need to go to the past codebaseh
                 projects_list = PopulationBiologyMap.data.projects_list;
-                if (projects_list  && Object.keys(projects_list).length > 1) {
+                if (projects_list.length > 1) {
                     $("#projects-notice").show();
                     PopulationBiologyMap.data.project_title = undefined;
                 } else {
                     $("#projects-notice").hide();
                     PopulationBiologyMap.data.project_title = '';
-                    PopulationBiologyMap.data.project_id = Object.keys(projects_list)[0];
+                    PopulationBiologyMap.data.project_id = projects_list[0].val;
                 }
                 
                 $.ajax({
@@ -136,7 +187,9 @@
                     dataType: 'json',
                     success: function(json) {
                         //Get species (or protocols etc) collection info from response
-                        var term_collections_list = json.facets.term.buckets;
+                        //var term_collections_list = json.facets.term.buckets;
+                        //var endpoint = PopulationBiologyMap.data.highcharts.endpoint;
+                        //PopulationBiologyMap.data.highcharts.data = [];
 
                         if (PopulationBiologyMap.data.project_title != undefined) {
                             PopulationBiologyMap.data.project_title = json.response.docs[0].project_titles_txt;
@@ -144,38 +197,7 @@
                             PopulationBiologyMap.data.project_title = '';
                         }
 
-                        term_collections_list.forEach(function (term_collections) {
-                            //console.log(term_collections); 
-                            //Used to hold the formatted data for a single species (or protocol, etc)  chart
-                            var marker_color = legend.options.palette[term_collections.val];
-                            var single_term_data = {
-                                "name": term_collections.val, 
-                                "marker": {
-                                    "symbol": "circle"
-                                },
-                                "color": marker_color,
-                                "data": []
-                            };
-
-                            collections_info = term_collections.collection_dates.buckets;
-                            collections_info.forEach(function (collections_date) {
-                                var unix_date = new Date(collections_date.val).getTime();;
-                                var collections = collections_date.collection.buckets;
-                                //if (collection.count > 1) {
-                                //    console.log("In collection");
-                                //    console.log(collection.count);
-                                //}
-                                collections.forEach(function (collection_abnd) {
-                                    /*if (sample_size.count > 1) {
-                                        console.log("In sample size");
-                                        console.log(sample_size.count);
-                                    }*/
-                                    single_term_data.data.push([unix_date, collection_abnd.abnd]);
-                                });
-                                //console.log(collection);
-                            });
-                            PopulationBiologyMap.data.highcharts.push(single_term_data);
-                        });
+                        setHighchartsData(json);
                     },
                     error: function() {
                         PaneSpin('swarm-plots', 'stop');
@@ -183,7 +205,7 @@
                     },
                     complete: function() {
                         //Construct graph with ajax call to Solr servr
-                        var data = PopulationBiologyMap.data.highcharts;
+                        var data = PopulationBiologyMap.data.highcharts.data;
                         var project_title = PopulationBiologyMap.data.project_title;
                         var project_id = PopulationBiologyMap.data.project_id;
                         var title = "<a href=/popbio/project?id=" + project_id + ">" + project_title + "</a>";
@@ -207,22 +229,18 @@
         });*/
     }
 
-
     PopulationBiologyMap.methods.createStockchart = function(data, title) {
-        $('#swarm-chart-area').highcharts('StockChart',{
-/*            xAxis: {
-                labels: {
-                    formatter: function () {
-                        return this.value;
-                    }
-                }
-            },
+        //$('#swarm-chart-area').highcharts('StockChart',{
+        //Delete previous created chart object and add a new one
+        if (Highcharts.charts[0] !== undefined ) {
+            Highcharts.charts[0].destroy();
+            Highcharts.charts.splice(0,1);
+        }
+
+        Highcharts.stockChart('swarm-chart-area', {
             rangeSelector: {
                 enabled: false
-            },*/
-	    rangeSelector: {
-                enabled: false
-	    },
+            },
             legend: {
                 enabled: true,
                 labelFormat: "<i>{name}</i>"
@@ -236,37 +254,198 @@
                 //zoomType: 'xy',
                 height: "200%"
             },
-	    /*navigator: {
-                enabled: false
-	    },*/
             navigator: {
-                /*xAxis: {
-                    labels: {
-                        formatter: function () {
-                            return this.value;
-                        }
-                    }
-                },*/
+                adaptToUpdateData: false,
                 series: {
                     data: []
                 },
                 height: 20
             },
+            scrollbar: {
+                liveRedraw: false
+            },
             tooltip: {
+                useHTML: true,
                 formatter: function () {
-                    return  '<b>' + this.series.name +'</b><br/>' +
-                        '<b>Date:</b> ' + Highcharts.dateFormat('%b %e, %Y',new Date(this.x)) + '<br>' + 
-                        '<b>Collected:</b> ' + this.y;
+                    var start_date = new Date(this.x);
+                    var year = start_date.getFullYear();
+                    var month = start_date.getMonth();
+                    var day = start_date.getDate();
+                    var collection_date;
+                    var end_date;
+                    var data_type;
+
+                    if (resolution === "Yearly") {
+                        data_type = "Year";
+                        start_date = Highcharts.dateFormat('%b %d', start_date);
+                        end_date = Highcharts.dateFormat('%b %d', new Date(year, 12, 31));
+                        collection_date = start_date + " to " + end_date;
+                    } else if (resolution === "Monthly") {
+                        data_type = "Month";
+                        start_date = Highcharts.dateFormat('%b %d', start_date);
+                        month += 1;
+                        end_date = Highcharts.dateFormat('%b %d',new Date(year, month, 0));
+                        collection_date = start_date + " to " + end_date;
+                    } else if (resolution === "EpiWeekly") {
+                        data_type = "Epi Week";
+                        day = start_date.getDate() + 6;
+                        start_date = Highcharts.dateFormat('%b %d', start_date);
+                        end_date = Highcharts.dateFormat('%b %d', new Date(year, month, day));
+                        collection_date = start_date + " to " + end_date;
+                    } else {
+                        data_type = "Day";
+                        collection_date = Highcharts.dateFormat('%b %d, %Y',new Date(this.x));
+                    }
+
+                    if (glbSummarizeBy === "Species") {
+                        var tooltip = '<i><b>' + this.series.name + '</b></i><br/>';
+                    } else { 
+                        var tooltip =  '<b>' + this.series.name +'</b><br>';
+                    }
+
+                    tooltip += '<b>Date:</b> ' + collection_date  + '<br>' + 
+                        '<b>Abundance:</b> ' + this.y + '<br>' + 
+                        '<b>Resolution:</b> ' + data_type;
+
+                    if (resolution === "EpiWeekly") {
+                        tooltip += '<br>' + '<b>Epi Week:</b> ' + this.point.epi_week;
+                    }
+
+                    return tooltip;
                 }
             },
-	        /*series: [{
-		    type: 'column',
-		    name: 'USD to EUR',
-		    data: [[1990,10]]
-	        }]*/
+            xAxis: {
+                events: {
+                    afterSetExtremes: afterSetExtremes
+                },
+                min: min_date,
+                max: max_date,
+                //Set minimum range to 10 days
+                minRange: 3600 * 1000 * 24 * 10
+            },
+            credits: {
+                enabled: false
+            },
             series: data
         });
     };
+
+    /**
+     * Load new data depending on the selected min and max
+     */
+    function afterSetExtremes(e) {
+        var chart = Highcharts.charts[0];
+        var start_date = new Date(e.min).toISOString();
+        var end_date = new Date(e.max).toISOString();
+        var number_of_days = (e.max-e.min) / (1000 * 3600 * 24);
+
+        //Decide what resolution of data to get, adding the padding added to dates when getting data for the first time
+        if (number_of_days > 3650 + 730) {
+            //More than 10 years gets yearly data
+            resolution = "Yearly";
+        } else if (number_of_days > 1095 + 60) {
+            //More than 3 years but less than 10 years get monthly data
+            resolution = "GraphdataMonthly";
+        } else if (number_of_days > 365 + 14) {
+            //More than 1 year, but less than 3 years gets EpiWeekly
+            resolution = "EpiWeekly";
+        } else {
+            //Less than one year gets daily data
+            resolution = "Daily";
+        }
+
+        //For now only get data and redraw graph if previous endpoint is different than current endpoint.
+        //Logic might not be what we want, but can change once actual testing gets done.
+        var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
+        var date_resolution_field = resolution_to_solr_field[resolution]; 
+        var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
+        var facet_term = "&term=" + term + "&date_resolution=" + date_resolution_field;
+        var queryUrl = abundanceUrl + qryUrl + facet_term + highcharts_filter + "&fq=collection_date:[" + start_date + " TO " + end_date +"]";
+
+        //chart.showLoading('Loading data from server...');
+        $.getJSON(queryUrl, function (json) {
+            if (json.facets.term) {
+                chart.showLoading('Loading data from server...');
+                setHighchartsData(json);
+                var data = PopulationBiologyMap.data.highcharts.data;
+
+                //Do not remove the padding data so the navigator does not get messed up
+                while(chart.series.length > 1)
+                    chart.series[0].remove(false);
+
+                for (var i = 0; i < data.length; i++) {
+                    chart.addSeries(data[i], false);
+                }
+
+                chart.redraw();
+                chart.hideLoading();
+            }
+        });
+    }
+
+    function setHighchartsData(json) {
+        PopulationBiologyMap.data.highcharts.data = [];
+
+        //Get species (or protocols etc) collection info from response
+        if (json.facets.term) {
+            var term_collections_list = json.facets.term.buckets;
+
+            term_collections_list.forEach(function (term_collections) {
+                //console.log(term_collections); 
+                //Used to hold the formatted data for a single species (or protocol, etc)  chart
+                var marker_color = legend.options.palette[term_collections.val];
+                var single_term_data = {
+                    "name": term_collections.val, 
+                    "marker": {
+                    "symbol": "circle"
+                },
+                    "color": marker_color,
+                    "data": []
+                };
+
+                collections_info = term_collections.collection_dates.buckets;
+                collections_info.forEach(function (collections_date) {
+                    var average_abundance = (collections_date.sum_abundance/collections_date.num_collections).roundDecimals(1);
+
+                    if (resolution === "Yearly") {
+                        var unix_date = new Date(collections_date.val + '-01-01T00:00:00Z').getTime();
+                    } else if (resolution === "Monthly") {
+                        var unix_date = new Date(collections_date.val + '-01T00:00:00Z').getTime();
+                    } else if (resolution === "EpiWeekly") {
+                        [epi_week_year, epi_week] = collections_date.val.split("-");
+                        epi_week = epi_week.replace("W", "");
+                        var epi_week_date = getDateFromWeek(epi_week, epi_week_year);
+                        var unix_date = epi_week_date.getTime();
+                    } else {
+                        var unix_date = new Date(collections_date.val).getTime();
+                    }
+
+                    if (resolution === "EpiWeekly") {
+                        single_term_data.data.push({x:unix_date, y:average_abundance, epi_week:epi_week});
+                    } else {
+                        single_term_data.data.push([unix_date, average_abundance]);
+                    }
+                });            
+                PopulationBiologyMap.data.highcharts.data.push(single_term_data);
+            });
+        }
+    }
+
+    //Return first Sunday of the epi week
+    function getDateFromWeek(w, y)
+    {
+        var _days;
+        if(w == 53){
+            _days = (1 + (w - 1) * 7);
+        } else {
+            _days = (w * 7); 
+        }
+        
+        var _date = new Date(y,0,_days);
+        _date.setDate(_date.getDate() - _date.getDay());
+        
+        return _date;
+}
 
     $(document).ready(function () {
         PopulationBiologyMap.init();
