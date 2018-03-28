@@ -34,6 +34,57 @@
             }
         })
         .then(function () {
+            // add GA - VB-4680
+            Highcharts.setOptions({
+                exporting: {
+                  buttons: {
+                    contextButton: {
+                      text: '',
+                      menuItems: [{
+                        text: 'Print chart',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance Print'});
+                          this.print();
+                        }
+                      }, {
+                        separator: true,
+                      }, {
+                        text: 'Download PNG image',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PNG'});                          
+                          this.exportChart();
+                        }
+                      }, {
+                        text: 'Download JPEG image',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance JPEG'});                          
+                          this.exportChart({
+                            type: 'image/jpeg'
+                          });
+                        }
+                      }, {
+                        text: 'Download PDF document',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PDF'});
+                          this.exportChart({
+                            type: 'application/pdf'
+                          });
+                        }
+                      }, {
+                        text: 'Download SVG vector image',
+                        onclick: function() {
+                          gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance SVG'});                          
+                          this.exportChart({
+                            type: 'image/svg+xml'
+                          });
+                        },
+                        separator: false
+                      }]
+                    }
+                  }
+                }
+            });    
+
             //Get graph data for project and build chart                
             //PopulationBiologyMap.data.selected_project = project_id;
             PopulationBiologyMap.data.highcharts = [];

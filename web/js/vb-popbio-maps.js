@@ -606,8 +606,8 @@ function bindEvents() {
 
     // add the date filter into search
     $("#add-dates").click(function () {
-        var dateStart = new Date($("#date-start").datepicker('getUTCDate'));
-        var dateEnd = new Date($("#date-end").datepicker('getUTCDate'));
+        var dateStart = new Date($("#date-start").datepicker('getDate'));
+        var dateEnd = new Date($("#date-end").datepicker('getDate'));
 
         PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
     });
@@ -1709,6 +1709,10 @@ function loadSolr(parameters) {
                     map.fitBounds(record.bounds, {padding: [100, 50]});
                 })
                 .on("click", function (marker) {
+                    // add GA    
+                    // ga('send', 'event', 'Popbio', 'mappoint', 'Map point');
+                    gtag('event', 'mappoint', {'event_category': 'Popbio', 'event_label': 'Map point'});
+
                     if (marker.originalEvent.ctrlKey) {
                         if (marker.target instanceof L.Marker) {
                             markers.toggleMarker(marker.target, assetLayerGroup)
@@ -1750,14 +1754,28 @@ function loadSolr(parameters) {
                         }
 
                         if (sidebarClick) {
+                            // gtag: check View selection
+                            var selected_value = $( "#SelectView option:selected" ).text();
+                            if (selected_value == 'Insecticide Resistance') {
+                                selected_value = 'IR';
+                            } 
+
                             switch (panelId) {
                                 case "graphs":
+                                    // gtag
+                                    var graph_name = 'graph_' + selected_value;
+                                    gtag('event', graph_name, {'event_category': 'Popbio', 'event_label': 'Popbio graph'});
+                                    
                                     if (!panel.data('has-graph')) {
                                         updatePieChart(record.count, record.fullstats);
                                         panel.data('has-graph', true);
                                     }
                                     break;
                                 case "swarm-plots":
+                                    // gtag
+                                    var swarm_name = 'swarm_' + selected_value;
+                                    gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});
+
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (viewMode === 'abnd') {
                                         PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
@@ -1767,6 +1785,10 @@ function loadSolr(parameters) {
                                     }
                                     break;
                                 case "marker-table":
+                                    // gtag
+                                    var table_name = 'table_' + selected_value;
+                                    gtag('event', table_name, {'event_category': 'Popbio', 'event_label': 'Popbio table'});
+
                                     if (!panel.data('has-graph')) {
                                         updateTable("#table-contents", buildBbox(recBounds));
                                         panel.data('has-graph', true);
@@ -1809,12 +1831,26 @@ function loadSolr(parameters) {
                                 // Determine the open pane and update the right graph
                                 $('.sidebar-pane').data('has-graph', false);
 
+                                // gtag: check View selection
+                                var selected_value = $( "#SelectView option:selected" ).text();
+                                if (selected_value == 'Insecticide Resistance') {
+                                    selected_value = 'IR';
+                                } 
+
                                 switch (panelId) {
                                     case "graphs":
+                                        // gtag
+                                        var graph_name = 'graph_' + selected_value;
+                                        gtag('event', graph_name, {'event_category': 'Popbio', 'event_label': 'Popbio graph'});
+
                                         updatePieChart(record.count, record.fullstats);
                                         panel.data('has-graph', true);
                                         break;
                                     case "swarm-plots":
+                                        // gtag
+                                        var swarm_name = 'swarm_' + selected_value;
+                                        gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});                                    
+
                                         // Geno viewmode will say that it is not availble in that mode
                                         if (viewMode === 'abnd') {
                                             PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
@@ -1824,6 +1860,10 @@ function loadSolr(parameters) {
                                         }
                                         break;
                                     case "marker-table":
+                                        // gtag
+                                        var table_name = 'table_' + selected_value;
+                                        gtag('event', table_name, {'event_category': 'Popbio', 'event_label': 'Popbio table'});
+                                    
                                         updateTable("#table-contents", buildBbox(recBounds));
                                         panel.data('has-graph', true);
                                         break;
@@ -2515,6 +2555,9 @@ function filterMarkers(items, flyTo) {
         loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo});
         return;
     }
+
+    // gtag
+    gtag('event', 'search_popbio', {'event_category': 'Popbio', 'event_label': 'Popbio search'});
 
     var terms = {};
 
