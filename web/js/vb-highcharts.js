@@ -262,6 +262,7 @@
                 height: 20
             },
             scrollbar: {
+                enabled: false,
                 liveRedraw: false
             },
             tooltip: {
