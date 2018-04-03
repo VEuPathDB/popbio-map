@@ -705,6 +705,8 @@ div.error div, div.warning div, div.info div, div.hint div {
     position: absolute;
     top: 85px;
     bottom: 0px;
+    left: 20px;
+    right: 0px;
 }
 
 #sidebar .sidebar-pane #table-contents .col-md-6 {
