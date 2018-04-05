@@ -1,7 +1,7 @@
 (function (PopulationBiologyMap, $, undefined) {
     //Private variables used for the chart
     var endpoint = "Graphdata";
-    var result_limit = 50000;
+    var result_limit = 100000;
     var highcharts_filter;
     var resolution;
     var min_date;
@@ -9,10 +9,10 @@
 
     //Object that maps the resolution value to solr field
     var resolution_to_solr_field = {
-        Yearly:"collection_year_dt",
-        Monthly:"collection_month_dt",
-        EpiWeekly:"collection_epiweek_dt",
-        Daily:"collection_date"
+        Yearly:"collection_year_s",
+        Monthly:"collection_month_s",
+        EpiWeekly:"collection_epiweek_s",
+        Daily:"collection_day_s"
     }
 
     if (PopulationBiologyMap.data == undefined) {
@@ -42,7 +42,7 @@
             dataType: 'json',
             success: function (json) {
                 //Get the min and max dates of the data
-                var collection_year_list = json.facets.collection_year_dt.buckets;
+                var collection_year_list = json.facets[resolution_to_solr_field.Yearly].buckets;
                 var last_year_position = collection_year_list.length - 1;
                 min_date = new Date(collection_year_list[0].val + '-01-01T00:00:00Z').getTime();
                 max_date = new Date(collection_year_list[last_year_position].val + '-12-31T00:00:00Z').getTime();
@@ -268,9 +268,9 @@
                 useHTML: true,
                 formatter: function () {
                     var start_date = new Date(this.x);
-                    var year = start_date.getFullYear();
-                    var month = start_date.getMonth();
-                    var day = start_date.getDate();
+                    var year = start_date.getUTCFullYear();
+                    var month = start_date.getUTCMonth();
+                    var day = start_date.getUTCDate();
                     var collection_date;
                     var end_date;
                     var data_type;
@@ -417,7 +417,7 @@
                         var epi_week_date = getDateFromWeek(epi_week, epi_week_year);
                         var unix_date = epi_week_date.getTime();
                     } else {
-                        var unix_date = new Date(collections_date.val).getTime();
+                        var unix_date = new Date(collections_date.val + 'T00:00:00Z').getTime();
                     }
 
                     if (resolution === "EpiWeekly") {
