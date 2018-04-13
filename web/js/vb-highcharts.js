@@ -230,23 +230,12 @@
     }
 
     PopulationBiologyMap.methods.createStockchart = function(data, title) {
-        var y_axis_unit;
-
         //$('#swarm-chart-area').highcharts('StockChart',{
         //Delete previous created chart object and add a new one
         if (Highcharts.charts[0] !== undefined ) {
             Highcharts.charts[0].destroy();
             Highcharts.charts.splice(0,1);
         }
-
-        if (resolution === "Yearly")
-            y_axis_unit = "year";
-        else if (resolution === "Monthly")
-            y_axis_unit = "month";
-        else if (resolution === "EpiWeekly")
-            y_axis_unit = "epi week";
-        else
-            y_axis_unit = "day";
 
         Highcharts.stockChart('swarm-chart-area', {
             rangeSelector: {
@@ -338,7 +327,7 @@
             yAxis: {
                 opposite: false,
                 title: {
-                    text: "Individuals collected (per " + y_axis_unit + " per trap)"
+                    text: "Average individuals (per night per trap)"
                 },
                 labels: {
                     align: "left",
@@ -360,30 +349,21 @@
         var start_date = new Date(e.min).toISOString();
         var end_date = new Date(e.max).toISOString();
         var number_of_days = (e.max-e.min) / (1000 * 3600 * 24);
-        var y_axis_unit;
 
         //Decide what resolution of data to get, adding the padding added to dates when getting data for the first time
         if (number_of_days > 3650 + 730) {
             //More than 10 years gets yearly data
             resolution = "Yearly";
-            y_axis_unit = "year";
         } else if (number_of_days > 1095 + 60) {
             //More than 3 years but less than 10 years get monthly data
             resolution = "Monthly";
-            y_axis_unit = "month";
         } else if (number_of_days > 365 + 14) {
             //More than 1 year, but less than 3 years gets EpiWeekly
             resolution = "EpiWeekly";
-            y_axis_unit = "epi week";
         } else {
             //Less than one year gets daily data
             resolution = "Daily";
-            y_axis_unit = "day";
         }
-
-        chart.yAxis[0].setTitle({
-            text: "Individuals collected (per " + y_axis_unit + " per trap)"
-        });
 
         //Construct the URL that will be used to get the new data
         var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
