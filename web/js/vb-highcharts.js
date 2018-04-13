@@ -262,6 +262,7 @@
                 height: 20
             },
             scrollbar: {
+                enabled: false,
                 liveRedraw: false
             },
             tooltip: {
@@ -322,6 +323,16 @@
                 max: max_date,
                 //Set minimum range to 10 days
                 minRange: 3600 * 1000 * 24 * 10
+            },
+            yAxis: {
+                opposite: false,
+                title: {
+                    text: "Average individuals (per night per trap)"
+                },
+                labels: {
+                    align: "left",
+                    x: 0
+                }
             },
             credits: {
                 enabled: false
