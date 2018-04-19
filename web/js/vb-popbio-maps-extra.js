@@ -24,7 +24,7 @@
         removeHighlight();
         sidebar.close();
         // close open panels
-        $('.collapse').collapse('hide');
+        //$('.collapse').collapse('hide');
         setTimeout(function () {
             resetPlots()
         }, delay);
@@ -105,9 +105,9 @@
     PopulationBiologyMap.methods.addDate = function (dateStart, dateEnd) {
         var value;
         if (dateStart.getTime() === dateEnd.getTime()) {
-            value = dateStart.toLocaleDateString('en-GB')
+            value = dateStart.toLocaleDateString('en-GB', { timeZone: 'UTC' });
         } else {
-            value = dateStart.toLocaleDateString('en-GB') + '-' + dateEnd.toLocaleDateString('en-GB')
+            value = dateStart.toLocaleDateString('en-GB', { timeZone: 'UTC' }) + '-' + dateEnd.toLocaleDateString('en-GB', { timeZone: 'UTC' });
         }
 
         $('#search_ac').tagsinput('add', {

@@ -1,7 +1,7 @@
 (function (PopulationBiologyMap, $, undefined) {
     //Private variables used for the chart
     var endpoint = "Graphdata";
-    var result_limit = 100000;
+    var result_limit = 400000;
     var highcharts_filter;
     var resolution;
     var min_date;
@@ -267,6 +267,7 @@
             },
             tooltip: {
                 useHTML: true,
+                split: false,
                 formatter: function () {
                     var start_date = new Date(this.x);
                     var year = start_date.getUTCFullYear();

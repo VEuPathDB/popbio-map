@@ -489,14 +489,6 @@ function bindEvents() {
         $('#bars-icon').toggleClass('down');
     });
 
-    // clear the date selection panel once collapsed
-    $('#daterange').on('hidden.bs.collapse', function () {
-        $("#date-start").datepicker("clearDates");
-        $("#date-end").datepicker("clearDates");
-        $("#add-dates").prop('disabled', true);
-        $("#add-season").prop('disabled', true);
-    });
-
     // clear the seasonal search panel once collapsed
     $('#seasonal').on('hidden.bs.collapse', function () {
         if (checkSeasonal()) return;
@@ -520,19 +512,9 @@ function bindEvents() {
             $('#daterange').collapse('hide');
         }
     });
-
-    // bind the date range text fields to the datepicker
-    $('#daterange').find('.input-daterange').datepicker({
-        format: "dd/mm/yyyy",
-        startView: 2,
-        todayBtn: "linked",
-        autoclose: true,
-        todayHighlight: true,
-        endDate: "Date.now()"
-    });
-
+    
     // collect the months to be included in the seasonal search
-    $('.season-toggle').change(function () {
+    $('.season-toggle').change(function (e) {
         var enable = false;
         $('.season-toggle').each(function () {
             var curMonth = $(this).val(), curMode = $(this).prop('checked');
@@ -540,11 +522,8 @@ function bindEvents() {
             if (curMode) enable = true;
         });
 
-        if (enable) {
-            $("#add-season").prop('disabled', false);
-        } else {
-            $("#add-season").prop('disabled', true);
-        }
+        PopulationBiologyMap.methods.addSeason(months);
+
     });
 
     // add the seasonal filter into search
@@ -595,26 +574,26 @@ function bindEvents() {
             field: 'phenotype_rescaled_value_f'
         });
     });
-
-    // Enable the add dates button only if the date fields are populated
-    $("#date-start").datepicker()
-    .on('changeDate', function (e) {
-        if (e.dates.length) $("#add-dates").prop('disabled', false);
-        // animating the colours to highlight this button will require adding jquery-ui
-        // animating size/position just looks nasty
-    });
-
-    // add the date filter into search
-    $("#add-dates").click(function () {
-        var dateStart = new Date($("#date-start").datepicker('getDate'));
-        var dateEnd = new Date($("#date-end").datepicker('getDate'));
-
-        PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
-    });
-
+   
     $('.date-shortcut').click(function () {
-        // console.log(this.value);
-        setDateRange('#date-start', "#date-end", this.value);
+        var startYear;
+        var endYear;
+        var startDate;
+        var endDate;
+        var now = new Date();
+
+        //Check if we pressed the 2015-now range
+        if (this.value === '2015') {
+           startYear = this.value;
+           startDate = new Date(Date.UTC(startYear, 0, 1));
+           endDate = now;   
+        } else {
+            [startYear, endYear] = this.value.split('-');
+            startDate = new Date(Date.UTC(startYear, 0, 1));
+            endDate = new Date(Date.UTC(endYear, 11, 31) + now.getTimezoneOffset() * 60000);
+        }
+
+        PopulationBiologyMap.methods.addDate(startDate, endDate);
 
     });
 
@@ -663,7 +642,12 @@ function bindEvents() {
 
             $('.season-toggle').each(function () {
                 if ($(this).prop('checked')) {
-                    $(this).bootstrapToggle('off');
+                    //Unchecking and adding class to parent div to prevent change event from firing
+                    //with other method
+                    $(this).prop('checked', false);
+                    $(this).parent('div').removeClass('btn-primary');
+                    $(this).parent('div').addClass('btn-default');
+                    $(this).parent('div').addClass('off');
                 }
             })
         }
@@ -2233,7 +2217,7 @@ function updatePieChart(population, stats) {
             chart.tooltip.valueFormatter(function (d, i) {
                 return d.roundDecimals(0);
             })
-
+            
             d3.select("#pie-chart-area svg")
                 .datum(stats)
                 .transition().duration(delay)
@@ -3214,24 +3198,6 @@ function dateResolution(dateString) {
 
     return false;
     // console.log(match[1] + '-' + match[5] + '-' + match[7]);
-
-}
-
-function setDateRange(elementStart, elementEnd, yearsAgo) {
-
-    var startingYear = new Date();
-    // When initialing the datepicker end date is limited to the current time,
-    // As a result we must set endDate to earlier tonight for "Today" to be allowed in the date-end field
-    var endDate = new Date(Date.UTC(startingYear.getUTCFullYear(), startingYear.getUTCMonth(), startingYear.getUTCDate()));
-
-    // Find the starting year
-    startingYear.setUTCFullYear(startingYear.getUTCFullYear() - yearsAgo);
-    // Set the start date as the January 1st of the starting year
-    var startDate = new Date(Date.UTC(startingYear.getUTCFullYear(), 0, 1));
-
-    // Udated the input fields
-    $(elementStart).datepicker('setUTCDate', startDate);
-    $(elementEnd).datepicker('setUTCDate', endDate);
 
 }
 

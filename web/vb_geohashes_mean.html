@@ -818,72 +818,34 @@
             </div>
 
             <div class="collapse main-menu" style="margin-top:0;" id="daterange">
-
-                <div class="input-daterange input-group" id="datepicker" style="margin-top: 5px;">
-                    <span class="input-group-addon"
-                          title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>
-                    <input id="date-start" type="text" class="form-control" name="start"/>
-                    <span class="input-group-addon">to</span>
-                    <input id="date-end" type="text" class="form-control" name="end"/>
-                    <span class="input-group-btn" style="width: 3px;"></span>
-                    <span class="input-group-btn">
-                        <button
-                                id="add-dates" type="button" class="btn btn-default"
-                                title="Add date filter"
-                                disabled
-                                data-toggle="collapse"
-                                data-target="#daterange">
-                            <i
-                                    class="fa fa-plus fa-fw">
-                            </i>
-                        </button>
-                    </span>
-                    <span class="input-group-btn">
-                        <button
-                                id="clear-dates" type="button" class="btn btn-default"
-                                title="Cancel"
-                                data-toggle="collapse"
-                                data-target="#daterange">
-                            <i
-                                    class="fa fa-times fa-fw">
-
-                            </i>
-                        </button>
-                    </span>
-
-
-                </div>
-
                 <!-- predefined date ranges-->
-
                 <div class="input-group" style="margin-top: 3px;">
-                    <span class="input-group-addon" title="Display most recently collected samples"><i
-                            class="fa fa-long-arrow-left fa-fw"></i></span>
+                    <span class="input-group-addon" title="Select a date range"><i
+                            class="fa fa-calendar fa-fw"></i></span>
 
                     <span class="btn-group btn-group-justified" role="group">
                         <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="50">50 years</button>
+                            <button type="button" class="btn btn-default date-shortcut" value="1985-1989">1985-1989</button>
                         </span>
                         <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="40">40 years</button>
+                            <button type="button" class="btn btn-default date-shortcut" value="1990-1994">1990-1994</button>
                         </span>
                         <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="30">30 years</button>
+                            <button type="button" class="btn btn-default date-shortcut" value="1995-1999">1995-1999</button>
                         </span>
                         <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="20">20 years</button>
+                            <button type="button" class="btn btn-default date-shortcut" value="2000-2004">2000-2004</button>
                         </span>
                         <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="15">15 years</button>
+                            <button type="button" class="btn btn-default date-shortcut" value="2005-2009">2005-2009</button>
                         </span>
                         <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="10">10 years</button>
+                            <button type="button" class="btn btn-default date-shortcut" value="2010-2014">2010-2014</button>
                         </span>
                         <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="5">5 years</button>
+                            <button type="button" class="btn btn-default date-shortcut" value="2015">2015-now</button>
                         </span>
                     </span>
-
                 </div>
             </div>
 
@@ -921,33 +883,6 @@
                         <input type="checkbox" name="December" value="12" data-toggle="toggle"
                                class="season-toggle" data-on="Dec" data-off="Dec">
 
-                    </span>
-                    <span class="input-group-btn" style="width: 3px;"></span>
-
-                    <span class="input-group-btn">
-                        <button
-                                id="add-season" type="button" class="btn btn-default"
-                                title="Apply seasonal filter"
-                                disabled
-                                data-toggle="collapse"
-                                data-target="#seasonal">
-                            <i
-                                    class="fa fa-check">
-
-                            </i>
-                        </button>
-                    </span>
-                    <span class="input-group-btn">
-                        <button
-                                id="clear-season" type="button" class="btn btn-default"
-                                title="Cancel"
-                                data-toggle="collapse"
-                                data-target="#seasonal">
-                            <i
-                                    class="fa fa-times">
-
-                            </i>
-                        </button>
                     </span>
                 </div>
 
