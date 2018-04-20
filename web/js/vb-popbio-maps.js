@@ -514,7 +514,7 @@ function bindEvents() {
     });
     
     // collect the months to be included in the seasonal search
-    $('.season-toggle').change(function (e) {
+    $('.season-toggle').change(function () {
         var enable = false;
         $('.season-toggle').each(function () {
             var curMonth = $(this).val(), curMode = $(this).prop('checked');
@@ -575,28 +575,7 @@ function bindEvents() {
         });
     });
    
-    $('.date-shortcut').click(function () {
-        var startYear;
-        var endYear;
-        var startDate;
-        var endDate;
-        var now = new Date();
-
-        //Check if we pressed the 2015-now range
-        if (this.value === '2015') {
-           startYear = this.value;
-           startDate = new Date(Date.UTC(startYear, 0, 1));
-           endDate = now;   
-        } else {
-            [startYear, endYear] = this.value.split('-');
-            startDate = new Date(Date.UTC(startYear, 0, 1));
-            endDate = new Date(Date.UTC(endYear, 11, 31) + now.getTimezoneOffset() * 60000);
-        }
-
-        PopulationBiologyMap.methods.addDate(startDate, endDate);
-
-    });
-
+    
     $('#search_ac').on('itemAdded', function (event) {
         // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
         if (event.item.replace) return;
@@ -2553,12 +2532,17 @@ function filterMarkers(items, flyTo) {
 
             var format = "YYYY-MM-DD";
 
-            var dateEnd = dateConvert(element.dateEnd, format);
-            var dateStart = dateConvert(element.dateStart, format);
+            if (element.ranges) {
+                //Go through the object date range
+                for (var key in  element.ranges) {
+                    var endDate = dateConvert(element.ranges[key].endDate, format);
+                    var startDate = dateConvert(element.ranges[key].startDate, format);
 
-            terms[element.type].push({
-                "field": element.field, "value": '[' + dateStart + ' TO ' + dateEnd + ']'
-            });
+                    terms[element.type].push({
+                        "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']'
+                    });
+                }
+            }
             return
 
         }

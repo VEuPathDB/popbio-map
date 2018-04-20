@@ -33,77 +33,101 @@
     //Properly add the seasonal filter to search
     PopulationBiologyMap.methods.addSeason = function (months) {
         var objRanges = constructSeasonal(months);
-        // add the filter, by keeping the value the same ('seasonal') we ensure
-        // that there's only one seasonal filter enabled at any given point
-        if (checkSeasonal()) {
-            // adding the item with replace: true will prevent the map from updating
-            // it will update once we remove the old tag
-            $('#search_ac').tagsinput('add', {
-                value: objRanges.rangesText.toString(),
-                ranges: objRanges.ranges,
-                replace: true,
-                type: 'Seasonal',
-                field: 'collection_season'
-            });
-            $('#search_ac').tagsinput('remove', checkSeasonal());
+
+        //Check if no months are toggled on
+
+        if (objRanges.ranges.length) {
+            // add the filter, by keeping the value the same ('seasonal') we ensure
+            // that there's only one seasonal filter enabled at any given point
+            if (checkSeasonal()) {
+                // adding the item with replace: true will prevent the map from updating
+                // it will update once we remove the old tag
+                $('#search_ac').tagsinput('add', {
+                    value: objRanges.rangesText.toString(),
+                    ranges: objRanges.ranges,
+                    replace: true,
+                    type: 'Seasonal',
+                    field: 'collection_season'
+                });
+                $('#search_ac').tagsinput('remove', checkSeasonal());
+            } else {
+                $('#search_ac').tagsinput('add', {
+                    value: objRanges.rangesText.toString(),
+                    ranges: objRanges.ranges,
+                    replace: false,
+                    type: 'Seasonal',
+                    field: 'collection_season'
+                });
+            }
         } else {
-            $('#search_ac').tagsinput('add', {
-                value: objRanges.rangesText.toString(),
-                ranges: objRanges.ranges,
-                replace: false,
-                type: 'Seasonal',
-                field: 'collection_season'
-            });
+            $('#search_ac').tagsinput('remove', checkSeasonal());
         }
     }
 
     //Gets the dates of the query parameters in a format that can be used by the addDate function
-    PopulationBiologyMap.methods.retrieveDates = function (datesRange) {
-        var dateStartString;
-        var dateEndString;
-        var dateStart;
-        var dateEnd;
-        var month;
-        var day;
-        var year;
+    function retrieveDates(dateRange) {
+        var now = new Date();
+        var startYear;
+        var endYear;
+        var startDate;
+        var endDate;
 
-        [dateStartString, dateEndString] = datesRange.split("-");
+        //Check if we pressed the 2015-now range
+        if (dateRange === '2015-now') {
+            //Get only 2015
+            startYear = dateRange.split('-')[0];
+            startDate = new Date(Date.UTC(startYear, 0, 1));
+            endDate = now;   
+        } else {
+            [startYear, endYear] = dateRange.split('-');
+            startDate = new Date(Date.UTC(startYear, 0, 1));
+            endDate = new Date(Date.UTC(endYear, 11, 31) + now.getTimezoneOffset() * 60000);
+        }
 
-        dateStartString.split('/').map( function (value, index) {
-            if (index === 0) {
-                day = value;
-            } else if (index === 1) {
-                month = value;
-            } else {
-                year = value;
-            }
-        });
-
-        //Constructing string as MM/DD/YYYY
-        dateStartString = month + "/" + day + "/" + year;
-
-        dateEndString.split('/').map( function (value, index) {
-            if (index === 0) {
-                day = value;
-            } else if (index === 1) {
-                month = value;
-            } else {
-                year = value;
-            }
-        });
-
-        //Constructing string as MM/DD/YYYY
-        dateEndString = month + "/" + day + "/" + year;
-
-        dateStart = new Date(dateStartString);
-        dateEnd = new Date(dateEndString);
-
-        return [dateStart, dateEnd];
-
+        return [startDate, endDate];
     }
 
-    PopulationBiologyMap.methods.addDate = function (dateStart, dateEnd) {
-        var value;
+    function getDateItemText(date_ranges) {
+        var dateItemText = '';
+        var keys = Object.keys(date_ranges);
+
+        for (var j = 0; j < keys.length; j++) {
+            if ( j !== keys.length - 1 ) {
+                dateItemText += keys[j] + ',';
+            } else {
+                dateItemText += keys[j];
+            }
+        }
+
+        return dateItemText;  
+    }
+
+    function addDateItem(dateItemInfo, dateItem = undefined) {
+                
+        if (dateItem) {
+            //The replace property prevents addint this item from running the solr query
+            $('#search_ac').tagsinput('add', {
+                value: dateItemInfo.text,
+                ranges: dateItemInfo.ranges,
+                type: 'Date',
+                replace: true,
+                field: 'collection_date_range'
+            });
+
+            //Remove old date item and update by running solr query
+            $("#search_ac").tagsinput('remove', dateItem);
+        } else {
+            $('#search_ac').tagsinput('add', {
+                value: dateItemInfo.text,
+                ranges: dateItemInfo.ranges,
+                type: 'Date',
+                field: 'collection_date_range'
+            });
+        }
+
+
+
+        /*var value;
         if (dateStart.getTime() === dateEnd.getTime()) {
             value = dateStart.toLocaleDateString('en-GB', { timeZone: 'UTC' });
         } else {
@@ -117,7 +141,7 @@
             type: 'Date',
             //field: 'collection_date',
             field: 'collection_date_range'
-        });
+        });*/
     }
 
 
@@ -518,22 +542,21 @@
                         break;
                     case "date":
                         var param = urlParams[key];
+                        var dateItemInfo = {ranges: {}, text: ''}
+                        var startDate;
+                        var endDate;
 
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                var dateStart;
-                                var dateEnd;
+                        //Get the ranges
+                        dateItemRanges = param.split(',');
 
-                                [dateStart, dateEnd] = PopulationBiologyMap.methods.retrieveDates(element);
-                                PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
-                            })
-                        } else {
-                            var dateStart;
-                            var dateEnd;
+                        for (var j = 0; j < dateItemRanges.length; j++) {
+                            [startDate, endDate] = retrieveDates(dateItemRanges[j]);
+                            dateItemInfo.ranges[dateItemRanges[j]] = {startDate: startDate, endDate: endDate};
+                        } 
 
-                            [dateStart, dateEnd] = PopulationBiologyMap.methods.retrieveDates(param);
-                            PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
-                        }
+                        //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
+                        dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+                        addDateItem(dateItemInfo);
                         break
                     case "markerID":
                         highlightedId  = urlParams[key];
@@ -688,6 +711,84 @@
                 e.stopImmediatePropagation();
             }
         });
+
+        //Adding a date filter through the UI
+        $('.date-shortcut').change(function () {
+            var items = $("#search_ac").tagsinput('items');
+            var dateItemInfo = {ranges: {}, text: ''}
+            var startDate;
+            var endDate;
+            var dateItem;
+
+            for (var j = 0; j < items.length; j++) {
+                if ( items[j].type === 'Date' ) {
+                    dateItem = items[j];
+                    break;
+                }
+            }
+
+            //Set the range to the date item if there is one already
+            if (dateItem) {
+                dateItemInfo.ranges = dateItem.ranges;
+            }
+
+            //Check if we are removing or adding or removing a range and update date item accordingly
+            if ($(this).prop('checked')) {
+                /*//Check if we pressed the 2015-now range
+                if (this.value === '2015-now') {
+                    //Get only 2015
+                    startYear = this.value.split('-')[0];
+                    startDate = new Date(Date.UTC(startYear, 0, 1));
+                    endDate = now;   
+                } else {
+                    [startYear, endYear] = this.value.split('-');
+                    startDate = new Date(Date.UTC(startYear, 0, 1));
+                    endDate = new Date(Date.UTC(endYear, 11, 31) + now.getTimezoneOffset() * 60000);
+                }*/
+
+                [startDate, endDate] = retrieveDates(this.value);
+                
+                //Depending on how we want to display the text, this might not be necessary
+                /*var value;
+                
+                if (startDate.getTime() === endDate.getTime()) {
+                    value = startDate.toLocaleDateString('en-GB', { timeZone: 'UTC' });
+                } else {
+                    value = startDate.toLocaleDateString('en-GB', { timeZone: 'UTC' }) + '-' + endDate.toLocaleDateString('en-GB', { timeZone: 'UTC' });
+                }*/
+
+                //Adding the date range to the object
+                dateItemInfo.ranges[this.value] = {startDate: startDate, endDate: endDate };
+
+                //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
+                dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+
+                addDateItem(dateItemInfo, dateItem);
+            } else {
+                delete dateItemInfo.ranges[this.value];
+
+                //Check if there ranges is not empty so we do not remove the item from the query
+                if (Object.keys(dateItemInfo.ranges).length) {
+                    dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+
+                    //The replace property prevents addint this item from running the solr query
+                    $('#search_ac').tagsinput('add', {
+                        value: dateItemInfo.text,
+                        ranges: dateItemInfo.ranges,
+                        type: 'Date',
+                        replace: true,
+                        field: 'collection_date_range'
+                    });
+
+                    //Remove old date item and update by running solr query
+                    $("#search_ac").tagsinput('remove', dateItem);
+                } else {
+                    //Remove date item since ranges is empty
+                    $("#search_ac").tagsinput('remove', dateItem);
+                }
+            }
+        });
+
 
         $(document).on("mouseenter", ".detailedTip", function () {
             var $this = $(this);
