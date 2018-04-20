@@ -537,6 +537,17 @@
 
                         //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
                         dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+
+                        //Setting the color of the date search panel
+                        $('.date-shortcut').each(function () {
+                            if (dateItemInfo.ranges[this.value]) {
+                                $(this).prop('checked', true);
+                                $(this).parent('div').addClass('btn-primary');
+                                $(this).parent('div').removeClass('btn-default');
+                                $(this).parent('div').removeClass('off');
+                            }
+                        })
+
                         addDateItem(dateItemInfo);
                         break
                     case "markerID":

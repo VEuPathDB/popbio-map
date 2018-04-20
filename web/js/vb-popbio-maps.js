@@ -618,8 +618,21 @@ function bindEvents() {
     $('#search_ac').on('itemRemoved', function () {
         // reset the seasonal search panel
         if (!checkSeasonal()) {
-
             $('.season-toggle').each(function () {
+                if ($(this).prop('checked')) {
+                    //Unchecking and adding class to parent div to prevent change event from firing
+                    //with other method
+                    $(this).prop('checked', false);
+                    $(this).parent('div').removeClass('btn-primary');
+                    $(this).parent('div').addClass('btn-default');
+                    $(this).parent('div').addClass('off');
+                }
+            })
+        }
+
+        // reset the date search panel
+        if (!checkDate()) {
+            $('.date-shortcut').each(function () {
                 if ($(this).prop('checked')) {
                     //Unchecking and adding class to parent div to prevent change event from firing
                     //with other method
@@ -2045,6 +2058,18 @@ function checkSeasonal() {
     for (var i = 0; i < activeTerms.length; i++) {
         var obj = activeTerms[i];
         if (obj.type === 'Seasonal') return obj.value;
+
+    }
+
+    return false;
+}
+
+function checkDate() {
+    var activeTerms = $('#search_ac').tagsinput('items');
+
+    for (var i = 0; i < activeTerms.length; i++) {
+        var obj = activeTerms[i];
+        if (obj.type === 'Date') return obj.value;
 
     }
 
