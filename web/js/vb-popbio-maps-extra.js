@@ -103,7 +103,6 @@
     }
 
     function addDateItem(dateItemInfo, dateItem = undefined) {
-                
         if (dateItem) {
             //The replace property prevents addint this item from running the solr query
             $('#search_ac').tagsinput('add', {
@@ -124,24 +123,6 @@
                 field: 'collection_date_range'
             });
         }
-
-
-
-        /*var value;
-        if (dateStart.getTime() === dateEnd.getTime()) {
-            value = dateStart.toLocaleDateString('en-GB', { timeZone: 'UTC' });
-        } else {
-            value = dateStart.toLocaleDateString('en-GB', { timeZone: 'UTC' }) + '-' + dateEnd.toLocaleDateString('en-GB', { timeZone: 'UTC' });
-        }
-
-        $('#search_ac').tagsinput('add', {
-            value: value,
-            dateStart: dateStart,
-            dateEnd: dateEnd,
-            type: 'Date',
-            //field: 'collection_date',
-            field: 'collection_date_range'
-        });*/
     }
 
 
@@ -734,29 +715,8 @@
 
             //Check if we are removing or adding or removing a range and update date item accordingly
             if ($(this).prop('checked')) {
-                /*//Check if we pressed the 2015-now range
-                if (this.value === '2015-now') {
-                    //Get only 2015
-                    startYear = this.value.split('-')[0];
-                    startDate = new Date(Date.UTC(startYear, 0, 1));
-                    endDate = now;   
-                } else {
-                    [startYear, endYear] = this.value.split('-');
-                    startDate = new Date(Date.UTC(startYear, 0, 1));
-                    endDate = new Date(Date.UTC(endYear, 11, 31) + now.getTimezoneOffset() * 60000);
-                }*/
-
                 [startDate, endDate] = retrieveDates(this.value);
                 
-                //Depending on how we want to display the text, this might not be necessary
-                /*var value;
-                
-                if (startDate.getTime() === endDate.getTime()) {
-                    value = startDate.toLocaleDateString('en-GB', { timeZone: 'UTC' });
-                } else {
-                    value = startDate.toLocaleDateString('en-GB', { timeZone: 'UTC' }) + '-' + endDate.toLocaleDateString('en-GB', { timeZone: 'UTC' });
-                }*/
-
                 //Adding the date range to the object
                 dateItemInfo.ranges[this.value] = {startDate: startDate, endDate: endDate };
 
@@ -770,18 +730,7 @@
                 //Check if there ranges is not empty so we do not remove the item from the query
                 if (Object.keys(dateItemInfo.ranges).length) {
                     dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
-
-                    //The replace property prevents addint this item from running the solr query
-                    $('#search_ac').tagsinput('add', {
-                        value: dateItemInfo.text,
-                        ranges: dateItemInfo.ranges,
-                        type: 'Date',
-                        replace: true,
-                        field: 'collection_date_range'
-                    });
-
-                    //Remove old date item and update by running solr query
-                    $("#search_ac").tagsinput('remove', dateItem);
+                    addDateItem(dateItemInfo, dateItem);
                 } else {
                     //Remove date item since ranges is empty
                     $("#search_ac").tagsinput('remove', dateItem);
