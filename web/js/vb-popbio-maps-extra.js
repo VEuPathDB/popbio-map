@@ -79,7 +79,10 @@
             startDate = new Date(Date.UTC(startYear, 0, 1));
             endDate = now;   
         } else {
-            [startYear, endYear] = dateRange.split('-');
+            //[startYear, endYear] = dateRange.split('-');
+            dateRange = dateRange.split('-');
+            startYear = dateRange[0];
+            endYear = dateRange[1];
             startDate = new Date(Date.UTC(startYear, 0, 1));
             endDate = new Date(Date.UTC(endYear, 11, 31) + now.getTimezoneOffset() * 60000);
         }
@@ -102,7 +105,7 @@
         return dateItemText;  
     }
 
-    function addDateItem(dateItemInfo, dateItem = undefined) {
+    function addDateItem(dateItemInfo, dateItem) {
         if (dateItem) {
             //The replace property prevents addint this item from running the solr query
             $('#search_ac').tagsinput('add', {
@@ -531,7 +534,10 @@
                         dateItemRanges = param.split(',');
 
                         for (var j = 0; j < dateItemRanges.length; j++) {
-                            [startDate, endDate] = retrieveDates(dateItemRanges[j]);
+                            //[startDate, endDate] = retrieveDates(dateItemRanges[j]);
+                            dateRange = retrieveDates(dateItemRanges[j]);
+                            startDate = dateRange[0];
+                            endDate = dateRange[1];
                             dateItemInfo.ranges[dateItemRanges[j]] = {startDate: startDate, endDate: endDate};
                         } 
 
@@ -726,7 +732,10 @@
 
             //Check if we are removing or adding or removing a range and update date item accordingly
             if ($(this).prop('checked')) {
-                [startDate, endDate] = retrieveDates(this.value);
+                //[startDate, endDate] = retrieveDates(this.value);
+                dateRange = retrieveDates(this.value);
+                startDate = dateRange[0];
+                endDate = dateRange[1];
                 
                 //Adding the date range to the object
                 dateItemInfo.ranges[this.value] = {startDate: startDate, endDate: endDate };
