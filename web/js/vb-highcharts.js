@@ -375,7 +375,7 @@
                     //Also make sure we are not trying to disable a button that is not available for that dataset
                     $("#Daily").addClass("disabled");
                 } else {
-                    $("#resolution-selector .disabled").tooltip("destory");
+                    $("#resolution-selector .disabled").tooltip("destroy");
                     $("#EpiWeekly").removeClass("disabled");
                     $("#Daily").removeClass("disabled");
                 }
