@@ -450,7 +450,7 @@
 
         //Give info on why buttons might get greyed out
         $("#resolution-selector-title .fa-info-circle").tooltip({placement: "top", title: "A higher resolution might get disabled if viewing a broad timeline or when a higher resolution is not available."});
-        $("#resolution-selector-title .fa-exclamation-triangle").tooltip({placement: "top", title: "Graphed data differs in highest resolution available.  Selecting a higher resolution will cause some data to disappear."});
+        $("#resolution-selector-title .fa-exclamation-triangle").tooltip({placement: "top", title: "Graphed data contains mixed temporal resolution.  Selecting a higher resolution will cause some data to disappear."});
     }
 
     PopulationBiologyMap.methods.createStockchart = function(data, title) {
