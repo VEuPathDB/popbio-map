@@ -418,9 +418,10 @@
                 chart.showLoading("Loading data from server...");
                 //Get new data based on the Date range selected with Highcharts' navigator
                 $.getJSON(queryUrl, function (json) {
-                    //Doing second check on collection_dates for a quick fix for when data is not available for a higher resolution
-                    //But we did not disable the button because the marker had higher resolution data as well e.g India
-                    if (json.facets.term && json.facets.term.buckets[0].collection_dates.buckets.length) {
+                    //Show series in graph in case it was hidden when no data was found
+                    $(".highcharts-series-group").show();
+
+                    if (json.facets.term) {
                         //chart.showLoading('Loading data from server...');
                         setHighchartsData(json);
                         var data = PopulationBiologyMap.data.highcharts.data;
@@ -438,11 +439,8 @@
                     } else {
                         chart.showLoading("No data found");
 
-                        //Remove the old data points
-                        /*while(chart.series.length > 0)
-                            chart.series[0].remove(false);
-
-                        chart.redraw();*/
+                        //Hide the left over series data, might be a better way, but do not have time
+                        $(".highcharts-series-group").hide();
                     }
                 });
             }
@@ -531,7 +529,8 @@
 
                     tooltip += '<b>Date:</b> ' + collection_date  + '<br>' + 
                         '<b>Abundance:</b> ' + this.y + '<br>' + 
-                        '<b>Resolution:</b> ' + data_type;
+                        '<b>Resolution:</b> ' + data_type + '<br>' + 
+                        '<b>Year:</b> ' + year;
 
                     if (resolution === "EpiWeekly") {
                         tooltip += '<br>' + '<b>Epi Week:</b> ' + this.point.epi_week;
@@ -628,9 +627,10 @@
         chart.showLoading('Loading data from server...');
         //Get new data based on the Date range selected with Highcharts' navigator
         $.getJSON(queryUrl, function (json) {
-            //Doing second check on collection_dates for a quick fix for when data is not available for a higher resolution
-            //But we did not disable the button because the marker had higher resolution data as well e.g India
-            if (json.facets.term && json.facets.term.buckets[0].collection_dates.buckets.length) {
+            //Show series in graph in case it was hidden when no data was found
+            $(".highcharts-series-group").show();
+
+            if (json.facets.term) {
                 //chart.showLoading('Loading data from server...');
                 setHighchartsData(json);
                 var data = PopulationBiologyMap.data.highcharts.data;
@@ -647,12 +647,6 @@
                 chart.hideLoading();
             } else {
                 chart.showLoading('No data found');
-                
-                //Remove the old data points
-                /*while(chart.series.length > 0)
-                    chart.series[0].remove(false);
-
-                chart.redraw();*/
             }
         });
     }
