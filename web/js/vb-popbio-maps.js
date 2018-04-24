@@ -267,7 +267,7 @@ function bindEvents() {
             '</div>';
 
         switch (type) {
-            case 'Project':
+            case 'Projects':
                 template = $.templates("#projectInfoTemplate");
                 entityURL = '/popbio/project/?id=' + id;
                 entityRestURL = '/popbio/REST/project/' + id + '/head';
@@ -489,14 +489,6 @@ function bindEvents() {
         $('#bars-icon').toggleClass('down');
     });
 
-    // clear the date selection panel once collapsed
-    $('#daterange').on('hidden.bs.collapse', function () {
-        $("#date-start").datepicker("clearDates");
-        $("#date-end").datepicker("clearDates");
-        $("#add-dates").prop('disabled', true);
-        $("#add-season").prop('disabled', true);
-    });
-
     // clear the seasonal search panel once collapsed
     $('#seasonal').on('hidden.bs.collapse', function () {
         if (checkSeasonal()) return;
@@ -520,17 +512,7 @@ function bindEvents() {
             $('#daterange').collapse('hide');
         }
     });
-
-    // bind the date range text fields to the datepicker
-    $('#daterange').find('.input-daterange').datepicker({
-        format: "dd/mm/yyyy",
-        startView: 2,
-        todayBtn: "linked",
-        autoclose: true,
-        todayHighlight: true,
-        endDate: "Date.now()"
-    });
-
+    
     // collect the months to be included in the seasonal search
     $('.season-toggle').change(function () {
         var enable = false;
@@ -540,11 +522,8 @@ function bindEvents() {
             if (curMode) enable = true;
         });
 
-        if (enable) {
-            $("#add-season").prop('disabled', false);
-        } else {
-            $("#add-season").prop('disabled', true);
-        }
+        PopulationBiologyMap.methods.addSeason(months);
+
     });
 
     // add the seasonal filter into search
@@ -595,29 +574,8 @@ function bindEvents() {
             field: 'phenotype_rescaled_value_f'
         });
     });
-
-    // Enable the add dates button only if the date fields are populated
-    $("#date-start").datepicker()
-    .on('changeDate', function (e) {
-        if (e.dates.length) $("#add-dates").prop('disabled', false);
-        // animating the colours to highlight this button will require adding jquery-ui
-        // animating size/position just looks nasty
-    });
-
-    // add the date filter into search
-    $("#add-dates").click(function () {
-        var dateStart = new Date($("#date-start").datepicker('getUTCDate'));
-        var dateEnd = new Date($("#date-end").datepicker('getUTCDate'));
-
-        PopulationBiologyMap.methods.addDate(dateStart, dateEnd);
-    });
-
-    $('.date-shortcut').click(function () {
-        // console.log(this.value);
-        setDateRange('#date-start', "#date-end", this.value);
-
-    });
-
+   
+    
     $('#search_ac').on('itemAdded', function (event) {
         // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
         if (event.item.replace) return;
@@ -660,10 +618,28 @@ function bindEvents() {
     $('#search_ac').on('itemRemoved', function () {
         // reset the seasonal search panel
         if (!checkSeasonal()) {
-
             $('.season-toggle').each(function () {
                 if ($(this).prop('checked')) {
-                    $(this).bootstrapToggle('off');
+                    //Unchecking and adding class to parent div to prevent change event from firing
+                    //with other method
+                    $(this).prop('checked', false);
+                    $(this).parent('div').removeClass('btn-primary');
+                    $(this).parent('div').addClass('btn-default');
+                    $(this).parent('div').addClass('off');
+                }
+            })
+        }
+
+        // reset the date search panel
+        if (!checkDate()) {
+            $('.date-shortcut').each(function () {
+                if ($(this).prop('checked')) {
+                    //Unchecking and adding class to parent div to prevent change event from firing
+                    //with other method
+                    $(this).prop('checked', false);
+                    $(this).parent('div').removeClass('btn-primary');
+                    $(this).parent('div').addClass('btn-default');
+                    $(this).parent('div').addClass('off');
                 }
             })
         }
@@ -1072,6 +1048,10 @@ function initializeSearch() {
             }
         } else {
             map.options.maxZoom = 15;
+
+            //Hiding the notices from the abundance graph
+            $("#projects-notice").hide();
+            $("#resolution-selector-group").hide();
         }
 
         // update the export fields dropdown
@@ -1709,6 +1689,10 @@ function loadSolr(parameters) {
                     map.fitBounds(record.bounds, {padding: [100, 50]});
                 })
                 .on("click", function (marker) {
+                    // add GA    
+                    // ga('send', 'event', 'Popbio', 'mappoint', 'Map point');
+                    gtag('event', 'mappoint', {'event_category': 'Popbio', 'event_label': 'Map point'});
+
                     if (marker.originalEvent.ctrlKey) {
                         if (marker.target instanceof L.Marker) {
                             markers.toggleMarker(marker.target, assetLayerGroup)
@@ -1750,14 +1734,28 @@ function loadSolr(parameters) {
                         }
 
                         if (sidebarClick) {
+                            // gtag: check View selection
+                            var selected_value = $( "#SelectView option:selected" ).text();
+                            if (selected_value == 'Insecticide Resistance') {
+                                selected_value = 'IR';
+                            } 
+
                             switch (panelId) {
                                 case "graphs":
+                                    // gtag
+                                    var graph_name = 'graph_' + selected_value;
+                                    gtag('event', graph_name, {'event_category': 'Popbio', 'event_label': 'Popbio graph'});
+                                    
                                     if (!panel.data('has-graph')) {
                                         updatePieChart(record.count, record.fullstats);
                                         panel.data('has-graph', true);
                                     }
                                     break;
                                 case "swarm-plots":
+                                    // gtag
+                                    var swarm_name = 'swarm_' + selected_value;
+                                    gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});
+
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (viewMode === 'abnd') {
                                         PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
@@ -1767,6 +1765,10 @@ function loadSolr(parameters) {
                                     }
                                     break;
                                 case "marker-table":
+                                    // gtag
+                                    var table_name = 'table_' + selected_value;
+                                    gtag('event', table_name, {'event_category': 'Popbio', 'event_label': 'Popbio table'});
+
                                     if (!panel.data('has-graph')) {
                                         updateTable("#table-contents", buildBbox(recBounds));
                                         panel.data('has-graph', true);
@@ -1809,12 +1811,26 @@ function loadSolr(parameters) {
                                 // Determine the open pane and update the right graph
                                 $('.sidebar-pane').data('has-graph', false);
 
+                                // gtag: check View selection
+                                var selected_value = $( "#SelectView option:selected" ).text();
+                                if (selected_value == 'Insecticide Resistance') {
+                                    selected_value = 'IR';
+                                } 
+
                                 switch (panelId) {
                                     case "graphs":
+                                        // gtag
+                                        var graph_name = 'graph_' + selected_value;
+                                        gtag('event', graph_name, {'event_category': 'Popbio', 'event_label': 'Popbio graph'});
+
                                         updatePieChart(record.count, record.fullstats);
                                         panel.data('has-graph', true);
                                         break;
                                     case "swarm-plots":
+                                        // gtag
+                                        var swarm_name = 'swarm_' + selected_value;
+                                        gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});                                    
+
                                         // Geno viewmode will say that it is not availble in that mode
                                         if (viewMode === 'abnd') {
                                             PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
@@ -1824,6 +1840,10 @@ function loadSolr(parameters) {
                                         }
                                         break;
                                     case "marker-table":
+                                        // gtag
+                                        var table_name = 'table_' + selected_value;
+                                        gtag('event', table_name, {'event_category': 'Popbio', 'event_label': 'Popbio table'});
+                                    
                                         updateTable("#table-contents", buildBbox(recBounds));
                                         panel.data('has-graph', true);
                                         break;
@@ -2048,6 +2068,18 @@ function checkSeasonal() {
     return false;
 }
 
+function checkDate() {
+    var activeTerms = $('#search_ac').tagsinput('items');
+
+    for (var i = 0; i < activeTerms.length; i++) {
+        var obj = activeTerms[i];
+        if (obj.type === 'Date') return obj.value;
+
+    }
+
+    return false;
+}
+
 function buildBbox(bounds) {
     /*
      function buildBbox
@@ -2193,7 +2225,7 @@ function updatePieChart(population, stats) {
             chart.tooltip.valueFormatter(function (d, i) {
                 return d.roundDecimals(0);
             })
-
+            
             d3.select("#pie-chart-area svg")
                 .datum(stats)
                 .transition().duration(delay)
@@ -2242,7 +2274,7 @@ function updateTable(divid, filter, singleMarker) {
     $('.marker-row').fadeOut();
 
 
-    $('#marker-table').infiniteScrollHelper('destroy');
+    $('#table-contents').infiniteScrollHelper('destroy');
 
 
     $.getJSON(cursorUrl)
@@ -2267,7 +2299,7 @@ function updateTable(divid, filter, singleMarker) {
 
             // wait until the table is plotted and animated before setting-up infinite scroll
             setTimeout(function () {
-                $('#marker-table').infiniteScrollHelper({
+                $('#table-contents').infiniteScrollHelper({
                     bottomBuffer: 80,
                     loadMore: function (page, done) {
 
@@ -2516,6 +2548,9 @@ function filterMarkers(items, flyTo) {
         return;
     }
 
+    // gtag
+    gtag('event', 'search_popbio', {'event_category': 'Popbio', 'event_label': 'Popbio search'});
+
     var terms = {};
 
     items.forEach(function (element) {
@@ -2526,12 +2561,17 @@ function filterMarkers(items, flyTo) {
 
             var format = "YYYY-MM-DD";
 
-            var dateEnd = dateConvert(element.dateEnd, format);
-            var dateStart = dateConvert(element.dateStart, format);
+            if (element.ranges) {
+                //Go through the object date range
+                for (var key in  element.ranges) {
+                    var endDate = dateConvert(element.ranges[key].endDate, format);
+                    var startDate = dateConvert(element.ranges[key].startDate, format);
 
-            terms[element.type].push({
-                "field": element.field, "value": '[' + dateStart + ' TO ' + dateEnd + ']'
-            });
+                    terms[element.type].push({
+                        "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']'
+                    });
+                }
+            }
             return
 
         }
@@ -3174,24 +3214,6 @@ function dateResolution(dateString) {
 
 }
 
-function setDateRange(elementStart, elementEnd, yearsAgo) {
-
-    var startingYear = new Date();
-    // When initialing the datepicker end date is limited to the current time,
-    // As a result we must set endDate to earlier tonight for "Today" to be allowed in the date-end field
-    var endDate = new Date(Date.UTC(startingYear.getUTCFullYear(), startingYear.getUTCMonth(), startingYear.getUTCDate()));
-
-    // Find the starting year
-    startingYear.setUTCFullYear(startingYear.getUTCFullYear() - yearsAgo);
-    // Set the start date as the January 1st of the starting year
-    var startDate = new Date(Date.UTC(startingYear.getUTCFullYear(), 0, 1));
-
-    // Udated the input fields
-    $(elementStart).datepicker('setUTCDate', startDate);
-    $(elementEnd).datepicker('setUTCDate', endDate);
-
-}
-
 function getRandom(min, max) {
     return Math.random() * (max - min + 1) + min;
 }
@@ -3389,6 +3411,15 @@ String.prototype.truncString = function (max, add) {
             return true;
     }
 })(jQuery);
+
+//End the flashing of sidebar icons when any icon is clicked
+$(document).on('click', '.sidebar-icon', function() {
+    $('.sidebar-icon.flash').removeClass('flash');
+});
+
+$(document).on('click', '.sidebar-x', function() {
+    sidebar.close();
+});
 
 //fill used in the vb_geohashes_mean.html file is not supported in IE11 so need this function to make it work
 if (!Array.prototype.fill) {

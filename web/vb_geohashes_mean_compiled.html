@@ -166,15 +166,22 @@
             <li class="sidebar-icon"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
             <li class="sidebar-icon"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
             <!--<li class="sidebar-icon">-->
-                <a class="sidebar-icon" id="generate-link" title="Share view">
+                <!-- add GA -->
+                <!-- <a class="sidebar-icon" id="generate-link" title="Share view" onclick="ga('send', 'event', 'Popbio', 'shareview', 'Share view');"> -->
+                <a class="sidebar-icon" id="generate-link" title="Share view" onclick="gtag('event', 'shareview', {'event_category': 'Popbio', 'event_label': 'Share view'});">
                     <i class="fa fa-share-alt"></i>
                 </a>
             <!--</li>-->
-            <li class="sidebar-icon"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
+            <li class="sidebar-icon flash"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
         </ul>
  
         <!-- Tab panes -->
         <div class="sidebar-content active" id="active-pane">
+            <svg class="sidebar-x" height="30" width="30">
+                <line x1="5" y1="5" x2="25" y2="25" />
+                <line x1="25" y1="5" x2="5" y2="25" />
+            </svg>
+
             <div class="sidebar-pane active" id="vectorbase">
                 <h3>VectorBase Main Menu</h3>
 
@@ -184,18 +191,25 @@
                     </a>
                 </div>
                 <div id="vectorbase-navigation">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/zika">Zika</a></li>
-                        <li><a href="/about">About</a></li>
-                        <li><a href="/organisms">Organisms</a></li>
-                        <li><a href="/navigation/downloads">Downloads</a></li>
-                        <li><a href="/navigation/tools">Tools</a></li>
-                        <li><a href="/navigation/data">Data</a></li>
-                        <li><a href="/navigation/help">Help</a></li>
-                        <li><a href="/navigation/community">Community</a></li>
-                        <li><a href="/contact">Contact</a></li>
-                    </ul>
+                    <a href="/">Home</a>
+                    <div></div>
+                    <a href="/zika">Zika</a>
+                    <div></div>
+                    <a href="/about">About</a>
+                    <div></div>
+                    <a href="/organisms">Organisms</a>
+                    <div></div>
+                    <a href="/navigation/downloads">Downloads</a>
+                    <div></div>
+                    <a href="/navigation/tools">Tools</a>
+                    <div></div>
+                    <a href="/navigation/data">Data</a>
+                    <div></div>
+                    <a href="/navigation/help">Help</a>
+                    <div></div>
+                    <a href="/navigation/community">Community</a>
+                    <div></div>
+                    <a href="/contact">Contact</a>
                 </div>
             </div>
             <div class="sidebar-pane active" id="graphs">
@@ -231,6 +245,19 @@
 
                         <h4>to plot some real data</h4>
 
+                    </div>
+                </div>
+                <div id="resolution-selector-group">
+                    <div id="resolution-selector-title">
+                        <b>Temporal Resolution </b>
+                        <i class="fa fa-info-circle" style="color: #8C8C8C"></i>
+                        <i class="fa fa-exclamation-triangle"></i>
+                    </div>
+                    <div id="resolution-selector" class="btn-group" role="group" aria-label="...">
+                        <button id="Yearly" value="Yearly" type="button" class="btn btn-default">Yearly</button>
+                        <button id="Monthly" value="Monthly" type="button" class="btn btn-default">Monthly</button>
+                        <button id="EpiWeekly" value="EpiWeekly" type="button" class="btn btn-default">EpiWeekly</button>
+                        <button id="Daily" value="Daily" type="button" class="btn btn-default">Daily</button>
                     </div>
                 </div>
             </div>
@@ -744,72 +771,24 @@
             </div>
 
             <div class="collapse main-menu" style="margin-top:0;" id="daterange">
-
-                <div class="input-daterange input-group" id="datepicker" style="margin-top: 5px;">
-                    <span class="input-group-addon"
-                          title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>
-                    <input id="date-start" type="text" class="form-control" name="start"/>
-                    <span class="input-group-addon">to</span>
-                    <input id="date-end" type="text" class="form-control" name="end"/>
-                    <span class="input-group-btn" style="width: 3px;"></span>
-                    <span class="input-group-btn">
-                        <button
-                                id="add-dates" type="button" class="btn btn-default"
-                                title="Add date filter"
-                                disabled
-                                data-toggle="collapse"
-                                data-target="#daterange">
-                            <i
-                                    class="fa fa-plus fa-fw">
-                            </i>
-                        </button>
-                    </span>
-                    <span class="input-group-btn">
-                        <button
-                                id="clear-dates" type="button" class="btn btn-default"
-                                title="Cancel"
-                                data-toggle="collapse"
-                                data-target="#daterange">
-                            <i
-                                    class="fa fa-times fa-fw">
-
-                            </i>
-                        </button>
-                    </span>
-
-
-                </div>
-
                 <!-- predefined date ranges-->
-
                 <div class="input-group" style="margin-top: 3px;">
-                    <span class="input-group-addon" title="Display most recently collected samples"><i
-                            class="fa fa-long-arrow-left fa-fw"></i></span>
-
-                    <span class="btn-group btn-group-justified" role="group">
-                        <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="50">50 years</button>
-                        </span>
-                        <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="40">40 years</button>
-                        </span>
-                        <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="30">30 years</button>
-                        </span>
-                        <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="20">20 years</button>
-                        </span>
-                        <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="15">15 years</button>
-                        </span>
-                        <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="10">10 years</button>
-                        </span>
-                        <span class="btn-group" role="group">
-                            <button type="button" class="btn btn-default date-shortcut" value="5">5 years</button>
-                        </span>
+                    <span class="btn-group btn-group-justified" data-toggle="buttons" role="group" style="height: 30px;">
+                        <input type="checkbox" name="1985-1989" value="1985-1989" data-toggle="toggle"
+                               class="date-shortcut" data-on="1985-1989" data-off="1985-1989">
+                        <input type="checkbox" name="1990-1994" value="1990-1994" data-toggle="toggle"
+                               class="date-shortcut" data-on="1990-1994" data-off="1990-1994">
+                        <input type="checkbox" name="1995-1999" value="1995-1999" data-toggle="toggle"
+                               class="date-shortcut" data-on="1995-1999" data-off="1995-1999">
+                        <input type="checkbox" name="2000-2004" value="2000-2004" data-toggle="toggle"
+                               class="date-shortcut" data-on="2000-2004" data-off="2000-2004">
+                        <input type="checkbox" name="2005-2009" value="2005-2009" data-toggle="toggle"
+                               class="date-shortcut" data-on="2005-2009" data-off="2005-2009">
+                        <input type="checkbox" name="2010-2014" value="2010-2014" data-toggle="toggle"
+                               class="date-shortcut" data-on="2010-2014" data-off="2010-2014">
+                        <input type="checkbox" name="2015-now" value="2015-now" data-toggle="toggle"
+                               class="date-shortcut" data-on="2015-now" data-off="2015-now">
                     </span>
-
                 </div>
             </div>
 
@@ -848,33 +827,6 @@
                                class="season-toggle" data-on="Dec" data-off="Dec">
 
                     </span>
-                    <span class="input-group-btn" style="width: 3px;"></span>
-
-                    <span class="input-group-btn">
-                        <button
-                                id="add-season" type="button" class="btn btn-default"
-                                title="Apply seasonal filter"
-                                disabled
-                                data-toggle="collapse"
-                                data-target="#seasonal">
-                            <i
-                                    class="fa fa-check">
-
-                            </i>
-                        </button>
-                    </span>
-                    <span class="input-group-btn">
-                        <button
-                                id="clear-season" type="button" class="btn btn-default"
-                                title="Cancel"
-                                data-toggle="collapse"
-                                data-target="#seasonal">
-                            <i
-                                    class="fa fa-times">
-
-                            </i>
-                        </button>
-                    </span>
                 </div>
 
             </div>
@@ -912,7 +864,9 @@
                 It is important for data publishers and for the reputation of data users that data is cited correctly. Citation information for each record can be found in the downloaded file.<br><br>
                 We also encourage users to support VectorBase’s data collation and open data efforts. Please see <a href="https://www.vectorbase.org/faqs/how-cite-vectorbase" target="windows"><font style="color:#BD4646;font-weight:bold">here</font></a> for information on how to acknowledge VectorBase. <br>
                <div style="margin-top: 30px;">
-                   <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i>
+                   <!-- add GA -->
+                   <!-- <a type="button" class="btn btn-primary" id="download-button" onclick="ga('send', 'event', 'Popbio', 'download', 'File download');"><i class="fa fa-floppy-o"></i> -->
+                   <a type="button" class="btn btn-primary" id="download-button" onclick="gtag('event', 'download', {'event_category': 'Popbio', 'event_label': 'File download'});"><i class="fa fa-floppy-o"></i>
                                     Download
                    </a>
                </div>
@@ -2300,15 +2254,22 @@
         //Toggle fullscreen through code so that the map is always fitting the page width and height
         map.toggleFullscreen({pseudoFullscreen: true});
 
-        //Wrapping opening up the help sidebar in a timeout function because there is code that resets the map
-        //and it is in a timeout function as well.  So ensuring the last thing that gets done is opening the sidebar
-        if (urlParams.shared_link !== "true") {
-            setTimeout(function() {
-                sidebar.open('help');
-            }, 2300);
+        //If the page was opened with a shared link, don't flash icons
+        if (urlParams.shared_link === "true") {
+            $(".sidebar-icon.flash").removeClass("flash");
         }
     });
 
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-6417661-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-6417661-3');
 </script>
 <!-- MAP PASTE END -->
 <!-- Keep the above line for grunt-->

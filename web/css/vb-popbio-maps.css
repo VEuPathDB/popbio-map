@@ -45,6 +45,8 @@ BODY {
 }
 .bootstrap-tagsinput .tag {
     margin-right : 0px;
+    display: inline-block;
+    padding: .03em .6em .06em;
 }
 .bootstrap-tagsinput .tag [data-role="remove"]:after {
     content : "\00d7";
@@ -219,14 +221,13 @@ BODY {
 }
 /* for the table */
 #marker-table {
-    overflow-y    : auto;
-    overflow-x    : hidden;
+    overflow      : hidden;
     height        : 100%;
     padding-right : 0;
 }
 .row.no-pad {
     margin-right : 10px;
-    margin-left  : -5px;
+    margin-left  : 0px;
 }
 .tooltip-bs .row.no-pad {
     margin-left : 0px;
@@ -308,6 +309,7 @@ BODY {
     z-index          : 3080;
     pointer-events   : none;
     user-select      : none;
+    border: none;
 }
 .tooltip-bs {
     pointer-events : auto;
@@ -674,6 +676,28 @@ div.error div, div.warning div, div.info div, div.hint div {
     display: none;
 }
 
+#resolution-selector-group {
+    display: none;
+    text-align: center;
+    padding: 10px;
+}
+
+#resolution-selector-title {
+    padding-bottom: 4px;
+}
+
+#resolution-selector-title i {
+    margin-left: 5px;
+}
+
+#resolution-selector-title .fa-exclamation-triangle {
+    color: #FBBD08;
+}
+
+#resolution-selector-title .fa-exclamation-triangle.danger {
+    color: red;
+}
+
 #sidebar {
     min-width: 460px;
     background: none;
@@ -683,12 +707,31 @@ div.error div, div.warning div, div.info div, div.hint div {
     overflow: visible;
 }
 
+@media (max-width: 767px) {
+    .sidebar {
+        position: fixed;
+    }
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        position: absolute;
+    }
+}
+
 #sidebar .sidebar-pane {
     min-width: 420px;
 }
 
 #sidebar .sidebar-pane #table-contents {
     min-width: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: absolute;
+    top: 85px;
+    bottom: 0px;
+    left: 20px;
+    right: 0px;
 }
 
 #sidebar .sidebar-pane #table-contents .col-md-6 {
@@ -911,7 +954,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     text-decoration: underline;
 }
 
-.sidebar-icon a.disabled, .sidebar-icon a.disabled:hover {
+.sidebar-icon a.disabled, .sidebar-icon a.disabled:hover, #swarm-plots .disabled, #swarm-plots .disabled:hover {
     color: #ddd;
     background-color: #FFFFFF;
     cursor: not-allowed;
@@ -922,3 +965,64 @@ div.error div, div.warning div, div.info div, div.hint div {
     background: transparent;
     border: none;
 }
+
+.sidebar-x {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    cursor: pointer;
+}
+
+.sidebar-x line {
+    stroke: #cccccc;
+    stroke-width: 2;
+}
+
+#vectorbase-navigation {
+    margin-top: 20px;
+    font-size: 120%;
+}
+
+#vectorbase-navigation a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    width: 100%;
+    margin: -1px auto;
+}
+
+#vectorbase-navigation a:hover {
+    background: #bcbcbc;
+}
+
+#vectorbase-navigation div {
+    height: 1px;
+    max-width: 30px;
+    margin: auto;
+    background: linear-gradient(to right, #ffffff00, #bcbcbc 20%, #bcbcbc 80%, #ffffff00);
+}
+
+#help td {
+    white-space: normal;
+}
+
+.flash {
+    animation-delay: 2.5s;
+    animation-direction: alternate;
+    animation-duration: 500ms;
+    animation-iteration-count: 6;
+    animation-name: flash;
+}
+
+@keyframes flash {
+    from {
+        background-color: white;
+    }
+
+    to {
+        background-color: #0074d9;
+    }
+}
+

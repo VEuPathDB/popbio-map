@@ -17,7 +17,7 @@
   },
   "title": "VectorBase Population Biology Map",
   "name": "VB_popbio_map",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://www.vectorbase.org/popbio/",
   "author": "Ioannis Kirmitzoglou"
 }
