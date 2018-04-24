@@ -45,6 +45,8 @@ BODY {
 }
 .bootstrap-tagsinput .tag {
     margin-right : 0px;
+    display: inline-block;
+    padding: .03em .6em .06em;
 }
 .bootstrap-tagsinput .tag [data-role="remove"]:after {
     content : "\00d7";
@@ -307,6 +309,7 @@ BODY {
     z-index          : 3080;
     pointer-events   : none;
     user-select      : none;
+    border: none;
 }
 .tooltip-bs {
     pointer-events : auto;
@@ -673,6 +676,28 @@ div.error div, div.warning div, div.info div, div.hint div {
     display: none;
 }
 
+#resolution-selector-group {
+    display: none;
+    text-align: center;
+    padding: 10px;
+}
+
+#resolution-selector-title {
+    padding-bottom: 4px;
+}
+
+#resolution-selector-title i {
+    margin-left: 5px;
+}
+
+#resolution-selector-title .fa-exclamation-triangle {
+    color: #FBBD08;
+}
+
+#resolution-selector-title .fa-exclamation-triangle.danger {
+    color: red;
+}
+
 #sidebar {
     min-width: 460px;
     background: none;
@@ -929,7 +954,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     text-decoration: underline;
 }
 
-.sidebar-icon a.disabled, .sidebar-icon a.disabled:hover {
+.sidebar-icon a.disabled, .sidebar-icon a.disabled:hover, #swarm-plots .disabled, #swarm-plots .disabled:hover {
     color: #ddd;
     background-color: #FFFFFF;
     cursor: not-allowed;

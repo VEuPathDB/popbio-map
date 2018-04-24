@@ -1048,6 +1048,10 @@ function initializeSearch() {
             }
         } else {
             map.options.maxZoom = 15;
+
+            //Hiding the notices from the abundance graph
+            $("#projects-notice").hide();
+            $("#resolution-selector-group").hide();
         }
 
         // update the export fields dropdown
