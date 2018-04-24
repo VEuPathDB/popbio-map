@@ -596,6 +596,28 @@
             title: "Date range graphed is too broad.  Narrow down date range to enable."
         });
 
+        //Disable buttons based on the highest resolution available
+        if (highest_resolution === "year") {
+            $("#Monthly").addClass("disabled");
+            $("#EpiWeekly").addClass("disabled");
+            $("#Daily").addClass("disabled");
+        } else if (highest_resolution === "month") {
+            $("#EpiWeekly").addClass("disabled");
+            $("#Daily").addClass("disabled");
+        }
+
+        //Add a tooltip letting user know the buttons are disabled because 
+        //no higher resolution is available
+        if (highest_resolution !== "day") {
+            //Destory tooltip created and recreate with a different title
+            $("#resolution-selector .disabled").tooltip("destroy");
+            $("#resolution-selector .disabled").tooltip({
+                position: 'top', 
+                title: "The data is not available at a higher resolution"
+            });
+        }
+
+
         //Construct the URL that will be used to get the new data
         var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
         var date_resolution_field = resolution_to_solr_field[resolution]; 
