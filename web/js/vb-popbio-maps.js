@@ -2207,6 +2207,7 @@ function updatePieChart(population, stats) {
                 .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
                 .donutRatio(0.5)     //Configure h ow big you want the donut hole size to be.
                 .growOnHover(false)
+                .title(population)   // VB-7427 set title                         
             ;
 
             chart.legend.vers('classic')
@@ -2230,6 +2231,22 @@ function updatePieChart(population, stats) {
                 .datum(stats)
                 .transition().duration(delay)
                 .call(chart);
+
+            // VB-7427 placing legend in the bottom
+            d3.select(".nv-pieChart")
+               .attr("transform","translate(20,-30)");
+            d3.select(".nv-legendWrap")
+               .attr("transform","translate(20,350)");
+
+            // VB-7427 set not to change position when clicking legend 
+	  	    d3.select(".nv-legendWrap").on("click", function(){
+		        d3.select(".nv-pieChart").attr("transform","translate(20,-30)")  
+	           	d3.select(".nv-legendWrap").attr("transform","translate(20,350)")  
+		    })
+
+            // VB-7427 set font color
+            d3.select(".nv-pie-title")
+                .style("fill","inherit");
 
             return chart;
         });
