@@ -2244,6 +2244,12 @@ function updatePieChart(population, stats) {
 	           	d3.select(".nv-legendWrap").attr("transform","translate(20,350)")  
 		    })
 
+	  	    // VB-7427 need to set for double click event too!
+	  	    d3.select(".nv-legendWrap").on("dblclick", function(){
+		        d3.select(".nv-pieChart").attr("transform","translate(20,-30)")  
+	           	d3.select(".nv-legendWrap").attr("transform","translate(20,350)")  
+		    })
+
             // VB-7427 set font color
             d3.select(".nv-pie-title")
                 .style("fill","inherit");
