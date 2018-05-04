@@ -6,6 +6,9 @@
     //Local variables used withing the object
     var monthIndex = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12};
 
+    var dateShortcutClickType = {ctrlKey: false, shiftKey: false, metaKey: false};
+    var pivotDate;
+
     //Object specific to this file
     PopulationBiologyMap.extra = {};
 
@@ -64,6 +67,54 @@
         }
     }
 
+    //Gets the dates from datepicker query parameter and returns them in format to use in the addDatepickerItem function
+    function retrieveDatepickerDates(dateRange) {
+        var dateStartString;
+        var dateEndString;
+        var dateStart;
+        var dateEnd;
+        var month;
+        var day;
+        var year;
+
+        //Get the start and end date
+        dateRange = dateRange.split("-");
+
+        dateStartString = dateRange[0];
+        dateEndString = dateRange[1];
+
+        dateStartString.split('/').map( function (value, index) {
+            if (index === 0) {
+                day = value;
+            } else if (index === 1) {
+                month = value;
+            } else {
+                year = value;
+            }
+        });
+
+        //Constructing string as MM/DD/YYYY
+        dateStartString = month + "/" + day + "/" + year;
+
+        dateEndString.split('/').map( function (value, index) {
+            if (index === 0) {
+                day = value;
+            } else if (index === 1) {
+                month = value;
+            } else {
+                year = value;
+            }
+        });
+
+        //Construcint string as MM/DD/YYYY
+        dateEndString = month + "/" + day + "/" + year;
+
+        dateStart = new Date(dateStartString);
+        dateEnd = new Date(dateEndString);
+
+        return [dateStart, dateEnd];
+    }
+
     //Gets the dates of the query parameters in a format that can be used by the addDate function
     function retrieveDates(dateRange) {
         var now = new Date();
@@ -103,6 +154,25 @@
         }
 
         return dateItemText;  
+    }
+
+    function addDatepickerItem(startDate, endDate) {
+        var value;
+
+        if (startDate.getTime() === endDate.getTime()) {
+            value = startDate.toLocaleDateString('en-GB', {timezone: 'utc'});
+        } else {
+            value = startDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + endDate.toLocaleDateString('en-GB', {timezone: 'utc'});
+        }
+
+        //Specify that this date was added through the datepicker
+        $('#search_ac').tagsinput('add', {
+            value: value,
+            startDate: startDate,
+            endDate: endDate,
+            type: 'Datepicker',
+            field: 'collection_date_range',
+        });
     }
 
     function addDateItem(dateItemInfo, dateItem) {
@@ -556,6 +626,26 @@
 
                         addDateItem(dateItemInfo);
                         break
+                    case "datepicker":
+                        var param = urlParams[key];
+                        var startDate;
+                        var endDate;
+                        var dateRange;
+
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                dateRange = retrieveDatepickerDates(element);
+                                startDate = dateRange[0];
+                                endDate = dateRange[1];
+                                addDatepickerItem(startDate, endDate);
+                            })
+                        } else {
+                            dateRange = retrieveDatepickerDates(param);
+                            startDate = dateRange[0];
+                            endDate = dateRange[1];
+                            addDatepickerItem(startDate, endDate);
+                        }
+                        break   
                     case "markerID":
                         highlightedId  = urlParams[key];
                         break;
@@ -637,6 +727,8 @@
                 return "norm-ir";
             case "PubMed":
                 return "pubmed";
+            case "Datepicker":
+                return "datepicker";
             default:
                 return "text"
                 break;
@@ -710,8 +802,16 @@
             }
         });
 
+        //Store the type of click the user is doing so we can
+        //do the correct action in the change event
+        $(".date-shortcut").parent("div").click(function(e) {
+            dateShortcutClickType.ctrlKey = e.ctrlKey;
+            dateShortcutClickType.shiftKey = e.shiftKey;
+            dateShortcutClickType.metaKey = e.metaKey; 
+        });
+
         //Adding a date filter through the UI
-        $('.date-shortcut').change(function () {
+        $(".date-shortcut").change(function (e) {
             var items = $("#search_ac").tagsinput('items');
             var dateItemInfo = {ranges: {}, text: ''}
             var startDate;
@@ -725,37 +825,151 @@
                 }
             }
 
-            //Set the range to the date item if there is one already
-            if (dateItem) {
-                dateItemInfo.ranges = dateItem.ranges;
-            }
+            //Setting the pivotRange variable when we are selecting the first date filter
+            //Used when pressing the shift key
+            if (!dateItem && $(this).prop('checked')) {
+                pivotDate = this.value;
 
-            //Check if we are removing or adding or removing a range and update date item accordingly
-            if ($(this).prop('checked')) {
-                //[startDate, endDate] = retrieveDates(this.value);
+                //First button selected so add it as a filter
                 dateRange = retrieveDates(this.value);
                 startDate = dateRange[0];
                 endDate = dateRange[1];
-                
+
                 //Adding the date range to the object
-                dateItemInfo.ranges[this.value] = {startDate: startDate, endDate: endDate };
+                dateItemInfo.ranges[this.value] = { startDate: startDate, endDate: endDate };
 
                 //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
                 dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
-
                 addDateItem(dateItemInfo, dateItem);
-            } else {
-                delete dateItemInfo.ranges[this.value];
+                
+                return
+            }
 
-                //Check if there ranges is not empty so we do not remove the item from the query
-                if (Object.keys(dateItemInfo.ranges).length) {
+            if (dateShortcutClickType.ctrlKey || dateShortcutClickType.metaKey) {
+                //Set the range to the date item if there is one already
+                if (dateItem) {
+                    dateItemInfo.ranges = dateItem.ranges;
+                }
+
+                //Check if we are removing or adding or removing a range and update date item accordingly
+                if ($(this).prop('checked')) {
+                    //[startDate, endDate] = retrieveDates(this.value);
+                    dateRange = retrieveDates(this.value);
+                    startDate = dateRange[0];
+                    endDate = dateRange[1];
+                    
+                    //Adding the date range to the object
+                    dateItemInfo.ranges[this.value] = {startDate: startDate, endDate: endDate };
+
+                    //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
                     dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+
                     addDateItem(dateItemInfo, dateItem);
                 } else {
-                    //Remove date item since ranges is empty
+                    delete dateItemInfo.ranges[this.value];
+
+                    //Check if there ranges is not empty so we do not remove the item from the query
+                    if (Object.keys(dateItemInfo.ranges).length) {
+                        dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+                        addDateItem(dateItemInfo, dateItem);
+                    } else {
+                        //Remove date item since ranges is empty
+                        $("#search_ac").tagsinput('remove', dateItem);
+                    }
+                }
+            } else if (dateShortcutClickType.shiftKey) {
+                //Contains the current selected toggle split
+                var splitValue = this.value.split('-');
+                var splitPivotDate = pivotDate.split('-');
+
+                if (splitValue[0] < splitPivotDate[0]) {
+                    $(".date-shortcut").each(function () {
+                        if (this.value.split('-')[0] < splitValue[0] || this.value.split('-')[1] > splitPivotDate[1]) {
+                            $(this).prop('checked', false);
+                            $(this).parent('div').removeClass('btn-primary');
+                            $(this).parent('div').addClass('btn-default');
+                            $(this).parent('div').addClass('off');
+                        } else {
+                            $(this).prop('checked', true);
+                            $(this).parent('div').addClass('btn-primary');
+                            $(this).parent('div').removeClass('btn-default');
+                            $(this).parent('div').removeClass('off');
+
+                            dateRange = retrieveDates(this.value);
+                            startDate = dateRange[0];
+                            endDate = dateRange[1];
+
+                            //Adding the date range to the object
+                            dateItemInfo.ranges[this.value] = { startDate: startDate, endDate: endDate };
+                        }
+                    });
+                } else {
+                    $(".date-shortcut").each(function () {
+                        if (this.value.split('-')[0] < splitPivotDate[0] || this.value.split('-')[1] > splitValue[1]) {
+                            $(this).prop('checked', false);
+                            $(this).parent('div').removeClass('btn-primary');
+                            $(this).parent('div').addClass('btn-default');
+                            $(this).parent('div').addClass('off');
+                        } else {
+                            $(this).prop('checked', true);
+                            $(this).parent('div').addClass('btn-primary');
+                            $(this).parent('div').removeClass('btn-default');
+                            $(this).parent('div').removeClass('off');
+
+                            dateRange = retrieveDates(this.value);
+                            startDate = dateRange[0];
+                            endDate = dateRange[1];
+
+                            //Adding the date range to the object
+                            dateItemInfo.ranges[this.value] = { startDate: startDate, endDate: endDate };
+                        }
+                    });
+                }
+
+                //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
+                dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+                addDateItem(dateItemInfo, dateItem);
+            } else {
+                //Check if we are removing or adding or removing a range and update date item accordingly
+                if ($(this).prop('checked')) {
+                    //[startDate, endDate] = retrieveDates(this.value);
+                    dateRange = retrieveDates(this.value);
+                    startDate = dateRange[0];
+                    endDate = dateRange[1];
+                    
+                    //Adding the date range to the object
+                    dateItemInfo.ranges[this.value] = {startDate: startDate, endDate: endDate };
+
+                    //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
+                    dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+
+                    addDateItem(dateItemInfo, dateItem);
+                } else {
+                    /*delete dateItemInfo.ranges[this.value];
+
+                    //Check if there ranges is not empty so we do not remove the item from the query
+                    if (Object.keys(dateItemInfo.ranges).length) {
+                        dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+                        addDateItem(dateItemInfo, dateItem);
+                    } else {
+                        //Remove date item since ranges is empty
+                        $("#search_ac").tagsinput('remove', dateItem);
+                    }*/
                     $("#search_ac").tagsinput('remove', dateItem);
                 }
+
+                $(".date-shortcut").each(function () {
+                    if (this.name !== e.target.name && $(this).prop('checked')) {
+                        $(this).prop('checked', false);
+                        $(this).parent('div').removeClass('btn-primary');
+                        $(this).parent('div').addClass('btn-default');
+                        $(this).parent('div').addClass('off');
+                    }
+                });
             }
+
+            //Reset the click properties
+            dateShortcutClickType = {ctrlKey: false, shiftKey: false, metaKey: false};
         });
 
 
@@ -768,6 +982,50 @@
                 });
                 $this.tooltip('show');
             }
+        });
+
+        //clear the date selection panel once collapsed
+        $('#daterange').on('hidden.bs.collapse', function () {
+            $("#date-start").datepicker("clearDates");
+            $("#date-end").datepicker("clearDates");
+            $("#add-dates").prop('disabled', true);
+            $("#add-season").prop('disabled', true);
+        });
+
+        //bind the date range text fields to the datepicker
+        $('#datepicker').datepicker({
+            format: "dd/mm/yyyy",
+             startView: 2,
+             todayBtn: "linked",
+             autoclose: true,
+             todayHighlight: true,
+             endDate: "Date.now()"
+        }).on('changeDate', function() {
+            //Disable button if one of the texboxes does not have a date
+            if ($("#date-end").datepicker('getDate') && $("#date-start").datepicker('getDate')) {
+                $("#add-dates").prop('disabled', false);
+            } else {
+                $("#add-dates").prop('disabled', true);
+            }
+        });
+
+        //When removing the date value, if texbox is empty, it does not run changeDate event,
+        //so need this event to disable the "add-dates" button
+        $(".input-daterange input").change(function() {
+            //Disable button if one of the texboxes does not have a date
+            if ($("#date-end").datepicker('getDate') && $("#date-start").datepicker('getDate')) {
+                $("#add-dates").prop('disabled', false);
+            } else {
+                $("#add-dates").prop('disabled', true);
+            }
+        });
+
+        //add the date filter into search
+        $("#add-dates").click(function () {
+            var startDate = new Date($("#date-start").datepicker('getDate'));
+            var endDate = new Date($("#date-end").datepicker('getDate'));
+            
+            addDatepickerItem(startDate, endDate);
         });
     }
 

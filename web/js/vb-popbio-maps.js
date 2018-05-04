@@ -641,7 +641,7 @@ function bindEvents() {
                     $(this).parent('div').addClass('btn-default');
                     $(this).parent('div').addClass('off');
                 }
-            })
+            });
         }
 
         //sidebar.close();
@@ -2073,7 +2073,7 @@ function checkDate() {
 
     for (var i = 0; i < activeTerms.length; i++) {
         var obj = activeTerms[i];
-        if (obj.type === 'Date') return obj.value;
+        if (obj.type === 'Date' && obj.source !== 'Datepicker') return obj.value;
 
     }
 
@@ -2581,7 +2581,6 @@ function filterMarkers(items, flyTo) {
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
 
         if (element.type === 'Date') {
-
             var format = "YYYY-MM-DD";
 
             if (element.ranges) {
@@ -2595,8 +2594,22 @@ function filterMarkers(items, flyTo) {
                     });
                 }
             }
-            return
 
+            return
+        }
+
+        if (element.type === 'Datepicker') {
+            //For Datepicker items, will populate same index as Date items
+            if (!terms.hasOwnProperty("Date")) terms["Date"] = [];
+            var format = "YYYY-MM-DD";
+            var startDate = dateConvert(element.startDate, format);
+            var endDate = dateConvert(element.endDate, format);
+
+            terms["Date"].push({
+                "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']'
+            });
+
+            return
         }
 
         if (element.type === 'Seasonal') {
@@ -2900,7 +2913,9 @@ function mapTypeToLabel(type) {
         case 'Collection protocol' :
             return 'label label-success label-collection-protocol';
         case 'Date' :
-            return 'label label-info label-date'
+            return 'label label-info label-date';
+        case 'Datepicker' :
+            return 'label label-info label-date';
         case 'Seasonal' :
             return 'label label-info label-seasonal'
         case 'Norm-IR' :
@@ -2946,6 +2961,8 @@ function mapTypeToIcon(type) {
         case 'Collection protocol' :
             return 'fa-shopping-cart';
         case 'Date' :
+            return 'fa-calendar';
+        case 'Datepicker' :
             return 'fa-calendar';
         case 'Seasonal' :
             return 'fa-calendar-check-o';

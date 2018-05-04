@@ -1026,3 +1026,11 @@ div.error div, div.warning div, div.info div, div.hint div {
     }
 }
 
+
+#add-dates {
+    background-color: #06AF06;
+}
+
+#clear-dates {
+    background-color: #FF0000;
+}

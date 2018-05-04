@@ -830,7 +830,25 @@
                 </div>
             </div>
 
-            <div class="collapse main-menu" style="margin-top:0;" id="daterange">
+            <div class="collapse main-menu" style="margin-top:1;" id="daterange">
+                <div class="input-daterange input-group" id="datepicker" style="margin-top: 5px;">
+                    <span class="input-group-addon"
+                    title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>
+                    <input id="date-start" type="text" class="form-control" name="start"/>
+                    <span class="input-group-addon">to</span>
+                    <input id="date-end" type="text" class="form-control" name="end"/>
+                    <span class="input-group-btn" style="width: 3px;"></span>
+                    <span class="input-group-btn">
+                        <button id="add-dates" type="button" class="btn btn-default" title="Add date filter" disabled data-toggle="collapse" data-target="#daterange">
+                            <i class="fa fa-plus fa-fw"></i>
+                        </button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button id="clear-dates" type="button" class="btn btn-default" title="Cancel" data-toggle="collapse" data-target="#daterange">
+                            <i class="fa fa-times fa-fw"></i>
+                        </button>
+                    </span>
+                </div>
                 <!-- predefined date ranges-->
                 <div class="input-group" style="margin-top: 3px;">
                     <span class="btn-group btn-group-justified" data-toggle="buttons" role="group" style="height: 30px;">
