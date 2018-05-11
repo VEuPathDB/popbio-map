@@ -501,15 +501,44 @@ function bindEvents() {
         })
     });
 
-    $('#date-select, #SelectView').click(function () {
-        if ($('#seasonal').attr("aria-expanded") == 'true') {
-            $('#seasonal').collapse('hide');
-        }
-    });
+    $('#date-select, #season-select, [data-id="SelectView"]').click(function () {
+        //Check what button was clicked and do its respective changes
+        if (this.id === 'date-select') {
+            if ($('#seasonal').attr("aria-expanded") == 'true') {
+                $('#seasonal').collapse('hide');
+                $('#season-select').removeClass('active');
+            }
 
-    $('#season-select, #SelectView').click(function () {
-        if ($('#daterange').attr("aria-expanded") == 'true') {
-            $('#daterange').collapse('hide');
+            //Checking if this click will expand the daterange UI
+            //if expanding add active class otherwise remove it
+            if ($('#daterange').attr('aria-expanded') !== 'true') {
+                $(this).addClass('active');
+            } else {
+                $(this).removeClass('active');
+            }
+        } else if (this.id === 'season-select') {
+            if ($('#daterange').attr("aria-expanded") == 'true') {
+                $('#daterange').collapse('hide');
+                $('#date-select').removeClass('active');
+            }
+
+            //Checking if this click will expand the seasonal UI
+            //if expanding add active class otherwise remove it
+            if ($('#seasonal').attr('aria-expanded') !== 'true') {
+                $(this).addClass('active');
+            } else {
+                $(this).removeClass('active');
+            }
+        } else {
+            if ($('#seasonal').attr("aria-expanded") == 'true') {
+                $('#seasonal').collapse('hide');
+                $('#season-select').removeClass('active');
+            }
+
+            if ($('#daterange').attr("aria-expanded") == 'true') {
+                $('#daterange').collapse('hide');
+                $('#date-select').removeClass('active');
+            }
         }
     });
     
@@ -795,6 +824,14 @@ function initializeSearch() {
             if ($(this).prop('checked')) {
                 $(this).bootstrapToggle('off');
             }
+        });
+
+        // reset half-decacde quick date search
+        $(".date-shortcut").each(function () {
+            $(this).prop('checked', false);
+            $(this).parent('div').removeClass('btn-primary');
+            $(this).parent('div').addClass('btn-default');
+            $(this).parent('div').addClass('off');
         });
 
         removeHighlight();

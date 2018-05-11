@@ -199,6 +199,115 @@
     }
 
 
+    //Adds the daterange filter to the search bar
+    function addDateRangeFilter(dateRangeString, dateItemInfo, dateItem, shiftKey) {
+        var dateRange;
+        var startDate;
+        var endDate;
+
+        //Check if shiftKey was pressed when date range clicked.
+        //If it was, means we need to also activate all the other date ranges between
+        //the pivot and the selected date range
+        if (shiftKey) {
+            //Contains the current selected toggle split
+            var splitValue = dateRangeString.split('-');
+            var splitPivotDate = pivotDate.split('-');
+
+            if (splitValue[0] < splitPivotDate[0]) {
+                $(".date-shortcut").each(function () {
+                    if (this.value.split('-')[0] < splitValue[0] || this.value.split('-')[1] > splitPivotDate[1]) {
+                        $(this).prop('checked', false);
+                        $(this).parent('div').removeClass('btn-primary');
+                        $(this).parent('div').addClass('btn-default');
+                        $(this).parent('div').addClass('off');
+                    } else {
+                        $(this).prop('checked', true);
+                        $(this).parent('div').addClass('btn-primary');
+                        $(this).parent('div').removeClass('btn-default');
+                        $(this).parent('div').removeClass('off');
+
+                        dateRange = retrieveDates(this.value);
+                        startDate = dateRange[0];
+                        endDate = dateRange[1];
+
+                        //Adding the date range to the object
+                        dateItemInfo.ranges[this.value] = { startDate: startDate, endDate: endDate };
+                    }
+                });
+            } else {
+                $(".date-shortcut").each(function () {
+                    if (this.value.split('-')[0] < splitPivotDate[0] || this.value.split('-')[1] > splitValue[1]) {
+                        $(this).prop('checked', false);
+                        $(this).parent('div').removeClass('btn-primary');
+                        $(this).parent('div').addClass('btn-default');
+                        $(this).parent('div').addClass('off');
+                    } else {
+                        $(this).prop('checked', true);
+                        $(this).parent('div').addClass('btn-primary');
+                        $(this).parent('div').removeClass('btn-default');
+                        $(this).parent('div').removeClass('off');
+
+                        dateRange = retrieveDates(this.value);
+                        startDate = dateRange[0];
+                        endDate = dateRange[1];
+
+                        //Adding the date range to the object
+                        dateItemInfo.ranges[this.value] = { startDate: startDate, endDate: endDate };
+                    }
+                });
+            }
+        } else {
+            dateRange = retrieveDates(dateRangeString);
+            startDate = dateRange[0];
+            endDate = dateRange[1];
+
+            //Adding the date range to the object
+            dateItemInfo.ranges[dateRangeString] = { startDate: startDate, endDate: endDate };
+        }
+
+        //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
+        dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
+        //Add the new dateItem and remove the old one in the search bar
+        addDateItem(dateItemInfo, dateItem);
+    }
+
+    //Function used to update the pivotDate variable when using CTRL key to uncheck the currect pivotDate
+    //Logic is find closest selected date range to current pivot and set it as the new pivot
+    function updatePivotDate(changedDateRange) {
+        //Get all the date ranges that are toggled on
+        var prevToggledDate = $(changedDateRange).closest('.toggle').prevAll('.btn-primary:first');
+        var nextToggledDate = $(changedDateRange).closest('.toggle').nextAll('.btn-primary:first');
+
+        //From closest toggled date ranges, find the closest to the pivot
+        if (prevToggledDate.length && nextToggledDate) {
+            //Both on the left and right of pivot there are toggled dates
+            //Find the distance of the toggled dates from the pivot
+            var minPivotDate = pivotDate.split('-')[0];
+            var maxPivotDate = pivotDate.split('-')[1];
+            var maxPrevDate = prevToggledDate.find('input').val().split('-')[1];
+            var minNextDate = nextToggledDate.find('input').val().split('-')[0];
+            var prevDateDistance = minPivotDate - maxPrevDate;
+            var nextDateDistance = minNextDate - maxPivotDate;
+
+            //Compare the dates to see which on is the closest to the pivot
+            //If same distance, make left toggled date the pivot
+            if (prevDateDistance > nextDateDistance) {
+                pivotDate = nextToggledDate.find('input').val();
+            } else {
+                pivotDate = prevToggledDate.find('input').val();
+            }
+
+        } else if (prevToggledDate.length) {
+            //Only on the left of the pivot date there is a toggled date
+            pivotDate = prevToggledDate.find('input').val();
+
+        } else if (nextToggledDate) {
+            //Only on the right of thepivot date there is a toggled date
+            pivotDate = nextToggledDate.find('input').val();
+        }
+    } 
+
+
     //Might change to private function, but making it public for now until I know
     //that it is not needed anywhere else
     PopulationBiologyMap.methods.applyParameters = function () {
@@ -814,8 +923,6 @@
         $(".date-shortcut").change(function (e) {
             var items = $("#search_ac").tagsinput('items');
             var dateItemInfo = {ranges: {}, text: ''}
-            var startDate;
-            var endDate;
             var dateItem;
 
             for (var j = 0; j < items.length; j++) {
@@ -829,19 +936,8 @@
             //Used when pressing the shift key
             if (!dateItem && $(this).prop('checked')) {
                 pivotDate = this.value;
+                addDateRangeFilter(this.value, dateItemInfo);
 
-                //First button selected so add it as a filter
-                dateRange = retrieveDates(this.value);
-                startDate = dateRange[0];
-                endDate = dateRange[1];
-
-                //Adding the date range to the object
-                dateItemInfo.ranges[this.value] = { startDate: startDate, endDate: endDate };
-
-                //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
-                dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
-                addDateItem(dateItemInfo, dateItem);
-                
                 return
             }
 
@@ -853,18 +949,7 @@
 
                 //Check if we are removing or adding or removing a range and update date item accordingly
                 if ($(this).prop('checked')) {
-                    //[startDate, endDate] = retrieveDates(this.value);
-                    dateRange = retrieveDates(this.value);
-                    startDate = dateRange[0];
-                    endDate = dateRange[1];
-                    
-                    //Adding the date range to the object
-                    dateItemInfo.ranges[this.value] = {startDate: startDate, endDate: endDate };
-
-                    //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
-                    dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
-
-                    addDateItem(dateItemInfo, dateItem);
+                    addDateRangeFilter(this.value, dateItemInfo, dateItem);
                 } else {
                     delete dateItemInfo.ranges[this.value];
 
@@ -872,92 +957,31 @@
                     if (Object.keys(dateItemInfo.ranges).length) {
                         dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
                         addDateItem(dateItemInfo, dateItem);
+
+                        //Check if we are unchecking the pivot date and update the pivotDate if we are 
+                        if (pivotDate === this.value) {
+                            //update the pivotDate to use with the shift click event
+                            updatePivotDate(this);
+                        }
                     } else {
                         //Remove date item since ranges is empty
                         $("#search_ac").tagsinput('remove', dateItem);
                     }
                 }
             } else if (dateShortcutClickType.shiftKey) {
-                //Contains the current selected toggle split
-                var splitValue = this.value.split('-');
-                var splitPivotDate = pivotDate.split('-');
-
-                if (splitValue[0] < splitPivotDate[0]) {
-                    $(".date-shortcut").each(function () {
-                        if (this.value.split('-')[0] < splitValue[0] || this.value.split('-')[1] > splitPivotDate[1]) {
-                            $(this).prop('checked', false);
-                            $(this).parent('div').removeClass('btn-primary');
-                            $(this).parent('div').addClass('btn-default');
-                            $(this).parent('div').addClass('off');
-                        } else {
-                            $(this).prop('checked', true);
-                            $(this).parent('div').addClass('btn-primary');
-                            $(this).parent('div').removeClass('btn-default');
-                            $(this).parent('div').removeClass('off');
-
-                            dateRange = retrieveDates(this.value);
-                            startDate = dateRange[0];
-                            endDate = dateRange[1];
-
-                            //Adding the date range to the object
-                            dateItemInfo.ranges[this.value] = { startDate: startDate, endDate: endDate };
-                        }
-                    });
-                } else {
-                    $(".date-shortcut").each(function () {
-                        if (this.value.split('-')[0] < splitPivotDate[0] || this.value.split('-')[1] > splitValue[1]) {
-                            $(this).prop('checked', false);
-                            $(this).parent('div').removeClass('btn-primary');
-                            $(this).parent('div').addClass('btn-default');
-                            $(this).parent('div').addClass('off');
-                        } else {
-                            $(this).prop('checked', true);
-                            $(this).parent('div').addClass('btn-primary');
-                            $(this).parent('div').removeClass('btn-default');
-                            $(this).parent('div').removeClass('off');
-
-                            dateRange = retrieveDates(this.value);
-                            startDate = dateRange[0];
-                            endDate = dateRange[1];
-
-                            //Adding the date range to the object
-                            dateItemInfo.ranges[this.value] = { startDate: startDate, endDate: endDate };
-                        }
-                    });
-                }
-
-                //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
-                dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
-                addDateItem(dateItemInfo, dateItem);
+                addDateRangeFilter(this.value, dateItemInfo, dateItem, true);
             } else {
-                //Check if we are removing or adding or removing a range and update date item accordingly
+                //Check if we are adding or removing a range and update date item accordingly
                 if ($(this).prop('checked')) {
-                    //[startDate, endDate] = retrieveDates(this.value);
-                    dateRange = retrieveDates(this.value);
-                    startDate = dateRange[0];
-                    endDate = dateRange[1];
-                    
-                    //Adding the date range to the object
-                    dateItemInfo.ranges[this.value] = {startDate: startDate, endDate: endDate };
+                    //Update the pivot date since we are only using this date as a filter
+                    pivotDate = this.value;
 
-                    //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
-                    dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
-
-                    addDateItem(dateItemInfo, dateItem);
+                    addDateRangeFilter(this.value, dateItemInfo, dateItem);
                 } else {
-                    /*delete dateItemInfo.ranges[this.value];
-
-                    //Check if there ranges is not empty so we do not remove the item from the query
-                    if (Object.keys(dateItemInfo.ranges).length) {
-                        dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
-                        addDateItem(dateItemInfo, dateItem);
-                    } else {
-                        //Remove date item since ranges is empty
-                        $("#search_ac").tagsinput('remove', dateItem);
-                    }*/
                     $("#search_ac").tagsinput('remove', dateItem);
                 }
 
+                //Change date-range toggles to not active apart from the date range that was clicked on
                 $(".date-shortcut").each(function () {
                     if (this.name !== e.target.name && $(this).prop('checked')) {
                         $(this).prop('checked', false);
