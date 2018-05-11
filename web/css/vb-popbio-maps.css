@@ -960,7 +960,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     cursor: not-allowed;
 }
 
-.sidebar-icon > .tooltip {
+.tooltip {
     background-color: transparent;
     background: transparent;
     border: none;
@@ -1026,3 +1026,11 @@ div.error div, div.warning div, div.info div, div.hint div {
     }
 }
 
+/*Do not prevent disabled buttons from displaying a tooltip*/
+#add-dates[disabled] {
+    pointer-events: none;
+}
+
+#add-dates-tooltip.disabled {
+    cursor: not-allowed;
+}

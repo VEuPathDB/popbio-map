@@ -310,6 +310,27 @@
         }
     } 
 
+    //Function used to enable/disable the add-dates button if conditions are met
+    function toggleAddDatesButton() {
+        //Disable button if one of the texboxes does not have a date
+        if ($("#date-end").datepicker('getDate') && $("#date-start").datepicker('getDate')) {
+            //Check that the year is 4 characters otherwise don't enable it either
+            if ($("#date-end").val().split("/")[2].length === 4 && $("#date-start").val().split("/")[2].length === 4) {
+                $("#add-dates").prop('disabled', false);
+                $("#add-dates-tooltip").tooltip('disable');
+                $("#add-dates-tooltip").removeClass('disabled');
+            } else {
+                $("#add-dates").prop('disabled', true);
+                $("#add-dates-tooltip").tooltip('enable');
+                $("#add-dates-tooltip").addClass('disabled');
+            }
+        } else {
+            $("#add-dates").prop('disabled', true);
+            $("#add-dates-tooltip").tooltip('enable');
+            $("#add-dates-tooltip").addClass('disabled');
+        }
+    }
+
 
     //Might change to private function, but making it public for now until I know
     //that it is not needed anywhere else
@@ -1016,6 +1037,8 @@
             $("#date-start").datepicker("clearDates");
             $("#date-end").datepicker("clearDates");
             $("#add-dates").prop('disabled', true);
+            $("#add-dates-tooltip").tooltip('enable');
+            $("#add-dates-tooltip").addClass('disabled');
             $("#date-select").removeClass('active');
         });
 
@@ -1028,23 +1051,13 @@
              todayHighlight: true,
              endDate: "Date.now()"
         }).on('changeDate', function() {
-            //Disable button if one of the texboxes does not have a date
-            if ($("#date-end").datepicker('getDate') && $("#date-start").datepicker('getDate')) {
-                $("#add-dates").prop('disabled', false);
-            } else {
-                $("#add-dates").prop('disabled', true);
-            }
+            toggleAddDatesButton();
         });
 
         //When removing the date value, if texbox is empty, it does not run changeDate event,
         //so need this event to disable the "add-dates" button
         $(".input-daterange input").change(function() {
-            //Disable button if one of the texboxes does not have a date
-            if ($("#date-end").datepicker('getDate') && $("#date-start").datepicker('getDate')) {
-                $("#add-dates").prop('disabled', false);
-            } else {
-                $("#add-dates").prop('disabled', true);
-            }
+            toggleAddDatesButton();
         });
 
         //add the date filter into search
@@ -1053,6 +1066,11 @@
             var endDate = new Date($("#date-end").datepicker('getDate'));
             
             addDatepickerItem(startDate, endDate);
+        });
+
+        $("#add-dates-tooltip").tooltip({
+            title: "Expected Date Format: DD/MM/YYYY",
+            placement: "bottom"
         });
     }
 

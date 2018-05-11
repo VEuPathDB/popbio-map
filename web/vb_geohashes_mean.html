@@ -832,14 +832,16 @@
                 <div class="input-daterange input-group" id="datepicker" style="margin-top: 5px;">
                     <span class="input-group-addon"
                     title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>
-                    <input id="date-start" type="text" class="form-control" name="start"/>
+                    <input id="date-start" type="text" class="form-control" name="start" placeholder="DD/MM/YYYY"/>
                     <span class="input-group-addon">to</span>
-                    <input id="date-end" type="text" class="form-control" name="end"/>
+                    <input id="date-end" type="text" class="form-control" name="end" placeholder="DD/MM/YYYY"/>
                     <span class="input-group-btn" style="width: 3px;"></span>
                     <span class="input-group-btn">
-                        <button id="add-dates" type="button" class="btn btn-success" title="Add date filter" disabled data-toggle="collapse" data-target="#daterange">
-                            <i class="fa fa-plus fa-fw"></i>
-                        </button>
+                        <div id="add-dates-tooltip" class="disabled">
+                            <button id="add-dates" type="button" class="btn btn-success" disabled data-toggle="collapse" data-target="#daterange">
+                                <i class="fa fa-plus fa-fw"></i>
+                            </button>
+                        </div>
                     </span>
                 </div>
                 <!-- predefined date ranges-->
