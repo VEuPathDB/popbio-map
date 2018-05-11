@@ -491,6 +491,8 @@ function bindEvents() {
 
     // clear the seasonal search panel once collapsed
     $('#seasonal').on('hidden.bs.collapse', function () {
+        $('#season-select').removeClass('active');
+
         if (checkSeasonal()) return;
 
         $('.season-toggle').each(function () {
@@ -506,7 +508,6 @@ function bindEvents() {
         if (this.id === 'date-select') {
             if ($('#seasonal').attr("aria-expanded") == 'true') {
                 $('#seasonal').collapse('hide');
-                $('#season-select').removeClass('active');
             }
 
             //Checking if this click will expand the daterange UI
@@ -519,25 +520,20 @@ function bindEvents() {
         } else if (this.id === 'season-select') {
             if ($('#daterange').attr("aria-expanded") == 'true') {
                 $('#daterange').collapse('hide');
-                $('#date-select').removeClass('active');
             }
 
             //Checking if this click will expand the seasonal UI
-            //if expanding add active class otherwise remove it
+            //if expanding add active class
             if ($('#seasonal').attr('aria-expanded') !== 'true') {
                 $(this).addClass('active');
-            } else {
-                $(this).removeClass('active');
             }
         } else {
             if ($('#seasonal').attr("aria-expanded") == 'true') {
                 $('#seasonal').collapse('hide');
-                $('#season-select').removeClass('active');
             }
 
             if ($('#daterange').attr("aria-expanded") == 'true') {
                 $('#daterange').collapse('hide');
-                $('#date-select').removeClass('active');
             }
         }
     });
@@ -656,7 +652,7 @@ function bindEvents() {
                     $(this).parent('div').addClass('btn-default');
                     $(this).parent('div').addClass('off');
                 }
-            })
+            });
         }
 
         // reset the date search panel

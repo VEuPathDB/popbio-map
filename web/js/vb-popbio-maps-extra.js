@@ -106,7 +106,7 @@
             }
         });
 
-        //Construcint string as MM/DD/YYYY
+        //Constructing string as MM/DD/YYYY
         dateEndString = month + "/" + day + "/" + year;
 
         dateStart = new Date(dateStartString);
@@ -141,6 +141,8 @@
         return [startDate, endDate];
     }
 
+
+    //Using the date ranges, returns the string that will be displayed in the search bar
     function getDateItemText(date_ranges) {
         var dateItemText = '';
         var keys = Object.keys(date_ranges);
@@ -156,6 +158,7 @@
         return dateItemText;  
     }
 
+    //Add the dates picked through the datepicker range to the search bar
     function addDatepickerItem(startDate, endDate) {
         var value;
 
@@ -175,6 +178,7 @@
         });
     }
 
+    //Add the dateItem constructed through the quick date range toggles to the search bar
     function addDateItem(dateItemInfo, dateItem) {
         if (dateItem) {
             //The replace property prevents addint this item from running the solr query
@@ -197,7 +201,6 @@
             });
         }
     }
-
 
     //Adds the daterange filter to the search bar
     function addDateRangeFilter(dateRangeString, dateItemInfo, dateItem, shiftKey) {
@@ -274,7 +277,7 @@
     //Function used to update the pivotDate variable when using CTRL key to uncheck the currect pivotDate
     //Logic is find closest selected date range to current pivot and set it as the new pivot
     function updatePivotDate(changedDateRange) {
-        //Get all the date ranges that are toggled on
+        //Get closest date ranges next to the pivot date that  are toggled on
         var prevToggledDate = $(changedDateRange).closest('.toggle').prevAll('.btn-primary:first');
         var nextToggledDate = $(changedDateRange).closest('.toggle').nextAll('.btn-primary:first');
 
@@ -302,7 +305,7 @@
             pivotDate = prevToggledDate.find('input').val();
 
         } else if (nextToggledDate) {
-            //Only on the right of thepivot date there is a toggled date
+            //Only on the right of the pivot date there is a toggled date
             pivotDate = nextToggledDate.find('input').val();
         }
     } 
@@ -1013,7 +1016,7 @@
             $("#date-start").datepicker("clearDates");
             $("#date-end").datepicker("clearDates");
             $("#add-dates").prop('disabled', true);
-            $("#add-season").prop('disabled', true);
+            $("#date-select").removeClass('active');
         });
 
         //bind the date range text fields to the datepicker
