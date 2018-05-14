@@ -602,6 +602,25 @@ function bindEvents() {
    
     
     $('#search_ac').on('itemAdded', function (event) {
+
+        // VB-7318
+        console.log('notSelected--------');
+        console.log(notSelected);
+        console.log('event.item--------');
+        console.log(event.item);
+        console.log('modified event.item--------');
+        if (notSelected === 'true') {
+            event.item.notBoolean = 'true';
+            $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
+            // set below two to be false after processing something here
+            cntrlIsPressed = false;
+            notSelected = 'false';
+        } else {
+            event.item.notBoolean = 'false';
+            // cntrlIsPressed = false;      // set this to be false just in case?
+        }
+        console.log(event.item);
+
         // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
         if (event.item.replace) return;
 
@@ -963,14 +982,26 @@ function initializeSearch() {
 
     $('#search_ac').tagsinput({
         tagClass: function (item) {
-            return mapTypeToLabel(item.type);
+            // VB-7318 add new class for notSelected, label-not
+            // console.log('tagClass, notSelected---------' + notSelected);
+            return mapTypeToLabel(item.type,notSelected);
         },
         itemValue: 'value',
         itemText: function (item) {
-            return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+            // VB-7318 add NOT text in front of value here
+            if (notSelected === 'true') {
+                return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
+            } else {
+                return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+            }   
         },
         itemHTML: function (item) {
-            return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+            // VB-7318 add NOT text in front of value here
+            if (notSelected === 'true') {
+                return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
+            } else {
+                return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+            }    
         },
         typeaheadjs: ({
             options: {
@@ -1003,7 +1034,9 @@ function initializeSearch() {
                             ].join('\n')
                         },
                         suggestion: function (item) {
-                            return '<p>' + item.value +
+                            // VB-7318 add onclick function
+                           // return '<p>' + item.value +
+                            return '<p class="ac_items" onclick="checkCTRL(1)">' + item.value + 
                                 (item.is_synonym ?
                                     ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)'
                                     : '') +
@@ -1021,7 +1054,9 @@ function initializeSearch() {
                     templates: {
                         header: '<h4 class="more-results">More suggestions</h4>',
                         suggestion: function (item) {
-                            return '<p>~' + item.count + ' <em>in ' + item.type + '</em></p>';
+                            // VB-7318 need to add onclick function for acgroup too
+                            // return '<p>~' + item.count + ' <em>in ' + item.type + '</em></p>';
+                            return '<p class="ac_items" onclick="checkCTRL(1)">~' + item.count + ' <em>in ' + item.type + '</em></p>';
                         }
 
                     }
@@ -1773,11 +1808,17 @@ function loadSolr(parameters) {
                                 selected_value = 'IR';
                             } 
 
+                            // VB-7595 dynamic graph title
+                            var graph_selected_value = $("#summByDropdown").find('.dropdown-toggle').text();
+
                             switch (panelId) {
                                 case "graphs":
                                     // gtag
                                     var graph_name = 'graph_' + selected_value;
                                     gtag('event', graph_name, {'event_category': 'Popbio', 'event_label': 'Popbio graph'});
+
+                                    // VB-7595 dynamic graph title
+                                    $('#graphs h3').text(graph_selected_value + ' summary');
                                     
                                     if (!panel.data('has-graph')) {
                                         updatePieChart(record.count, record.fullstats);
@@ -1850,11 +1891,17 @@ function loadSolr(parameters) {
                                     selected_value = 'IR';
                                 } 
 
+                                // VB-7595 dynamic graph title
+                                var graph_selected_value = $("#summByDropdown").find('.dropdown-toggle').text();
+
                                 switch (panelId) {
                                     case "graphs":
                                         // gtag
                                         var graph_name = 'graph_' + selected_value;
                                         gtag('event', graph_name, {'event_category': 'Popbio', 'event_label': 'Popbio graph'});
+
+                                        // VB-7595 dynamic graph title
+                                        $('#graphs h3').text(graph_selected_value + ' summary');
 
                                         updatePieChart(record.count, record.fullstats);
                                         panel.data('has-graph', true);
@@ -2609,7 +2656,15 @@ function filterMarkers(items, flyTo) {
 
     var terms = {};
 
+    // VB-7318 
+    console.log('items--------');
+    // console.log(items);
+
     items.forEach(function (element) {
+
+        // VB-7318 
+        console.log('element--------');
+        console.log(element);
 
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
 
@@ -2671,17 +2726,24 @@ function filterMarkers(items, flyTo) {
 
         }
 
+        // VB-7318 add field, notBoolean, to terms 
         if (element.qtype == 'exact') {
-            terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
+            // VB-7318
+            // terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
+            terms[element.type].push({"field": element.field, "value": '"' + element.value + '"', "notBoolean": element.notBoolean});
         } else {
             if (/^".+"$/.test(element.value)) {
                 // Successful match
-                terms[element.type].push({"field": element.field, "value": element.value});
+                // VB-7318
+                // terms[element.type].push({"field": element.field, "value": element.value});
+                terms[element.type].push({"field": element.field, "value": element.value, "notBoolean": element.notBoolean});
 
             } else {
                 // Match attempt failed
                 // terms[element.type].push({"field": element.field, "value": element.value + '*'});
-                terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
+                // VB-7318
+                // terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
+                terms[element.type].push({"field": element.field, "value": '*' + element.value + '*', "notBoolean": element.notBoolean});
 
             }
 
@@ -2705,8 +2767,20 @@ function filterMarkers(items, flyTo) {
             if (a.field > b.field) return 1;
             return 0;
         }).forEach(function (element, index) {  // concatenate and store the terms for each field
-            qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;
+            // VB-7318 making query?
+            console.log('element.notBoolean--------' + element.notBoolean);
+            console.log('element.value--------' + element.value);           
+            if (element.notBoolean === 'true') {
+                qries[element.field] ? qries[element.field] += ' OR ' + '!' + element.value : qries[element.field] = '!' + element.value;
+            } else {
+                qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;               
+            }
+            console.log('qries element.field----------------' + element.field);
+            console.log('qries----------------' + qries[element.field]);
         });
+
+        // // VB-7318
+        // console.log('qries----------------' + qries);
 
         // get the numbeer of different field queries per category (this is usually one or two)
         var alen = Object.keys(qries).length;
@@ -2787,6 +2861,9 @@ function filterMarkers(items, flyTo) {
 
         //console.log('lakis' + qryUrl);
     }
+
+    // VB-7318
+    console.log(qryUrl);
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
@@ -2917,57 +2994,104 @@ function mapSummarizeByToField(type) {
 
 }
 
-//
-function mapTypeToLabel(type) {
-    switch (type) {
-        case 'Taxonomy'   :
-            return 'label label-primary label-taxonomy';   // dark blue
-        case 'Geography':
-            return 'label label-primary label-geography';  // dark blue
-        case 'Title'  :
-            return 'label label-success label-title';    // green
-        case 'Description':
-            return 'label label-success label-description';   // green
-        case 'Project'   :
-            return 'label label-success label-project';   // green
-        case 'Project title'   :
-            return 'label label-success label-project-title';   // green
-        case 'Anywhere'   :
-            return 'label label-default label-anywhere';   // grey
-        case 'PubMed' :
-            return 'label label-success label-pubmed';
-        case 'Insecticide' :
-            return 'label label-success label-insecticide';
-        //Color of the text
-        case 'Allele' :
-            return 'label label-success label-allele';
-        case 'Locus' :
-            return 'label label-success label-locus';
-        case 'Collection protocol' :
-            return 'label label-success label-collection-protocol';
-        case 'Date' :
-            return 'label label-info label-date';
-        case 'Datepicker' :
-            return 'label label-info label-date';
-        case 'Seasonal' :
-            return 'label label-info label-seasonal'
-        case 'Norm-IR' :
-            return 'label label-secondary label-norm-ir';
-        case 'Collection ID' :
-            return 'label label-warning label-collection-id';
-        case 'Sample' :
-            return 'label label-warning label-sample';
-        case 'Sample type' :
-            return 'label label-warning label-sample-type';
-        case 'Protocol' :
-            return 'label label-warning label-protocol';
-        case 'Author' :
-            return 'label label-success label-author';
-        case 'Coordinates':
-            return 'label label-success label-coordinates';
-        default :
-            return 'label label-warning label-default';
-
+// VB-7318
+function mapTypeToLabel(type,notselectedboolean) {
+    if (notselectedboolean === 'false') {
+        switch (type) {
+            case 'Taxonomy'   :
+                return 'label label-primary label-taxonomy';   // dark blue
+            case 'Geography':
+                return 'label label-primary label-geography';  // dark blue
+            case 'Title'  :
+                return 'label label-success label-title';    // green
+            case 'Description':
+                return 'label label-success label-description';   // green
+            case 'Project'   :
+                return 'label label-success label-project';   // green
+            case 'Project title'   :
+                return 'label label-success label-project-title';   // green
+            case 'Anywhere'   :
+                return 'label label-default label-anywhere';   // grey
+            case 'PubMed' :
+                return 'label label-success label-pubmed';
+            case 'Insecticide' :
+                return 'label label-success label-insecticide';
+            //Color of the text
+            case 'Allele' :
+                return 'label label-success label-allele';
+            case 'Locus' :
+                return 'label label-success label-locus';
+            case 'Collection protocol' :
+                return 'label label-success label-collection-protocol';
+            case 'Date' :
+                return 'label label-info label-date'
+            case 'Seasonal' :
+                return 'label label-info label-seasonal'
+            case 'Norm-IR' :
+                return 'label label-secondary label-norm-ir';
+            case 'Collection ID' :
+                return 'label label-warning label-collection-id';
+            case 'Sample' :
+                return 'label label-warning label-sample';
+            case 'Sample type' :
+                return 'label label-warning label-sample-type';
+            case 'Protocol' :
+                return 'label label-warning label-protocol';
+            case 'Author' :
+                return 'label label-success label-author';
+            case 'Coordinates':
+                return 'label label-success label-coordinates';
+            default :
+                return 'label label-warning label-default';
+        }
+    } else {
+        switch (type) {
+            case 'Taxonomy'   :
+                return 'label label-primary label-taxonomy label-not';   // dark blue
+            case 'Geography':
+                return 'label label-primary label-geography label-not';  // dark blue
+            case 'Title'  :
+                return 'label label-success label-title label-not';    // green
+            case 'Description':
+                return 'label label-success label-description label-not';   // green
+            case 'Project'   :
+                return 'label label-success label-project label-not';   // green
+            case 'Project title'   :
+                return 'label label-success label-project-title label-not';   // green
+            case 'Anywhere'   :
+                return 'label label-default label-anywhere';   // grey
+            case 'PubMed' :
+                return 'label label-success label-pubmed label-not';
+            case 'Insecticide' :
+                return 'label label-success label-insecticide label-not';
+            //Color of the text
+            case 'Allele' :
+                return 'label label-success label-allele label-not';
+            case 'Locus' :
+                return 'label label-success label-locus label-not';
+            case 'Collection protocol' :
+                return 'label label-success label-collection-protocol label-not';
+            case 'Date' :
+                return 'label label-info label-date';   // no label-not
+            case 'Seasonal' :
+                return 'label label-info label-seasonal';   // no label-not
+            case 'Norm-IR' :
+                return 'label label-secondary label-norm-ir';   // no label-not
+            case 'Collection ID' :
+                return 'label label-warning label-collection-id label-not';
+            case 'Sample' :
+                return 'label label-warning label-sample label-not';
+            case 'Sample type' :
+                return 'label label-warning label-sample-type label-not';
+            case 'Protocol' :
+                return 'label label-warning label-protocol label-not';
+            case 'Author' :
+                return 'label label-success label-author label-not';
+            case 'Coordinates':
+                return 'label label-success label-coordinates label-not';
+            default :
+                return 'label label-warning label-default';
+        }
     }
 }
 
@@ -3087,9 +3211,15 @@ function resetPlots() {
     "use strict";
 
     var pieHTML, violinHTML, tableHTML;
+
+    // VB-7595 dynamic title for an initial visit
+    var graph_selected_initial = $("#summByDropdown").find('.dropdown-toggle').text();
+
     if (firstClick) {
         pieHTML =
-            '<h3>Summary view for selected samples</h3>' +
+            // VB-7595 change initial title
+            // '<h3>Summary view for selected samples</h3>' +
+            '<h3>' + graph_selected_initial + ' summary' + '</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<span class="fa-stack fa-stack-lg">' +
             '<i class="fa fa-chrome fa-stack-2x"></i>' + 
@@ -3118,7 +3248,9 @@ function resetPlots() {
     } else {
 
         pieHTML =
-            '<h3>Summary view for selected samples</h3>' +
+            // VB-7595 change initial title
+            // '<h3>Summary view for selected samples</h3>' +
+            '<h3>' + graph_selected_initial + ' summary' + '</h3>' +            
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<span class="fa-stack fa-stack-lg">' +
             '<i class="fa fa-chrome fa-stack-2x"></i>' + 
@@ -3539,3 +3671,29 @@ if (!Array.prototype.fill) {
         }
     });
 }
+
+// VB-7318
+var cntrlIsPressed = false;
+var notSelected = 'false';
+$(document).keydown(function(event){
+    if(event.which=="17") {
+        cntrlIsPressed = true;
+    } else {
+        cntrlIsPressed = false;
+    }
+});
+
+$(document).keyup(function(){
+    cntrlIsPressed = false;
+});
+
+function checkCTRL(mouseButton)
+{
+    if( (cntrlIsPressed) && (mouseButton === 1) ) {
+    // if(cntrlIsPressed) {     
+        // console.log("Cntrl +  left click");
+        notSelected = 'true';
+    } else {
+        notSelected = 'false';
+    }   
+}   
