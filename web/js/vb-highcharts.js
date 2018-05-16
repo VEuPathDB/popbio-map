@@ -579,10 +579,22 @@
             //More than 10 years, do not give users option of viewing EpiWeekly and Daily
             $("#EpiWeekly").addClass("disabled");
             $("#Daily").addClass("disabled");
+
+            if (resolution === "Daily" || resolution === "EpiWeekly") {
+                resolution = "Monthly";
+                $("#resolution-selector .btn-primary").removeClass("btn-primary").addClass("btn-default").blur();
+                $("#Monthly").addClass("btn-primary").removeClass("btn-default");
+            };
         } else if (number_of_days > 1095 + 60) {
             //More than 3 years but less than 10 years, do not allow users to see Daily data
             //Also make sure we are not trying to disable a button that is not available for that dataset
             $("#Daily").addClass("disabled");
+
+            if (resolution === "Daily") {
+                resolution = "EpiWeekly";
+                $("#resolution-selector .btn-primary").removeClass("btn-primary").addClass("btn-default").blur();
+                $("#EpiWeekly").addClass("btn-primary").removeClass("btn-default");
+            };
         } else {
             $("#resolution-selector .disabled").tooltip("destroy");
             $("#EpiWeekly").removeClass("disabled");
