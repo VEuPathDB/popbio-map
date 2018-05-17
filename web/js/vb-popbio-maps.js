@@ -398,10 +398,12 @@ function bindEvents() {
             })
         ;
 
-    })
+    }) 
 
     // Active terms
-    $(document).on("click", '.active-term', function () {
+    // VB-7318 add NOT boolean for active-term
+    // $(document).on("click", '.active-term', function () {
+    $(document).on("click", '.active-term', function (e) {
         highlightedId = $('.highlight-marker').attr('id');
 
         if ($('.sidebar-pane.active').attr('id') === 'swarm-plots') {
@@ -409,6 +411,11 @@ function bindEvents() {
 
         } else {
             $('#plotType').val('none');
+        }
+        // VB-7318 add checking ctrlKey or metaKey for active-term
+        if (e.ctrlKey || e.metaKey) {
+            notSelected = 'true';
+            // console.log('active-term CONTROL/COMMAND clicked---------------');
         }
 
         $('#search_ac').tagsinput('add', {
@@ -432,9 +439,17 @@ function bindEvents() {
 
         }
     })
-    .on("click", '.active-legend', function () {
+    // VB-7318 add NOT boolean for active legend
+    // .on("click", '.active-legend', function () {
+    .on("click", '.active-legend', function (e) {
         highlightedId = $('.highlight-marker').attr('id');
         PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
+
+        // VB-7318 add checking ctrlKey or metaKey for active-legend
+        if (e.ctrlKey || e.metaKey) {
+            notSelected = 'true';
+            // console.log('active-term CONTROL/COMMAND clicked---------------');
+        }
 
         $('#search_ac').tagsinput('add', {
             value: $(this).attr('value'),
@@ -599,7 +614,14 @@ function bindEvents() {
             field: 'phenotype_rescaled_value_f'
         });
     });
-   
+
+    // // VB-7318 KEEP this for a while. Testing for selection via click event: although below works in general, it causes an issue of readiness of DOM at initial stage
+    // $(document).on("click", '.ac_items', function (e) {
+    //     if (e.ctrlKey || e.metaKey) {
+    //         notSelected = 'true';
+    //         console.log('Search ac_items CONTROL/COMMAND clicked---------------');
+    //     }
+    // });   
     
     $('#search_ac').on('itemAdded', function (event) {
 
@@ -984,7 +1006,12 @@ function initializeSearch() {
         tagClass: function (item) {
             // VB-7318 add new class for notSelected, label-not
             // console.log('tagClass, notSelected---------' + notSelected);
-            return mapTypeToLabel(item.type,notSelected);
+            if ((notSelected === 'true') && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal')) {            
+            // if ((dateShortcutClickType.ctrlKey || dateShortcutClickType.metaKey) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal')) {
+                return mapTypeToLabel(item.type) + ' label-not';
+            } else {
+                return mapTypeToLabel(item.type);
+            }    
         },
         itemValue: 'value',
         itemText: function (item) {
@@ -2658,7 +2685,7 @@ function filterMarkers(items, flyTo) {
 
     // VB-7318 
     console.log('items--------');
-    // console.log(items);
+    console.log(items);     // array of objects
 
     items.forEach(function (element) {
 
@@ -2756,6 +2783,12 @@ function filterMarkers(items, flyTo) {
     // get the count of terms categories (types)
     var tlen = Object.keys(terms).length;
 
+    // VB-7318
+    console.log('terms object---------');
+    console.log(terms);
+    console.log('terms---------' + Object.keys(terms));
+
+
     for (var obj in terms) {
         var qries = {}; // store category terms grouped by field
         var k = 0;
@@ -2775,15 +2808,20 @@ function filterMarkers(items, flyTo) {
             } else {
                 qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;               
             }
-            console.log('qries element.field----------------' + element.field);
-            console.log('qries----------------' + qries[element.field]);
+            // console.log('qries element.field----------------' + element.field);
         });
 
-        // // VB-7318
-        // console.log('qries----------------' + qries);
+        // VB-7318
+        console.log('qries----------------');
+        console.log(qries);
 
         // get the numbeer of different field queries per category (this is usually one or two)
         var alen = Object.keys(qries).length;
+
+        // VB-7318
+        console.log('tlen = ' + tlen);  // # of different TYPE fields (terms) to query
+        console.log('alen = ' + alen);
+
         // more than one categories
         if (i < tlen - 1) {
             // more than one fields for this category
@@ -2794,8 +2832,18 @@ function filterMarkers(items, flyTo) {
                 } else {
                     qryUrl += '(';
                     for (var fieldQry in qries) {
-                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
+                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
+                        // checking multiple values
+                        var fieldValue = qries[fieldQry];
+                        if (fieldValue.includes("OR")) {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
+                        } else if (fieldValue.includes("!")) {
+                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
+                        } else {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        }
+
                         if (k === alen - 1) {
                             qryUrl += ') AND ';
                             continue;
@@ -2811,9 +2859,18 @@ function filterMarkers(items, flyTo) {
                     // qryUrl += '(text:' + qries['anywhere'] + ') AND ';
                 } else {
                     for (var fieldQry in qries) {
+                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
+                        // checking multiple values
+                        var fieldValue = qries[fieldQry];
+                        if (fieldValue.includes("OR")) {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
+                        } else if (fieldValue.includes("!")) {
+                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
+                        } else {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        }
 
-                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
                         if (k === alen - 1) {
                             qryUrl += ' AND ';
                             continue;
@@ -2824,15 +2881,25 @@ function filterMarkers(items, flyTo) {
                 }
 
             }
-        } else {
+        } else {    
             if (k < alen - 1) {
                 if (obj === 'Anywhere') {
                     //do nothing
                 } else {
                     qryUrl += '(';
                     for (var fieldQry in qries) {
-                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
+                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
+                        // checking multiple values
+                        var fieldValue = qries[fieldQry];
+                        if (fieldValue.includes("OR")) {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
+                        } else if (fieldValue.includes("!")) {
+                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
+                        } else {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        }
+
                         if (k === alen - 1) {
                             qryUrl += ')';
                             continue;
@@ -2848,8 +2915,18 @@ function filterMarkers(items, flyTo) {
                     // qryUrl += '(text:' + qries['anywhere'] + '))';
                 } else {
                     for (var fieldQry in qries) {
-                        qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
+                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
+                        // checking multiple values
+                        var fieldValue = qries[fieldQry];
+                        if (fieldValue.includes("OR")) {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
                         // qryUrl += "(" + fieldQry + ':' + qries[fieldQry] + ')';
+                        } else if (fieldValue.includes("!")) {
+                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + '))';
+                        } else {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
+                        }
+
                     }
                 }
 
@@ -2994,9 +3071,9 @@ function mapSummarizeByToField(type) {
 
 }
 
-// VB-7318
-function mapTypeToLabel(type,notselectedboolean) {
-    if (notselectedboolean === 'false') {
+// VB-7318 changes are made when calling this function, instead
+// function mapTypeToLabel(type,notselectedboolean) {
+function mapTypeToLabel(type) {    
         switch (type) {
             case 'Taxonomy'   :
                 return 'label label-primary label-taxonomy';   // dark blue
@@ -3006,7 +3083,8 @@ function mapTypeToLabel(type,notselectedboolean) {
                 return 'label label-success label-title';    // green
             case 'Description':
                 return 'label label-success label-description';   // green
-            case 'Project'   :
+            // VB-7318 it seems like a bug: Projects, not Project
+            case 'Projects'   :
                 return 'label label-success label-project';   // green
             case 'Project title'   :
                 return 'label label-success label-project-title';   // green
@@ -3044,55 +3122,6 @@ function mapTypeToLabel(type,notselectedboolean) {
             default :
                 return 'label label-warning label-default';
         }
-    } else {
-        switch (type) {
-            case 'Taxonomy'   :
-                return 'label label-primary label-taxonomy label-not';   // dark blue
-            case 'Geography':
-                return 'label label-primary label-geography label-not';  // dark blue
-            case 'Title'  :
-                return 'label label-success label-title label-not';    // green
-            case 'Description':
-                return 'label label-success label-description label-not';   // green
-            case 'Project'   :
-                return 'label label-success label-project label-not';   // green
-            case 'Project title'   :
-                return 'label label-success label-project-title label-not';   // green
-            case 'Anywhere'   :
-                return 'label label-default label-anywhere';   // grey
-            case 'PubMed' :
-                return 'label label-success label-pubmed label-not';
-            case 'Insecticide' :
-                return 'label label-success label-insecticide label-not';
-            //Color of the text
-            case 'Allele' :
-                return 'label label-success label-allele label-not';
-            case 'Locus' :
-                return 'label label-success label-locus label-not';
-            case 'Collection protocol' :
-                return 'label label-success label-collection-protocol label-not';
-            case 'Date' :
-                return 'label label-info label-date';   // no label-not
-            case 'Seasonal' :
-                return 'label label-info label-seasonal';   // no label-not
-            case 'Norm-IR' :
-                return 'label label-secondary label-norm-ir';   // no label-not
-            case 'Collection ID' :
-                return 'label label-warning label-collection-id label-not';
-            case 'Sample' :
-                return 'label label-warning label-sample label-not';
-            case 'Sample type' :
-                return 'label label-warning label-sample-type label-not';
-            case 'Protocol' :
-                return 'label label-warning label-protocol label-not';
-            case 'Author' :
-                return 'label label-success label-author label-not';
-            case 'Coordinates':
-                return 'label label-success label-coordinates label-not';
-            default :
-                return 'label label-warning label-default';
-        }
-    }
 }
 
 function mapTypeToIcon(type) {
@@ -3105,7 +3134,8 @@ function mapTypeToIcon(type) {
             return 'fa-tag';
         case 'Description':
             return 'fa-info-circle';
-        case 'Project'   :
+        // VB-7318 it seems like a bug: Projects, not Project
+        case 'Projects'   :
             return 'fa-database';
         case 'Project title'   :
             return 'fa-database';
@@ -3674,9 +3704,12 @@ if (!Array.prototype.fill) {
 
 // VB-7318
 var cntrlIsPressed = false;
+var cntrlEnterIsPressed = false;
 var notSelected = 'false';
 $(document).keydown(function(event){
-    if(event.which=="17") {
+    // if(event.which=="17") {
+    // if( (event.ctrlKey || event.metaKey) || ((event.ctrlKey || event.metaKey) && event.keyCode == 13) ) {
+    if( (event.ctrlKey || event.metaKey) ) {
         cntrlIsPressed = true;
     } else {
         cntrlIsPressed = false;
@@ -3685,15 +3718,15 @@ $(document).keydown(function(event){
 
 $(document).keyup(function(){
     cntrlIsPressed = false;
+    cntrlEnterIsPressed = false;
 });
 
+// onclick function for autocomplete list
 function checkCTRL(mouseButton)
 {
     if( (cntrlIsPressed) && (mouseButton === 1) ) {
-    // if(cntrlIsPressed) {     
-        // console.log("Cntrl +  left click");
         notSelected = 'true';
     } else {
         notSelected = 'false';
     }   
-}   
+}
