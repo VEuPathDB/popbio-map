@@ -1004,9 +1004,10 @@ function initializeSearch() {
 
     $('#search_ac').tagsinput({
         tagClass: function (item) {
-            // VB-7318 add new class for notSelected, label-not
+            // VB-7318 add new class for notSelected, label-not - add item.notBoolean for shared view (need to check with === 'true')
             // console.log('tagClass, notSelected---------' + notSelected);
-            if ((notSelected === 'true') && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal')) {            
+            console.log('item.notBoolean---------' + item.notBoolean);
+            if ( ((notSelected === 'true') || (item.notBoolean === 'true') ) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal') ) {
             // if ((dateShortcutClickType.ctrlKey || dateShortcutClickType.metaKey) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal')) {
                 return mapTypeToLabel(item.type) + ' label-not';
             } else {
@@ -1015,16 +1016,16 @@ function initializeSearch() {
         },
         itemValue: 'value',
         itemText: function (item) {
-            // VB-7318 add NOT text in front of value here
-            if (notSelected === 'true') {
+            // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view
+            if (notSelected === 'true' || (item.notBoolean === 'true')) {
                 return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
             } else {
                 return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
             }   
         },
         itemHTML: function (item) {
-            // VB-7318 add NOT text in front of value here
-            if (notSelected === 'true') {
+            // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view
+            if (notSelected === 'true' || (item.notBoolean === 'true')) {
                 return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
             } else {
                 return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
@@ -2776,6 +2777,11 @@ function filterMarkers(items, flyTo) {
 
             //console.log("inexact");
         }
+        // VB-7318 add this to accommodate shared view
+        if (element.notBoolean) {
+            $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
+        }
+
     });
 
     var i = 0;
@@ -2787,7 +2793,6 @@ function filterMarkers(items, flyTo) {
     console.log('terms object---------');
     console.log(terms);
     console.log('terms---------' + Object.keys(terms));
-
 
     for (var obj in terms) {
         var qries = {}; // store category terms grouped by field
@@ -2939,7 +2944,10 @@ function filterMarkers(items, flyTo) {
         //console.log('lakis' + qryUrl);
     }
 
-    // VB-7318
+    // VB-7318 need to remove !!! as it is generated whenever pressing share link
+    console.log(qryUrl);
+    console.log('after removing !!! --------------------------------');
+    qryUrl = qryUrl.replace('!!!','');
     console.log(qryUrl);
 
     // url encode the query string
@@ -3058,7 +3066,8 @@ function mapSummarizeByToField(type) {
             break;
         case "Project":
             fields.summarize = "projects_category";
-            fields.type = "Project";
+            // VB-7318 fields.type = Project -> Projects to fix avtive-legend
+            fields.type = "Projects";
             fields.field = "projects";
             break;
         default :

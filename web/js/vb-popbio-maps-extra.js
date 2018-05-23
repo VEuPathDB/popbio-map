@@ -342,6 +342,11 @@
             // $('#view-mode').val('smpl');
         }
 
+        // VB-7318 set valueForNot variable for shared view
+        // console.log('im here urlParams????????????????????????????????????-------------------------');
+        // console.log(urlParams);
+        var valueForNot = 'false';
+
         for (var key in urlParams) {
             if (urlParams.hasOwnProperty(key)) {
                 switch (key) {
@@ -355,44 +360,77 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Collection ID',
                                     field: mapTypeToField('Collection ID'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            } 
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Collection ID',
                                 field: mapTypeToField('Collection ID'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
                     case "projectID":
                         // have we passed multiple project IDs??
+                        // VB-7318 Project -> Projects
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
-                                    type: 'Project',
-                                    field: mapTypeToField('Project'),
-                                    qtype: 'exact'
+                                    type: 'Projects',
+                                    field: mapTypeToField('Projects'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
-                                type: 'Project',
-                                field: mapTypeToField('Project'),
-                                qtype: 'exact'
+                                type: 'Projects',
+                                field: mapTypeToField('Projects'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -400,21 +438,39 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
+                                console.log('element value at applyParameters=========================');
+                                console.log(element);
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Taxonomy',
                                     field: mapTypeToField('Taxonomy'),
-                                    qtype: 'exact'
-                                });
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });                                    
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            } 
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Taxonomy',
                                 field: mapTypeToField('Taxonomy'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot                                    
                             });
                         }
                         break;
@@ -422,21 +478,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Collection protocol',
                                     field: mapTypeToField('Collection protocol'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Collection protocol',
                                 field: mapTypeToField('Collection protocol'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -444,21 +516,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Protocol',
                                     field: mapTypeToField('Protocol'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Protocol',
                                 field: mapTypeToField('Protocol'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -466,21 +554,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Sample type',
                                     field: mapTypeToField('Sample type'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Sample type',
                                 field: mapTypeToField('Sample type'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -488,21 +592,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Insecticide',
                                     field: mapTypeToField('Insecticide'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Insecticide',
                                 field: mapTypeToField('Insecticide'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -510,21 +630,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Allele',
                                     field: mapTypeToField('Allele'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Allele',
                                 field: mapTypeToField('Allele'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -532,21 +668,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Locus',
                                     field: mapTypeToField('Locus'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Locus',
                                 field: mapTypeToField('Locus'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -554,21 +706,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Geography',
                                     field: mapTypeToField('Geography'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Geography',
                                 field: mapTypeToField('Geography'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -576,21 +744,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Project title',
                                     field: mapTypeToField('Project title'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Project title',
                                 field: mapTypeToField('Project title'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -598,21 +782,37 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }   
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Author',
                                     field: mapTypeToField('Author'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Author',
                                 field: mapTypeToField('Author'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -620,21 +820,36 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    value: element.replace('!!!',''),
                                     activeTerm: true,
                                     type: 'Title',
                                     field: mapTypeToField('Title'),
-                                    qtype: 'exact'
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: urlParams[key],
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
                                 type: 'Title',
                                 field: mapTypeToField('Title'),
-                                qtype: 'exact'
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -682,21 +897,36 @@
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = 'true';
+                                } else {
+                                    valueForNot = 'false';
+                                }
                                 $('#search_ac').tagsinput('add', {
-                                    value: element,
+                                    value: element.replace('!!!',''),
                                     type: 'PubMed',
                                     field: 'pubmed',
                                     qtype: 'exact',
-                                    is_synoym: false
+                                    is_synoym: false,
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
                                 });
                             })
                         } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = 'true';
+                            }
                             $('#search_ac').tagsinput('add', {
-                                value: param,
+                                // VB-7318 add replace - also change from param to urlParams[key]
+                                value: urlParams[key].replace('!!!',''),
                                 type: 'PubMed',
                                 field: 'pubmed',
                                 qtype: 'exact',
-                                is_synoym: false
+                                is_synoym: false,
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -804,6 +1034,8 @@
                         break;
                 }
             }
+        // VB-7318 set valueForNot to be false at each loop
+        valueForNot = 'false';    
         }
                
         // update the export fields dropdown
@@ -826,7 +1058,8 @@
     //Private function to map the field types to the URL query parameters that we accept
     function mapTypeToURLParam(type) {
         switch (type) {
-            case "Project":
+            // VB-7318 Project to Projects?
+            case "Projects":
                 return "projectID";
             case "Anywhere":
                 return "text";
@@ -885,6 +1118,11 @@
             var panel_param = "";
             var url = window.location.origin + window.location.pathname + "?";
             var search_items = $('#search_ac').tagsinput('items');
+            
+            // VB-7318
+            console.log('search_items=====================');
+            console.log(search_items);
+
             //Using an object to store search terms that will be used to generate link
             var search_terms = {};
             var query_parameters = '';
@@ -894,6 +1132,12 @@
                 if (search_terms[search_item.type] == undefined) {
                     search_terms[search_item.type] = [];
                 }
+                // VB-7318 add ! for NOT boolean case - and add condition not to repeat to add !!! whenever pressing share link (pre-existing value preserves string!)
+                console.log('search_item.notBoolean + search_item.value.startsWith("!!!"")===================');
+                console.log(search_item.notBoolean + search_item.value.startsWith('!!!'));
+                if ((search_item.notBoolean === 'true') && (search_item.value.startsWith('!!!') != 1)) {
+                    search_item.value = '!!!' + search_item.value;
+                } 
 
                 search_terms[search_item.type].push(search_item.value);
             });
@@ -908,6 +1152,10 @@
                     query_parameters = query_parameters + mapTypeToURLParam(index) + "=" + values[0] + "&";
                 }
             });
+
+            // VB-7318
+            console.log('query_parameters=====================');
+            console.log(query_parameters);
 
             //Set the selected marker and panel that was being viewed
             if (highlighted_id != undefined) {
