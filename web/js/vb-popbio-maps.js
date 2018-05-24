@@ -3197,32 +3197,3 @@ if (!Array.prototype.fill) {
         }
     });
 }
-
-// VB-7318
-var cntrlIsPressed = false;
-var cntrlEnterIsPressed = false;
-var notSelected = 'false';
-$(document).keydown(function(event){
-    // if(event.which=="17") {
-    // if( (event.ctrlKey || event.metaKey) || ((event.ctrlKey || event.metaKey) && event.keyCode == 13) ) {
-    if( (event.ctrlKey || event.metaKey) ) {
-        cntrlIsPressed = true;
-    } else {
-        cntrlIsPressed = false;
-    }
-});
-
-$(document).keyup(function(){
-    cntrlIsPressed = false;
-    cntrlEnterIsPressed = false;
-});
-
-// onclick function for autocomplete list
-function checkCTRL(mouseButton)
-{
-    if( (cntrlIsPressed) && (mouseButton === 1) ) {
-        notSelected = 'true';
-    } else {
-        notSelected = 'false';
-    }   
-}

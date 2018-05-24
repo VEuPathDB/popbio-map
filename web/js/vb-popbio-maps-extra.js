@@ -6,7 +6,7 @@
     //Local variables used withing the object
     var monthIndex = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12};
 
-    var dateShortcutClickType = {ctrlKey: false, shiftKey: false, metaKey: false};
+    var clickType = {ctrlKey: false, shiftKey: false, metaKey: false};
     var pivotDate;
 
     //Object specific to this file
@@ -195,10 +195,8 @@
         $('#search_ac').tagsinput({
             tagClass: function (item) {
                 // VB-7318 add new class for notSelected, label-not - add item.notBoolean for shared view (need to check with === 'true')
-                // console.log('tagClass, notSelected---------' + notSelected);
                 console.log('item.notBoolean---------' + item.notBoolean);
-                if ( ((notSelected === 'true') || (item.notBoolean === 'true') ) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal') ) {
-                // if ((dateShortcutClickType.ctrlKey || dateShortcutClickType.metaKey) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal')) {
+                if ( ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean === 'true') ) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal') ) {
                     return mapTypeToLabel(item.type) + ' label-not';
                 } else {
                     return mapTypeToLabel(item.type);
@@ -207,7 +205,7 @@
             itemValue: 'value',
             itemText: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view
-                if (notSelected === 'true' || (item.notBoolean === 'true')) {
+                if ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean === 'true')) {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
@@ -215,7 +213,7 @@
             },
             itemHTML: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view
-                if (notSelected === 'true' || (item.notBoolean === 'true')) {
+                if ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean === 'true')) {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
@@ -254,7 +252,7 @@
                             suggestion: function (item) {
                                 // VB-7318 add onclick function
                                // return '<p>' + item.value +
-                                return '<p class="ac_items" onclick="checkCTRL(1)">' + item.value + 
+                                return '<p class="ac_items">' + item.value + 
                                     (item.is_synonym ?
                                         ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)'
                                         : '') +
@@ -274,7 +272,7 @@
                             suggestion: function (item) {
                                 // VB-7318 need to add onclick function for acgroup too
                                 // return '<p>~' + item.count + ' <em>in ' + item.type + '</em></p>';
-                                return '<p class="ac_items" onclick="checkCTRL(1)">~' + item.count + ' <em>in ' + item.type + '</em></p>';
+                                return '<p class="ac_items">~' + item.count + ' <em>in ' + item.type + '</em></p>';
                             }
 
                         }
@@ -1515,9 +1513,9 @@
         //Store the type of click the user is doing so we can
         //do the correct action in the change event
         $(".date-shortcut").parent("div").click(function(e) {
-            dateShortcutClickType.ctrlKey = e.ctrlKey;
-            dateShortcutClickType.shiftKey = e.shiftKey;
-            dateShortcutClickType.metaKey = e.metaKey; 
+            clickType.ctrlKey = e.ctrlKey;
+            clickType.shiftKey = e.shiftKey;
+            clickType.metaKey = e.metaKey; 
         });
 
         //Adding a date filter through the UI
@@ -1542,7 +1540,7 @@
                 return
             }
 
-            if (dateShortcutClickType.ctrlKey || dateShortcutClickType.metaKey) {
+            if (clickType.ctrlKey || clickType.metaKey) {
                 //Set the range to the date item if there is one already
                 if (dateItem) {
                     dateItemInfo.ranges = dateItem.ranges;
@@ -1569,7 +1567,7 @@
                         $("#search_ac").tagsinput('remove', dateItem);
                     }
                 }
-            } else if (dateShortcutClickType.shiftKey) {
+            } else if (clickType.shiftKey) {
                 addDateRangeFilter(this.value, dateItemInfo, dateItem, true);
             } else {
                 //Check if we are adding or removing a range and update date item accordingly
@@ -1594,7 +1592,7 @@
             }
 
             //Reset the click properties
-            dateShortcutClickType = {ctrlKey: false, shiftKey: false, metaKey: false};
+            clickType = {ctrlKey: false, shiftKey: false, metaKey: false};
         });
 
 
@@ -1663,10 +1661,9 @@
                 $('#plotType').val('none');
             }
             // VB-7318 add checking ctrlKey or metaKey for active-term
-            if (e.ctrlKey || e.metaKey) {
-                notSelected = 'true';
-                // console.log('active-term CONTROL/COMMAND clicked---------------');
-            }
+            // Using keyUp and keyDown do not think this is necessary anymore
+            //clickType.ctrlKey = e.ctrlKey;
+            //clickType.metaKey = e.metaKey;
 
             $('#search_ac').tagsinput('add', {
                 value: $(this).attr('value'),
@@ -1679,7 +1676,6 @@
 
             var tooltip = d3.select('#beeswarmPointTooltip');
             if ($('#no-interactions').hasClass("foreground")) {
-
                 tooltip.transition()
                     .duration(500)
                     .style("opacity", 0)
@@ -1696,10 +1692,9 @@
             PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
 
             // VB-7318 add checking ctrlKey or metaKey for active-legend
-            if (e.ctrlKey || e.metaKey) {
-                notSelected = 'true';
-                // console.log('active-term CONTROL/COMMAND clicked---------------');
-            }
+            // Using keyUp and keyDown do not think this is necessary anymore
+            //clickType.ctrlKey = e.ctrlKey;
+            //clickType.metaKey = e.metaKey;
 
             $('#search_ac').tagsinput('add', {
                 value: $(this).attr('value'),
@@ -1734,27 +1729,27 @@
         });
 
         //VB-7318 KEEP this for a while. Testing for selection via click event: although below works in general, it causes an issue of readiness of DOM at initial stage
-        $(document).on("click", '.ac_items', function (e) {
-            if (e.ctrlKey || e.metaKey) {
-                //notSelected = 'true';
-                console.log('-----------Search ac_items CONTROL/COMMAND clicked---------------');
-            }
-        });
+        /*$(document).on("click", '.ac_items', function (e) {
+            clickType.ctrlKey = e.ctrlKey;
+            clickType.metaKey = e.metaKey;
+        });*/
+
+        //Antelmo- I tried to use this, but itemAdded would run first so had to use the keyUp and keyDown functions to set this instead
+        /*$(".tt-dropdown-menu").click(function (e) {
+             clickType.ctrlKey = e.ctrlKey;
+            clickType.metaKey = e.metaKey;
+        });*/
 
         $('#search_ac').on('itemAdded', function (event) {
 
             // VB-7318
-            console.log('notSelected--------');
-            console.log(notSelected);
-            console.log('event.item--------');
-            console.log(event.item);
-            console.log('modified event.item--------');
-            if (notSelected === 'true') {
+            if (clickType.ctrlKey  || clickType.metaKey) {
                 event.item.notBoolean = 'true';
                 $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
                 // set below two to be false after processing something here
-                cntrlIsPressed = false;
-                notSelected = 'false';
+                // Using the keyUp and keyDown, do not think this is necessary anymore
+                //clickType.ctrlKey = false;
+                //clickType.metaKey = false;
             } else {
                 event.item.notBoolean = 'false';
                 // cntrlIsPressed = false;      // set this to be false just in case?
@@ -1837,6 +1832,20 @@
                 resetPlots()*/
                 filterMarkers($("#search_ac").tagsinput('items'));
             }, delay);
+        });
+
+        //Adding keydown and keyup, click events might not be needed anymore to set the ctrl, meta, and shift key for dateShortcut
+        //Will remove the click events for dateShortcut later
+        $(document).keydown(function(event){
+            clickType.ctrlKey = event.ctrlKey;
+            clickType.metaKey = event.metaKey;
+            clickType.shiftKey = event.shiftKey;
+        });
+
+        $(document).keyup(function(){
+            clickType.ctrlKey = event.ctrlKey;
+            clickType.metaKey = event.metaKey;
+            clickType.shiftKey = event.shiftKey;
         });
     }
 
