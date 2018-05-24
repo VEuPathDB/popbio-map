@@ -1743,13 +1743,13 @@
         $('#search_ac').on('itemAdded', function (event) {
 
             // VB-7318
-            if (clickType.ctrlKey  || clickType.metaKey) {
+            // itemAdded gets executed by applyParameters now so need to check if notBoolean was set
+            if ((clickType.ctrlKey  || clickType.metaKey) || event.item.notBoolean) {
                 event.item.notBoolean = 'true';
                 $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
                 // set below two to be false after processing something here
-                // Even though we unset this in keyup, FireFox needs this code
-                clickType.ctrlKey = false;
-                clickType.metaKey = false;
+                //clickType.ctrlKey = false;
+                //clickType.metaKey = false;
             } else {
                 event.item.notBoolean = 'false';
                 // cntrlIsPressed = false;      // set this to be false just in case?
@@ -1757,7 +1757,9 @@
             console.log(event.item);
 
             // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
-            if (event.item.replace) return;
+            // Checking if map object is set because applyParameter executes this function before initializeMap
+            // is executed to setup the map object
+            if (event.item.replace || map === undefined) return;
 
             if (event.item.activeTerm) {
                 $('#search-bar').animate({
@@ -1842,7 +1844,7 @@
             clickType.shiftKey = event.shiftKey;
         });
 
-        $(document).keyup(function(){
+        $(document).keyup(function(event){
             clickType.ctrlKey = event.ctrlKey;
             clickType.metaKey = event.metaKey;
             clickType.shiftKey = event.shiftKey;
