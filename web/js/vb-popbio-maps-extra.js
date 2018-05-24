@@ -1747,9 +1747,9 @@
                 event.item.notBoolean = 'true';
                 $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
                 // set below two to be false after processing something here
-                // Using the keyUp and keyDown, do not think this is necessary anymore
-                //clickType.ctrlKey = false;
-                //clickType.metaKey = false;
+                // Even though we unset this in keyup, FireFox needs this code
+                clickType.ctrlKey = false;
+                clickType.metaKey = false;
             } else {
                 event.item.notBoolean = 'false';
                 // cntrlIsPressed = false;      // set this to be false just in case?
