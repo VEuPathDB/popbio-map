@@ -402,7 +402,6 @@ function bindEvents() {
 
     // Active terms
     // VB-7318 add NOT boolean for active-term
-    // $(document).on("click", '.active-term', function () {
     $(document).on("click", '.active-term', function (e) {
         highlightedId = $('.highlight-marker').attr('id');
 
@@ -415,7 +414,6 @@ function bindEvents() {
         // VB-7318 add checking ctrlKey or metaKey for active-term
         if (e.ctrlKey || e.metaKey) {
             notSelected = 'true';
-            // console.log('active-term CONTROL/COMMAND clicked---------------');
         }
 
         $('#search_ac').tagsinput('add', {
@@ -440,7 +438,6 @@ function bindEvents() {
         }
     })
     // VB-7318 add NOT boolean for active legend
-    // .on("click", '.active-legend', function () {
     .on("click", '.active-legend', function (e) {
         highlightedId = $('.highlight-marker').attr('id');
         PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
@@ -448,7 +445,6 @@ function bindEvents() {
         // VB-7318 add checking ctrlKey or metaKey for active-legend
         if (e.ctrlKey || e.metaKey) {
             notSelected = 'true';
-            // console.log('active-term CONTROL/COMMAND clicked---------------');
         }
 
         $('#search_ac').tagsinput('add', {
@@ -626,11 +622,6 @@ function bindEvents() {
     $('#search_ac').on('itemAdded', function (event) {
 
         // VB-7318
-        console.log('notSelected--------');
-        console.log(notSelected);
-        console.log('event.item--------');
-        console.log(event.item);
-        console.log('modified event.item--------');
         if (notSelected === 'true') {
             event.item.notBoolean = 'true';
             $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
@@ -639,9 +630,8 @@ function bindEvents() {
             notSelected = 'false';
         } else {
             event.item.notBoolean = 'false';
-            // cntrlIsPressed = false;      // set this to be false just in case?
         }
-        console.log(event.item);
+        // console.log(event.item);
 
         // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
         if (event.item.replace) return;
@@ -1005,10 +995,7 @@ function initializeSearch() {
     $('#search_ac').tagsinput({
         tagClass: function (item) {
             // VB-7318 add new class for notSelected, label-not - add item.notBoolean for shared view (need to check with === 'true')
-            // console.log('tagClass, notSelected---------' + notSelected);
-            console.log('item.notBoolean---------' + item.notBoolean);
             if ( ((notSelected === 'true') || (item.notBoolean === 'true') ) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal') ) {
-            // if ((dateShortcutClickType.ctrlKey || dateShortcutClickType.metaKey) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal')) {
                 return mapTypeToLabel(item.type) + ' label-not';
             } else {
                 return mapTypeToLabel(item.type);
@@ -1063,7 +1050,6 @@ function initializeSearch() {
                         },
                         suggestion: function (item) {
                             // VB-7318 add onclick function
-                           // return '<p>' + item.value +
                             return '<p class="ac_items" onclick="checkCTRL(1)">' + item.value + 
                                 (item.is_synonym ?
                                     ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)'
@@ -1083,7 +1069,6 @@ function initializeSearch() {
                         header: '<h4 class="more-results">More suggestions</h4>',
                         suggestion: function (item) {
                             // VB-7318 need to add onclick function for acgroup too
-                            // return '<p>~' + item.count + ' <em>in ' + item.type + '</em></p>';
                             return '<p class="ac_items" onclick="checkCTRL(1)">~' + item.count + ' <em>in ' + item.type + '</em></p>';
                         }
 
@@ -2684,15 +2669,11 @@ function filterMarkers(items, flyTo) {
 
     var terms = {};
 
-    // VB-7318 
-    console.log('items--------');
-    console.log(items);     // array of objects
-
     items.forEach(function (element) {
 
-        // VB-7318 
-        console.log('element--------');
-        console.log(element);
+        // // VB-7318 
+        // console.log('element--------');
+        // console.log(element);
 
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
 
@@ -2757,20 +2738,16 @@ function filterMarkers(items, flyTo) {
         // VB-7318 add field, notBoolean, to terms 
         if (element.qtype == 'exact') {
             // VB-7318
-            // terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
             terms[element.type].push({"field": element.field, "value": '"' + element.value + '"', "notBoolean": element.notBoolean});
         } else {
             if (/^".+"$/.test(element.value)) {
                 // Successful match
                 // VB-7318
-                // terms[element.type].push({"field": element.field, "value": element.value});
                 terms[element.type].push({"field": element.field, "value": element.value, "notBoolean": element.notBoolean});
 
             } else {
                 // Match attempt failed
-                // terms[element.type].push({"field": element.field, "value": element.value + '*'});
                 // VB-7318
-                // terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
                 terms[element.type].push({"field": element.field, "value": '*' + element.value + '*', "notBoolean": element.notBoolean});
 
             }
@@ -2789,11 +2766,6 @@ function filterMarkers(items, flyTo) {
     // get the count of terms categories (types)
     var tlen = Object.keys(terms).length;
 
-    // VB-7318
-    console.log('terms object---------');
-    console.log(terms);
-    console.log('terms---------' + Object.keys(terms));
-
     for (var obj in terms) {
         var qries = {}; // store category terms grouped by field
         var k = 0;
@@ -2806,26 +2778,15 @@ function filterMarkers(items, flyTo) {
             return 0;
         }).forEach(function (element, index) {  // concatenate and store the terms for each field
             // VB-7318 making query?
-            console.log('element.notBoolean--------' + element.notBoolean);
-            console.log('element.value--------' + element.value);           
             if (element.notBoolean === 'true') {
                 qries[element.field] ? qries[element.field] += ' OR ' + '!' + element.value : qries[element.field] = '!' + element.value;
             } else {
                 qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;               
             }
-            // console.log('qries element.field----------------' + element.field);
         });
-
-        // VB-7318
-        console.log('qries----------------');
-        console.log(qries);
 
         // get the numbeer of different field queries per category (this is usually one or two)
         var alen = Object.keys(qries).length;
-
-        // VB-7318
-        console.log('tlen = ' + tlen);  // # of different TYPE fields (terms) to query
-        console.log('alen = ' + alen);
 
         // more than one categories
         if (i < tlen - 1) {
@@ -2945,10 +2906,8 @@ function filterMarkers(items, flyTo) {
     }
 
     // VB-7318 need to remove !!! as it is generated whenever pressing share link
-    console.log(qryUrl);
-    console.log('after removing !!! --------------------------------');
     qryUrl = qryUrl.replace('!!!','');
-    console.log(qryUrl);
+    // console.log(qryUrl);
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
@@ -3081,7 +3040,6 @@ function mapSummarizeByToField(type) {
 }
 
 // VB-7318 changes are made when calling this function, instead
-// function mapTypeToLabel(type,notselectedboolean) {
 function mapTypeToLabel(type) {    
         switch (type) {
             case 'Taxonomy'   :
@@ -3709,33 +3667,4 @@ if (!Array.prototype.fill) {
             return O;
         }
     });
-}
-
-// VB-7318
-var cntrlIsPressed = false;
-var cntrlEnterIsPressed = false;
-var notSelected = 'false';
-$(document).keydown(function(event){
-    // if(event.which=="17") {
-    // if( (event.ctrlKey || event.metaKey) || ((event.ctrlKey || event.metaKey) && event.keyCode == 13) ) {
-    if( (event.ctrlKey || event.metaKey) ) {
-        cntrlIsPressed = true;
-    } else {
-        cntrlIsPressed = false;
-    }
-});
-
-$(document).keyup(function(){
-    cntrlIsPressed = false;
-    cntrlEnterIsPressed = false;
-});
-
-// onclick function for autocomplete list
-function checkCTRL(mouseButton)
-{
-    if( (cntrlIsPressed) && (mouseButton === 1) ) {
-        notSelected = 'true';
-    } else {
-        notSelected = 'false';
-    }   
 }
