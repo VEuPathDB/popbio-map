@@ -531,8 +531,6 @@ function bindEvents() {
             field: 'phenotype_rescaled_value_f'
         });
     });
-
-    
 }
 
 /*
@@ -2171,15 +2169,11 @@ function filterMarkers(items, flyTo) {
 
     var terms = {};
 
-    // VB-7318 
-    console.log('items--------');
-    console.log(items);     // array of objects
-
     items.forEach(function (element) {
 
-        // VB-7318 
-        console.log('element--------');
-        console.log(element);
+        // // VB-7318 
+        // console.log('element--------');
+        // console.log(element);
 
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
 
@@ -2244,20 +2238,16 @@ function filterMarkers(items, flyTo) {
         // VB-7318 add field, notBoolean, to terms 
         if (element.qtype == 'exact') {
             // VB-7318
-            // terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
             terms[element.type].push({"field": element.field, "value": '"' + element.value + '"', "notBoolean": element.notBoolean});
         } else {
             if (/^".+"$/.test(element.value)) {
                 // Successful match
                 // VB-7318
-                // terms[element.type].push({"field": element.field, "value": element.value});
                 terms[element.type].push({"field": element.field, "value": element.value, "notBoolean": element.notBoolean});
 
             } else {
                 // Match attempt failed
-                // terms[element.type].push({"field": element.field, "value": element.value + '*'});
                 // VB-7318
-                // terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
                 terms[element.type].push({"field": element.field, "value": '*' + element.value + '*', "notBoolean": element.notBoolean});
 
             }
@@ -2276,11 +2266,6 @@ function filterMarkers(items, flyTo) {
     // get the count of terms categories (types)
     var tlen = Object.keys(terms).length;
 
-    // VB-7318
-    console.log('terms object---------');
-    console.log(terms);
-    console.log('terms---------' + Object.keys(terms));
-
     for (var obj in terms) {
         var qries = {}; // store category terms grouped by field
         var k = 0;
@@ -2293,26 +2278,15 @@ function filterMarkers(items, flyTo) {
             return 0;
         }).forEach(function (element, index) {  // concatenate and store the terms for each field
             // VB-7318 making query?
-            console.log('element.notBoolean--------' + element.notBoolean);
-            console.log('element.value--------' + element.value);           
             if (element.notBoolean) {
                 qries[element.field] ? qries[element.field] += ' OR ' + '!' + element.value : qries[element.field] = '!' + element.value;
             } else {
                 qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;               
             }
-            // console.log('qries element.field----------------' + element.field);
         });
-
-        // VB-7318
-        console.log('qries----------------');
-        console.log(qries);
 
         // get the numbeer of different field queries per category (this is usually one or two)
         var alen = Object.keys(qries).length;
-
-        // VB-7318
-        console.log('tlen = ' + tlen);  // # of different TYPE fields (terms) to query
-        console.log('alen = ' + alen);
 
         // more than one categories
         if (i < tlen - 1) {
@@ -2432,10 +2406,8 @@ function filterMarkers(items, flyTo) {
     }
 
     // VB-7318 need to remove !!! as it is generated whenever pressing share link
-    console.log(qryUrl);
-    console.log('after removing !!! --------------------------------');
     qryUrl = qryUrl.replace('!!!','');
-    console.log(qryUrl);
+    // console.log(qryUrl);
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
@@ -2568,7 +2540,6 @@ function mapSummarizeByToField(type) {
 }
 
 // VB-7318 changes are made when calling this function, instead
-// function mapTypeToLabel(type,notselectedboolean) {
 function mapTypeToLabel(type) {    
         switch (type) {
             case 'Taxonomy'   :

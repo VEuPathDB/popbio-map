@@ -670,8 +670,6 @@
         }
 
         // VB-7318 set valueForNot variable for shared view
-        // console.log('im here urlParams????????????????????????????????????-------------------------');
-        // console.log(urlParams);
         var valueForNot = 'false';
 
         for (var key in urlParams) {
@@ -771,8 +769,6 @@
                                 } else {
                                     valueForNot = false;
                                 }   
-                                console.log('element value at applyParameters=========================');
-                                console.log(element);
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
                                     value: element.replace('!!!',''),
@@ -1446,10 +1442,6 @@
             var url = window.location.origin + window.location.pathname + "?";
             var search_items = $('#search_ac').tagsinput('items');
             
-            // VB-7318
-            console.log('search_items=====================');
-            console.log(search_items);
-
             //Using an object to store search terms that will be used to generate link
             var search_terms = {};
             var query_parameters = '';
@@ -1460,8 +1452,6 @@
                     search_terms[search_item.type] = [];
                 }
                 // VB-7318 add ! for NOT boolean case - and add condition not to repeat to add !!! whenever pressing share link (pre-existing value preserves string!)
-                console.log('search_item.notBoolean + search_item.value.startsWith("!!!"")===================');
-                console.log(search_item.notBoolean + search_item.value.startsWith('!!!'));
                 if ((search_item.notBoolean) && (search_item.value.startsWith('!!!') != 1)) {
                     search_item.value = '!!!' + search_item.value;
                 } 
@@ -1480,9 +1470,9 @@
                 }
             });
 
-            // VB-7318
-            console.log('query_parameters=====================');
-            console.log(query_parameters);
+            // // VB-7318
+            // console.log('query_parameters=====================');
+            // console.log(query_parameters);
 
             //Set the selected marker and panel that was being viewed
             if (highlighted_id != undefined) {
