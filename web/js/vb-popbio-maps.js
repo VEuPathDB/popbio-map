@@ -2295,7 +2295,7 @@ function filterMarkers(items, flyTo) {
             // VB-7318 making query?
             console.log('element.notBoolean--------' + element.notBoolean);
             console.log('element.value--------' + element.value);           
-            if (element.notBoolean === 'true') {
+            if (element.notBoolean) {
                 qries[element.field] ? qries[element.field] += ' OR ' + '!' + element.value : qries[element.field] = '!' + element.value;
             } else {
                 qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;               

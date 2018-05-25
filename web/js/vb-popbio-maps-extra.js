@@ -196,7 +196,7 @@
             tagClass: function (item) {
                 // VB-7318 add new class for notSelected, label-not - add item.notBoolean for shared view (need to check with === 'true')
                 console.log('item.notBoolean---------' + item.notBoolean);
-                if ( ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean === 'true') ) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal') ) {
+                if ( ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean) ) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal') ) {
                     return mapTypeToLabel(item.type) + ' label-not';
                 } else {
                     return mapTypeToLabel(item.type);
@@ -205,7 +205,7 @@
             itemValue: 'value',
             itemText: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view
-                if ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean === 'true')) {
+                if ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
@@ -213,7 +213,7 @@
             },
             itemHTML: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view
-                if ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean === 'true')) {
+                if ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
@@ -689,9 +689,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -707,7 +707,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             } 
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -729,9 +729,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -747,7 +747,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -767,9 +767,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 console.log('element value at applyParameters=========================');
                                 console.log(element);
@@ -787,7 +787,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             } 
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -807,9 +807,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -825,7 +825,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -845,9 +845,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -863,7 +863,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -883,9 +883,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -901,7 +901,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -921,9 +921,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -939,7 +939,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -959,9 +959,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -977,7 +977,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -997,9 +997,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -1015,7 +1015,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -1035,9 +1035,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -1053,7 +1053,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -1073,9 +1073,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -1091,7 +1091,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -1111,9 +1111,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }   
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
@@ -1129,7 +1129,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -1149,9 +1149,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }
                                 $('#search_ac').tagsinput('add', {
                                     value: element.replace('!!!',''),
@@ -1166,7 +1166,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
@@ -1226,9 +1226,9 @@
                             param.forEach(function (element) {
                                 // VB-7318 add notBoolean field depending on the presence of !!!
                                 if (element.startsWith('!!!')) {
-                                    valueForNot = 'true';
+                                    valueForNot = true;
                                 } else {
-                                    valueForNot = 'false';
+                                    valueForNot = false;
                                 }
                                 $('#search_ac').tagsinput('add', {
                                     value: element.replace('!!!',''),
@@ -1243,7 +1243,7 @@
                         } else {
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = 'true';
+                                valueForNot = true;
                             }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace - also change from param to urlParams[key]
@@ -1362,7 +1362,7 @@
                 }
             }
         // VB-7318 set valueForNot to be false at each loop
-        valueForNot = 'false';    
+        valueForNot = false;    
         }
                
         // update the export fields dropdown
@@ -1462,7 +1462,7 @@
                 // VB-7318 add ! for NOT boolean case - and add condition not to repeat to add !!! whenever pressing share link (pre-existing value preserves string!)
                 console.log('search_item.notBoolean + search_item.value.startsWith("!!!"")===================');
                 console.log(search_item.notBoolean + search_item.value.startsWith('!!!'));
-                if ((search_item.notBoolean === 'true') && (search_item.value.startsWith('!!!') != 1)) {
+                if ((search_item.notBoolean) && (search_item.value.startsWith('!!!') != 1)) {
                     search_item.value = '!!!' + search_item.value;
                 } 
 
@@ -1745,13 +1745,13 @@
             // VB-7318
             // itemAdded gets executed by applyParameters now so need to check if notBoolean was set
             if ((clickType.ctrlKey  || clickType.metaKey) || event.item.notBoolean) {
-                event.item.notBoolean = 'true';
+                event.item.notBoolean = true;
                 $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
                 // set below two to be false after processing something here
                 //clickType.ctrlKey = false;
                 //clickType.metaKey = false;
             } else {
-                event.item.notBoolean = 'false';
+                event.item.notBoolean = false;
                 // cntrlIsPressed = false;      // set this to be false just in case?
             }
             console.log(event.item);
