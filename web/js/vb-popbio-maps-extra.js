@@ -195,8 +195,8 @@
         $('#search_ac').tagsinput({
             tagClass: function (item) {
                 // VB-7318 add new class for notSelected, label-not - add item.notBoolean for shared view (need to check with === 'true')
-                console.log('item.notBoolean---------' + item.notBoolean);
-                if ( ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean) ) && (item.type !== 'Anywhere' || item.type !== 'Date' || item.type !== 'Seasonal') ) {
+                // console.log('item.notBoolean---------' + item.notBoolean);
+                if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal') ) {
                     return mapTypeToLabel(item.type) + ' label-not';
                 } else {
                     return mapTypeToLabel(item.type);
@@ -204,16 +204,16 @@
             },
             itemValue: 'value',
             itemText: function (item) {
-                // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view
-                if ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) {
+                // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
+                if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal')) {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
                 }   
             },
             itemHTML: function (item) {
-                // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view
-                if ((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) {
+                // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
+                if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean))  && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal')) {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
                     return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
@@ -285,6 +285,10 @@
         
         $('#SelectView').change(function () {
             viewMode = $('#SelectView').val()
+
+            // VB-7622 default with ?view=geno at URL (e.g., selecting the menu from Popbio page or using Share Link) is set to Allele (active-legend) at initializeMap()
+            // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
+            if (viewMode === "geno") glbSummarizeBy = "Allele";
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
@@ -669,8 +673,12 @@
             // $('#view-mode').val('smpl');
         }
 
+        // // VB-7622 check urlParams
+        // console.log('urlParams----------------');
+        // console.log(urlParams);
+
         // VB-7318 set valueForNot variable for shared view
-        var valueForNot = 'false';
+        var valueForNot = false;
 
         for (var key in urlParams) {
             if (urlParams.hasOwnProperty(key)) {
@@ -735,8 +743,9 @@
                                     // VB-7318 add replace
                                     value: element.replace('!!!',''),
                                     activeTerm: true,
-                                    type: 'Projects',
-                                    field: mapTypeToField('Projects'),
+                                    // VB-7622 Projects -> Project
+                                    type: 'Project',
+                                    field: mapTypeToField('Project'),
                                     qtype: 'exact',
                                     // VB-7318 add notBoolean field
                                     notBoolean: valueForNot
@@ -751,14 +760,141 @@
                                 // VB-7318 add replace
                                 value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
-                                type: 'Projects',
-                                field: mapTypeToField('Projects'),
+                                // VB-7622 Projects -> Project                                
+                                type: 'Project',
+                                field: mapTypeToField('Project'),
                                 qtype: 'exact',
                                 // VB-7318 add notBoolean field
                                 notBoolean: valueForNot
                             });
                         }
                         break;
+                    // VB-7622 add Stable ID (stableID) for SHare Link    
+                    case "stableID":
+                        // have we passed multiple project IDs??
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }   
+                                $('#search_ac').tagsinput('add', {
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
+                                    activeTerm: true,
+                                    // VB-7622 Projects -> Project
+                                    type: 'Stable ID',
+                                    field: mapTypeToField('Stable ID'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });
+                            })
+                        } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = true;
+                            }
+                            $('#search_ac').tagsinput('add', {
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
+                                activeTerm: true,
+                                // VB-7622 Projects -> Project                                
+                                type: 'Stable ID',
+                                field: mapTypeToField('Stable ID'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
+                            });
+                        }
+                        break;
+                    // VB-7622 add Sample ID (sampleID) for SHare Link    
+                    case "sampleID":
+                        // have we passed multiple project IDs??
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }   
+                                $('#search_ac').tagsinput('add', {
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
+                                    activeTerm: true,
+                                    // VB-7622 Projects -> Project
+                                    type: 'Sample ID',
+                                    field: mapTypeToField('Sample ID'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });
+                            })
+                        } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = true;
+                            }
+                            $('#search_ac').tagsinput('add', {
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
+                                activeTerm: true,
+                                // VB-7622 Projects -> Project                                
+                                type: 'Sample ID',
+                                field: mapTypeToField('Sample ID'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
+                            });
+                        }
+                        break;
+                    // VB-7622 add Assay ID (assayID) for SHare Link    
+                    case "assayID":
+                        // have we passed multiple project IDs??
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }   
+                                $('#search_ac').tagsinput('add', {
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
+                                    activeTerm: true,
+                                    // VB-7622 Projects -> Project
+                                    type: 'Assay ID',
+                                    field: mapTypeToField('Assay ID'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });
+                            })
+                        } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = true;
+                            }
+                            $('#search_ac').tagsinput('add', {
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
+                                activeTerm: true,
+                                // VB-7622 Projects -> Project                                
+                                type: 'Assay ID',
+                                field: mapTypeToField('Assay ID'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
+                            });
+                        }
+                        break;                        
                     case "species":
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
@@ -1381,9 +1517,18 @@
     //Private function to map the field types to the URL query parameters that we accept
     function mapTypeToURLParam(type) {
         switch (type) {
-            // VB-7318 Project to Projects?
-            case "Projects":
+            // VB-7318 Project to Projects? VB-7622 revert to Project
+            case "Project":
                 return "projectID";
+            // VB-7622 add Stable ID for Share Link
+            case "Stable ID":
+                return "stableID";
+            // VB-7622 add Sample ID for Share Link
+            case "Sample ID":
+                return "sampleID";                
+            // VB-7622 add Sample ID for Share Link
+            case "Assay ID":
+                return "assayID";                                
             case "Anywhere":
                 return "text";
             case "Collection protocol":
@@ -1655,11 +1800,25 @@
             //clickType.ctrlKey = e.ctrlKey;
             //clickType.metaKey = e.metaKey;
 
+            // VB-7622 Change plural element.type defined in HTML to single format
+            var setCorrectTerms = $(this).attr('type');
+            if (setCorrectTerms == 'Projects') {
+                setCorrectTerms = 'Project';
+            } else if (setCorrectTerms == 'Protocols') {
+                setCorrectTerms = 'Protocol';
+            } else if (setCorrectTerms == 'Collection protocols') {
+                setCorrectTerms = 'Collection protocol';
+            } else if (setCorrectTerms == 'Insecticides') {
+                setCorrectTerms = 'Insecticide';
+            } 
             $('#search_ac').tagsinput('add', {
                 value: $(this).attr('value'),
                 activeTerm: true,
-                type: $(this).attr('type'),
-                field: mapTypeToField($(this).attr('type')),
+                // VB-7622 single/plural form
+                // type: $(this).attr('type'),
+                // field: mapTypeToField($(this).attr('type')),
+                type: setCorrectTerms,                
+                field: mapTypeToField(setCorrectTerms),                
                 qtype: 'exact'
 
             });
@@ -1732,9 +1891,12 @@
 
         $('#search_ac').on('itemAdded', function (event) {
 
-            // VB-7318
-            // itemAdded gets executed by applyParameters now so need to check if notBoolean was set
-            if ((clickType.ctrlKey  || clickType.metaKey) || event.item.notBoolean) {
+            // // VB-7318
+            // console.log('event.item before checking key combo-------------------------------------------------------------------');
+            // console.log(event.item);
+
+            // itemAdded gets executed by applyParameters now so need to check if notBoolean was set - added more conditions after refactoring!
+            if (((clickType.ctrlKey  || clickType.metaKey) || event.item.notBoolean) && (event.item.type !== 'Anywhere' && event.item.type !== 'Date' && event.item.type !== 'Seasonal'))  {
                 event.item.notBoolean = true;
                 $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
                 // set below two to be false after processing something here
@@ -1744,7 +1906,8 @@
                 event.item.notBoolean = false;
                 // cntrlIsPressed = false;      // set this to be false just in case?
             }
-            console.log(event.item);
+            // console.log('event.item after checking key combo-------------------------------------------------------------------');
+            // console.log(event.item);
 
             // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
             // Checking if map object is set because applyParameter executes this function before initializeMap

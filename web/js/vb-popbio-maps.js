@@ -267,7 +267,8 @@ function bindEvents() {
             '</div>';
 
         switch (type) {
-            case 'Projects':
+            // VB-7622 Projects -> Project
+            case 'Project':
                 template = $.templates("#projectInfoTemplate");
                 entityURL = '/popbio/project/?id=' + id;
                 entityRestURL = '/popbio/REST/project/' + id + '/head';
@@ -2011,7 +2012,7 @@ function tableHtml(divid, results) {
             case "ir":
                 row = {
                     accession: element.accession,
-                    accessionType: 'Stable ID',
+                    accessionType: 'Assay ID',
                     bundleName: element.bundle_name,
                     url: element.url,
                     sampleType: element.sample_type,
@@ -2049,7 +2050,9 @@ function tableHtml(divid, results) {
             case "abnd":
                 row = {
                     accession: element.accession,
-                    accessionType: 'Stable ID',
+                    // VB-7622 Sample ID?
+                    // accessionType: 'Stable ID',
+                    accessionType: 'Sample ID',                    
                     bundleName: element.bundle_name,
                     url: element.url,
                     sampleType: element.sample_type,
@@ -2081,7 +2084,7 @@ function tableHtml(divid, results) {
             case "geno":
                 row = {
                     accession: element.accession,
-                    accessionType: 'Stable ID',
+                    accessionType: 'Assay ID',
                     bundleName: element.bundle_name,
                     url: element.url,
                     sampleType: element.sample_type,
@@ -2116,7 +2119,7 @@ function tableHtml(divid, results) {
             default:
                 row = {
                     accession: element.accession,
-                    accessionType: 'Stable ID',
+                    accessionType: 'Sample ID',
                     bundleName: element.bundle_name,
                     url: element.url,
                     sampleType: element.sample_type,
@@ -2474,6 +2477,15 @@ function mapTypeToField(type) {
             return "project_authors_txt";
         case "Project title":
             return "project_titles_txt";
+        // VB-7622 Stable ID? assay_id_s: actually this is Assay ID but just leave it as is
+        case "Stable ID":
+            return "assay_id_s";
+        // VB-7622 Need Sample ID exp_sample_id_s
+        case "Sample ID":
+            return "exp_sample_id_s";
+        // VB-7622 Need Assay ID assay_id_s
+        case "Assay ID":
+            return "assay_id_s";            
         case "Seasonal":
             return "collection_season";
         case "Date":
@@ -2526,7 +2538,7 @@ function mapSummarizeByToField(type) {
         case "Project":
             fields.summarize = "projects_category";
             // VB-7318 fields.type = Project -> Projects to fix avtive-legend
-            fields.type = "Projects";
+            fields.type = "Project";
             fields.field = "projects";
             break;
         default :
@@ -2550,8 +2562,7 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-title';    // green
             case 'Description':
                 return 'label label-success label-description';   // green
-            // VB-7318 it seems like a bug: Projects, not Project
-            case 'Projects'   :
+            case 'Project'   :
                 return 'label label-success label-project';   // green
             case 'Project title'   :
                 return 'label label-success label-project-title';   // green
@@ -2576,6 +2587,15 @@ function mapTypeToLabel(type) {
                 return 'label label-secondary label-norm-ir';
             case 'Collection ID' :
                 return 'label label-warning label-collection-id';
+            // VB-7622 add class for Stable ID: same to Project
+            case 'Stable ID' :
+                return 'label label-success label-stable-id';            
+            // VB-7622 add class for Sample ID: same to Stable ID
+            case 'Sample ID' :
+                return 'label label-success label-sample-id';            
+            // VB-7622 add class for Assay ID: same to Stable ID
+            case 'Assay ID' :
+                return 'label label-success label-assay-id';                            
             case 'Sample' :
                 return 'label label-warning label-sample';
             case 'Sample type' :
@@ -2586,6 +2606,7 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-author';
             case 'Coordinates':
                 return 'label label-success label-coordinates';
+
             default :
                 return 'label label-warning label-default';
         }
@@ -2601,8 +2622,7 @@ function mapTypeToIcon(type) {
             return 'fa-tag';
         case 'Description':
             return 'fa-info-circle';
-        // VB-7318 it seems like a bug: Projects, not Project
-        case 'Projects'   :
+        case 'Project'   :
             return 'fa-database';
         case 'Project title'   :
             return 'fa-database';
@@ -2623,6 +2643,14 @@ function mapTypeToIcon(type) {
         case 'Norm-IR' :
             return 'fa-bolt';
         case 'Collection ID' :
+        // VB-7622 add class for Collection ID: same to Assay ID
+            return 'fa-tag';        
+        // VB-7622 add class for Stable ID: same to Assay ID
+        case 'Stable ID' :
+            return 'fa-tag';                    
+        // VB-7622 add class for Stable ID: same to Assay ID
+        case 'Sample ID' :
+            return 'fa-tag';                            
         case 'Assay ID' :
             return 'fa-tag';
         case 'Sample' :
@@ -2637,8 +2665,9 @@ function mapTypeToIcon(type) {
             return 'fa-map-marker';
         case 'Location':
             return 'fa-location-arrow';
-        case 'Insecticide':
-            return 'fa-eyedropper';
+        // VB-7318 VB-7622 duplicate with above
+        // case 'Insecticide':
+        //     return 'fa-eyedropper';
         //Modifies what gets used as the icon in the search bar
         case 'Allele':
             return 'fa-sliders';
