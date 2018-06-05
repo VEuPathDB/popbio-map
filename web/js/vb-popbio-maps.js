@@ -665,8 +665,6 @@ function bindEvents() {
 function initializeMap(parameters) {
     "use strict";
 
-    // new MapQuest way of adding layers
-    var mapQuestLayers = MQ.mapLayer();
     var flyTo = parameters.flyTo;
 
     //Getting zoom level and center point to initialize the map
@@ -718,6 +716,36 @@ function initializeMap(parameters) {
     //Adding scale to map
     L.control.scale({position: "bottomright"}).addTo(map);
     
+    /* http://leaflet-extras.github.io/leaflet-providers/preview/ */
+    /* Map Layers */
+    var terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: 'abcd',
+        minZoom: 0,
+        maxZoom: 18,
+        ext: 'png'
+    });
+
+    var street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    });
+
+    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
+
+
+    var light = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+
+    var dark = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+        subdomains: 'abcd',
+        maxZoom: 19
+    });
+
     var mp3 = new L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         minZoom: 2,
         maxZoom: maxZoom,
@@ -727,7 +755,7 @@ function initializeMap(parameters) {
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
     });
 
-    map.addLayer(mapQuestLayers);
+    map.addLayer(terrain);
 
     // initialize markers layer
     markers = new L.Map.SelectMarkers(map);
@@ -740,11 +768,11 @@ function initializeMap(parameters) {
 
     // assetLayerGroup.initLatLngStorage();
     var layerCtl = new L.Control.Layers({
-        'Map': mapQuestLayers,
-        'Hybrid': MQ.hybridLayer(),
-        'Satellite': MQ.satelliteLayer(),
-        'Dark': MQ.darkLayer(),
-        'Light': MQ.lightLayer(),
+        'Terrain': terrain,
+        'Street': street,
+        'Satellite': satellite,
+        'Light': light,
+        'Dark': dark,
         'OpenStreetMap': mp3,
     });
     layerCtl.setPosition('topright');
