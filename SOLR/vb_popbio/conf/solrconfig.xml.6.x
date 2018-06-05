@@ -1579,7 +1579,7 @@
         </lst>
         <lst name="invariants">
             <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
-                species_category, collection_protocols, collection_date, collection_date_range, projects, genotype_name_s, label, sample_size_i, genotype_mutated_protein_value_f, genotype_mutated_protein_unit_s
+                species_category, collection_protocols, collection_date, collection_date_range, projects, genotype_name_s, label, sample_size_i, genotype_mutated_protein_value_f, genotype_mutated_protein_unit_s,locus_name_s
             </str>
             <str name="q.op">OR</str>
         </lst>
