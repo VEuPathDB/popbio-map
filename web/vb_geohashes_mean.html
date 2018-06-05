@@ -628,6 +628,25 @@
                                 Select region and zoom
                             </td>
                         </tr>
+                        <!-- VB-7318 NOT Boolean & VB-7535 year-range selection-->
+                        <tr>    
+                            <td class="col-md-4">
+                                <kbd class="light">Control</kbd> + Click (Windows)<br><kbd class="light">Command</kbd> + Click (Mac)
+
+                            </td>
+                            <td>
+                                1) Perform a boolean NOT function at Autocomplete Search<br> 2) Select/deselect year-range independently at Date Search
+                            </td>
+                        </tr>
+                        <tr>    
+                            <td class="col-md-4">
+                                <kbd class="light">Shift</kbd> + Click
+
+                            </td>
+                            <td>
+                                Select a range of year-ranges at Date Search
+                            </td>
+                        </tr>                        
                         </tbody>
                     </table>
 
@@ -776,6 +795,56 @@
                                 Show or hide the clustering grid. This only affects the appearance of the map.
                             </td>
                         </tr>
+                        </tbody>
+                    </table>
+                    <!-- VB-7318 NOT Boolean & VB-7535 year-range selection-->
+                    <h4>Key + Mouse click combinations</h4>
+                    <table class="table table-condensed">
+                        <tr class="active">
+                            <th colspan="3">Autocomplete Search using NOT Boolean</th>
+                            <th></th>
+                        </tr>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-3">
+                                <kbd class="light">Control</kbd> + Click (Windows)<br><kbd class="light">Command</kbd> + Click (Mac)
+
+                            </td>
+                            <td class="col-md-1">
+                            </td>
+                            <td class="col-md-8">
+                                To perform a boolean NOT function, use the autocomplete to find the term you wish to exclude from your search and select it using this key combination
+                            </td>
+                        </tr>
+                        </tbody>
+                        <!-- <tr><td height=10></td></tr> -->
+                        <tr class="active">
+                            <th colspan="3">Date Search using Year-range</th>
+                            <th></th>
+                        </tr>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-3">
+                                <kbd class="light">Control</kbd> + Click (Windows)<br><kbd class="light">Command</kbd> + Click (Mac)
+
+                            </td>
+                            <td class="col-md-1">
+                            </td>
+                            <td class="col-md-8">
+                                Select/deselect year-range independently at Date Search
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-3">
+                                <kbd class="light">Shift</kbd> + Click
+
+                            </td>
+                            <td class="col-md-1">
+                            </td>
+                            <td class="col-md-8">
+                                Select a range of year-ranges at Date Search if one other is already selected
+                            </td>
+                        </tr>                        
                         </tbody>
                     </table>
                 </div>
@@ -2279,7 +2348,7 @@
 
     var viewMode = $('#SelectView').val();
 
-    initializeSearch();
+    PopulationBiologyMap.methods.initializeSearch();
 
 
     // set view according to the value of the view url parameter. Otherwise default to smpl
