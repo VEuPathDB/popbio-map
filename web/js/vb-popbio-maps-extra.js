@@ -1510,7 +1510,54 @@
             $('#\\#swarm-plots').removeClass('disabled');
             $("#\\#swarm-plots").tooltip('disable');
         }
-        
+
+        // Check if a center paramieter was passed with a projectID, if not, find the center to ensure marker will be visible
+        // NOTE: Code might need to get improved if there is a case when a link has two of either projectID, assayID, and sampleID
+        // but no center query parameter.  
+        if ((urlParams["projectID"] || urlParams["assayID"] || urlParams["sampleID"]) && !urlParams["center"]) {
+            var coordinatesUrl = solrPopbioUrl + "projectsCoordinates?";
+            var key;
+            var filter;
+            var queryUrl;
+
+            if (urlParams["projectID"]) {
+                filter = "projects=";
+                key = "projectID";
+            } else {
+                filter = "accession=";
+
+                if (urlParams["assayID"]) {
+                    key = "assayID";
+                } else {
+                    key = "sampleID";
+                }
+            }
+                
+            if (Array.isArray(urlParams[key])) {
+                filter += "(" + urlParams[key].join(" OR ") + ")";
+            } else {
+                filter += urlParams[key];
+            }
+            
+            queryUrl = coordinatesUrl + filter;
+
+            //Get the avarge coordinates of the projects and use that as the center of the map view
+            $.ajax({
+                type: "GET",
+                url: queryUrl,
+                dataType: "json",
+                async: false,
+                success: function(json) {
+                    var ltAvg = json.facets.ltAvg;
+                    var lnAvg = json.facets.lnAvg;
+                    PopulationBiologyMap.data.center = [ltAvg, lnAvg];
+                },
+                error: function() {
+                    console.log("Unable to retrieve center coordinate");
+                }
+            });
+        }
+
         return hasParameters;
     }
 

@@ -705,6 +705,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     display: none;
     z-index: 3001;
     overflow: visible;
+    transition: all .5s;
 }
 
 @media (max-width: 767px) {
@@ -1033,4 +1034,21 @@ div.error div, div.warning div, div.info div, div.hint div {
 
 #add-dates-tooltip.disabled {
     cursor: not-allowed;
+}
+
+
+/* Fade in the active panels ot give it a better feel */
+.sidebar-pane.active {
+    opacity: 1;
+    animation-name: fadeIn;
+    animation-duration: .5s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    20% { opacity: 0; }
+    40% { opacity: 0.3; }
+    60% { opacity: 0.5; }
+    80% { opacity: 0.9; }
+    100% { opacity: 1; }
 }
