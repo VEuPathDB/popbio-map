@@ -133,8 +133,6 @@ function bindEvents() {
             zeroFilter = '&zeroFilter=' + ($('#checkbox-export-zeroes').is(":checked") ? '' : '-sample_size_i:0');
         }
 
-        // console.log("zeroFilter is: "+zeroFilter+ " and mode is:"+viewMode);
-
         // clear the error area
         $('#export-error').fadeOut();
 
@@ -152,8 +150,6 @@ function bindEvents() {
                 .fadeIn();
             return;
         }
-
-        //console.log($('#select-export-fields').val().join());
 
         switch (selectedOption) {
             // data matching search
@@ -173,7 +169,6 @@ function bindEvents() {
 
                 // was there a highlighed marker
                 if (highlightedMarkerId) {
-                    //console.log(highlightedMarkerId)
                     // using the marker id (geohash name) and the length construct an fq to query SOLR
                     var len = highlightedMarkerId.length,
                         geohashFq = '&fq=geohash_' + len + ':' + highlightedMarkerId;
@@ -188,7 +183,6 @@ function bindEvents() {
 
                     // build the url and download the data
                     url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
-                    //console.log(url);
                     this.href = url;
                 } else { // no marker is selected
                     // inform the user that there are no selected markers
@@ -429,7 +423,6 @@ function bindEvents() {
         if (checkSeasonal()) return;
 
         $('.season-toggle').each(function () {
-            //console.log($(this).prop('checked'));
             if ($(this).prop('checked')) {
                 $(this).bootstrapToggle('off');
             }
@@ -522,7 +515,6 @@ function bindEvents() {
         // normIrValues = (1 - (secondVal / 10 + 0.1)).roundDecimals(1) + ' TO ' + (1 - (firstVal /
         // 10)).roundDecimals(1);
         normIrValues = scaleToIrMap[secondVal] + ' TO ' + scaleToIrMap[firstVal];
-        // console.log(normIrValues);
 
         $('#search_ac').tagsinput('add', {
             value: normIrValues,
@@ -1036,6 +1028,7 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Mutated Protein Value')
         }
     ];
+    
 
     // empty the dropdown
     $('#select-export-fields').empty();
@@ -1168,13 +1161,13 @@ function loadSolr(parameters) {
             var key = el.val,
                 elStats = [],
                 fullElStats = [],
-                //geoCount = viewMode === 'abnd' ? el.sumSmp : el.count,
                 tagsTotalCount = 0;
             var geoTerms = el.term.buckets;
 
             geoTerms.forEach(function (inEl) {
                 var inKey = inEl.val;
 
+                // store normalised abundance for abundance mode, else store samples/assay counts
                 if (viewMode === 'abnd') { // || viewMode ==='geno') {
                     var inCount = inEl.sumSmp;
                 } else if (viewMode === 'geno') {
@@ -1188,7 +1181,6 @@ function loadSolr(parameters) {
                 if (inCount > 0) {
                     fullElStats.push({
                         "label": inKey,
-                        // store normalised abundance for abundance mode, else store samples/assay counts
                         "value": inCount,
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
@@ -1328,8 +1320,8 @@ function loadSolr(parameters) {
                                         PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
                                     } else {
                                         createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
-                                        panel.data('has-graph', true);
-                                    } 
+                                    }
+                                    panel.data('has-graph', true);
                                     break;
                                 case "marker-table":
                                     updateTable("#table-contents", buildBbox(recBounds));
@@ -1373,10 +1365,12 @@ function loadSolr(parameters) {
                                     gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});
 
                                     // Geno viewmode will say that it is not availble in that mode
-                                    if (viewMode === 'abnd') {
-                                        PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
-                                    } else if (!panel.data('has-graph')) {
-                                        createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                    if (!panel.data('has-graph')) {
+                                        if (viewMode === 'abnd') {
+                                            PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                        } else { 
+                                            createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                        }
                                         panel.data('has-graph', true);
                                     }
                                     break;
@@ -1662,7 +1656,6 @@ function loadSolr(parameters) {
     }, buildMap)
     .done(function () {
         $(document).trigger("jsonLoaded");
-        // console.log("jsonLoaded")
     })
     .fail(function () {
         console.log("Failed to load json");
@@ -1716,7 +1709,6 @@ function buildBbox(bounds) {
     var solrBbox;
     //typeof attr !== typeof undefined && attr !== false
     if (typeof bounds.getEast() !== undefined && bounds.getEast() !== false) {
-        //console.log("bounds IS an object");
         // fix endless bounds of leaflet to comply with SOLR limits
         var south = bounds.getSouth();
         if (south < -90) {
@@ -2202,10 +2194,7 @@ function filterMarkers(items, flyTo) {
 
     items.forEach(function (element) {
 
-        // // VB-7318 
-        // console.log('element--------');
-        // console.log(element);
-
+        //VB-7318 
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
 
         if (element.type === 'Date') {
@@ -2258,7 +2247,6 @@ function filterMarkers(items, flyTo) {
 
         if (element.type === 'Norm-IR') {
 
-            // console.log(element.normIrValues);
             terms[element.type].push({
                 "field": element.field, "value": '[' + element.normIrValues + ']'
             });
@@ -2275,15 +2263,11 @@ function filterMarkers(items, flyTo) {
                 // Successful match
                 // VB-7318
                 terms[element.type].push({"field": element.field, "value": element.value, "notBoolean": element.notBoolean});
-
             } else {
                 // Match attempt failed
                 // VB-7318
                 terms[element.type].push({"field": element.field, "value": '*' + element.value + '*', "notBoolean": element.notBoolean});
-
             }
-
-            //console.log("inexact");
         }
         // VB-7318 add this to accommodate shared view
         if (element.notBoolean) {
@@ -2432,13 +2416,10 @@ function filterMarkers(items, flyTo) {
 
         }
         i++;
-
-        //console.log('lakis' + qryUrl);
     }
 
     // VB-7318 need to remove !!! as it is generated whenever pressing share link
     qryUrl = qryUrl.replace('!!!','');
-    // console.log(qryUrl);
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
@@ -2901,7 +2882,6 @@ function constructSeasonal(selectedMonths) {
 
                 rangesText.push(rangeText);
                 inRange = false;
-                // console.log(i + ': ' + month + ' ' + range);
             }
 
         } else {
@@ -2969,8 +2949,6 @@ function dateResolution(dateString) {
     }
 
     return false;
-    // console.log(match[1] + '-' + match[5] + '-' + match[7]);
-
 }
 
 function getRandom(min, max) {

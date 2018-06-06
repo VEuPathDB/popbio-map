@@ -36,7 +36,7 @@ L.Control.MapLegend = L.Control.extend({
                 icon: 'fa-caret-right',
                 title: 'Hide Legend',
                 onClick: function(button) {
-                    $(".legend").animate({width:'toggle'},320);
+                    $(".legend").animate({"right": "-=255px"},350);
                     $( ".easy-button-container" ).animate({ "right": "-=245px" }, 350);
                     $(".legend").removeClass("active");
                     $(".leaflet-bottom.leaflet-right .leaflet-bar").removeClass("active");
@@ -45,7 +45,7 @@ L.Control.MapLegend = L.Control.extend({
             }, {
                 stateName: 'show-legend',
                 onClick: function(button) {
-                    $(".legend").animate({width:'toggle'},370);
+                    $(".legend").animate({"right": "+=255px"},350);
                     $( ".easy-button-container" ).animate({ "right": "+=245px" }, 350);
                     $(".legend").addClass("active");
                     $(".leaflet-bottom.leaflet-right .leaflet-bar").addClass("active");

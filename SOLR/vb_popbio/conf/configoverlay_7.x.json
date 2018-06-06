@@ -47,7 +47,7 @@
       "name": "/abndPalette",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
       "invariants": {
@@ -76,11 +76,30 @@
         "json.facet": "{\"projects_category\":{\"terms\":\"projects_category\"},\"collection_year_s\":{\"type\":\"terms\",\"field\":\"collection_year_s\",\"sort\":\"index\"},\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
       }
     },
+    "/projectsCoordinates": {
+      "name": "/projectsCoordinates",
+      "class": "solr.SearchHandler",
+      "defaults": {
+        "echoParams": "none",
+        "df": "text"
+      },
+      "invariants": {
+        "wt": "json",
+        "json.nl": "map",
+        "rows": 0,
+        "facet.sort": "index",
+        "facet.limit": "-1",
+        "facet.mincount": "1",
+        "facet": "true",
+        "json": "{query:\"*:*\",filter:[\"bundle:${bundle:pop_sample}\",\"has_geodata:true\",\"projects_category:${projects:*}\",\"accession:${accession:*}\"]}",
+        "json.facet": "{\"ltAvg\":\"avg(geo_coords_ll_0_coordinate)\",\"lnAvg\":\"avg(geo_coords_ll_1_coordinate)\"}"
+      }
+    },
     "/abndGraphdata": {
       "name": "/abndGraphdata",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
     "invariants": {
@@ -96,7 +115,7 @@
       "name": "/smplPalette",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
       "invariants": {
@@ -110,7 +129,7 @@
       "name": "/irPalette",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
       "invariants": {
@@ -173,7 +192,7 @@
       "name": "/genoPalette",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
       "invariants": {
@@ -206,7 +225,7 @@
       "name": "/genoGraphdata",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
     "invariants": {
