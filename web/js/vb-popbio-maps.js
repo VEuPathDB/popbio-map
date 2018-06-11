@@ -2033,7 +2033,7 @@ function tableHtml(divid, results) {
                 row = {
                     accession: element.accession,
                     accessionType: 'Assay ID',
-                    bundleName: element.bundle_name,
+                    bundleName: 'Sample Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
@@ -2105,7 +2105,7 @@ function tableHtml(divid, results) {
                 row = {
                     accession: element.accession,
                     accessionType: 'Assay ID',
-                    bundleName: element.bundle_name,
+                    bundleName: 'Sample Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
