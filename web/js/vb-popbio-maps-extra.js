@@ -1655,10 +1655,11 @@
             $.each(search_terms, function(index, values) {
                 if (values.length > 1) {
                     values.forEach(function(value) {
-                        query_parameters = query_parameters + mapTypeToURLParam(index) + "[]=" + value + "&";
+                        // VB-7490 ~ Replace spaces for serialization purposes.
+                        query_parameters = query_parameters + mapTypeToURLParam(index) + "[]=" + value.replace(" ", "%20") + "&";
                     });
                 } else {
-                    query_parameters = query_parameters + mapTypeToURLParam(index) + "=" + values[0] + "&";
+                    query_parameters = query_parameters + mapTypeToURLParam(index) + "=" + values[0].replace(" ", "%20") + "&";
                 }
             });
 
