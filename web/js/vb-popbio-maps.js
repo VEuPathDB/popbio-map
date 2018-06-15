@@ -589,16 +589,16 @@ function initializeMap(parameters) {
     
     /* http://leaflet-extras.github.io/leaflet-providers/preview/ */
     /* Map Layers */
+    var street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    });
+
     var terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
         attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: 'abcd',
         minZoom: 0,
         maxZoom: 18,
         ext: 'png'
-    });
-
-    var street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
     });
 
     var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -626,7 +626,7 @@ function initializeMap(parameters) {
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
     });
 
-    map.addLayer(terrain);
+    map.addLayer(street);
 
     // initialize markers layer
     markers = new L.Map.SelectMarkers(map);
@@ -639,8 +639,8 @@ function initializeMap(parameters) {
 
     // assetLayerGroup.initLatLngStorage();
     var layerCtl = new L.Control.Layers({
-        'Terrain': terrain,
         'Street': street,
+        'Terrain': terrain,
         'Satellite': satellite,
         'Light': light,
         'Dark': dark,
