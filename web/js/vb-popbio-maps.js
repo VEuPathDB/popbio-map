@@ -659,7 +659,7 @@ function initializeMap(parameters) {
     //if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
     //Default glbSummarizeBy is Species set in the html file, updating it for Genotype view here
-    if (viewMode === "geno") glbSummarizeBy = "Allele";
+    if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
 
     // Now generate the legend
     // hardcoded species_category
