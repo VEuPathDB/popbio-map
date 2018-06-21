@@ -91,7 +91,7 @@
         "facet.limit": "-1",
         "facet.mincount": "1",
         "facet": "true",
-        "json": "{query:\"*:*\",filter:[\"bundle:${bundle:pop_sample}\",\"has_geodata:true\",\"projects_category:${projects:*}\",\"accession:${accession:*}\"]}",
+        "json": "{query:\"*:*\",filter:[\"bundle:${bundle:pop_sample}\",\"has_geodata:true\",\"projects_category:${projects:*}\",\"accession:${accession:*}\",\"collection_assay_id_s:${collection_assay_id:*}\"]}",
         "json.facet": "{\"ltAvg\":\"avg(geo_coords_ll_0_coordinate)\",\"lnAvg\":\"avg(geo_coords_ll_1_coordinate)\"}"
       }
     },
