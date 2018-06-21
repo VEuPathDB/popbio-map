@@ -358,8 +358,6 @@
             });
             acSuggestions.initialize(true);
             acOtherResults.initialize(true);
-
-            $("[data-id='SelectView']").tooltip("hide");
         });
     }
 
