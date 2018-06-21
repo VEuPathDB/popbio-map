@@ -693,7 +693,7 @@ function initializeMap(parameters) {
     $(".leaflet-control-zoom a").tooltip({
         placement: "left",
         trigger: "hover",
-        delay: { "show": 3000, "hide": 0 }
+        delay: { "show": 1000, "hide": 0 }
     });
 
     $(".leaflet-bottom.leaflet-right .leaflet-bar").tooltip({

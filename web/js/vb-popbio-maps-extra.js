@@ -2038,14 +2038,14 @@
             if ($(this).attr("data-original-title") == undefined) {
                 $(this).tooltip({
                     title: "Select map type (satellite, street map, etc)",
-                    delay: { "show": 2000, "hide": 0 }
+                    delay: { "show": 1000, "hide": 0 }
                 });
 
                 //Only way I was able to get the tooltip to appear after a certain time
                 //when it is first initialized
                 setTimeout(function() {
                     $(".leaflet-control-layers-expanded").tooltip("show")
-                }, 2000);
+                }, 1000);
             }
         }).on("mouseleave", ".leaflet-control-layers", function () {
             $("[role='tooltip']").css("display", "none");
