@@ -87,7 +87,10 @@ function bindEvents() {
                 }, delay);*/
                 $.getJSON(url, function (data) {
                     legend._populateLegend(data, glbSummarizeBy)
-                    $(".legend .dropdown").tooltip({placement: "left"});
+                    $(".legend .dropdown").tooltip({
+                        placement: "left",
+                        delay: { "show": 1000, "hide": 0 }
+                    });
                 });
                 $('#Filter-Terms').val('');
                 break;
@@ -677,24 +680,27 @@ function initializeMap(parameters) {
 
     //Initialize all tooltips from vb_geohashes_mean.html
     $("[data-tooltip='tooltip']").tooltip({
-        trigger: "hover"
+        trigger: "hover",
+        delay: { "show": 1000, "hide": 0 }
     });
 
     //Initialize tooltips for special cases
     $("[data-id='SelectView']").attr("title", "Select map view").tooltip({
-        trigger: "hover"
+        trigger: "hover",
+        delay: { "show": 1000, "hide": 0 }
     });
 
     $(".leaflet-control-zoom a").tooltip({
         placement: "left",
-        trigger: "hover"
+        trigger: "hover",
+        delay: { "show": 3000, "hide": 0 }
     });
 
     $(".leaflet-bottom.leaflet-right .leaflet-bar").tooltip({
         title: "Toggle to view/hide marker colorization and metadata categorization options",
         placement: "left",
         trigger: "hover",
-        delay: { "show": 300, "hide": 0 }
+        delay: { "show": 1000, "hide": 0 }
     });
 }
 
@@ -2199,15 +2205,17 @@ function tableHtml(divid, results) {
 
     });
 
-    //Applyting tooltip to active terms in table 
+    //Applying tooltip to active terms in table 
     $(".row div:first-child .active-term").tooltip({
         title: "Active term, click to add as a search filter",
-        placement:"right"
+        placement:"right",
+        delay: { "show": 1000, "hide": 0 }
     });
 
     $(".row div:nth-child(2) .active-term").tooltip({
         title: "Active term, click to add as a search filter",
-        placement:"bottom"
+        placement:"bottom",
+        delay: { "show": 1000, "hide": 0 }
     });
 }
 

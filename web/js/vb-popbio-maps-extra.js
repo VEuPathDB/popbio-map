@@ -318,11 +318,10 @@
                 }
 
                 $('#\\#swarm-plots').addClass('disabled');
-                //Add tooltip to the title of the chart
-                $("#\\#swarm-plots").tooltip('enable');
+                $("#\\#swarm-plots").parent("li").attr("data-original-title", "Disabled on this view");
             } else {
                 $('#\\#swarm-plots').removeClass('disabled');
-                $("#\\#swarm-plots").tooltip('disable');
+                $("#\\#swarm-plots").parent("li").attr("data-original-title", "View-specific data visualizations");
             }
 
 
@@ -1495,16 +1494,15 @@
                
         // update the export fields dropdown
         updateExportFields(viewMode);
-        $("#\\#swarm-plots").tooltip({placement: "right", title: "Disabled On This View"});
 
         // Add and remove the disabled class for the sidebar
         if (viewMode !== "ir" && viewMode !== "abnd") {
             $('#\\#swarm-plots').addClass('disabled');
-            $("#\\#swarm-plots").tooltip('enable');
-            
+            $("#\\#swarm-plots").parent("li").attr("title", "Disabled on this view");
+
+            //$("#\\#swarm-plots").tooltip({placement: "right", title: "Disabled On This View"});
         } else {
-            $('#\\#swarm-plots').removeClass('disabled');
-            $("#\\#swarm-plots").tooltip('disable');
+            $('#\\#swarm-plots').removeClass('disabled'); 
         }
 
         // Check if a center paramieter was passed with a projectID, if not, find the center to ensure marker will be visible
@@ -2039,12 +2037,17 @@
         //Adding mouseenter and mouseleave to nicely show/hide tooltip
         $("#map").on("mouseenter", ".leaflet-control-layers-expanded", function () {
             //Initialize tooltip only if it has not been initialized already
-            if ($(".leaflet-control-layers-expanded").attr("data-original-title") == undefined) {
-                $(".leaflet-control-layers-expanded").tooltip({
-                    title: "Select map type (satellite, street map, etc)"
-                })
+            if ($(this).attr("data-original-title") == undefined) {
+                $(this).tooltip({
+                    title: "Select map type (satellite, street map, etc)",
+                    delay: { "show": 2000, "hide": 0 }
+                });
 
-                $("#map .leaflet-control-layers-expanded").tooltip("show");
+                //Only way I was able to get the tooltip to appear after a certain time
+                //when it is first initialized
+                setTimeout(function() {
+                    $(".leaflet-control-layers-expanded").tooltip("show")
+                }, 2000);
             }
         }).on("mouseleave", ".leaflet-control-layers", function () {
             $("[role='tooltip']").css("display", "none");

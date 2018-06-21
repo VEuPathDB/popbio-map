@@ -668,7 +668,8 @@ L.Control.MapLegend = L.Control.extend({
         //Initialize tooltip only if it has not been initialized already
         if ($(".legend").attr("data-original-title") === undefined) {
             $(".legend").tooltip({
-                title: "Click to add search terms"
+                title: "Click to add search terms",
+                delay: { "show": 1000, "hide": 0 }
             });
         }
 
@@ -696,7 +697,10 @@ L.control.legend = function (url, options) {
 
     $.getJSON(url, function (data) {
         newLegend._populateLegend(data, options.summarizeBy);
-        $(".legend .dropdown").tooltip({placement: "left"});
+        $(".legend .dropdown").tooltip({
+            placement: "left",
+            delay: { "show": 1000, "hide": 0 }
+        });
     });
 
     return newLegend;
