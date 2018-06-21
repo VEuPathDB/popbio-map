@@ -1503,10 +1503,10 @@
             $('#\\#swarm-plots').removeClass('disabled'); 
         }
 
-        // Check if a center paramieter was passed with a projectID, if not, find the center to ensure marker will be visible
+        // Check if a center parameter was passed with a projectID, assayID, sampleID, or collectionID, if not, find the center to ensure marker will be visible
         // NOTE: Code might need to get improved if there is a case when a link has two of either projectID, assayID, and sampleID
         // but no center query parameter.  
-        if ((urlParams["projectID"] || urlParams["assayID"] || urlParams["sampleID"]) && !urlParams["center"]) {
+        if ((urlParams["projectID"] || urlParams["assayID"] || urlParams["sampleID"] || urlParams["collectionID"]) && !urlParams["center"]) {
             var coordinatesUrl = solrPopbioUrl + "projectsCoordinates?";
             var key;
             var filter;
@@ -1515,6 +1515,9 @@
             if (urlParams["projectID"]) {
                 filter = "projects=";
                 key = "projectID";
+            } else if (urlParams["collectionID"]) {
+                filter = "collection_assay_id=";
+                key = "collectionID";
             } else {
                 filter = "accession=";
 
