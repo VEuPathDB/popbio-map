@@ -1052,3 +1052,25 @@ div.error div, div.warning div, div.info div, div.hint div {
     80% { opacity: 0.9; }
     100% { opacity: 1; }
 }
+
+#menu-bar .wrapper {
+    padding: 0;
+    border: none;
+}
+
+#menu-bar .wrapper .inner{
+    width: 100%;
+}
+
+#menu-bar .toggle {
+    width: 100%;
+}
+
+/* Adding back border properites for the tooltip removed doing border: 0 on div.info div selector above */
+.legend .tooltip-arrow {
+    border-bottom-color: rgb(204, 204, 204);
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-top-color: rgb(204, 204, 204);
+    border-top-style: solid;
+}

@@ -34,13 +34,13 @@ L.Control.MapLegend = L.Control.extend({
             states:[{
                 stateName: 'hide-legend',
                 icon: 'fa-caret-right',
-                title: 'Hide Legend',
                 onClick: function(button) {
                     $(".legend").animate({"right": "-=255px"},350);
                     $( ".easy-button-container" ).animate({ "right": "-=245px" }, 350);
                     $(".legend").removeClass("active");
                     $(".leaflet-bottom.leaflet-right .leaflet-bar").removeClass("active");
                     button.state('show-legend');
+                    $(".leaflet-bottom.leaflet-right .leaflet-bar").tooltip("hide");
                 }   
             }, {
                 stateName: 'show-legend',
@@ -50,8 +50,8 @@ L.Control.MapLegend = L.Control.extend({
                     $(".legend").addClass("active");
                     $(".leaflet-bottom.leaflet-right .leaflet-bar").addClass("active");
                     button.state('hide-legend');
+                    $(".leaflet-bottom.leaflet-right .leaflet-bar").tooltip("hide");
                 },
-                title: 'Show Legend',
                 icon: 'fa-caret-left'
             }]
         }
@@ -374,7 +374,7 @@ L.Control.MapLegend = L.Control.extend({
         }
 
         var sumDropdownHtml =
-            '<div class="btn-group dropdown" id="summByDropdown" role="group" >' +
+            '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize markers and facet data by..." >' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
             glbSummarizeBy + ' ' +
             '<span class="caret"></span>' +
@@ -441,7 +441,7 @@ L.Control.MapLegend = L.Control.extend({
         }
 
         var dropdownsHTML =
-            '<div class="btn-group dropdown" id="summByDropdown" role="group" >' +
+            '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize markers and facet data by..." >' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
             glbSummarizeBy + ' ' +
             '<span class="caret"></span>' +
@@ -665,6 +665,14 @@ L.Control.MapLegend = L.Control.extend({
         options.palette = this.generatePalette(sortedItems);
         this.refreshLegend(options.palette);
 
+        //Initialize tooltip only if it has not been initialized already
+        if ($(".legend").attr("data-original-title") === undefined) {
+            $(".legend").tooltip({
+                title: "Click to add search terms",
+                delay: { "show": 1000, "hide": 0 }
+            });
+        }
+
         // moved this here to avoid querying SOLR before the palette is done building
         filterMarkers($("#search_ac").tagsinput('items'), flyTo)
     },
@@ -688,7 +696,11 @@ L.control.legend = function (url, options) {
     newLegend.bindTableFilter();
 
     $.getJSON(url, function (data) {
-        newLegend._populateLegend(data, options.summarizeBy)
+        newLegend._populateLegend(data, options.summarizeBy);
+        $(".legend .dropdown").tooltip({
+            placement: "left",
+            delay: { "show": 1000, "hide": 0 }
+        });
     });
 
     return newLegend;
