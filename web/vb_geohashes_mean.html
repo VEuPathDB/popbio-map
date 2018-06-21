@@ -106,7 +106,7 @@
     <area shape="poly" coords="0,0,100,100,0,100"
           title="This resource is currently under development. It may occasionally be unavailable. Please send all feedback to info@vectorbase.org">
 </map>
-<img src="images/ribbon.png" usemap="#ribbon" alt="beta"
+<img src="ribbon.png" usemap="#ribbon" alt="beta"
      style="position:absolute;bottom:0;left:0;border:none;z-index:100000;">
 
 <div id="min_width_container">
@@ -209,22 +209,22 @@
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
-            <li class="sidebar-icon"><a id="#vectorbase" role="tab">
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="VectorBase main menu"><a id="#vectorbase" role="tab">
                 <img src="/sites/default/files/ftp/images/dot_ked_100_trans.png" height=20 width=20 />
             </a></li>
-            <li class="sidebar-icon"><a id="#graphs" role="tab">
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="Summary statistics"><a id="#graphs" role="tab">
                 <span class="fa-stack fa-stack-sm">
                     <i class="fa fa-chrome fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x"></i>
                 </span></a>
             </li>
-            <li class="sidebar-icon"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
-            <li class="sidebar-icon"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
-            <li class="sidebar-icon"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="View-specific data visualizations"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="List details"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="Download data"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
             <!--<li class="sidebar-icon">-->
                 <!-- add GA -->
                 <!-- <a class="sidebar-icon" id="generate-link" title="Share view" onclick="ga('send', 'event', 'Popbio', 'shareview', 'Share view');"> -->
-                <a class="sidebar-icon" id="generate-link" title="Share view" onclick="gtag('event', 'shareview', {'event_category': 'Popbio', 'event_label': 'Share view'});">
+                <a class="sidebar-icon" id="generate-link" onclick="gtag('event', 'shareview', {'event_category': 'Popbio', 'event_label': 'Share view'});" data-tooltip="tooltip" data-placement="right" title="Share current map view">
                     <i class="fa fa-share-alt"></i>
                 </a>
             <!--</li>-->
@@ -494,7 +494,7 @@
                                 </span>
                             </td>
                             <td>
-                                Toggle legend On or Off to change categorization and coloring
+                                Toggle to view/hide marker colorization and metadata categorization options
                             </td>
                         </tr>
   
@@ -511,7 +511,7 @@
                                </span>
                             </td>
                             <td>
-                                Return to the main site
+                                VectorBase main menu
                             </td>
                         </tr>
 
@@ -533,7 +533,7 @@
                                 </span>
                             </td>
                             <td>
-                                Data visualization
+                                View-specific data visualization
                             </td>
                         </tr>
                         <tr>
@@ -697,19 +697,22 @@
             <label class="sr-only" for="search_ac">Search...</label>
             <div id="search-bar" class="input-group">
                 <span id="expand-menu" class="input-group-addon btn-info"
+                      title="Expand advanced search and configuration options"
+                      data-tooltip="tooltip"
+                      data-placement="bottom"
                       style="cursor: pointer;"
-                      title="Expand menu"
                       data-toggle="collapse"
                       data-target="#advanced-options">
-                    <i class="rotate fa fa-bars fa-fw" id="bars-icon">
-                    </i>
+                    <i class="rotate fa fa-bars fa-fw" id="bars-icon"></i>
                 </span>
                 <input type="text" class="form-control" placeholder="Search..." id="search_ac"
                        data-role="tagsinput"/>
                 <span id="reset-search" class="input-group-addon btn-danger"
                       style="cursor: pointer"
-                      title="Reset search"><i
-                        class="fa fa-times fa-fw"></i>
+                      title="Reset search and clear results"
+                      data-tooltip="tooltip"
+                      data-placement="bottom">
+                      <i class="fa fa-times fa-fw"></i>
                 </span>
             </div>
 
@@ -855,8 +858,8 @@
 
 
                     <select id="SelectView" class="selectpicker" style="text-align: center;"
-                            data-width="100%" data-icon-Base="fa fa-fw">
-                        <option data-icon="fa-tags" value="smpl">Samples</option>
+                        data-width="100%" data-icon-Base="fa fa-fw">
+                        <option  data-icon="fa-tags" value="smpl">Samples</option>
                         <option data-icon="fa-eyedropper" value="ir">Insecticide Resistance</option>
                         <option data-icon="fa-line-chart" value="abnd">Abundance</option>
                         <option data-icon="fa-sliders" value="geno">Genotypes</option>
@@ -867,7 +870,6 @@
                         <button type="button"
                                 id="date-select"
                                 class="btn btn-default"
-                                title="Search by date"
                                 data-toggle="collapse"
                                 data-target="#daterange"
                         >
@@ -880,7 +882,6 @@
                         <button type="button"
                                 id="season-select"
                                 class="btn btn-default"
-                                title="Seasonal search"
                                 data-toggle="collapse"
                                 data-target="#seasonal"
                         >
@@ -889,9 +890,13 @@
                         </button>
                     </span>
 
-                    <input id="world-toggle" type="checkbox" data-toggle="toggle"
-                           data-on="<i class='fa fa-globe'></i> Local suggestions"
-                           data-off="<i class='fa fa-globe'></i> Global suggestions">
+                    <div class="btn wrapper">
+                        <div class="btn wrapper inner" data-tooltip="tooltip" title="Toggle Global or Local search box auto-complete suggestions" data-placement="bottom">
+                        <input id="world-toggle" type="checkbox" data-toggle="toggle"
+                            data-on="<i class='fa fa-globe'></i> Local suggestions"
+                            data-off="<i class='fa fa-globe'></i> Global suggestions">
+                        </div>
+                    </div>
                 </div>
             </div>
 

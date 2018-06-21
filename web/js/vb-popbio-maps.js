@@ -87,6 +87,7 @@ function bindEvents() {
                 }, delay);*/
                 $.getJSON(url, function (data) {
                     legend._populateLegend(data, glbSummarizeBy)
+                    $(".legend .dropdown").tooltip({placement: "left"});
                 });
                 $('#Filter-Terms').val('');
                 break;
@@ -523,7 +524,7 @@ function bindEvents() {
             type: 'Norm-IR',
             field: 'phenotype_rescaled_value_f'
         });
-    });
+    }); 
 }
 
 /*
@@ -674,6 +675,27 @@ function initializeMap(parameters) {
     rectHighlight = null;
     map.spin(false);
 
+    //Initialize all tooltips from vb_geohashes_mean.html
+    $("[data-tooltip='tooltip']").tooltip({
+        trigger: "hover"
+    });
+
+    //Initialize tooltips for special cases
+    $("[data-id='SelectView']").attr("title", "Select map view").tooltip({
+        trigger: "hover"
+    });
+
+    $(".leaflet-control-zoom a").tooltip({
+        placement: "left",
+        trigger: "hover"
+    });
+
+    $(".leaflet-bottom.leaflet-right .leaflet-bar").tooltip({
+        title: "Toggle to view/hide marker colorization and metadata categorization options",
+        placement: "left",
+        trigger: "hover",
+        delay: { "show": 300, "hide": 0 }
+    });
 }
 
 
@@ -2177,6 +2199,16 @@ function tableHtml(divid, results) {
 
     });
 
+    //Applyting tooltip to active terms in table 
+    $(".row div:first-child .active-term").tooltip({
+        title: "Active term, click to add as a search filter",
+        placement:"right"
+    });
+
+    $(".row div:nth-child(2) .active-term").tooltip({
+        title: "Active term, click to add as a search filter",
+        placement:"bottom"
+    });
 }
 
 function filterMarkers(items, flyTo) {

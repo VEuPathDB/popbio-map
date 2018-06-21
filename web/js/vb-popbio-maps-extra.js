@@ -97,7 +97,6 @@
                         // match start: match.index
                         // capturing group n: match[n]
                         partSearch = match[1];
-                        //console.log(url + encodeURI(match[1]));
                         if ($('#world-toggle').prop('checked')) {
                             return solrTaUrl + viewMode + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
                         } else {
@@ -195,7 +194,6 @@
         $('#search_ac').tagsinput({
             tagClass: function (item) {
                 // VB-7318 add new class for notSelected, label-not - add item.notBoolean for shared view (need to check with === 'true')
-                // console.log('item.notBoolean---------' + item.notBoolean);
                 if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal') ) {
                     return mapTypeToLabel(item.type) + ' label-not';
                 } else {
@@ -361,6 +359,8 @@
             });
             acSuggestions.initialize(true);
             acOtherResults.initialize(true);
+
+            $("[data-id='SelectView']").tooltip("hide");
         });
     }
 
@@ -672,10 +672,6 @@
             $('#SelectView').selectpicker('val', 'smpl');
             // $('#view-mode').val('smpl');
         }
-
-        // // VB-7622 check urlParams
-        // console.log('urlParams----------------');
-        // console.log(urlParams);
 
         // VB-7318 set valueForNot variable for shared view
         var valueForNot = false;
@@ -1663,10 +1659,6 @@
                 }
             });
 
-            // // VB-7318
-            // console.log('query_parameters=====================');
-            // console.log(query_parameters);
-
             //Set the selected marker and panel that was being viewed
             if (highlighted_id != undefined) {
                 marker_param = "&markerID=" + highlighted_id;
@@ -1938,11 +1930,6 @@
         });*/
 
         $('#search_ac').on('itemAdded', function (event) {
-
-            // // VB-7318
-            // console.log('event.item before checking key combo-------------------------------------------------------------------');
-            // console.log(event.item);
-
             // itemAdded gets executed by applyParameters now so need to check if notBoolean was set - added more conditions after refactoring!
             if (((clickType.ctrlKey  || clickType.metaKey) || event.item.notBoolean) && (event.item.type !== 'Anywhere' && event.item.type !== 'Date' && event.item.type !== 'Seasonal'))  {
                 event.item.notBoolean = true;
@@ -1954,8 +1941,6 @@
                 event.item.notBoolean = false;
                 // cntrlIsPressed = false;      // set this to be false just in case?
             }
-            // console.log('event.item after checking key combo-------------------------------------------------------------------');
-            // console.log(event.item);
 
             // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
             // Checking if map object is set because applyParameter executes this function before initializeMap
@@ -2049,6 +2034,28 @@
             clickType.ctrlKey = event.ctrlKey;
             clickType.metaKey = event.metaKey;
             clickType.shiftKey = event.shiftKey;
+        });
+
+        //Adding mouseenter and mouseleave to nicely show/hide tooltip
+        $("#map").on("mouseenter", ".leaflet-control-layers-expanded", function () {
+            //Initialize tooltip only if it has not been initialized already
+            if ($(".leaflet-control-layers-expanded").attr("data-original-title") == undefined) {
+                $(".leaflet-control-layers-expanded").tooltip({
+                    title: "Select map type (satellite, street map, etc)"
+                })
+
+                $("#map .leaflet-control-layers-expanded").tooltip("show");
+            }
+        }).on("mouseleave", ".leaflet-control-layers", function () {
+            $("[role='tooltip']").css("display", "none");
+        });
+
+        //Logic to only display the title one time in the legend
+        $("#map").on("mouseenter", ".legend", function(event) {
+            if (!$(this).data("preventTooltip")) {
+                $(this).tooltip("disable");
+                $(this).data("preventTooltip", true);
+            }
         });
     }
 
