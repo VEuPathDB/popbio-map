@@ -325,16 +325,9 @@
             }
 
 
-            //Change the maximum zoom level depending on view
-            if (viewMode == 'abnd') {
-                map.options.maxZoom = 12;
-                // Covering case where a user might be in a different view zoomed in all the way
-                if (map.getZoom() > 12) {
-                    map.setZoom(12);
-                }
-            } else {
-                map.options.maxZoom = 15;
+            map.options.maxZoom = 15;
 
+            if (viewMode !== 'abnd') {
                 //Hiding the notices from the abundance graph
                 $("#projects-notice").hide();
                 $("#resolution-selector-group").hide();
