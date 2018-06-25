@@ -558,7 +558,7 @@ function initializeMap(parameters) {
     }
 
     //Set the maximum zoom level depending on view
-    if (viewMode == "abnd") {
+    if (0 && viewMode == "abnd") { // disabled this special treatment for VB-2016-06 VB-7634
         maxZoom = 12;
         // Cover case where user might pass a higher zoom level in abnd view
         if (zoomLevel > 12) {
