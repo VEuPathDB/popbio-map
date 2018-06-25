@@ -324,9 +324,6 @@
                 $("#\\#swarm-plots").parent("li").attr("data-original-title", "View-specific data visualizations");
             }
 
-
-            map.options.maxZoom = 15;
-
             if (viewMode !== 'abnd') {
                 //Hiding the notices from the abundance graph
                 $("#projects-notice").hide();
