@@ -557,15 +557,6 @@ function initializeMap(parameters) {
         center = [23.079, 3.515];
     }
 
-    //Set the maximum zoom level depending on view
-    if (0 && viewMode == "abnd") { // disabled this special treatment for VB-2016-06 VB-7634
-        maxZoom = 12;
-        // Cover case where user might pass a higher zoom level in abnd view
-        if (zoomLevel > 12) {
-            zoomLevel = 12;
-        }
-    }
-
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
         center: center,
