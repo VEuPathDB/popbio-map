@@ -284,9 +284,6 @@
 
                 $("#resolution-selector-group").hide();
             } else {
-                //This variable does not get populated fast enough so need to get it before creating the grap
-                //Seems like I will need to go to the past codebaseh
-
                 $.ajax({
                     beforeSend: function(xhr) {
                         //Clear chart area and start the spinner
@@ -303,7 +300,6 @@
                     url: queryUrl,
                     dataType: 'json',
                     success: function(json) {
-                        console.log(json)
                         setHighchartsData(json);
                     },
                     error: function() {
