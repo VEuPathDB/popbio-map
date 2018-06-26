@@ -8,42 +8,21 @@
 
     <!-- Remote CSS styles -->
     <link rel="stylesheet" href="css/vectorbase.css" type="text/css" media="screen"/>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
           rel="stylesheet">
     <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" type="text/css" media="screen"/>-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
     <!-- End of remote CSS styles -->
 
+    <link rel="stylesheet" type="text/css" href="dist/css/VB_popbio_map.min.css"/>
 
-    <!-- Local CSS styles <replaced with dist/css/VB_popbio_map.min.css when compiled-->
-    <link rel="stylesheet" href="libs/leaflet-dvf/css/dvf.css" type="text/css" media="screen"/>
-    <!--<link rel="stylesheet" href="css/MarkerCluster.Default.css" type="text/css" media="screen"/>-->
-    <link rel="stylesheet" href="libs/leaflet.fullscreen/leaflet.fullscreen.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/leaflet-zoom-min/L.Control.ZoomMin.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/sidebar-v2/leaflet-sidebar.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="libs/nvd3/build/nv.d3.css" type="text/css" media="screen"/>
-    <!--<link rel="stylesheet" href="libs/Leaflet.vector-markers/Leaflet.vector-markers.css">-->
-    <link rel="stylesheet" href="css/typeaheadjs.css">
-    <link rel="stylesheet" href="css/bootstrap-yeti.css">
-    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput.css"/>
-    <link rel="stylesheet" href="libs/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css"/>
-
-    <!-- Bootstrap toggles -->
-    <link rel="stylesheet" href="libs/bootstrap-toggle/css/bootstrap-toggle.css"/>
-
-    <!-- Bootstrap slider -->
-    <link rel="stylesheet" href="libs/bootstrap-slider/dist/css/bootstrap-slider.css"/>
-
-    <link rel="stylesheet" href="css/vb-popbio-maps.css">
-    <!-- bootstrap-select -->
-    <link rel="stylesheet" href="libs/bootstrap-select/dist/css/bootstrap-select.min.css">
-    <!-- End of local CSS styles -->
 
     <!-- Remote Javascript libraries -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.2.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.2.js"></script>
     <!--<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>-->
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -51,55 +30,20 @@
             charset="utf-8"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"
             charset="utf-8"></script>
+    <!-- MapQuest-->
+    <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=NC7FvPNcQKOEloh7oL3ZFOaMTD8iqfQI"></script>
     <!-- Include Date Range Picker -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
     <!-- adding highcharts -->
     <!-- <script type="text/javascript" src="https://code.highcharts.come/highcharts.src.js"></script> -->
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <!-- End of remote Javascript libraries -->
 
-    <!-- Local Javascript libraries-->
-    <script type="text/javascript" src="libs/leaflet-dvf/leaflet-dvf.js"></script>
-    <script type="text/javascript" src="libs/leaflet.fullscreen/Leaflet.fullscreen.js"></script>
 
-    <script type="text/javascript" src="libs/spin.js/spin.js"></script>
-    <script type="text/javascript" src="libs/Leaflet.Spin/leaflet.spin.js"></script>
-    <script type="text/javascript" src="libs/leaflet-zoom-min/L.Control.ZoomMin.js"></script>
-    <script type="text/javascript" src="libs/sidebar-v2/leaflet-sidebar.js"></script>
-    <!-- Bootstrap toggles -->
-    <script type="text/javascript" src="libs/bootstrap-toggle/js/bootstrap-toggle.js"></script>
-    <!-- Boostrap slider -->
-    <script type="text/javascript" src="libs/bootstrap-slider/dist/bootstrap-slider.js"></script>
-    <!-- Added geohash to enable geohashes layer -->
-    <script type="text/javascript" src="libs/geohash-js/geohash.js"></script>
-    <script type="text/javascript" src="libs/node-geohash/main.js"></script>
+    <script type="text/javascript" src="dist/js/VB_popbio_map_libs.min.js" charset="utf-8"></script>
 
-    <script type="text/javascript" src="libs/Leaflet.EasyButton/easy-button.js"></script>
-    <!-- bootstrap-select -->
-    <script type="text/javascript" src="libs/bootstrap-select/dist/js/bootstrap-select.js"></script>
-
-
-    <!-- VB code -->
-    <script type="text/javascript" src="js/map.Legend.js"></script>
-    <script type="text/javascript" src="js/Icon.Canvas.js"></script>
-    <script type="text/javascript" src="libs/nvd3/build/nv.d3.js"></script>
-    <script type="text/javascript" src="libs/typeahead.js/dist/typeahead.bundle.js"></script>
-    <script type="text/javascript" src="libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-    <script type="text/javascript" src="libs/beeswarm/beeswarm.js"></script>
-    <script type="text/javascript" src="libs/jsrender/jsrender.js"></script>
-    <script type="text/javascript" src="libs/jquery-infinite-scroll-helper/jquery.infinite-scroll-helper.js"></script>
-    <script type="text/javascript" src="libs/clipboard.js/dist/clipboard.js"></script>
-    <script type="text/javascript" src="js/vb-violin-plots.js"></script>
-    <script type="text/javascript" src="js/map.popbioMarkers.js"></script>
-    <script type="text/javascript" src="js/map.multipleMarkers.js"></script>
-    <!--Added geohashes-layers.js to enable geohashes -->
-    <script type="text/javascript" src="js/geohashes-layer.js"></script>
-    <script type="text/javascript" src="js/vb-popbio-maps.js"></script>
-    <script type="text/javascript" src="js/vb-highcharts.js"></script>
-    <script type="text/javascript" src="js/vb-popbio-maps-extra.js"></script>
 </head>
-
 
 <body>
 <map name="ribbon">
@@ -112,7 +56,7 @@
 <div id="min_width_container">
 
     <!-- Keep the following line for grunt-->
-    <!-- MAP CUT START -->
+    <!-- MAP PASTE START -->
     <div class="no-interactions modal-backdrop fade" id="no-interactions"></div>
     <div class="modal fade" id="Table-Legend-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog modal-lg" role="document">
@@ -2086,8 +2030,7 @@
 
   gtag('config', 'UA-6417661-3');
 </script>
-<!-- MAP CUT END -->
+<!-- MAP PASTE END -->
 <!-- Keep the above line for grunt-->
 </body>
 </html>
-
