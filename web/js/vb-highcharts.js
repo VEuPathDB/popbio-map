@@ -284,9 +284,6 @@
 
                 $("#resolution-selector-group").hide();
             } else {
-                //This variable does not get populated fast enough so need to get it before creating the grap
-                //Seems like I will need to go to the past codebaseh
-
                 $.ajax({
                     beforeSend: function(xhr) {
                         //Clear chart area and start the spinner
@@ -303,7 +300,6 @@
                     url: queryUrl,
                     dataType: 'json',
                     success: function(json) {
-                        console.log(json)
                         setHighchartsData(json);
                     },
                     error: function() {
@@ -313,10 +309,8 @@
                     complete: function() {
                         //Construct graph with ajax call to Solr servr
                         var data = PopulationBiologyMap.data.highcharts.data;
-                        PopulationBiologyMap.methods.createStockchart(data, "");
-                        //Add tooltip to the title of the chart
+                        PopulationBiologyMap.methods.createStockchart(data);
                         PaneSpin('swarm-plots', 'stop');
-                        //$('#swarm-chart-area').show()
                     }
                 });
             }
@@ -434,7 +428,7 @@
         $("#resolution-selector-title .fa-exclamation-triangle").tooltip({placement: "top", title: "Graphed data contains mixed temporal resolution.  Selecting a higher resolution will cause some data to disappear."});
     }
 
-    PopulationBiologyMap.methods.createStockchart = function(data, title) {
+    PopulationBiologyMap.methods.createStockchart = function(data) {
         //$('#swarm-chart-area').highcharts('StockChart',{
         //Delete previous created chart object and add a new one
         if (Highcharts.charts[0] !== undefined ) {
@@ -449,10 +443,6 @@
             legend: {
                 enabled: true,
                 labelFormat: "<i>{name}</i>"
-            },
-            title: {
-                useHTML: true,
-                text: title
             },
             chart: {
                 type: 'scatter',
