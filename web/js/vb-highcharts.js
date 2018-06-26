@@ -309,7 +309,7 @@
                     complete: function() {
                         //Construct graph with ajax call to Solr servr
                         var data = PopulationBiologyMap.data.highcharts.data;
-                        PopulationBiologyMap.methods.createStockchart(data, "");
+                        PopulationBiologyMap.methods.createStockchart(data);
                         //Add tooltip to the title of the chart
                         PaneSpin('swarm-plots', 'stop');
                         //$('#swarm-chart-area').show()
