@@ -44,7 +44,7 @@
     }
 
     PopulationBiologyMap.data.highcharts = {};
-    
+
     if (PopulationBiologyMap.methods == undefined) {
         PopulationBiologyMap.methods = {};
     }
@@ -90,11 +90,11 @@
                 max_date = new Date(collection_year_list[last_year_position].val + '-12-31T00:00:00Z').getTime();
                 var number_of_days = (max_date-min_date) / (1000 * 3600 * 24);
 
-                
+
                 for (var j = 0; j < collection_resolution_list.length; j++) {
                     var resolution_value = collection_resolution_list[j].val
                     collection_resolutions.push(resolution_value);
-                } 
+                }
 
                 //Get the possible ranges for the chart navigator
                 var ranges_list = {};
@@ -107,7 +107,7 @@
                         //Possible range is approx. 3 months
                         ranges_list["month"] = 3600 * 1000 * 24 * 90;
                     } else {
-                       //Possible range is 10 days 
+                       //Possible range is 10 days
                        ranges_list["day"] = 3600 * 1000 * 24 * 10;
                     }
                 }
@@ -173,19 +173,19 @@
                 if (highest_resolution === "year") {
                     $("#Monthly").addClass("disabled");
                     $("#EpiWeekly").addClass("disabled");
-                    $("#Daily").addClass("disabled"); 
+                    $("#Daily").addClass("disabled");
                 } else if (highest_resolution === "month") {
                     $("#EpiWeekly").addClass("disabled");
                     $("#Daily").addClass("disabled");
                 }
 
-                //Add a tooltip letting user know the buttons are disabled because 
+                //Add a tooltip letting user know the buttons are disabled because
                 //no higher resolution is available
                 if (highest_resolution !== "day") {
                     //Destory tooltip created and recreate with a different title
                     $("#resolution-selector .disabled").tooltip("destroy");
                     $("#resolution-selector .disabled").tooltip({
-                        position: 'top', 
+                        position: 'top',
                         title: "The data is not available at a higher resolution"
                     });
                 }
@@ -227,13 +227,13 @@
                             }, {
                                 text: 'Download PNG image',
                                 onclick: function() {
-                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PNG'});                          
+                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance PNG'});
                                     this.exportChart();
                                 }
                             }, {
                                 text: 'Download JPEG image',
                                 onclick: function() {
-                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance JPEG'});                          
+                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance JPEG'});
                                     this.exportChart({
                                         type: 'image/jpeg'
                                     });
@@ -249,7 +249,7 @@
                             }, {
                                 text: 'Download SVG vector image',
                                 onclick: function() {
-                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance SVG'});                          
+                                    gtag('event', 'exportchart', {'event_category': 'Popbio', 'event_label': 'Abundance SVG'});
                                     this.exportChart({
                                         type: 'image/svg+xml'
                                     });
@@ -259,12 +259,12 @@
                         }
                     }
                 }
-            });    
+            });
 
-            //Get graph data for project and build chart                
+            //Get graph data for project and build chart
             //Construct URL used to retrieve data from solr
             var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
-            var date_resolution_field = resolution_to_solr_field[resolution]; 
+            var date_resolution_field = resolution_to_solr_field[resolution];
             var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
             // unfortunately 'term' seems to be a misnomer.  'field' would be better!
             var facet_term = "&term=" + term + "&date_resolution=" + date_resolution_field;
@@ -286,15 +286,7 @@
             } else {
                 //This variable does not get populated fast enough so need to get it before creating the grap
                 //Seems like I will need to go to the past codebaseh
-                if (projects_list.length > 1) {
-                    $("#projects-notice").show();
-                    PopulationBiologyMap.data.project_title = undefined;
-                } else {
-                    $("#projects-notice").hide();
-                    PopulationBiologyMap.data.project_title = '';
-                    PopulationBiologyMap.data.project_id = projects_list[0].val;
-                }
-                
+
                 $.ajax({
                     beforeSend: function(xhr) {
                         //Clear chart area and start the spinner
@@ -311,12 +303,7 @@
                     url: queryUrl,
                     dataType: 'json',
                     success: function(json) {
-                        if (PopulationBiologyMap.data.project_title != undefined) {
-                            PopulationBiologyMap.data.project_title = json.response.docs[0].project_titles_txt;
-                        } else {
-                            PopulationBiologyMap.data.project_title = '';
-                        }
-
+                        console.log(json)
                         setHighchartsData(json);
                     },
                     error: function() {
@@ -326,12 +313,8 @@
                     complete: function() {
                         //Construct graph with ajax call to Solr servr
                         var data = PopulationBiologyMap.data.highcharts.data;
-                        var project_title = PopulationBiologyMap.data.project_title;
-                        var project_id = PopulationBiologyMap.data.project_id;
-                        var title = "<a href=/popbio/project?id=" + project_id + ">" + project_title + "</a>";
-                        PopulationBiologyMap.methods.createStockchart(data, title); 
+                        PopulationBiologyMap.methods.createStockchart(data, "");
                         //Add tooltip to the title of the chart
-                        $(".highcharts-title").tooltip({placement: "bottom", title:project_title});
                         PaneSpin('swarm-plots', 'stop');
                         //$('#swarm-chart-area').show()
                     }
@@ -354,7 +337,7 @@
                 } else {
                     $("#resolution-selector-title .fa-exclamation-triangle").removeClass("danger");
                 }
-                
+
                 var chart = Highcharts.charts[0];
                 var extremes = chart.xAxis[0].getExtremes();
                 var start_date = new Date(extremes.min).toISOString();
@@ -397,19 +380,19 @@
                     $("#Daily").addClass("disabled");
                 }
 
-                //Add a tooltip letting user know the buttons are disabled because 
+                //Add a tooltip letting user know the buttons are disabled because
                 //no higher resolution is available
                 if (highest_resolution !== "day") {
                     //Destory tooltip created and recreate with a different title
                     $("#resolution-selector .disabled").tooltip("destroy");
                     $("#resolution-selector .disabled").tooltip({
-                        position: 'top', 
+                        position: 'top',
                         title: "The data is not available at a higher resolution"
                     });
                 }
 
                 var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
-                var date_resolution_field = resolution_to_solr_field[resolution]; 
+                var date_resolution_field = resolution_to_solr_field[resolution];
                 var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
                 var facet_term = "&term=" + term + "&date_resolution=" + date_resolution_field;
                 //var queryUrl = abundanceUrl + qryUrl + facet_term + highcharts_filter;
@@ -523,13 +506,13 @@
 
                     if (glbSummarizeBy === "Species") {
                         var tooltip = '<i><b>' + this.series.name + '</b></i><br/>';
-                    } else { 
+                    } else {
                         var tooltip =  '<b>' + this.series.name +'</b><br>';
                     }
 
-                    tooltip += '<b>Date:</b> ' + collection_date  + '<br>' + 
-                        '<b>Abundance:</b> ' + this.y + '<br>' + 
-                        '<b>Resolution:</b> ' + data_type + '<br>' + 
+                    tooltip += '<b>Date:</b> ' + collection_date  + '<br>' +
+                        '<b>Abundance:</b> ' + this.y + '<br>' +
+                        '<b>Resolution:</b> ' + data_type + '<br>' +
                         '<b>Year:</b> ' + year;
 
                     if (resolution === "EpiWeekly") {
@@ -617,13 +600,13 @@
             $("#Daily").addClass("disabled");
         }
 
-        //Add a tooltip letting user know the buttons are disabled because 
+        //Add a tooltip letting user know the buttons are disabled because
         //no higher resolution is available
         if (highest_resolution !== "day") {
             //Destory tooltip created and recreate with a different title
             $("#resolution-selector .disabled").tooltip("destroy");
             $("#resolution-selector .disabled").tooltip({
-                position: 'top', 
+                position: 'top',
                 title: "The data is not available at a higher resolution"
             });
         }
@@ -631,7 +614,7 @@
 
         //Construct the URL that will be used to get the new data
         var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
-        var date_resolution_field = resolution_to_solr_field[resolution]; 
+        var date_resolution_field = resolution_to_solr_field[resolution];
         var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
         var facet_term = "&term=" + term + "&date_resolution=" + date_resolution_field;
         var queryUrl = abundanceUrl + qryUrl + facet_term + highcharts_filter + "&fq=collection_date:[" + start_date + " TO " + end_date +"]";
@@ -675,7 +658,7 @@
                 //Used to hold the formatted data for a single species (or protocol, etc)  chart
                 var marker_color = legend.options.palette[term_collections.val];
                 var single_term_data = {
-                    "name": term_collections.val, 
+                    "name": term_collections.val,
                     "marker": {
                     "symbol": "circle"
                 },
@@ -705,7 +688,7 @@
                     } else {
                         single_term_data.data.push([unix_date, average_abundance]);
                     }
-                });            
+                });
                 PopulationBiologyMap.data.highcharts.data.push(single_term_data);
             });
         }
@@ -718,12 +701,12 @@
         if(w == 53){
             _days = (1 + (w - 1) * 7);
         } else {
-            _days = (w * 7); 
+            _days = (w * 7);
         }
-        
+
         var _date = new Date(y,0,_days);
         _date.setDate(_date.getDate() - _date.getDay());
-        
+
         return _date;
 }
 
