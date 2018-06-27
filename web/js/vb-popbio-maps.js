@@ -2621,6 +2621,8 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-collection-protocol';
             case 'Date' :
                 return 'label label-info label-date'
+            case 'Datepicker' :
+                return 'label label-info label-date'
             case 'Seasonal' :
                 return 'label label-info label-seasonal'
             case 'Norm-IR' :

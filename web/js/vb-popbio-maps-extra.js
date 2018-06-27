@@ -1641,10 +1641,10 @@
                 if (values.length > 1) {
                     values.forEach(function(value) {
                         // VB-7490 ~ Replace spaces for serialization purposes.
-                        query_parameters = query_parameters + mapTypeToURLParam(index) + "[]=" + value.replace(" ", "%20") + "&";
+                        query_parameters = query_parameters + mapTypeToURLParam(index) + "[]=" + value + "&";
                     });
                 } else {
-                    query_parameters = query_parameters + mapTypeToURLParam(index) + "=" + values[0].replace(" ", "%20") + "&";
+                    query_parameters = query_parameters + mapTypeToURLParam(index) + "=" + values[0] + "&";
                 }
             });
 
@@ -1656,7 +1656,7 @@
 
             query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link;
 
-            url = url + query_parameters;
+            url = url + encodeURI(query_parameters);
 
             //Add URL to attribute used to copy to clipboard
             $("#generate-link").attr("data-clipboard-text", url);
