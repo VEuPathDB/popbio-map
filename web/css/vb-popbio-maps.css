@@ -705,6 +705,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     display: none;
     z-index: 3001;
     overflow: visible;
+    transition: all .5s;
 }
 
 @media (max-width: 767px) {
@@ -960,7 +961,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     cursor: not-allowed;
 }
 
-.sidebar-icon > .tooltip {
+.tooltip {
     background-color: transparent;
     background: transparent;
     border: none;
@@ -1026,3 +1027,50 @@ div.error div, div.warning div, div.info div, div.hint div {
     }
 }
 
+/*Do not prevent disabled buttons from displaying a tooltip*/
+#add-dates[disabled] {
+    pointer-events: none;
+}
+
+#add-dates-tooltip.disabled {
+    cursor: not-allowed;
+}
+
+
+/* Fade in the active panels ot give it a better feel */
+.sidebar-pane.active {
+    opacity: 1;
+    animation-name: fadeIn;
+    animation-duration: .5s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    20% { opacity: 0; }
+    40% { opacity: 0.3; }
+    60% { opacity: 0.5; }
+    80% { opacity: 0.9; }
+    100% { opacity: 1; }
+}
+
+#menu-bar .wrapper {
+    padding: 0;
+    border: none;
+}
+
+#menu-bar .wrapper .inner{
+    width: 100%;
+}
+
+#menu-bar .toggle {
+    width: 100%;
+}
+
+/* Adding back border properites for the tooltip removed doing border: 0 on div.info div selector above */
+.legend .tooltip-arrow {
+    border-bottom-color: rgb(204, 204, 204);
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-top-color: rgb(204, 204, 204);
+    border-top-style: solid;
+}

@@ -87,6 +87,10 @@ function bindEvents() {
                 }, delay);*/
                 $.getJSON(url, function (data) {
                     legend._populateLegend(data, glbSummarizeBy)
+                    $(".legend .dropdown").tooltip({
+                        placement: "left",
+                        delay: { "show": 1000, "hide": 0 }
+                    });
                 });
                 $('#Filter-Terms').val('');
                 break;
@@ -133,8 +137,6 @@ function bindEvents() {
             zeroFilter = '&zeroFilter=' + ($('#checkbox-export-zeroes').is(":checked") ? '' : '-sample_size_i:0');
         }
 
-        // console.log("zeroFilter is: "+zeroFilter+ " and mode is:"+viewMode);
-
         // clear the error area
         $('#export-error').fadeOut();
 
@@ -152,8 +154,6 @@ function bindEvents() {
                 .fadeIn();
             return;
         }
-
-        //console.log($('#select-export-fields').val().join());
 
         switch (selectedOption) {
             // data matching search
@@ -173,7 +173,6 @@ function bindEvents() {
 
                 // was there a highlighed marker
                 if (highlightedMarkerId) {
-                    //console.log(highlightedMarkerId)
                     // using the marker id (geohash name) and the length construct an fq to query SOLR
                     var len = highlightedMarkerId.length,
                         geohashFq = '&fq=geohash_' + len + ':' + highlightedMarkerId;
@@ -188,7 +187,6 @@ function bindEvents() {
 
                     // build the url and download the data
                     url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
-                    //console.log(url);
                     this.href = url;
                 } else { // no marker is selected
                     // inform the user that there are no selected markers
@@ -267,7 +265,8 @@ function bindEvents() {
             '</div>';
 
         switch (type) {
-            case 'Projects':
+            // VB-7622 Projects -> Project
+            case 'Project':
                 template = $.templates("#projectInfoTemplate");
                 entityURL = '/popbio/project/?id=' + id;
                 entityRestURL = '/popbio/REST/project/' + id + '/head';
@@ -398,75 +397,7 @@ function bindEvents() {
             })
         ;
 
-    })
-
-    // Active terms
-    $(document).on("click", '.active-term', function () {
-        highlightedId = $('.highlight-marker').attr('id');
-
-        if ($('.sidebar-pane.active').attr('id') === 'swarm-plots') {
-            selectedPlotType = $('#plotType').val();
-
-        } else {
-            $('#plotType').val('none');
-        }
-
-        $('#search_ac').tagsinput('add', {
-            value: $(this).attr('value'),
-            activeTerm: true,
-            type: $(this).attr('type'),
-            field: mapTypeToField($(this).attr('type')),
-            qtype: 'exact'
-
-        });
-
-        var tooltip = d3.select('#beeswarmPointTooltip');
-        if ($('#no-interactions').hasClass("foreground")) {
-
-            tooltip.transition()
-                .duration(500)
-                .style("opacity", 0)
-                .style("z-index", -1000000);
-            $('#no-interactions').removeClass("in").removeClass("foreground");
-            stickyHover = false;
-
-        }
-    })
-    .on("click", '.active-legend', function () {
-        highlightedId = $('.highlight-marker').attr('id');
-        PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
-
-        $('#search_ac').tagsinput('add', {
-            value: $(this).attr('value'),
-            activeTerm: true,
-            type: $(this).attr('type'),
-            field: mapTypeToField($(this).attr('type')),
-            qtype: 'exact'
-        });
-
-        var tooltip = d3.select('#beeswarmPointTooltip');
-        if ($('#no-interactions').hasClass("foreground")) {
-            tooltip.transition()
-                .duration(500)
-                .style("opacity", 0)
-                .style("z-index", -1000000);
-            $('#no-interactions').removeClass("foreground");
-            stickyHover = false;
-        }
-
-        //Adding the click event for the map
-        map.on("click", PopulationBiologyMap.methods.resetMap);
-    })
-    // This is here to trigger an update of the graphs when an active-term is clicked
-    // FixMe: Have to solve the issue with pruneclusters first
-    // With the code change I have done, it seems that this function might not be needed anymore
-    // I could add this code somwhere else and it would work fine, but keeping it for now
-    // in case it is needed again
-    .on("jsonLoaded", function () {
-        if (highlightedId && PopulationBiologyMap.data.highlightedId == undefined) {
-            PopulationBiologyMap.data.highlightedId = highlightedId;
-        }
-    });
+    }) 
 
     // Toggle grid
     $('#grid-toggle').change(function () {
@@ -491,25 +422,49 @@ function bindEvents() {
 
     // clear the seasonal search panel once collapsed
     $('#seasonal').on('hidden.bs.collapse', function () {
+        $('#season-select').removeClass('active');
+
         if (checkSeasonal()) return;
 
         $('.season-toggle').each(function () {
-            //console.log($(this).prop('checked'));
             if ($(this).prop('checked')) {
                 $(this).bootstrapToggle('off');
             }
         })
     });
 
-    $('#date-select, #SelectView').click(function () {
-        if ($('#seasonal').attr("aria-expanded") == 'true') {
-            $('#seasonal').collapse('hide');
-        }
-    });
+    $('#date-select, #season-select, [data-id="SelectView"]').click(function () {
+        //Check what button was clicked and do its respective changes
+        if (this.id === 'date-select') {
+            if ($('#seasonal').attr("aria-expanded") == 'true') {
+                $('#seasonal').collapse('hide');
+            }
 
-    $('#season-select, #SelectView').click(function () {
-        if ($('#daterange').attr("aria-expanded") == 'true') {
-            $('#daterange').collapse('hide');
+            //Checking if this click will expand the daterange UI
+            //if expanding add active class otherwise remove it
+            if ($('#daterange').attr('aria-expanded') !== 'true') {
+                $(this).addClass('active');
+            } else {
+                $(this).removeClass('active');
+            }
+        } else if (this.id === 'season-select') {
+            if ($('#daterange').attr("aria-expanded") == 'true') {
+                $('#daterange').collapse('hide');
+            }
+
+            //Checking if this click will expand the seasonal UI
+            //if expanding add active class
+            if ($('#seasonal').attr('aria-expanded') !== 'true') {
+                $(this).addClass('active');
+            }
+        } else {
+            if ($('#seasonal').attr("aria-expanded") == 'true') {
+                $('#seasonal').collapse('hide');
+            }
+
+            if ($('#daterange').attr("aria-expanded") == 'true') {
+                $('#daterange').collapse('hide');
+            }
         }
     });
     
@@ -564,7 +519,6 @@ function bindEvents() {
         // normIrValues = (1 - (secondVal / 10 + 0.1)).roundDecimals(1) + ' TO ' + (1 - (firstVal /
         // 10)).roundDecimals(1);
         normIrValues = scaleToIrMap[secondVal] + ' TO ' + scaleToIrMap[firstVal];
-        // console.log(normIrValues);
 
         $('#search_ac').tagsinput('add', {
             value: normIrValues,
@@ -573,86 +527,7 @@ function bindEvents() {
             type: 'Norm-IR',
             field: 'phenotype_rescaled_value_f'
         });
-    });
-   
-    
-    $('#search_ac').on('itemAdded', function (event) {
-        // don't update the map. So far only used when altering (removing and adding again) a seasonal filter
-        if (event.item.replace) return;
-
-        if (event.item.activeTerm) {
-            $('#search-bar').animate({
-                left: "+=4"
-            }, 15)
-                .animate({
-                    left: "-=8"
-                }, 30)
-                .animate({
-                    left: "+=8"
-                }, 30)
-                .animate({
-                    left: "-=8"
-                }, 30)
-                .animate({
-                    left: "+=8"
-                }, 30)
-                .animate({
-                    left: "-=4"
-                }, 15)
-            ;
-            filterMarkers($("#search_ac").tagsinput('items'));
-            return;
-        }
-
-        //sidebar.close();
-        setTimeout(function () {
-            highlightedId = $('.highlight-marker').attr('id');
-            PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
-            /*removeHighlight();
-
-            resetPlots()*/
-            filterMarkers($("#search_ac").tagsinput('items'));
-        }, delay);
-
-    });
-    $('#search_ac').on('itemRemoved', function () {
-        // reset the seasonal search panel
-        if (!checkSeasonal()) {
-            $('.season-toggle').each(function () {
-                if ($(this).prop('checked')) {
-                    //Unchecking and adding class to parent div to prevent change event from firing
-                    //with other method
-                    $(this).prop('checked', false);
-                    $(this).parent('div').removeClass('btn-primary');
-                    $(this).parent('div').addClass('btn-default');
-                    $(this).parent('div').addClass('off');
-                }
-            })
-        }
-
-        // reset the date search panel
-        if (!checkDate()) {
-            $('.date-shortcut').each(function () {
-                if ($(this).prop('checked')) {
-                    //Unchecking and adding class to parent div to prevent change event from firing
-                    //with other method
-                    $(this).prop('checked', false);
-                    $(this).parent('div').removeClass('btn-primary');
-                    $(this).parent('div').addClass('btn-default');
-                    $(this).parent('div').addClass('off');
-                }
-            })
-        }
-
-        //sidebar.close();
-        setTimeout(function () {
-            highlightedId = $('.highlight-marker').attr('id');
-            PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
-            /*removeHighlight();
-            resetPlots()*/
-            filterMarkers($("#search_ac").tagsinput('items'));
-        }, delay);
-    });
+    }); 
 }
 
 /*
@@ -682,15 +557,6 @@ function initializeMap(parameters) {
         center = [23.079, 3.515];
     }
 
-    //Set the maximum zoom level depending on view
-    if (viewMode == "abnd") {
-        maxZoom = 12;
-        // Cover case where user might pass a higher zoom level in abnd view
-        if (zoomLevel > 12) {
-            zoomLevel = 12;
-        }
-    }
-
     // create a map in the "map" div, set the view to a given place and zoom
     map = L.map('map', {
         center: center,
@@ -718,16 +584,16 @@ function initializeMap(parameters) {
     
     /* http://leaflet-extras.github.io/leaflet-providers/preview/ */
     /* Map Layers */
+    var street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    });
+
     var terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
         attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: 'abcd',
         minZoom: 0,
         maxZoom: 18,
         ext: 'png'
-    });
-
-    var street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
     });
 
     var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -755,7 +621,7 @@ function initializeMap(parameters) {
         'Imagery © <a href="http://mapbox.com">Mapbox</a>'
     });
 
-    map.addLayer(terrain);
+    map.addLayer(street);
 
     // initialize markers layer
     markers = new L.Map.SelectMarkers(map);
@@ -768,8 +634,8 @@ function initializeMap(parameters) {
 
     // assetLayerGroup.initLatLngStorage();
     var layerCtl = new L.Control.Layers({
-        'Terrain': terrain,
         'Street': street,
+        'Terrain': terrain,
         'Satellite': satellite,
         'Light': light,
         'Dark': dark,
@@ -788,7 +654,7 @@ function initializeMap(parameters) {
     //if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
     //Default glbSummarizeBy is Species set in the html file, updating it for Genotype view here
-    if (viewMode === "geno") glbSummarizeBy = "Allele";
+    if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
 
     // Now generate the legend
     // hardcoded species_category
@@ -803,305 +669,32 @@ function initializeMap(parameters) {
     rectHighlight = null;
     map.spin(false);
 
-}
-
-/*
- function initializeSearch
- date: 18/6/2015
- purpose:
- inputs:
- outputs:
- */
-function initializeSearch() {
-
-    // Reset search "button"
-    $('#reset-search').click(function () {
-        $('#search_ac').tagsinput('removeAll');
-
-        // reset seasonal search panel
-        $('.season-toggle').each(function () {
-            if ($(this).prop('checked')) {
-                $(this).bootstrapToggle('off');
-            }
-        });
-
-        removeHighlight();
-        sidebar.close();
-        setTimeout(function () {
-            resetPlots()
-            filterMarkers('');
-        }, delay);
+    //Initialize all tooltips from vb_geohashes_mean.html
+    $("[data-tooltip='tooltip']").tooltip({
+        trigger: "hover",
+        delay: { "show": 1000, "hide": 0 }
     });
 
-    //FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case
-    // handling update: the issue was with the number of results Anywhere. When within a certain categories the results
-    // seem to match will keep an eye on it ToDo: Add copy/paste support of IDs (low priority)
-    var acSuggestions = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        limit: 7,
-        minLength: 2,
-        hint: false,
-
-        remote: {
-            url: solrTaUrl + viewMode + 'Ac?q=',
-            ajax: {
-                dataType: 'jsonp',
-                data: {
-                    'wt': 'json',
-                    'rows': 7
-                },
-                jsonp: 'json.wrf'
-            },
-            replace: function (url, query) {
-                url = solrTaUrl + viewMode + 'Ac?q=';
-                var match = query.match(/([^@]+)@([^@]*)/);
-                if (match != null) {
-                    // matched text: match[0]
-                    // match start: match.index
-                    // capturing group n: match[n]
-                    partSearch = match[1];
-                    //console.log(url + encodeURI(match[1]));
-                    if ($('#world-toggle').prop('checked')) {
-                        return solrTaUrl + viewMode + 'Acat?q=' + encodeURI(match[1]) + buildBbox(map.getBounds());
-                    } else {
-                        return solrTaUrl + viewMode + 'Acat?q=' + encodeURI(match[1]);
-                    }
-                } else {
-                    // Match attempt failed
-                    partSearch = false;
-
-                    if ($('#world-toggle').prop('checked')) {
-                        return url + encodeURI(query) + buildBbox(map.getBounds());
-                    } else {
-                        return url + encodeURI(query);
-                    }
-                }
-            },
-            filter: function (data) {
-                if (partSearch) {
-                    return $.map(data.grouped.type.doclist.docs, function (data) {
-                        return {
-                            value: partSearch,
-                            id: data['id'],
-                            type: data['type'],
-                            field: data['field'],
-                            is_synonym: data['is_synonym'],
-                            qtype: 'partial'
-
-                        };
-                    });
-                } else {
-                    return $.map(data.grouped.textsuggest_category.doclist.docs, function (data) {
-                        return {
-                            value: data['textsuggest_category'],
-                            type: data['type'],
-                            id: data['id'],
-                            field: data['field'],
-                            is_synonym: data['is_synonym'],
-                            qtype: 'exact'
-
-                        };
-                    });
-                }
-            }
-        }
+    //Initialize tooltips for special cases
+    $("[data-id='SelectView']").attr("title", "Select map view").tooltip({
+        trigger: "hover",
+        delay: { "show": 1000, "hide": 0 }
     });
 
-    acSuggestions.initialize();
-
-    var acOtherResults = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        limit: 10,
-        minLength: 3,
-
-        remote: {
-            url: solrTaUrl + viewMode + 'Acgrouped?q=',
-            ajax: {
-                dataType: 'jsonp',
-
-                data: {
-                    'wt': 'json',
-                    'rows': 10
-                },
-
-                jsonp: 'json.wrf'
-            },
-            replace: function (url, query) {
-                url = solrTaUrl + viewMode + 'Acgrouped?q=';
-                if ($('#world-toggle').prop('checked')) {
-                    return url + encodeURI(query) + '*' + buildBbox(map.getBounds());
-                } else {
-                    return url + encodeURI(query) + '*';
-                }
-            },
-            filter: function (data) {
-                var allResults = data.grouped.stable_id.ngroups;
-                return $.map(data.facet_counts.facet_fields.type, function (data) {
-                    if (data[1] > 0) {
-                        return {
-                            count: data[1],
-                            type: data[0],
-                            field: mapTypeToField(data[0]),
-                            value: $('#search_ac').tagsinput('input')[0].value,
-                            qtype: 'summary'
-
-                        }
-                    }
-                });
-            }
-        }
+    $(".leaflet-control-zoom a").tooltip({
+        placement: "left",
+        trigger: "hover",
+        delay: { "show": 1000, "hide": 0 }
     });
 
-    acOtherResults.initialize();
-
-    $('#search_ac').tagsinput({
-        tagClass: function (item) {
-            return mapTypeToLabel(item.type);
-        },
-        itemValue: 'value',
-        itemText: function (item) {
-            return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
-        },
-        itemHTML: function (item) {
-            return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
-        },
-        typeaheadjs: ({
-            options: {
-                minLength: 3,
-                hint: false,
-                highlight: false
-            },
-            datasets: [
-                {
-                    name: 'acSuggestions',
-                    displayKey: 'value',
-                    source: acSuggestions.ttAdapter(),
-                    templates: {
-                        empty: function () {
-                            var msg;
-                            if ($('#world-toggle').prop('checked')) {
-                                msg = 'No suggestions found. Try enabling world search or hit enter to perform a free text search instead.';
-
-                            } else {
-                                msg = 'No suggestions found. Hit Enter to perform a free text search instead.';
-                            }
-                            return [
-                                '<span class="tt-suggestions" style="display: block;">',
-                                '<div class="tt-suggestion">',
-                                '<p style="white-space: normal;">',
-                                msg,
-                                '</p>',
-                                '</div>',
-                                '</span>'
-                            ].join('\n')
-                        },
-                        suggestion: function (item) {
-                            return '<p>' + item.value +
-                                (item.is_synonym ?
-                                    ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)'
-                                    : '') +
-                                ' <em> in ' + item.type + '</em></p>';
-                        }
-
-                    }
-                },
-                {
-//                    ToDo: Partial searches should display wildcards in the tag
-//                    ToDo: Add hovers on tags to display the term and field description
-                    name: 'acOtherResults',
-                    displayKey: 'value',
-                    source: acOtherResults.ttAdapter(),
-                    templates: {
-                        header: '<h4 class="more-results">More suggestions</h4>',
-                        suggestion: function (item) {
-                            return '<p>~' + item.count + ' <em>in ' + item.type + '</em></p>';
-                        }
-
-                    }
-                }
-            ]
-        })
-
-    });
-
-    $('#SelectView').change(function () {
-        viewMode = $('#SelectView').val()
-
-        if (viewMode !== "ir") {
-            // $('#SelectView').val('smpl');
-            if (glbSummarizeBy === "Insecticide") {
-                if (viewMode === "geno") {
-                    glbSummarizeBy = "Allele";
-                } else {
-                    glbSummarizeBy = "Species";
-                } 
-            }
-        }
-
-        if (viewMode !== "geno") {
-            // $('#SelectView').val('smpl');
-            if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") glbSummarizeBy = "Species";
-        }
-
-        //Add and remove the disabled class for the sidebar
-        if (viewMode !== "ir" && viewMode !== "abnd") {
-            //Get the current sidebar that is active
-            var active_sidebar = $(".sidebar-icon.active a").attr("id");
-
-            //Check if the previous active panel was the plots and switch to the pie panel
-            if (active_sidebar === "#swarm-plots") {
-                $(".sidebar-pane.active").removeClass("active");
-                $(".sidebar-icon.active").removeClass("active");
-                $('[id="#graphs"]').parent().addClass("active");
-                $("#graphs").addClass("active");
-            }
-
-            $('#\\#swarm-plots').addClass('disabled');
-            //Add tooltip to the title of the chart
-            $("#\\#swarm-plots").tooltip('enable');
-        } else {
-            $('#\\#swarm-plots').removeClass('disabled');
-            $("#\\#swarm-plots").tooltip('disable');
-        }
-
-
-        //Change the maximum zoom level depending on view
-        if (viewMode == 'abnd') {
-            map.options.maxZoom = 12;
-            // Covering case where a user might be in a different view zoomed in all the way
-            if (map.getZoom() > 12) {
-                map.setZoom(12);
-            }
-        } else {
-            map.options.maxZoom = 15;
-
-            //Hiding the notices from the abundance graph
-            $("#projects-notice").hide();
-            $("#resolution-selector-group").hide();
-        }
-
-        // update the export fields dropdown
-        updateExportFields(viewMode);
-
-        var url = solrPopbioUrl + viewMode + 'Palette?q=*:*&geo=geohash_2&term=' +
-            mapSummarizeByToField(glbSummarizeBy).summarize +
-            '&json.wrf=?&callback=?';
-
-        //highlightedId = $('.highlight-marker').attr('id');
-        removeHighlight();
-        sidebar.close();
-        setTimeout(function () {
-            resetPlots()
-        }, delay);
-        $.getJSON(url, function (data) {
-            legend._populateLegend(data, glbSummarizeBy, true)
-        });
-        acSuggestions.initialize(true);
-        acOtherResults.initialize(true);
+    $(".leaflet-bottom.leaflet-right .leaflet-bar").tooltip({
+        title: "Toggle to view/hide marker colorization and metadata categorization options",
+        placement: "left",
+        trigger: "hover",
+        delay: { "show": 1000, "hide": 0 }
     });
 }
+
 
 /**
  Created by Ioannis on 11/08/2016
@@ -1454,6 +1047,7 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Mutated Protein Value')
         }
     ];
+    
 
     // empty the dropdown
     $('#select-export-fields').empty();
@@ -1586,13 +1180,13 @@ function loadSolr(parameters) {
             var key = el.val,
                 elStats = [],
                 fullElStats = [],
-                //geoCount = viewMode === 'abnd' ? el.sumSmp : el.count,
                 tagsTotalCount = 0;
             var geoTerms = el.term.buckets;
 
             geoTerms.forEach(function (inEl) {
                 var inKey = inEl.val;
 
+                // store normalised abundance for abundance mode, else store samples/assay counts
                 if (viewMode === 'abnd') { // || viewMode ==='geno') {
                     var inCount = inEl.sumSmp;
                 } else if (viewMode === 'geno') {
@@ -1606,7 +1200,6 @@ function loadSolr(parameters) {
                 if (inCount > 0) {
                     fullElStats.push({
                         "label": inKey,
-                        // store normalised abundance for abundance mode, else store samples/assay counts
                         "value": inCount,
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
@@ -1746,8 +1339,8 @@ function loadSolr(parameters) {
                                         PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
                                     } else {
                                         createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
-                                        panel.data('has-graph', true);
-                                    } 
+                                    }
+                                    panel.data('has-graph', true);
                                     break;
                                 case "marker-table":
                                     updateTable("#table-contents", buildBbox(recBounds));
@@ -1768,11 +1361,17 @@ function loadSolr(parameters) {
                                 selected_value = 'IR';
                             } 
 
+                            // VB-7595 dynamic graph title
+                            var graph_selected_value = $("#summByDropdown").find('.dropdown-toggle').text();
+
                             switch (panelId) {
                                 case "graphs":
                                     // gtag
                                     var graph_name = 'graph_' + selected_value;
                                     gtag('event', graph_name, {'event_category': 'Popbio', 'event_label': 'Popbio graph'});
+
+                                    // VB-7595 dynamic graph title
+                                    $('#graphs h3').text(graph_selected_value + ' summary');
                                     
                                     if (!panel.data('has-graph')) {
                                         updatePieChart(record.count, record.fullstats);
@@ -1785,10 +1384,12 @@ function loadSolr(parameters) {
                                     gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});
 
                                     // Geno viewmode will say that it is not availble in that mode
-                                    if (viewMode === 'abnd') {
-                                        PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
-                                    } else if (!panel.data('has-graph')) {
-                                        createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                    if (!panel.data('has-graph')) {
+                                        if (viewMode === 'abnd') {
+                                            PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                        } else { 
+                                            createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
+                                        }
                                         panel.data('has-graph', true);
                                     }
                                     break;
@@ -1845,11 +1446,17 @@ function loadSolr(parameters) {
                                     selected_value = 'IR';
                                 } 
 
+                                // VB-7595 dynamic graph title
+                                var graph_selected_value = $("#summByDropdown").find('.dropdown-toggle').text();
+
                                 switch (panelId) {
                                     case "graphs":
                                         // gtag
                                         var graph_name = 'graph_' + selected_value;
                                         gtag('event', graph_name, {'event_category': 'Popbio', 'event_label': 'Popbio graph'});
+
+                                        // VB-7595 dynamic graph title
+                                        $('#graphs h3').text(graph_selected_value + ' summary');
 
                                         updatePieChart(record.count, record.fullstats);
                                         panel.data('has-graph', true);
@@ -2068,7 +1675,6 @@ function loadSolr(parameters) {
     }, buildMap)
     .done(function () {
         $(document).trigger("jsonLoaded");
-        // console.log("jsonLoaded")
     })
     .fail(function () {
         console.log("Failed to load json");
@@ -2101,7 +1707,7 @@ function checkDate() {
 
     for (var i = 0; i < activeTerms.length; i++) {
         var obj = activeTerms[i];
-        if (obj.type === 'Date') return obj.value;
+        if (obj.type === 'Date' && obj.source !== 'Datepicker') return obj.value;
 
     }
 
@@ -2122,7 +1728,6 @@ function buildBbox(bounds) {
     var solrBbox;
     //typeof attr !== typeof undefined && attr !== false
     if (typeof bounds.getEast() !== undefined && bounds.getEast() !== false) {
-        //console.log("bounds IS an object");
         // fix endless bounds of leaflet to comply with SOLR limits
         var south = bounds.getSouth();
         if (south < -90) {
@@ -2235,6 +1840,7 @@ function updatePieChart(population, stats) {
                 .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
                 .donutRatio(0.5)     //Configure h ow big you want the donut hole size to be.
                 .growOnHover(false)
+                .title(population)   // VB-7427 set title                         
             ;
 
             chart.legend.vers('classic')
@@ -2258,6 +1864,28 @@ function updatePieChart(population, stats) {
                 .datum(stats)
                 .transition().duration(delay)
                 .call(chart);
+
+            // VB-7427 placing legend in the bottom
+            d3.select(".nv-pieChart")
+               .attr("transform","translate(20,-30)");
+            d3.select(".nv-legendWrap")
+               .attr("transform","translate(20,350)");
+
+            // VB-7427 set not to change position when clicking legend 
+	  	    d3.select(".nv-legendWrap").on("click", function(){
+		        d3.select(".nv-pieChart").attr("transform","translate(20,-30)")  
+	           	d3.select(".nv-legendWrap").attr("transform","translate(20,350)")  
+		    })
+
+	  	    // VB-7427 need to set for double click event too!
+	  	    d3.select(".nv-legendWrap").on("dblclick", function(){
+		        d3.select(".nv-pieChart").attr("transform","translate(20,-30)")  
+	           	d3.select(".nv-legendWrap").attr("transform","translate(20,350)")  
+		    })
+
+            // VB-7427 set font color
+            d3.select(".nv-pie-title")
+                .style("fill","inherit");
 
             return chart;
         });
@@ -2423,8 +2051,8 @@ function tableHtml(divid, results) {
             case "ir":
                 row = {
                     accession: element.accession,
-                    accessionType: 'Stable ID',
-                    bundleName: element.bundle_name,
+                    accessionType: 'Assay ID',
+                    bundleName: 'Sample Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
@@ -2461,7 +2089,9 @@ function tableHtml(divid, results) {
             case "abnd":
                 row = {
                     accession: element.accession,
-                    accessionType: 'Stable ID',
+                    // VB-7622 Sample ID?
+                    // accessionType: 'Stable ID',
+                    accessionType: 'Sample ID',                    
                     bundleName: element.bundle_name,
                     url: element.url,
                     sampleType: element.sample_type,
@@ -2493,8 +2123,8 @@ function tableHtml(divid, results) {
             case "geno":
                 row = {
                     accession: element.accession,
-                    accessionType: 'Stable ID',
-                    bundleName: element.bundle_name,
+                    accessionType: 'Assay ID',
+                    bundleName: 'Sample Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
@@ -2528,7 +2158,7 @@ function tableHtml(divid, results) {
             default:
                 row = {
                     accession: element.accession,
-                    accessionType: 'Stable ID',
+                    accessionType: 'Sample ID',
                     bundleName: element.bundle_name,
                     url: element.url,
                     sampleType: element.sample_type,
@@ -2566,6 +2196,18 @@ function tableHtml(divid, results) {
 
     });
 
+    //Applying tooltip to active terms in table 
+    $(".row div:first-child .active-term").tooltip({
+        title: "Active term, click to add as a search filter",
+        placement:"right",
+        delay: { "show": 1000, "hide": 0 }
+    });
+
+    $(".row div:nth-child(2) .active-term").tooltip({
+        title: "Active term, click to add as a search filter",
+        placement:"bottom",
+        delay: { "show": 1000, "hide": 0 }
+    });
 }
 
 function filterMarkers(items, flyTo) {
@@ -2583,10 +2225,10 @@ function filterMarkers(items, flyTo) {
 
     items.forEach(function (element) {
 
+        //VB-7318 
         if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
 
         if (element.type === 'Date') {
-
             var format = "YYYY-MM-DD";
 
             if (element.ranges) {
@@ -2600,8 +2242,22 @@ function filterMarkers(items, flyTo) {
                     });
                 }
             }
-            return
 
+            return
+        }
+
+        if (element.type === 'Datepicker') {
+            //For Datepicker items, will populate same index as Date items
+            if (!terms.hasOwnProperty("Date")) terms["Date"] = [];
+            var format = "YYYY-MM-DD";
+            var startDate = dateConvert(element.startDate, format);
+            var endDate = dateConvert(element.endDate, format);
+
+            terms["Date"].push({
+                "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']'
+            });
+
+            return
         }
 
         if (element.type === 'Seasonal') {
@@ -2622,7 +2278,6 @@ function filterMarkers(items, flyTo) {
 
         if (element.type === 'Norm-IR') {
 
-            // console.log(element.normIrValues);
             terms[element.type].push({
                 "field": element.field, "value": '[' + element.normIrValues + ']'
             });
@@ -2630,22 +2285,26 @@ function filterMarkers(items, flyTo) {
 
         }
 
+        // VB-7318 add field, notBoolean, to terms 
         if (element.qtype == 'exact') {
-            terms[element.type].push({"field": element.field, "value": '"' + element.value + '"'});
+            // VB-7318
+            terms[element.type].push({"field": element.field, "value": '"' + element.value + '"', "notBoolean": element.notBoolean});
         } else {
             if (/^".+"$/.test(element.value)) {
                 // Successful match
-                terms[element.type].push({"field": element.field, "value": element.value});
-
+                // VB-7318
+                terms[element.type].push({"field": element.field, "value": element.value, "notBoolean": element.notBoolean});
             } else {
                 // Match attempt failed
-                // terms[element.type].push({"field": element.field, "value": element.value + '*'});
-                terms[element.type].push({"field": element.field, "value": '*' + element.value + '*'});
-
+                // VB-7318
+                terms[element.type].push({"field": element.field, "value": '*' + element.value + '*', "notBoolean": element.notBoolean});
             }
-
-            //console.log("inexact");
         }
+        // VB-7318 add this to accommodate shared view
+        if (element.notBoolean) {
+            $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
+        }
+
     });
 
     var i = 0;
@@ -2664,11 +2323,17 @@ function filterMarkers(items, flyTo) {
             if (a.field > b.field) return 1;
             return 0;
         }).forEach(function (element, index) {  // concatenate and store the terms for each field
-            qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;
+            // VB-7318 making query?
+            if (element.notBoolean) {
+                qries[element.field] ? qries[element.field] += ' OR ' + '!' + element.value : qries[element.field] = '!' + element.value;
+            } else {
+                qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;               
+            }
         });
 
         // get the numbeer of different field queries per category (this is usually one or two)
         var alen = Object.keys(qries).length;
+
         // more than one categories
         if (i < tlen - 1) {
             // more than one fields for this category
@@ -2679,8 +2344,18 @@ function filterMarkers(items, flyTo) {
                 } else {
                     qryUrl += '(';
                     for (var fieldQry in qries) {
-                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
+                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
+                        // checking multiple values
+                        var fieldValue = qries[fieldQry];
+                        if (fieldValue.includes("OR")) {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
+                        } else if (fieldValue.includes("!")) {
+                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
+                        } else {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        }
+
                         if (k === alen - 1) {
                             qryUrl += ') AND ';
                             continue;
@@ -2696,9 +2371,18 @@ function filterMarkers(items, flyTo) {
                     // qryUrl += '(text:' + qries['anywhere'] + ') AND ';
                 } else {
                     for (var fieldQry in qries) {
+                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
+                        // checking multiple values
+                        var fieldValue = qries[fieldQry];
+                        if (fieldValue.includes("OR")) {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
+                        } else if (fieldValue.includes("!")) {
+                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
+                        } else {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        }
 
-                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
                         if (k === alen - 1) {
                             qryUrl += ' AND ';
                             continue;
@@ -2709,15 +2393,25 @@ function filterMarkers(items, flyTo) {
                 }
 
             }
-        } else {
+        } else {    
             if (k < alen - 1) {
                 if (obj === 'Anywhere') {
                     //do nothing
                 } else {
                     qryUrl += '(';
                     for (var fieldQry in qries) {
-                        qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];
+                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
+                        // checking multiple values
+                        var fieldValue = qries[fieldQry];
+                        if (fieldValue.includes("OR")) {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
+                        } else if (fieldValue.includes("!")) {
+                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
+                        } else {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
+                        }
+
                         if (k === alen - 1) {
                             qryUrl += ')';
                             continue;
@@ -2733,8 +2427,18 @@ function filterMarkers(items, flyTo) {
                     // qryUrl += '(text:' + qries['anywhere'] + '))';
                 } else {
                     for (var fieldQry in qries) {
-                        qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
+                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
+                        // checking multiple values
+                        var fieldValue = qries[fieldQry];
+                        if (fieldValue.includes("OR")) {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
                         // qryUrl += "(" + fieldQry + ':' + qries[fieldQry] + ')';
+                        } else if (fieldValue.includes("!")) {
+                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + '))';
+                        } else {
+                            qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
+                        }
+
                     }
                 }
 
@@ -2743,9 +2447,10 @@ function filterMarkers(items, flyTo) {
 
         }
         i++;
-
-        //console.log('lakis' + qryUrl);
     }
+
+    // VB-7318 need to remove !!! as it is generated whenever pressing share link
+    qryUrl = qryUrl.replace('!!!','');
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
@@ -2812,6 +2517,15 @@ function mapTypeToField(type) {
             return "project_authors_txt";
         case "Project title":
             return "project_titles_txt";
+        // VB-7622 Stable ID? assay_id_s: actually this is Assay ID but just leave it as is
+        case "Stable ID":
+            return "assay_id_s";
+        // VB-7622 Need Sample ID exp_sample_id_s
+        case "Sample ID":
+            return "exp_sample_id_s";
+        // VB-7622 Need Assay ID assay_id_s
+        case "Assay ID":
+            return "assay_id_s";            
         case "Seasonal":
             return "collection_season";
         case "Date":
@@ -2863,6 +2577,7 @@ function mapSummarizeByToField(type) {
             break;
         case "Project":
             fields.summarize = "projects_category";
+            // VB-7318 fields.type = Project -> Projects to fix avtive-legend
             fields.type = "Project";
             fields.field = "projects";
             break;
@@ -2876,56 +2591,67 @@ function mapSummarizeByToField(type) {
 
 }
 
-//
-function mapTypeToLabel(type) {
-    switch (type) {
-        case 'Taxonomy'   :
-            return 'label label-primary label-taxonomy';   // dark blue
-        case 'Geography':
-            return 'label label-primary label-geography';  // dark blue
-        case 'Title'  :
-            return 'label label-success label-title';    // green
-        case 'Description':
-            return 'label label-success label-description';   // green
-        case 'Project'   :
-            return 'label label-success label-project';   // green
-        case 'Project title'   :
-            return 'label label-success label-project-title';   // green
-        case 'Anywhere'   :
-            return 'label label-default label-anywhere';   // grey
-        case 'PubMed' :
-            return 'label label-success label-pubmed';
-        case 'Insecticide' :
-            return 'label label-success label-insecticide';
-        //Color of the text
-        case 'Allele' :
-            return 'label label-success label-allele';
-        case 'Locus' :
-            return 'label label-success label-locus';
-        case 'Collection protocol' :
-            return 'label label-success label-collection-protocol';
-        case 'Date' :
-            return 'label label-info label-date'
-        case 'Seasonal' :
-            return 'label label-info label-seasonal'
-        case 'Norm-IR' :
-            return 'label label-secondary label-norm-ir';
-        case 'Collection ID' :
-            return 'label label-warning label-collection-id';
-        case 'Sample' :
-            return 'label label-warning label-sample';
-        case 'Sample type' :
-            return 'label label-warning label-sample-type';
-        case 'Protocol' :
-            return 'label label-warning label-protocol';
-        case 'Author' :
-            return 'label label-success label-author';
-        case 'Coordinates':
-            return 'label label-success label-coordinates';
-        default :
-            return 'label label-warning label-default';
+// VB-7318 changes are made when calling this function, instead
+function mapTypeToLabel(type) {    
+        switch (type) {
+            case 'Taxonomy'   :
+                return 'label label-primary label-taxonomy';   // dark blue
+            case 'Geography':
+                return 'label label-primary label-geography';  // dark blue
+            case 'Title'  :
+                return 'label label-success label-title';    // green
+            case 'Description':
+                return 'label label-success label-description';   // green
+            case 'Project'   :
+                return 'label label-success label-project';   // green
+            case 'Project title'   :
+                return 'label label-success label-project-title';   // green
+            case 'Anywhere'   :
+                return 'label label-default label-anywhere';   // grey
+            case 'PubMed' :
+                return 'label label-success label-pubmed';
+            case 'Insecticide' :
+                return 'label label-success label-insecticide';
+            //Color of the text
+            case 'Allele' :
+                return 'label label-success label-allele';
+            case 'Locus' :
+                return 'label label-success label-locus';
+            case 'Collection protocol' :
+                return 'label label-success label-collection-protocol';
+            case 'Date' :
+                return 'label label-info label-date'
+            case 'Datepicker' :
+                return 'label label-info label-date'
+            case 'Seasonal' :
+                return 'label label-info label-seasonal'
+            case 'Norm-IR' :
+                return 'label label-secondary label-norm-ir';
+            case 'Collection ID' :
+                return 'label label-warning label-collection-id';
+            // VB-7622 add class for Stable ID: same to Project
+            case 'Stable ID' :
+                return 'label label-success label-stable-id';            
+            // VB-7622 add class for Sample ID: same to Stable ID
+            case 'Sample ID' :
+                return 'label label-success label-sample-id';            
+            // VB-7622 add class for Assay ID: same to Stable ID
+            case 'Assay ID' :
+                return 'label label-success label-assay-id';                            
+            case 'Sample' :
+                return 'label label-warning label-sample';
+            case 'Sample type' :
+                return 'label label-warning label-sample-type';
+            case 'Protocol' :
+                return 'label label-warning label-protocol';
+            case 'Author' :
+                return 'label label-success label-author';
+            case 'Coordinates':
+                return 'label label-success label-coordinates';
 
-    }
+            default :
+                return 'label label-warning label-default';
+        }
 }
 
 function mapTypeToIcon(type) {
@@ -2952,11 +2678,21 @@ function mapTypeToIcon(type) {
             return 'fa-shopping-cart';
         case 'Date' :
             return 'fa-calendar';
+        case 'Datepicker' :
+            return 'fa-calendar';
         case 'Seasonal' :
             return 'fa-calendar-check-o';
         case 'Norm-IR' :
             return 'fa-bolt';
         case 'Collection ID' :
+        // VB-7622 add class for Collection ID: same to Assay ID
+            return 'fa-tag';        
+        // VB-7622 add class for Stable ID: same to Assay ID
+        case 'Stable ID' :
+            return 'fa-tag';                    
+        // VB-7622 add class for Stable ID: same to Assay ID
+        case 'Sample ID' :
+            return 'fa-tag';                            
         case 'Assay ID' :
             return 'fa-tag';
         case 'Sample' :
@@ -2971,8 +2707,9 @@ function mapTypeToIcon(type) {
             return 'fa-map-marker';
         case 'Location':
             return 'fa-location-arrow';
-        case 'Insecticide':
-            return 'fa-eyedropper';
+        // VB-7318 VB-7622 duplicate with above
+        // case 'Insecticide':
+        //     return 'fa-eyedropper';
         //Modifies what gets used as the icon in the search bar
         case 'Allele':
             return 'fa-sliders';
@@ -3042,9 +2779,15 @@ function resetPlots() {
     "use strict";
 
     var pieHTML, violinHTML, tableHTML;
+
+    // VB-7595 dynamic title for an initial visit
+    var graph_selected_initial = $("#summByDropdown").find('.dropdown-toggle').text();
+
     if (firstClick) {
         pieHTML =
-            '<h3>Summary view for selected samples</h3>' +
+            // VB-7595 change initial title
+            // '<h3>Summary view for selected samples</h3>' +
+            '<h3>' + graph_selected_initial + ' summary' + '</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<span class="fa-stack fa-stack-lg">' +
             '<i class="fa fa-chrome fa-stack-2x"></i>' + 
@@ -3073,7 +2816,9 @@ function resetPlots() {
     } else {
 
         pieHTML =
-            '<h3>Summary view for selected samples</h3>' +
+            // VB-7595 change initial title
+            // '<h3>Summary view for selected samples</h3>' +
+            '<h3>' + graph_selected_initial + ' summary' + '</h3>' +            
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<span class="fa-stack fa-stack-lg">' +
             '<i class="fa fa-chrome fa-stack-2x"></i>' + 
@@ -3170,7 +2915,6 @@ function constructSeasonal(selectedMonths) {
 
                 rangesText.push(rangeText);
                 inRange = false;
-                // console.log(i + ': ' + month + ' ' + range);
             }
 
         } else {
@@ -3238,8 +2982,6 @@ function dateResolution(dateString) {
     }
 
     return false;
-    // console.log(match[1] + '-' + match[5] + '-' + match[7]);
-
 }
 
 function getRandom(min, max) {

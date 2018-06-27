@@ -14,8 +14,7 @@
     <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" type="text/css" media="screen"/>-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css"/>
     <!-- End of remote CSS styles -->
 
 
@@ -53,8 +52,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"
             charset="utf-8"></script>
     <!-- Include Date Range Picker -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
     <!-- adding highcharts -->
     <!-- <script type="text/javascript" src="https://code.highcharts.come/highcharts.src.js"></script> -->
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
@@ -211,28 +209,28 @@
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
-            <li class="sidebar-icon"><a id="#vectorbase" role="tab">
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="VectorBase main menu"><a id="#vectorbase" role="tab">
                 <img src="/sites/default/files/ftp/images/dot_ked_100_trans.png" height=20 width=20 />
             </a></li>
-            <li class="sidebar-icon"><a id="#graphs" role="tab">
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="Summary statistics"><a id="#graphs" role="tab">
                 <span class="fa-stack fa-stack-sm">
                     <i class="fa fa-chrome fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x"></i>
                 </span></a>
             </li>
-            <li class="sidebar-icon"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
-            <li class="sidebar-icon"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
-            <li class="sidebar-icon"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="View-specific data visualizations"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="List details"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="Download data"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
             <!--<li class="sidebar-icon">-->
                 <!-- add GA -->
                 <!-- <a class="sidebar-icon" id="generate-link" title="Share view" onclick="ga('send', 'event', 'Popbio', 'shareview', 'Share view');"> -->
-                <a class="sidebar-icon" id="generate-link" title="Share view" onclick="gtag('event', 'shareview', {'event_category': 'Popbio', 'event_label': 'Share view'});">
+                <a class="sidebar-icon" id="generate-link" onclick="gtag('event', 'shareview', {'event_category': 'Popbio', 'event_label': 'Share view'});" data-tooltip="tooltip" data-placement="right" title="Share current map view">
                     <i class="fa fa-share-alt"></i>
                 </a>
             <!--</li>-->
             <li class="sidebar-icon flash"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
         </ul>
- 
+
         <!-- Tab panes -->
         <div class="sidebar-content active" id="active-pane">
             <svg class="sidebar-x" height="30" width="30">
@@ -240,7 +238,7 @@
                 <line x1="25" y1="5" x2="5" y2="25" />
             </svg>
 
-            <div class="sidebar-pane active" id="vectorbase">
+            <div class="sidebar-pane" id="vectorbase">
                 <h3>VectorBase Main Menu</h3>
 
                 <div id="vectorbase-homepage-link" style="text-align: center; margin-top: 30px">
@@ -292,7 +290,6 @@
 
             <div class="sidebar-pane" id="swarm-plots">
                 <h3>Population Biology Map Graph Area</h3>
-                <div id="projects-notice">Multiple projects are in the marker that is being graphed</div>
                 <div id="swarm-chart-area">
                     <div style="text-align: center; margin-top: 30px">
                         <i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>
@@ -496,10 +493,10 @@
                                 </span>
                             </td>
                             <td>
-                                Toggle legend On or Off to change categorization and coloring
+                                Toggle to view/hide marker colorization and metadata categorization options
                             </td>
                         </tr>
-  
+
                         <tr class="active">
                             <th colspan="2">Panels</th>
                         </tr>
@@ -508,12 +505,12 @@
                             <td class="col-md-4">
                                <span class="leaflet-bar leaflet-control" style="width:32px;height:32px">
                                    <img style="display:block;margin:auto;height:100%;padding:5px 0 5px 0"
-                                       src="/sites/default/files/ftp/images/dot_ked_100_trans.png" height=20 width=20 
+                                       src="/sites/default/files/ftp/images/dot_ked_100_trans.png" height=20 width=20
                                    />
                                </span>
                             </td>
                             <td>
-                                Return to the main site
+                                VectorBase main menu
                             </td>
                         </tr>
 
@@ -535,7 +532,7 @@
                                 </span>
                             </td>
                             <td>
-                                Data visualization
+                                View-specific data visualization
                             </td>
                         </tr>
                         <tr>
@@ -628,6 +625,25 @@
                                 Select region and zoom
                             </td>
                         </tr>
+                        <!-- VB-7318 NOT Boolean & VB-7535 year-range selection-->
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light">Control</kbd> + Click (Windows)<br><kbd class="light">Command</kbd> + Click (Mac)
+
+                            </td>
+                            <td>
+                                1) Perform a boolean NOT function at Autocomplete Search<br> 2) Select/deselect year-range independently at Date Search
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <kbd class="light">Shift</kbd> + Click
+
+                            </td>
+                            <td>
+                                Select a range of year-ranges at Date Search
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
@@ -680,19 +696,22 @@
             <label class="sr-only" for="search_ac">Search...</label>
             <div id="search-bar" class="input-group">
                 <span id="expand-menu" class="input-group-addon btn-info"
+                      title="Expand advanced search and configuration options"
+                      data-tooltip="tooltip"
+                      data-placement="bottom"
                       style="cursor: pointer;"
-                      title="Expand menu"
                       data-toggle="collapse"
                       data-target="#advanced-options">
-                    <i class="rotate fa fa-bars fa-fw" id="bars-icon">
-                    </i>
+                    <i class="rotate fa fa-bars fa-fw" id="bars-icon"></i>
                 </span>
                 <input type="text" class="form-control" placeholder="Search..." id="search_ac"
                        data-role="tagsinput"/>
                 <span id="reset-search" class="input-group-addon btn-danger"
                       style="cursor: pointer"
-                      title="Reset search"><i
-                        class="fa fa-times fa-fw"></i>
+                      title="Reset search and clear results"
+                      data-tooltip="tooltip"
+                      data-placement="bottom">
+                      <i class="fa fa-times fa-fw"></i>
                 </span>
             </div>
 
@@ -778,6 +797,56 @@
                         </tr>
                         </tbody>
                     </table>
+                    <!-- VB-7318 NOT Boolean & VB-7535 year-range selection-->
+                    <h4>Key + Mouse click combinations</h4>
+                    <table class="table table-condensed">
+                        <tr class="active">
+                            <th colspan="3">Autocomplete Search using NOT Boolean</th>
+                            <th></th>
+                        </tr>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-3">
+                                <kbd class="light">Control</kbd> + Click (Windows)<br><kbd class="light">Command</kbd> + Click (Mac)
+
+                            </td>
+                            <td class="col-md-1">
+                            </td>
+                            <td class="col-md-8">
+                                To perform a boolean NOT function, use the autocomplete to find the term you wish to exclude from your search and select it using this key combination
+                            </td>
+                        </tr>
+                        </tbody>
+                        <!-- <tr><td height=10></td></tr> -->
+                        <tr class="active">
+                            <th colspan="3">Date Search using Year-range</th>
+                            <th></th>
+                        </tr>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-3">
+                                <kbd class="light">Control</kbd> + Click (Windows)<br><kbd class="light">Command</kbd> + Click (Mac)
+
+                            </td>
+                            <td class="col-md-1">
+                            </td>
+                            <td class="col-md-8">
+                                Select/deselect year-range independently at Date Search
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-3">
+                                <kbd class="light">Shift</kbd> + Click
+
+                            </td>
+                            <td class="col-md-1">
+                            </td>
+                            <td class="col-md-8">
+                                Select a range of year-ranges at Date Search if one other is already selected
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="main-menu" id="menu-bar">
@@ -788,8 +857,8 @@
 
 
                     <select id="SelectView" class="selectpicker" style="text-align: center;"
-                            data-width="100%" data-icon-Base="fa fa-fw">
-                        <option data-icon="fa-tags" value="smpl">Samples</option>
+                        data-width="100%" data-icon-Base="fa fa-fw">
+                        <option  data-icon="fa-tags" value="smpl">Samples</option>
                         <option data-icon="fa-eyedropper" value="ir">Insecticide Resistance</option>
                         <option data-icon="fa-line-chart" value="abnd">Abundance</option>
                         <option data-icon="fa-sliders" value="geno">Genotypes</option>
@@ -800,7 +869,6 @@
                         <button type="button"
                                 id="date-select"
                                 class="btn btn-default"
-                                title="Search by date"
                                 data-toggle="collapse"
                                 data-target="#daterange"
                         >
@@ -813,7 +881,6 @@
                         <button type="button"
                                 id="season-select"
                                 class="btn btn-default"
-                                title="Seasonal search"
                                 data-toggle="collapse"
                                 data-target="#seasonal"
                         >
@@ -822,13 +889,32 @@
                         </button>
                     </span>
 
-                    <input id="world-toggle" type="checkbox" data-toggle="toggle"
-                           data-on="<i class='fa fa-globe'></i> Local suggestions"
-                           data-off="<i class='fa fa-globe'></i> Global suggestions">
+                    <div class="btn wrapper">
+                        <div class="btn wrapper inner" data-tooltip="tooltip" title="Toggle Global or Local search box auto-complete suggestions" data-placement="bottom">
+                        <input id="world-toggle" type="checkbox" data-toggle="toggle"
+                            data-on="<i class='fa fa-globe'></i> Local suggestions"
+                            data-off="<i class='fa fa-globe'></i> Global suggestions">
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="collapse main-menu" style="margin-top:0;" id="daterange">
+            <div class="collapse main-menu" id="daterange">
+                <div class="input-daterange input-group" id="datepicker" style="margin-top: 5px;">
+                    <span class="input-group-addon"
+                    title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>
+                    <input id="date-start" type="text" class="form-control" name="start" placeholder="DD/MM/YYYY"/>
+                    <span class="input-group-addon">to</span>
+                    <input id="date-end" type="text" class="form-control" name="end" placeholder="DD/MM/YYYY"/>
+                    <span class="input-group-btn" style="width: 3px;"></span>
+                    <span class="input-group-btn">
+                        <div id="add-dates-tooltip" class="disabled">
+                            <button id="add-dates" type="button" class="btn btn-success" disabled data-toggle="collapse" data-target="#daterange">
+                                <i class="fa fa-plus fa-fw"></i>
+                            </button>
+                        </div>
+                    </span>
+                </div>
                 <!-- predefined date ranges-->
                 <div class="input-group" style="margin-top: 3px;">
                     <span class="btn-group btn-group-justified" data-toggle="buttons" role="group" style="height: 30px;">
@@ -1008,7 +1094,7 @@
                         {{>#data.name}}
                         </span>
                         <span style="padding-left: 5px;">
-                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1151,7 +1237,7 @@
                             {{>#data.name}}
                             </span>
                         <span style="padding-left: 5px;">
-                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1242,15 +1328,9 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 </script>
 
 <!-- jsrender template for sample info in the table slider (abundance view)-->
-
 <script type="text/x-jsrender" id="abndRowTemplate">
     <div class="row no-pad marker-row">
 
@@ -1319,7 +1399,7 @@
                             {{>#data.name}}
                             </span>
                         <span style="padding-left: 5px;">
-                            <i class="fa  fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            <i class="fa  fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1477,7 +1557,7 @@
                             {{>#data.name}}
                             </span>
                         <span style="padding-left: 5px;">
-                            <i class="fa  fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            <i class="fa  fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1564,15 +1644,9 @@
             </div>
         </div>
     </div>
-
-
-
-
 </script>
 
-
 <!-- jsrender template for point info in beeswarm plot (IR view)-->
-
 <script type="text/x-jsrender" id="irBsPointTemplate">
     <div class="row no-pad" style="width: 370px;">
         <div class="col-md-12" >
@@ -1640,7 +1714,7 @@
                             {{>#data.name}}
                             </span>
                         <span style="padding-left: 5px;">
-                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1742,323 +1816,6 @@
 
 
 </script>
-
-
-<!-- jsrender template for point info in beeswarm plot (abundance view, not used yet)-->
-
-<script type="text/x-jsrender" id="abndBsPointTemplate">
-    <div class="row no-pad" style="width: 370px;">
-        <div class="col-md-12" >
-            <div class="cancel" id="cancel-hover"><i class="fa fa-fw fa-times"></i></div>
-            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
-                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
-                    <i> {{html:species}}</i>
-                </span>
-            </h3>
-            <p>{{html:bundleName}}
-                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
-                    {{html:accession}}
-                </span>
-                <a href="{{url:url}}" target="_blank">
-                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
-                </a>            {{if sampleSize}}
-                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
-                    ({{html:sampleType}}
-                </span>
-                 of {{>sampleSize}} individuals)</p>
-            {{else}}
-                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
-                    ({{html:sampleType}})
-                </span></p>
-            {{/if}}
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <p><i class="fa fa-fw fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
-                {{for collectionDate}}
-                    {{>#data}}
-                {{else}}
-                    No date
-                {{/for}}
-                </p>
-            </div>
-            <div class="col-md-6">
-                <p><i class="fa fa-fw fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
-                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
-                        {{html:geolocation}}
-                    </span>
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
-                </p>
-                <ul>
-                {{for projects}}
-                    <li>
-                        {{if #data.brdColor}}
-                            {{if #data.brdColor === '#000000'}}
-                                <span type="Projects" value="{{attr:#data.name}}">
-                            {{else}}
-                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
-                            {{/if}}
-                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
-                        {{else}}
-                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
-
-                        {{/if}}
-                            {{>#data.name}}
-                            </span>
-                        <span style="padding-left: 5px;">
-                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
-                            aria-hidden="true"
-                            {{if #data.brdColor}}
-                                data-bgColor={{attr:#data.brdColor}}
-                            {{else}}
-                                data-bgColor={{attr:~root.bgColor}}
-                            {{/if}}
-                            ></i>
-                        </span>
-                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
-                        </a>
-                    </li>
-                {{/for}}
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
-                </p>
-                <ul>
-                {{for collectionProtocols}}
-                    <li>
-                        {{if #data.brdColor}}
-                            {{if #data.brdColor === '#000000'}}
-                                <span type="Collection protocols" value="{{attr:#data.name}}">
-                            {{else}}
-                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
-                            {{/if}}
-                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
-                        {{else}}
-                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
-
-                        {{/if}}
-                            {{>#data.name}}
-                            </span>
-                    </li>
-                {{/for}}
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" >
-                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
-                Abundance data</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" >
-                <h5 style="text-align: center;"><b>Abundance:</b> {{html:smplAvgAbnd}} individual(s) per day</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-				<p><i class="fa  fa-bug" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:sampleSize}} individual(s)</p>
-				<p><i class="fa  fa-calendar-check-o" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:collectionDuration}} day(s)</p>
-
-            </div>
-            <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
-                <ul>
-                {{for protocols}}
-                    <li>
-                        {{if #data.brdColor}}
-                            {{if #data.brdColor === '#000000'}}
-                                <span type="Protocols" value="{{attr:#data.name}}">
-                            {{else}}
-                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
-                            {{/if}}
-                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
-                        {{else}}
-                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
-
-                        {{/if}}
-                            {{>#data.name}}
-                            </span>
-                    </li>
-                {{/for}}
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" >
-                <h5 style="text-align: center;"><i class="fa fa-fw fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
-            </div>
-        </div>
-    </div>
-</script>
-
-<!-- jsrender template for point info in beeswarm plot (Genotypes view, not used yet)-->
-
-<script type="text/x-jsrender" id="genoBsPointTemplate">
-    <div class="row no-pad" style="width: 370px;">
-        <div class="col-md-12" >
-            <div class="cancel" id="cancel-hover"><i class="fa fa-fw fa-times"></i></div>
-            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};  margin: 0 -10px 0 0;">
-                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
-                    <i> {{html:species}}</i>
-                </span>
-            </h3>
-            <p>{{html:bundleName}}
-                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
-                    {{html:accession}}
-                </span>
-                <a href="{{url:url}}" target="_blank">
-                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
-                </a>            {{if sampleSize}}
-                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
-                    ({{html:sampleType}}
-                </span>
-                 of {{>sampleSize}} individuals)</p>
-            {{else}}
-                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
-                    ({{html:sampleType}})
-                </span></p>
-            {{/if}}
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <p><i class="fa fa-fw fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
-                {{for collectionDate}}
-                    {{>#data}}
-                {{else}}
-                    No date
-                {{/for}}
-                </p>
-            </div>
-            <div class="col-md-6">
-                <p><i class="fa fa-fw fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
-                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
-                        {{html:geolocation}}
-                    </span>
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
-                </p>
-                <ul>
-                {{for projects}}
-                    <li>
-                        {{if #data.brdColor}}
-                            {{if #data.brdColor === '#000000'}}
-                                <span type="Projects" value="{{attr:#data.name}}">
-                            {{else}}
-                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
-                            {{/if}}
-                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
-                        {{else}}
-                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
-
-                        {{/if}}
-                            {{>#data.name}}
-                            </span>
-                        <span style="padding-left: 5px;">
-                            <i class="fa fa-fw fa-info-circle active-hover" type="Projects" value="{{attr:#data.name}}"
-                            aria-hidden="true"
-                            {{if #data.brdColor}}
-                                data-bgColor={{attr:#data.brdColor}}
-                            {{else}}
-                                data-bgColor={{attr:~root.bgColor}}
-                            {{/if}}
-                            ></i>
-                        </span>
-                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
-                        </a>
-                    </li>
-                {{/for}}
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
-                </p>
-                <ul>
-                {{for collectionProtocols}}
-                    <li>
-                        {{if #data.brdColor}}
-                            {{if #data.brdColor === '#000000'}}
-                                <span type="Collection protocols" value="{{attr:#data.name}}">
-                            {{else}}
-                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
-                            {{/if}}
-                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
-                        {{else}}
-                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
-
-                        {{/if}}
-                            {{>#data.name}}
-                            </span>
-                    </li>
-                {{/for}}
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" >
-                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
-                Abundance data</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" >
-                <h5 style="text-align: center;"><b>Abundance:</b> {{html:smplAvgAbnd}} individual(s) per day</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-				<p><i class="fa  fa-bug" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:sampleSize}} individual(s)</p>
-				<p><i class="fa  fa-calendar-check-o" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:collectionDuration}} day(s)</p>
-
-            </div>
-            <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
-                <ul>
-                {{for protocols}}
-                    <li>
-                        {{if #data.brdColor}}
-                            {{if #data.brdColor === '#000000'}}
-                                <span type="Protocols" value="{{attr:#data.name}}">
-                            {{else}}
-                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
-                            {{/if}}
-                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
-                        {{else}}
-                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
-
-                        {{/if}}
-                            {{>#data.name}}
-                            </span>
-                    </li>
-                {{/for}}
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" >
-                <h5 style="text-align: center;"><i class="fa fa-fw fa-info-circle" style="color: {{attr:bgColor}};"></i> click the data-point to make this pop-up sticky!</h5>
-            </div>
-        </div>
-    </div>
-</script>
-
-
 
 <!-- jsrender template for Project info in the table view-->
 
@@ -2222,7 +1979,7 @@
     //    var solrTaUrl = 'https://pre.vectorbase.org/popbio/map/asolr/solr/vb_ta/';
     var solrTaUrl = 'asolr/solr/vb_ta/';
     //    var solrTaUrl = 'http://bio-iisrv2.bio.ic.ac.uk/popbio-map-preview/asolr/solr/vb_ta/';
-    var map, sidebar;
+    var map = undefined, sidebar;
     var assetLayerGroup, tempParentLayerGroup;
     var smallClusters = [], months = new Array(13).fill(false);
     var legendSpecies = 18;
@@ -2264,7 +2021,7 @@
 
     var viewMode = $('#SelectView').val();
 
-    initializeSearch();
+    PopulationBiologyMap.methods.initializeSearch();
 
 
     // set view according to the value of the view url parameter. Otherwise default to smpl
