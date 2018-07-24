@@ -1843,6 +1843,9 @@ function updatePieChart(population, stats) {
                 .title(population)   // VB-7427 set title                         
             ;
 
+            // Must manually remove <title>s lingering from previous draw
+            $('#pie-chart-area .nv-series title').remove();
+
             chart.legend.vers('classic')
                 .rightAlign(false)
                 .maxKeyLength(23)
