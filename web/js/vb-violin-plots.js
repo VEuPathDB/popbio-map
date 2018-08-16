@@ -12,7 +12,7 @@ function createBeeViolinPlot(divid, filter) {
 
         $(divid).html(
             '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-area-chart" style="color: #C3312D; font-size: 12em"></i>' +
+            '<i class="fa fa-chart-area" style="color: #C3312D; font-size: 12em"></i>' +
             '<h4>this plot type only works in the</h4>' +
             '<h4>Insecticide Resistance and Abundance views</h4>' +
             '<h4>switch to IR phenotypes or Abundance view and try again</h4>' +
