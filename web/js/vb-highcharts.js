@@ -59,7 +59,7 @@
             },
             {
                 value: "infected.count",
-                title: "Number of infected assay",
+                title: "Number of infected assays",
                 chartType: "line",
                 offset: 0,
                 tooltip: {
@@ -121,7 +121,7 @@
 
     var performOperation = {
         "+": function (x,y) { return x + y },
-        "-": function (x,y) { return x + y },
+        "-": function (x,y) { return x - y },
         "*": function (x,y) { return x * y },
         "/": function (x,y) { return x / y }
     }
@@ -216,15 +216,10 @@
                 }
 
                 //Decide what resolution of data to get based on the number of days the data covers for performance
-                //Also add padding to graph range to ensure all data will be graphed when changing resolution
                 if (numberOfDays > 3650) {
                     //More than 10 years gets yearly data
                     resolution = "Yearly";
-
-                    //Add a year of padding,
-                    minDate -= (3600 * 1000 * 24 * 365);
-                    maxDate += (3600 * 1000 * 24 * 365);
-
+                    
                     //More than 10 years, do not give users option of viewing EpiWeekly and Daily
                     $("#EpiWeekly").addClass("disabled");
                     $("#Daily").addClass("disabled");
@@ -232,28 +227,17 @@
                     //More than 3 years but less than 10 years get monthly data
                     resolution = "Monthly";
 
-                    //Add approximately a month of padding
-                    minDate -= (3600 * 1000 * 24 * 31);
-                    maxDate += (3600 * 1000 * 24 * 31);
-
                     //More than 3 years but less than 10 years, do not allow users to see Daily data
                     $("#Daily").addClass("disabled");
                 } else if (numberOfDays > 365) {
                     //More than 1 year, but less than 3 years gets EpiWeekly
                     resolution = "EpiWeekly";
 
-                    //Add a week of padding
-                    minDate -= (3600 * 1000 * 24 * 7);
-                    maxDate += (3600 * 1000 * 24 * 7);
                 } else {
                     //Less than one year gets daily data
                     resolution = "Daily";
 
-                    //Add a day of padding
-                    minDate -= (3600 * 1000 * 24);
-                    maxDate += (3600 * 1000 * 24);
                 }
-
 
                 //Set the default tooltip message for disabled buttons
                 $.each($("#resolution-selector button"), function() {
@@ -723,26 +707,22 @@
                                 var unixDate = new Date(collectionsDate.val + 'T00:00:00Z').getTime();
                             }
 
-                            //Check what additional data needs to be set with the series
-                            //Using try catch since it is possible tooltip is not always defined
-                            try {
-                                if (yAxis.tooltip.data) {
-                                    //Go through each additional tooltip data config to add the additional data for the tooltip
-                                    yAxis.tooltip.data.forEach(function (dataConfig) {
-                                        var dataPoints = Object.byString(collectionsDate, dataConfig.value);
+                            //Check what additional data needs to be sent with the series
+                            if (yAxis.tooltip && yAxis.tooltip.data) {
+                                //Go through each additional tooltip data config to add the additional data for the tooltip
+                                yAxis.tooltip.data.forEach(function (dataConfig) {
+                                    var dataPoints = Object.byString(collectionsDate, dataConfig.value);
 
-                                        if (dataPoints) {
-                                            data[dataConfig.key] = {label: dataConfig.label, value: []};
+                                    if (dataPoints) {
+                                        data[dataConfig.key] = {label: dataConfig.label, value: []};
 
-                                            dataPoints.forEach(function (dataPoint) {
-                                                data[dataConfig.key].value.push(dataPoint.val)
-                                            });
-                                        }
-                                    });
-                                }
-                            } catch {
-                                //Only adding because it is necessary
+                                        dataPoints.forEach(function (dataPoint) {
+                                            data[dataConfig.key].value.push(dataPoint.val)
+                                        });
+                                    }
+                                });
                             }
+                            
 
                             if (resolution === "EpiWeekly") {
                                 data.epiWeek = {label: "Epi Week", value: [epiWeek]};
