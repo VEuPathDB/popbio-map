@@ -1,20 +1,100 @@
 (function (PopulationBiologyMap, $, undefined) {
     //Private variables used for the chart
-    var endpoint = "Graphdata";
-    var result_limit = 500000;
-    var collection_resolutions;
-    var highest_resolution;
-    var lowest_resolution;
-    var projects_list;
-    var result_count;
-    var highcharts_filter;
+    var dataEndpoint = "Graphdata";
+    var resolutionEndpoint = "MarkerYearRange"
+    var resultLimit = 500000;
+    var collectionResolutions;
+    var highestResolution;
+    var lowestResolution;
+    var resultCount;
+    var highchartsFilter;
     var resolution;
-    var min_date;
-    var max_date;
-    var min_range;
+    var minDate;
+    var maxDate;
+    var minRange;
+    var graphConfig;
+    var afterSetExtremesTriggered = false;
+    var externalAction = false;
+    var resolutionSelector = false;
+    var highcharts = {};
+
+    //Object that contain the configuration of how certain views are supposed to be graphed with highcharts
+    //Preferably, this configuration should be constructed using information stored in a database
+    var viewGraphConfig = {
+        abnd : {
+            //Will be used to support different type of data that gets graphed
+            dataType: "timeplot",
+            graphTitle: "Population abundance",
+            quantityLabel: "Abundance",
+            yAxis: [{
+                value: ["sum_abundance", "num_collections"],
+                operator: '/',
+                decimalPlaces: 1,
+                title: "Average individuals (per night per trap)",
+                chartType: "column",
+                offset: 20
+            }],
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    groupPadding: 0.01,
+                    events: {
+                        legendItemClick: setExternalActionFlag
+                    }
+                }
+            },
+            collectionKey: "facets.term.buckets"
+        },
+        path: {
+            //Will be used to support different type of data that gets graphed
+            dataType: "timeplot",
+            graphTitle: "Pathogen infection data",
+            quantityLabel: "Number of assays",
+            yAxis: [{
+                value: "count",
+                title: "Total number of assays",
+                chartType: "column",
+                transparent: true,
+                offset: 15
+            },
+            {
+                value: "infected.count",
+                title: "Number of infected assays",
+                chartType: "line",
+                offset: 0,
+                tooltip: {
+                    data: [{
+                        key: "pathogen",
+                        value: "infected.pathogen.buckets",
+                        label: "Pathogen(s)",
+                        type: "variable"
+                    }]
+                } //Will contain the configuration to set the tooltip of the graph
+            }],
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    groupPadding: 0.01,
+                    events: {
+                        legendItemClick: setExternalActionFlag
+                    }
+                },
+                line: {
+                    events: {
+                        legendItemClick: setExternalActionFlag
+                    },
+                    marker: {
+                        enabled: true,
+                        radius: 5
+                    }
+                }
+            },
+            collectionKey: "facets.term.buckets"
+        }
+    } 
 
     //Object that maps the resolution value to solr field
-    var resolution_to_solr_field = {
+    var resolutionToSolrField = {
         Yearly: "collection_year_s",
         Monthly: "collection_month_s",
         EpiWeekly: "collection_epiweek_s",
@@ -22,14 +102,14 @@
     }
 
     //Mapping from solr to what is used in the code
-    var solr_to_resolution_name = {
+    var solrToResolutionName = {
         year: "Yearly",
         month: "Monthly",
         day: "Daily"
     }
 
     //Used to compare resolutions to see which one should be used
-    var resolution_rank = {
+    var resolutionRank = {
         day: 1,
         month: 3,
         year: 4,
@@ -39,170 +119,179 @@
         Yearly: 4
     }
 
+    var performOperation = {
+        "+": function (x,y) { return x + y },
+        "-": function (x,y) { return x - y },
+        "*": function (x,y) { return x * y },
+        "/": function (x,y) { return x / y }
+    }
+
     if (PopulationBiologyMap.data == undefined) {
         PopulationBiologyMap.data = {};
     }
-
-    PopulationBiologyMap.data.highcharts = {};
 
     if (PopulationBiologyMap.methods == undefined) {
         PopulationBiologyMap.methods = {};
     }
 
-    PopulationBiologyMap.methods.createAbundanceGraph = function(divid, filter) {
-        $('#swarm-plots h3').text('Population Abundance');
+    PopulationBiologyMap.methods.createHighchartsGraph = function(divid, filter) {
         //How the URL will be constructed
-        var abundanceUrl = solrPopbioUrl + viewMode + "Projects?";
-        var queryUrl = abundanceUrl + qryUrl + filter;
+        var baseUrl = solrPopbioUrl + viewMode + resolutionEndpoint + "?";
+        var queryUrl = baseUrl + qryUrl + filter;
+        
+        //Resets/updates variables related to the data being graphed
+        collectionResolutions = [];
+        lowestResolution = undefined;
+        highestResolution = undefined;
+        minRange = undefined;
+        graphConfig = viewGraphConfig[viewMode];
 
-        //Reset variables related to the data being graphed
-        collection_resolutions = [];
-        lowest_resolution = undefined;
-        highest_resolution = undefined;
-        min_range = undefined;
+        //Set title of graph panel
+        $("#swarm-plots h3").text(graphConfig.graphTitle);
 
-        //Remove created tooltips
-        $("#resolution-selector .disabled").tooltip("destroy");
-
+        //Hide resolution selector to not show the changes the code does to the buttons
+        $("#resolution-selector-group").hide();
         //Reset any buttons that were disabled
-        $.each($(".disabled"), function() {
+        $.each($("#resolution-selector .disabled"), function() {
             $(this).removeClass("disabled");
         });
-
         $("#resolution-selector .btn-primary").addClass("btn-default").removeClass("btn-primary");
 
         //Storing filter in object to use later
-        highcharts_filter = filter;
+        highchartsFilter = filter;
 
         //Will need to find a better way of organizing these ajax calls
         //$('#swarm-chart-area').fadeOut();
         $.ajax({
-            type: 'GET',
+            type: "GET",
             url: queryUrl,
-            dataType: 'json',
+            dataType: "json",
             success: function (json) {
-                //Get the min and max dates of the data
-                var collection_year_list = json.facets[resolution_to_solr_field.Yearly].buckets;
                 //Get the resolutions of the data being graphed
-                var collection_resolution_list = json.facets.collection_resolution.buckets;
-                var last_year_position = collection_year_list.length - 1;
-                min_date = new Date(collection_year_list[0].val + '-01-01T00:00:00Z').getTime();
-                max_date = new Date(collection_year_list[last_year_position].val + '-12-31T00:00:00Z').getTime();
-                var number_of_days = (max_date-min_date) / (1000 * 3600 * 24);
+                var collectionResolutionList = json.facets.collection_resolution.buckets;
+                //Get the min and max dates of data
+                var collectionYearList = json.facets[resolutionToSolrField.Yearly].buckets;
+                var lastYearPosition = collectionYearList.length - 1;
+                minDate = new Date(collectionYearList[0].val + '-01-01T00:00:00Z').getTime();
+                maxDate = new Date(collectionYearList[lastYearPosition].val + '-12-31T00:00:00Z').getTime();
+                //Calculate number of days the data of query will could cover
+                var numberOfDays = (maxDate-minDate) / (1000 * 3600 * 24);
 
-
-                for (var j = 0; j < collection_resolution_list.length; j++) {
-                    var resolution_value = collection_resolution_list[j].val
-                    collection_resolutions.push(resolution_value);
+                //Store the resolutions of the data
+                for (var j = 0; j < collectionResolutionList.length; j++) {
+                    var resolutionValue = collectionResolutionList[j].val
+                    collectionResolutions.push(resolutionValue);
                 }
 
                 //Get the possible ranges for the chart navigator
-                var ranges_list = {};
-                for (var j = 0; j < collection_resolutions.length; j++) {
+                var rangesList = {};
+                for (var j = 0; j < collectionResolutions.length; j++) {
                     //Check the collection resolution and set the appropriate range for the chart
-                    if (collection_resolutions[j] == "year") {
+                    if (collectionResolutions[j] == "year") {
                         //Possible range is approx. 3 years
-                        ranges_list["year"] = 3600 * 1000 * 24 * 365 * 3;
-                    } else if (collection_resolutions[j] == "month") {
+                        rangesList["year"] = 3600 * 1000 * 24 * 365 * 3;
+                    } else if (collectionResolutions[j] == "month") {
                         //Possible range is approx. 3 months
-                        ranges_list["month"] = 3600 * 1000 * 24 * 90;
+                        rangesList["month"] = 3600 * 1000 * 24 * 90;
                     } else {
                        //Possible range is 10 days
-                       ranges_list["day"] = 3600 * 1000 * 24 * 10;
+                       rangesList["day"] = 3600 * 1000 * 24 * 10;
                     }
                 }
 
-                //Now get the minimum range the navigator can go
-                for (var key in ranges_list) {
-                    if (ranges_list[key] < min_range || min_range == undefined) {
-                        min_range = ranges_list[key];
-                        highest_resolution = key;
+                for (var key in rangesList) {
+                    //Now get the minimum range the navigator can go since it is possible
+                    //for the data returned to not be available for a certain range
+                    if (rangesList[key] < minRange || minRange == undefined) {
+                        minRange = rangesList[key];
+                        highestResolution = key;
                     }
 
-                    if (lowest_resolution == undefined) {
-                        lowest_resolution = key;
-                    } else if (resolution_rank[key] > resolution_rank[lowest_resolution]) {
-                        lowest_resolution = key;
+                    //Also find the lowest resolution of the data
+                    if (lowestResolution == undefined) {
+                        lowestResolution = key;
+                    } else if (resolutionRank[key] > resolutionRank[lowestResolution]) {
+                        lowestResolution = key;
                     }
                 }
 
-                //Decide what resolution of data to get
-                if (number_of_days > 3650) {
+                //Decide what resolution of data to get based on the number of days the data covers for performance
+                if (numberOfDays > 3650) {
                     //More than 10 years gets yearly data
                     resolution = "Yearly";
-                    min_date -= (3600 * 1000 * 24 * 365);
-                    max_date += (3600 * 1000 * 24 * 365);
-
+                    
                     //More than 10 years, do not give users option of viewing EpiWeekly and Daily
                     $("#EpiWeekly").addClass("disabled");
                     $("#Daily").addClass("disabled");
-                } else if (number_of_days > 1095) {
+                } else if (numberOfDays > 1095) {
                     //More than 3 years but less than 10 years get monthly data
                     resolution = "Monthly";
-                    min_date -= (3600 * 1000 * 24 * 30);
-                    max_date += (3600 * 1000 * 24 * 30);
 
                     //More than 3 years but less than 10 years, do not allow users to see Daily data
                     $("#Daily").addClass("disabled");
-                } else if (number_of_days > 365) {
+                } else if (numberOfDays > 365) {
                     //More than 1 year, but less than 3 years gets EpiWeekly
-                    //Using monthly for now since EpiWeekly needs a function to take care of correctly
                     resolution = "EpiWeekly";
-                    min_date -= (3600 * 1000 * 24 * 7);
-                    max_date += (3600 * 1000 * 24 * 7);
+
                 } else {
                     //Less than one year gets daily data
                     resolution = "Daily";
-                    min_date -= (3600 * 1000 * 24);
-                    max_date += (3600 * 1000 * 24);
+
                 }
 
                 //Set the default tooltip message for disabled buttons
-                $("#resolution-selector .disabled").tooltip({
-                    position: "top",
-                    title: "Date range graphed is too broad.  Narrow down date range to enable."
+                $.each($("#resolution-selector button"), function() {
+                    if ($(this).attr('data-original-title')) {
+                        $(this).attr('title', "Date range graphed is too broad.  Narrow down date range to enable.").tooltip("fixTitle");
+                    } else {
+                        $(this).tooltip({
+                            position: "top",
+                            title: "Date range graphed is too broad.  Narrow down date range to enable."
+                        });
+                    }
                 });
+
+
+                $("#resolution-selector button").tooltip("disable");
 
                 //Update the calculated resolution since the data being graphed is not available
                 //in the resolution that was calculated
-                if (resolution_rank[lowest_resolution] > resolution_rank[resolution]) {
-                    resolution = solr_to_resolution_name[lowest_resolution];
+                if (resolutionRank[lowestResolution] > resolutionRank[resolution]) {
+                    resolution = solrToResolutionName[lowestResolution];
                 }
 
                 //Disable buttons based on the highest resolution available
-                if (highest_resolution === "year") {
+                if (highestResolution === "year") {
                     $("#Monthly").addClass("disabled");
                     $("#EpiWeekly").addClass("disabled");
                     $("#Daily").addClass("disabled");
-                } else if (highest_resolution === "month") {
+                } else if (highestResolution === "month") {
                     $("#EpiWeekly").addClass("disabled");
                     $("#Daily").addClass("disabled");
                 }
 
                 //Add a tooltip letting user know the buttons are disabled because
                 //no higher resolution is available
-                if (highest_resolution !== "day") {
-                    //Destory tooltip created and recreate with a different title
-                    $("#resolution-selector .disabled").tooltip("destroy");
-                    $("#resolution-selector .disabled").tooltip({
-                        position: 'top',
-                        title: "The data is not available at a higher resolution"
-                    });
+                if (highestResolution !== "day") {
+                    $("#resolution-selector button")
+                        .attr('title', "The data is not available at a higher resolution")
+                        .tooltip("fixTitle");
                 }
 
+                $("#resolution-selector .disabled").tooltip("enable");
+
                 //Display the resolution selector to let user know the resolution of the data
-                $("#resolution-selector-group").show();
+                $("#resolution-selector-group").fadeIn();
                 $("#" + resolution).addClass("btn-primary").removeClass("btn-default");
 
                 //Hide warning icon if only one resolution is present in data being graphed
-                if (collection_resolutions.length == 1) {
+                if (collectionResolutions.length == 1) {
                     $("#resolution-selector-title .fa-exclamation-triangle").hide();
                 } else {
                     $("#resolution-selector-title .fa-exclamation-triangle").show();
                 }
 
-                projects_list = json.facets.projects_category.buckets;
-                result_count = json.response.numFound;
+                resultCount = json.response.numFound;
             },
             error: function() {
                 PaneSpin('swarm-plots', 'stop');
@@ -211,6 +300,7 @@
         })
         .then(function () {
             // add GA - VB-4680
+            // Will eventually move to GTM so we do not have to add code related to analytics
             Highcharts.setOptions({
                 exporting: {
                     buttons: {
@@ -261,20 +351,21 @@
                 }
             });
 
-            //Get graph data for project and build chart
             //Construct URL used to retrieve data from solr
             var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
-            var date_resolution_field = resolution_to_solr_field[resolution];
-            var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
+            var dateResolutionField = resolutionToSolrField[resolution];
+            var baseUrl = solrPopbioUrl + viewMode + dataEndpoint + "?";
             // unfortunately 'term' seems to be a misnomer.  'field' would be better!
-            var facet_term = "&term=" + term + "&date_resolution=" + date_resolution_field;
-            var queryUrl = abundanceUrl + qryUrl + facet_term + filter;
+            var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
+            var queryUrl = baseUrl + qryUrl + facetTerm + filter;
 
-            //Hopefully this will not be needed anymore
-            if (result_count > result_limit) {
+            //Check if the results that will be retrieved from query are more than what we allow to be graphed
+            //Hopefully this will not be needed anymore once graphing by resolution is implemented
+            if (resultCount > resultLimit) {
+                //Display message letting user know why data was not graphed
                 $("#swarm-chart-area").html(
                     '<div style="text-align: center; margin-top: 30px">' +
-                    '<i class="fa fa-area-chart" style="color: #C3312D; font-size: 12em"></i>' +
+                    '<i class="fa fa-chart-area" style="color: #C3312D; font-size: 12em"></i>' +
                     '<h4>Too many points to plot</h4>' +
                     '<h4>Apply filters to plot less data</h4>' +
                     '<h4><b>Points</b>: ' + result_count.toString() + '</h4>' +
@@ -284,6 +375,7 @@
 
                 $("#resolution-selector-group").hide();
             } else {
+                //Limit not reached so get actual data used to create graph
                 $.ajax({
                     beforeSend: function(xhr) {
                         //Clear chart area and start the spinner
@@ -307,9 +399,10 @@
                         console.log("An error has occurred");
                     },
                     complete: function() {
-                        //Construct graph with ajax call to Solr servr
-                        var data = PopulationBiologyMap.data.highcharts.data;
-                        PopulationBiologyMap.methods.createStockchart(data);
+                        //Construct graph using the data that was received from Solr
+                        var data = highcharts.series;
+                        var yAxis = highcharts.yAxis;
+                        createStockchart(yAxis, data);
                         PaneSpin('swarm-plots', 'stop');
                     }
                 });
@@ -318,15 +411,19 @@
     }
 
     //Tasks that need to be done or events defined  when the page loads
-    PopulationBiologyMap.init = function() {
+    function initialize() {
+        //Event used to graph data based on the resolution selected by user
         $("#resolution-selector button").click(function () {
+            //Only get data if button is not disabled
             if (!$(this).hasClass("disabled")) {
+                //Update button that is selected
                 $("#resolution-selector .btn-primary").addClass("btn-default").removeClass("btn-primary");
                 $(this).addClass("btn-primary").removeClass("btn-default");
                 resolution = this.value;
 
-                //Check if the data has already disappeared
-                if (resolution_rank[lowest_resolution] > resolution_rank[resolution]) {
+                //Show that data has already disappeared by checking the lowest resolution that was available
+                //for data that is being graphed
+                if (resolutionRank[lowestResolution] > resolutionRank[resolution]) {
                     $("#resolution-selector-title .fa-exclamation-triangle").addClass("danger");
                 } else {
                     $("#resolution-selector-title .fa-exclamation-triangle").removeClass("danger");
@@ -334,92 +431,12 @@
 
                 var chart = Highcharts.charts[0];
                 var extremes = chart.xAxis[0].getExtremes();
-                var start_date = new Date(extremes.min).toISOString();
-                var end_date = new Date(extremes.max).toISOString();
-                var number_of_days = (extremes.max-extremes.min) / (1001 * 3600 * 24);
+                var startDate = new Date(extremes.min).toISOString();
+                var endDate = new Date(extremes.max).toISOString();
+                var numberOfDays = (extremes.max-extremes.min) / (1001 * 3600 * 24);
 
-                //NOTE: This is probably not needed since we do not change the extremes of the navigator, but
-                //leaving for now in the off chance that it is needed somehow
-                //Based on how many days are viewing viewed, disable certain resolutions
-                if (number_of_days > 3650 + 730) {
-                    //More than 10 years, do not give users option of viewing EpiWeekly and Daily
-                    $("#EpiWeekly").addClass("disabled");
-                    $("#Daily").addClass("disabled");
-                    //More than 10 years gets yearly data
-                    //resolution = "Yearly";
-                } else if (number_of_days > 1095 + 60) {
-                    //More than 3 years but less than 10 years, do not allow users to see Daily data
-                    //Also make sure we are not trying to disable a button that is not available for that dataset
-                    $("#Daily").addClass("disabled");
-                } else {
-                    $("#resolution-selector .disabled").tooltip("destroy");
-                    $("#EpiWeekly").removeClass("disabled");
-                    $("#Daily").removeClass("disabled");
-                }
-
-                //Set the default tooltip message for disabled buttons
-                $("#resolution-selector .disabled").tooltip({
-                    position: "top",
-                    title: "Date range graphed is too broad.  Narrow down date range to enable."
-                });
-                //End NOTE
-
-                //Disable buttons based on the highest resolution available
-                if (highest_resolution === "year") {
-                    $("#Monthly").addClass("disabled");
-                    $("#EpiWeekly").addClass("disabled");
-                    $("#Daily").addClass("disabled");
-                } else if (highest_resolution === "month") {
-                    $("#EpiWeekly").addClass("disabled");
-                    $("#Daily").addClass("disabled");
-                }
-
-                //Add a tooltip letting user know the buttons are disabled because
-                //no higher resolution is available
-                if (highest_resolution !== "day") {
-                    //Destory tooltip created and recreate with a different title
-                    $("#resolution-selector .disabled").tooltip("destroy");
-                    $("#resolution-selector .disabled").tooltip({
-                        position: 'top',
-                        title: "The data is not available at a higher resolution"
-                    });
-                }
-
-                var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
-                var date_resolution_field = resolution_to_solr_field[resolution];
-                var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
-                var facet_term = "&term=" + term + "&date_resolution=" + date_resolution_field;
-                //var queryUrl = abundanceUrl + qryUrl + facet_term + highcharts_filter;
-                var queryUrl = abundanceUrl + qryUrl + facet_term + highcharts_filter + "&fq=collection_date:[" + start_date + " TO " + end_date +"]";
-
-                chart.showLoading("Loading data from server...");
-                //Get new data based on the Date range selected with Highcharts' navigator
-                $.getJSON(queryUrl, function (json) {
-                    //Show series in graph in case it was hidden when no data was found
-                    $(".highcharts-series-group").show();
-
-                    if (json.facets.term) {
-                        //chart.showLoading('Loading data from server...');
-                        setHighchartsData(json);
-                        var data = PopulationBiologyMap.data.highcharts.data;
-
-                         //Remove the old data points
-                        while(chart.series.length > 0)
-                            chart.series[0].remove(false);
-
-                        for (var i = 0; i < data.length; i++) {
-                            chart.addSeries(data[i], false);
-                        }
-
-                        chart.redraw();
-                        chart.hideLoading();
-                    } else {
-                        chart.showLoading("No data found");
-
-                        //Hide the left over series data, might be a better way, but do not have time
-                        $(".highcharts-series-group").hide();
-                    }
-                });
+                //Update the graph
+                updateHighchartsGraph(startDate, endDate, resolution);
             }
         });
 
@@ -428,25 +445,36 @@
         $("#resolution-selector-title .fa-exclamation-triangle").tooltip({placement: "top", title: "Graphed data contains mixed temporal resolution.  Selecting a higher resolution will cause some data to disappear."});
     }
 
-    PopulationBiologyMap.methods.createStockchart = function(data) {
-        //$('#swarm-chart-area').highcharts('StockChart',{
+    function createStockchart(yAxis, data) {
+        var plotOptions = viewGraphConfig[viewMode].plotOptions;
+        
         //Delete previous created chart object and add a new one
+        //when clicking a different marker
         if (Highcharts.charts[0] !== undefined ) {
             Highcharts.charts[0].destroy();
             Highcharts.charts.splice(0,1);
         }
 
+        //Add additional plot options than what is required by the different views
+        if (!plotOptions['series']) {
+            plotOptions['series'] = {
+                dataGrouping: {
+                    enabled: false
+                }
+            }
+        }
+
+        //Add graph to the swarm-chart-area div
         Highcharts.stockChart('swarm-chart-area', {
             rangeSelector: {
                 enabled: false
             },
             legend: {
                 enabled: true,
-                labelFormat: "<i>{name}</i>"
+                labelFormat: "<i>{name}</i>",
+                symbolRadius: 0
             },
             chart: {
-                type: 'scatter',
-                //zoomType: 'xy',
                 height: "200%"
             },
             navigator: {
@@ -463,74 +491,18 @@
             tooltip: {
                 useHTML: true,
                 split: false,
-                formatter: function () {
-                    var start_date = new Date(this.x);
-                    var year = start_date.getUTCFullYear();
-                    var month = start_date.getUTCMonth();
-                    var day = start_date.getUTCDate();
-                    var collection_date;
-                    var end_date;
-                    var data_type;
-
-                    if (resolution === "Yearly") {
-                        data_type = "Year";
-                        start_date = Highcharts.dateFormat('%b %d', start_date);
-                        end_date = Highcharts.dateFormat('%b %d', new Date(year, 12, 31));
-                        collection_date = start_date + " to " + end_date;
-                    } else if (resolution === "Monthly") {
-                        data_type = "Month";
-                        start_date = Highcharts.dateFormat('%b %d', start_date);
-                        month += 1;
-                        end_date = Highcharts.dateFormat('%b %d',new Date(year, month, 0));
-                        collection_date = start_date + " to " + end_date;
-                    } else if (resolution === "EpiWeekly") {
-                        data_type = "Epi Week";
-                        day = start_date.getDate() + 6;
-                        start_date = Highcharts.dateFormat('%b %d', start_date);
-                        end_date = Highcharts.dateFormat('%b %d', new Date(year, month, day));
-                        collection_date = start_date + " to " + end_date;
-                    } else {
-                        data_type = "Day";
-                        collection_date = Highcharts.dateFormat('%b %d, %Y',new Date(this.x));
-                    }
-
-                    if (glbSummarizeBy === "Species") {
-                        var tooltip = '<i><b>' + this.series.name + '</b></i><br/>';
-                    } else {
-                        var tooltip =  '<b>' + this.series.name +'</b><br>';
-                    }
-
-                    tooltip += '<b>Date:</b> ' + collection_date  + '<br>' +
-                        '<b>Abundance:</b> ' + this.y + '<br>' +
-                        '<b>Resolution:</b> ' + data_type + '<br>' +
-                        '<b>Year:</b> ' + year;
-
-                    if (resolution === "EpiWeekly") {
-                        tooltip += '<br>' + '<b>Epi Week:</b> ' + this.point.epi_week;
-                    }
-
-                    return tooltip;
-                }
+                formatter: customTooltipFormatter 
             },
+            plotOptions: plotOptions,
             xAxis: {
                 events: {
                     afterSetExtremes: afterSetExtremes
                 },
-                min: min_date,
-                max: max_date,
-                //Set minimum range to 10 days
-                minRange: min_range
+                min: minDate,
+                max: maxDate,
+                minRange: minRange,
             },
-            yAxis: {
-                opposite: false,
-                title: {
-                    text: "Average individuals (per night per trap)"
-                },
-                labels: {
-                    align: "left",
-                    x: 0
-                }
-            },
+            yAxis: yAxis, 
             credits: {
                 enabled: false
             },
@@ -543,73 +515,74 @@
      */
     function afterSetExtremes(e) {
         var chart = Highcharts.charts[0];
-        var start_date = new Date(e.min).toISOString();
-        var end_date = new Date(e.max).toISOString();
-        var number_of_days = (e.max-e.min) / (1000 * 3600 * 24);
+        var startDate = new Date(e.min).toISOString();
+        var endDate = new Date(e.max).toISOString();
+        var numberOfDays = (e.max-e.min) / (1000 * 3600 * 24);
+        var oldResolution = resolution;
 
-        //Based on how many days are viewing viewed, disable certain resolutions
-        if (number_of_days > 3650 + 730) {
-            //More than 10 years, do not give users option of viewing EpiWeekly and Daily
-            $("#EpiWeekly").addClass("disabled");
-            $("#Daily").addClass("disabled");
+        //The following code is to fix a small bug where setAfterExtreme gets executed when clicking on a 
+        //legend item if setAfterExtreme has not been executed before
+        //Update the flag that the afterSetExtreme function has already been accessed
+        if (!afterSetExtremesTriggered) {
+            afterSetExtremesTriggered = true;
 
-            if (resolution === "Daily" || resolution === "EpiWeekly") {
-                resolution = "Monthly";
-                $("#resolution-selector .btn-primary").removeClass("btn-primary").addClass("btn-default").blur();
-                $("#Monthly").addClass("btn-primary").removeClass("btn-default");
-            };
-        } else if (number_of_days > 1095 + 60) {
-            //More than 3 years but less than 10 years, do not allow users to see Daily data
-            //Also make sure we are not trying to disable a button that is not available for that dataset
-            $("#Daily").addClass("disabled");
-
-            if (resolution === "Daily") {
-                resolution = "EpiWeekly";
-                $("#resolution-selector .btn-primary").removeClass("btn-primary").addClass("btn-default").blur();
-                $("#EpiWeekly").addClass("btn-primary").removeClass("btn-default");
-            };
-        } else {
-            $("#resolution-selector .disabled").tooltip("destroy");
-            $("#EpiWeekly").removeClass("disabled");
-            $("#Daily").removeClass("disabled");
+            //Since accessing afterSetExtremes for the first time, check if it was triggered due to a legend
+            //and do not execute rest of function if that is the case
+            if (externalAction) {
+                externalAction = false;
+                return;
+            }
         }
 
-        //Set the default tooltip message for disabled buttons
-        $("#resolution-selector .disabled").tooltip({
-            position: "top",
-            title: "Date range graphed is too broad.  Narrow down date range to enable."
-        });
+        //Only enable buttons if the highestResolution in the data is not year
+        if (highestResolution !== "year") {
+            //Based on how many days are viewing viewed, disable certain resolutions
+            if (numberOfDays > 3650 + 730 || highestResolution === "month") {
+                //More than 10 years, do not give users option of viewing EpiWeekly and Daily
+                $("#EpiWeekly").addClass("disabled");
+                $("#Daily").addClass("disabled");
+                $("#resolution-selector .disabled").tooltip("enable");
 
-        //Disable buttons based on the highest resolution available
-        if (highest_resolution === "year") {
-            $("#Monthly").addClass("disabled");
-            $("#EpiWeekly").addClass("disabled");
-            $("#Daily").addClass("disabled");
-        } else if (highest_resolution === "month") {
-            $("#EpiWeekly").addClass("disabled");
-            $("#Daily").addClass("disabled");
+                if (resolution === "Daily" || resolution === "EpiWeekly") {
+                    resolution = "Monthly";
+                    $("#resolution-selector .btn-primary").removeClass("btn-primary").addClass("btn-default").blur();
+                    $("#Monthly").addClass("btn-primary").removeClass("btn-default");
+                };
+            } else if (numberOfDays > 1095 + 60) {
+                //More than 3 years but less than 10 years, do not allow users to see Daily data
+                //Also make sure we are not trying to disable a button that is not available for that dataset
+                $("#Daily").addClass("disabled");
+                $("#resolution-selector .disabled").tooltip("enable");
+
+                if (resolution === "Daily") {
+                    resolution = "EpiWeekly";
+                    $("#resolution-selector .btn-primary").removeClass("btn-primary").addClass("btn-default").blur();
+                    $("#EpiWeekly").addClass("btn-primary").removeClass("btn-default");
+                };
+            } else {
+                $("#resolution-selector .disabled").tooltip("disable");
+                $("#EpiWeekly").removeClass("disabled");
+                $("#Daily").removeClass("disabled");
+            }
         }
 
-        //Add a tooltip letting user know the buttons are disabled because
-        //no higher resolution is available
-        if (highest_resolution !== "day") {
-            //Destory tooltip created and recreate with a different title
-            $("#resolution-selector .disabled").tooltip("destroy");
-            $("#resolution-selector .disabled").tooltip({
-                position: 'top',
-                title: "The data is not available at a higher resolution"
-            });
+        //Only update the graph if the resolution was changed
+        if (oldResolution !== resolution) {
+            updateHighchartsGraph(startDate, endDate, resolution);
         }
+    }
 
-
+    //Creaates query for new data, does a request, and updates the graph
+    function updateHighchartsGraph(startDate, endDate, resolution) {
         //Construct the URL that will be used to get the new data
         var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
-        var date_resolution_field = resolution_to_solr_field[resolution];
-        var abundanceUrl = solrPopbioUrl + viewMode + endpoint + "?";
-        var facet_term = "&term=" + term + "&date_resolution=" + date_resolution_field;
-        var queryUrl = abundanceUrl + qryUrl + facet_term + highcharts_filter + "&fq=collection_date:[" + start_date + " TO " + end_date +"]";
+        var dateResolutionField = resolutionToSolrField[resolution];
+        var baseUrl = solrPopbioUrl + viewMode + dataEndpoint + "?";
+        var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
+        var queryUrl = baseUrl + qryUrl + facetTerm + highchartsFilter + "&fq=collection_date:[" + startDate + " TO " + endDate +"]";
+        var chart = Highcharts.charts[0];
 
-        chart.showLoading('Loading data from server...');
+        chart.showLoading("Loading data from server...");
         //Get new data based on the Date range selected with Highcharts' navigator
         $.getJSON(queryUrl, function (json) {
             //Show series in graph in case it was hidden when no data was found
@@ -618,12 +591,14 @@
             if (json.facets.term) {
                 //chart.showLoading('Loading data from server...');
                 setHighchartsData(json);
-                var data = PopulationBiologyMap.data.highcharts.data;
+                setExternalActionFlag();
+                var data = highcharts.series;
 
-                //Remove the old data points
+                //Remove all the old series
                 while(chart.series.length > 0)
                     chart.series[0].remove(false);
 
+                //Add each series to the graph
                 for (var i = 0; i < data.length; i++) {
                     chart.addSeries(data[i], false);
                 }
@@ -631,62 +606,215 @@
                 chart.redraw();
                 chart.hideLoading();
             } else {
-                chart.showLoading('No data found');
+                chart.showLoading("No data found");
+
+                //Hide the left over series data, might be a better way, but do not have time
+                $(".highcharts-series-group").hide();
             }
         });
     }
 
+
     //Uses the response from SOLR to construct the data array that will be used by Highcharts
     function setHighchartsData(json) {
-        PopulationBiologyMap.data.highcharts.data = [];
+        //Reset what is used to set the properties to create the graph
+        highcharts.series = [];
+        highcharts.yAxis = [];
 
         //Get species (or protocols etc) collection info from response
         if (json.facets.term) {
-            var term_collections_list = json.facets.term.buckets;
+            var collectionKey = graphConfig.collectionKey;
+            //Use the collection key to that was set to get the data that will be used
+            var termCollectionsList = Object.byString(json, collectionKey); 
 
-            term_collections_list.forEach(function (term_collections) {
-                //Used to hold the formatted data for a single species (or protocol, etc)  chart
-                var marker_color = legend.options.palette[term_collections.val];
-                var single_term_data = {
-                    "name": term_collections.val,
-                    "marker": {
-                    "symbol": "circle"
-                },
-                    "color": marker_color,
-                    "data": []
-                };
+            //Used to choose what side to place the y-axis
+            var opposite = false;
+            graphConfig.yAxis.forEach(function (yAxis) {
 
-                collections_info = term_collections.collection_dates.buckets;
-                collections_info.forEach(function (collections_date) {
-                    var average_abundance = (collections_date.sum_abundance/collections_date.num_collections).roundDecimals(1);
+                //Flag used to tell if there is non-zero data in series for column charts
+                var noData = true;
+                
+                //Go through response to parse data out that will be plotted
+                termCollectionsList.forEach(function (termCollections) {
+                    //Get the key of the y-axis we are population
+                    var yAxisKey = opposite ? " infected" : "";
+                    var marker = opposite ? "diamond" : "circle";
 
-                    if (resolution === "Yearly") {
-                        var unix_date = new Date(collections_date.val + '-01-01T00:00:00Z').getTime();
-                    } else if (resolution === "Monthly") {
-                        var unix_date = new Date(collections_date.val + '-01T00:00:00Z').getTime();
-                    } else if (resolution === "EpiWeekly") {
-                        [epi_week_year, epi_week] = collections_date.val.split("-");
-                        epi_week = epi_week.replace("W", "");
-                        var epi_week_date = getDateFromWeek(epi_week, epi_week_year);
-                        var unix_date = epi_week_date.getTime();
-                    } else {
-                        var unix_date = new Date(collections_date.val + 'T00:00:00Z').getTime();
+                    //Used to hold the formatted data for a single species (or protocol, etc)  chart
+                    var markerColor = legend.options.palette[termCollections.val];
+                    var chartType = yAxis.chartType;
+                    var transparent = yAxis.transparent;
+                    
+                    if (transparent) {
+                        var r = hexToRgb(markerColor).r;
+                        var g = hexToRgb(markerColor).g;
+                        var b = hexToRgb(markerColor).b;
+
+                        markerColor = 'rgba(' + r + ',' + g + ',' + b + ',0.7)';
                     }
 
-                    if (resolution === "EpiWeekly") {
-                        single_term_data.data.push({x:unix_date, y:average_abundance, epi_week:epi_week});
-                    } else {
-                        single_term_data.data.push([unix_date, average_abundance]);
-                    }
+                    var singleTermData = {
+                        "name": termCollections.val + yAxisKey,
+                        "marker": {
+                            "symbol": marker
+                        },
+                        "type": chartType,
+                        "color": markerColor,
+                        //Use the opposite boolean to decide which yAxis to map the series
+                        "yAxis": opposite ? 1 : 0,
+                        "data": []
+                    };
+
+                    //Will need to standardize in the future since the "collection_info" could be in a different location
+                    collectionsInfo = termCollections.collection_dates.buckets;
+                    collectionsInfo.forEach(function (collectionsDate) {
+                        //Get the key of the y-axis we are population
+                        var yAxisKey = opposite ? 1 : 0;
+                        var operator = yAxis.operator;
+                        var valueKey = yAxis.value;
+                        var data = {};
+
+                        //Decide how we will get the actual yValue
+                        if (operator) {
+                            var x = Object.byString(collectionsDate, valueKey[0]);
+                            var y = Object.byString(collectionsDate, valueKey[1]);
+                            var yValue = performOperation[operator](x,y).roundDecimals(1);
+                        } else {
+                            var yValue = Object.byString(collectionsDate, valueKey);
+                        }
+
+                        //Only take into consideration no_data if the graph is columns type
+                        //if (chart_type === "column") {
+                        //    if (no_data && y_value !== 0) {
+                        //       no_data = false;
+                        //    } 
+                        //} else if (no_data) {
+                        //    no_data = false;
+                        //}
+                        
+                        //Could support different values on x-axis so checking the data_type which will not do anything for now
+                        if (graphConfig.dataType === "timeplot") {
+                            if (resolution === "Yearly") {
+                                var unixDate = new Date(collectionsDate.val + '-01-01T00:00:00Z').getTime();
+                            } else if (resolution === "Monthly") {
+                                var unixDate = new Date(collectionsDate.val + '-01T00:00:00Z').getTime();
+                            } else if (resolution === "EpiWeekly") {
+                                [epiWeekYear, epiWeek] = collectionsDate.val.split("-");
+                                epiWeek = epiWeek.replace("W", "");
+                                var epiWeekDate = getDateFromWeek(epiWeek, epiWeekYear);
+                                var unixDate = epiWeekDate.getTime();
+                            } else {
+                                var unixDate = new Date(collectionsDate.val + 'T00:00:00Z').getTime();
+                            }
+
+                            //Check what additional data needs to be sent with the series
+                            if (yAxis.tooltip && yAxis.tooltip.data) {
+                                //Go through each additional tooltip data config to add the additional data for the tooltip
+                                yAxis.tooltip.data.forEach(function (dataConfig) {
+                                    var dataPoints = Object.byString(collectionsDate, dataConfig.value);
+
+                                    if (dataPoints) {
+                                        data[dataConfig.key] = {label: dataConfig.label, value: []};
+
+                                        dataPoints.forEach(function (dataPoint) {
+                                            data[dataConfig.key].value.push(dataPoint.val)
+                                        });
+                                    }
+                                });
+                            }
+                            
+
+                            if (resolution === "EpiWeekly") {
+                                data.epiWeek = {label: "Epi Week", value: [epiWeek]};
+                            }
+
+                            singleTermData.data.push({x:unixDate, y:yValue, data:data});
+                        }
+                    });
+
+                    //Add series data
+                    highcharts.series.push(singleTermData);
                 });
-                PopulationBiologyMap.data.highcharts.data.push(single_term_data);
+
+                //Add the y-axis that will be used
+                highcharts.yAxis.push({
+                    opposite: opposite,
+                    allowDecimals: false,
+                    reversedStacks: false,
+                    min: 0,
+                    offset: yAxis.offset,
+                    title: {
+                        text: yAxis.title
+                    },
+                    labels: {
+                        align: "left",
+                        x: 0
+                    },
+                    visible: true //no_data ? false : true
+                });
+
+                //Change opposite to true so the next yAxis will be in the opossite side of graph
+                opposite = true;
             });
         }
     }
 
+    //Usec to customize the information showed in the tooltip
+    function customTooltipFormatter() {
+        var startDate = new Date(this.x);
+        var year = startDate.getUTCFullYear();
+        var month = startDate.getUTCMonth();
+        var day = startDate.getUTCDate();
+        var collectionDate;
+        var endDate;
+        var dataType;
+        var quantityLabel = graphConfig.quantityLabel;
+
+        //Right now we are only doing timeplots, but if it changes will need to use graphConfig.dataType to customize how 
+        //the tooltip will look with different type of data
+        if (resolution === "Yearly") {
+            dataType = "Year";
+            startDate = Highcharts.dateFormat('%b %d', startDate);
+            endDate = Highcharts.dateFormat('%b %d', new Date(year, 12, 31));
+            collectionDate = startDate + " to " + endDate;
+        } else if (resolution === "Monthly") {
+            dataType = "Month";
+            startDate = Highcharts.dateFormat('%b %d', startDate);
+            month += 1;
+            endDate = Highcharts.dateFormat('%b %d',new Date(year, month, 0));
+            collectionDate = startDate + " to " + endDate;
+        } else if (resolution === "EpiWeekly") {
+            dataType = "Epi Week";
+            day = startDate.getDate() + 6;
+            startDate = Highcharts.dateFormat('%b %d', startDate);
+            endDate = Highcharts.dateFormat('%b %d', new Date(year, month, day));
+            collectionDate = startDate + " to " + endDate;
+        } else {
+            dataType = "Day";
+            collectionDate = Highcharts.dateFormat('%b %d, %Y',new Date(this.x));
+        }
+
+        if (glbSummarizeBy === "Species") {
+            var tooltip = '<i><b>' + this.series.name + '</b></i><br/>';
+        } else {
+            var tooltip =  '<b>' + this.series.name +'</b><br>';
+        }
+
+        tooltip += '<b>Date:</b> ' + collectionDate  + '<br>' +
+            '<b>' + quantityLabel + ':</b> ' + this.y + '<br>' +
+            '<b>Resolution:</b> ' + dataType + '<br>' +
+            '<b>Year:</b> ' + year;
+
+        var data = this.point.data;
+        for (var key in data) {
+            tooltip += '<br>' + '<b>' + data[key].label + ':</b> ' + data[key].value.join(', ');
+        }
+
+        return tooltip;
+    }
+
     //Return first Sunday of the epi week
-    function getDateFromWeek(w, y)
-    {
+    function getDateFromWeek(w, y) {
         var _days;
         if(w == 53){
             _days = (1 + (w - 1) * 7);
@@ -698,9 +826,51 @@
         _date.setDate(_date.getDate() - _date.getDay());
 
         return _date;
-}
+    }
+
+    //Allows one to use strings representing an object key to access the value of an object
+    Object.byString = function(o, s) {
+        s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+        s = s.replace(/^\./, '');           // strip a leading dot
+        var a = s.split('.');
+        for (var i = 0, n = a.length; i < n; ++i) {
+            var k = a[i];
+            if (k in o) {
+                o = o[k];
+            } else {
+                return;
+            }
+        }
+        return o;
+    }
+
+    //In order to set opacity on highcharts, need to set the color in rgb format
+    //Function below allows me to retrieve the r, g, b values for hex
+    function hexToRgb(hex) {
+        // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+        var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+            return r + r + g + g + b + b;
+        });
+
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    //Sets legend_flag flag to prevent afterSetExtremes from re-rendeing 
+    //the graph when toggling a legend item
+    function setExternalActionFlag() {
+        if (!afterSetExtremesTriggered) {
+            externalAction = true;
+        }
+    }
 
     $(document).ready(function () {
-        PopulationBiologyMap.init();
+        //Initialize things needed for the graph
+        initialize();
     });
 })(window.PopulationBiologyMap = window.PopulationBiologyMap || {}, jQuery);
