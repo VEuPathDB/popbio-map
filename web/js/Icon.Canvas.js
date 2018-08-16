@@ -119,7 +119,7 @@ L.Icon.Canvas = L.Icon.extend({
             }
 
             // canvas.fillText('\uf111', iconSize2, iconSize2);
-            canvas.font = '18px FontAwesome';
+            canvas.font = '900 18px "Font Awesome 5 Free"';
             // canvas.fillStyle = 'rgb(0, 120, 215)';
             canvas.fillText('\uf00c', iconSize2, iconSize2);
 
@@ -131,9 +131,9 @@ L.Icon.Canvas = L.Icon.extend({
             canvas.translate(iconSize - 10, 6);
             canvas.rotate(Math.PI / 8);
             canvas.textAlign = "center";
-            canvas.font = '14px FontAwesome';
+            canvas.font = '900 12px "Font Awesome 5 Free"';
             canvas.fillStyle = '#595959';
-            canvas.fillText('\uF08d', 0, 0);
+            canvas.fillText('\uf08d', 2, 0);
 
             canvas.restore();
         }

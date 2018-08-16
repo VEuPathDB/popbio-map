@@ -1048,7 +1048,6 @@ function updateExportFields(viewMode) {
         }
     ];
     
-
     // empty the dropdown
     $('#select-export-fields').empty();
 
@@ -1336,7 +1335,7 @@ function loadSolr(parameters) {
                                 case "swarm-plots":
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (viewMode === 'abnd') {
-                                        PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                        PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                     } else {
                                         createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                     }
@@ -1386,7 +1385,7 @@ function loadSolr(parameters) {
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (!panel.data('has-graph')) {
                                         if (viewMode === 'abnd') {
-                                            PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                            PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                         } else { 
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                         }
@@ -1468,7 +1467,7 @@ function loadSolr(parameters) {
 
                                         // Geno viewmode will say that it is not availble in that mode
                                         if (viewMode === 'abnd') {
-                                            PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                            PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                         } else {
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                             panel.data('has-graph', true);
@@ -2083,12 +2082,10 @@ function tableHtml(divid, results) {
                     concentrationUnit: element.concentration_unit_s,
                     duration: element.duration_f,
                     durationUnit: element.duration_unit_s
-
                 };
 
                 template = $.templates("#irRowTemplate");
                 break;
-
             case "abnd":
                 row = {
                     accession: element.accession,
@@ -2118,11 +2115,8 @@ function tableHtml(divid, results) {
                 };
 
                 row.smplAvgAbnd = row.sampleSize / row.collectionDuration;
-
                 template = $.templates("#abndRowTemplate");
-
                 break;
-
             case "geno":
                 row = {
                     accession: element.accession,
@@ -2153,11 +2147,8 @@ function tableHtml(divid, results) {
                 };
 
                 row.alleleCount = (element.sample_size_i * element.genotype_mutated_protein_value_f / 50).roundDecimals(0);
-
                 template = $.templates("#genoRowTemplate");
-
                 break;
-
             default:
                 row = {
                     accession: element.accession,
@@ -2187,16 +2178,10 @@ function tableHtml(divid, results) {
                 template = $.templates("#smplRowTemplate");
                 break;
         }
-        ;
-
 
         var htmlOutput = template.render(row);
         $(divid).append(htmlOutput);
         $('.marker-row').fadeIn();
-        // $('.marker-row').each(function (i, e) {
-        //     $(this).delay(i*50).slideDown('fast');
-        // });
-
     });
 
     //Applying tooltip to active terms in table 
@@ -2651,7 +2636,6 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-author';
             case 'Coordinates':
                 return 'label label-success label-coordinates';
-
             default :
                 return 'label label-warning label-default';
         }
@@ -2660,74 +2644,74 @@ function mapTypeToLabel(type) {
 function mapTypeToIcon(type) {
     switch (type) {
         case 'Taxonomy'   :
-            return 'fa-sitemap';
+            return 'fas fa-sitemap';
         case 'Geography':
-            return 'fa-map-marker';
+            return 'fas fa-map-markeralt';
         case 'Title'  :
-            return 'fa-tag';
+            return 'fas fa-tag';
         case 'Description':
-            return 'fa-info-circle';
+            return 'fas fa-info-circle';
         case 'Project'   :
-            return 'fa-database';
+            return 'fas fa-database';
         case 'Project title'   :
-            return 'fa-database';
+            return 'fas fa-database';
         case 'Anywhere'   :
-            return 'fa-search';
+            return 'fas fa-search';
         case 'PubMed' :
-            return 'fa-book';
+            return 'fas fa-book';
         case 'Insecticide' :
-            return 'fa-eyedropper';
+            return 'fas fa-eye-dropper';
         case 'Collection protocol' :
-            return 'fa-shopping-cart';
+            return 'fas fa-shopping-cart';
         case 'Date' :
-            return 'fa-calendar';
+            return 'far fa-calendar-alt';
         case 'Datepicker' :
-            return 'fa-calendar';
+            return 'far fa-calendar-alt';
         case 'Seasonal' :
-            return 'fa-calendar-check-o';
+            return 'far fa-calendar-check';
         case 'Norm-IR' :
-            return 'fa-bolt';
+            return 'fas fa-bolt';
         case 'Collection ID' :
         // VB-7622 add class for Collection ID: same to Assay ID
-            return 'fa-tag';        
+            return 'fas fa-tag';        
         // VB-7622 add class for Stable ID: same to Assay ID
         case 'Stable ID' :
-            return 'fa-tag';                    
+            return 'fas fa-tag';                    
         // VB-7622 add class for Stable ID: same to Assay ID
         case 'Sample ID' :
-            return 'fa-tag';                            
+            return 'fas fa-tag';                            
         case 'Assay ID' :
-            return 'fa-tag';
+            return 'fas fa-tag';
         case 'Sample' :
-            return 'fa-map-pin';
+            return 'fas fa-map-pin';
         case 'Sample type' :
-            return 'fa-file-o';
+            return 'far fa-file';
         case 'Protocol' :
-            return 'fa-sort-amount-desc';
+            return 'fas fa-sort-amount-down';
         case 'Author' :
-            return 'fa-user';
+            return 'fas fa-user';
         case 'Coordinates':
-            return 'fa-map-marker';
+            return 'fas fa-map-marker-alt';
         case 'Location':
-            return 'fa-location-arrow';
+            return 'fas fa-location-arrow';
         // VB-7318 VB-7622 duplicate with above
         // case 'Insecticide':
         //     return 'fa-eyedropper';
         //Modifies what gets used as the icon in the search bar
         case 'Allele':
-            return 'fa-sliders';
+            return 'fas fa-sliders';
         case 'Locus':
-            return 'fa-thumb-tack';
+            return 'fas fa-thumbtack';
         case 'Concentration':
-            return 'fa-tachometer';
+            return 'fas fa-tachometer-alt';
         case 'Duration':
-            return 'fa-clock-o';
+            return 'far fa-clock';
         case 'Phenotype':
-            return 'fa-eye';
+            return 'far fa-eye';
         case 'Count':
-            return 'fa-hashtag';
+            return 'fas fa-hashtag';
         default :
-            return 'fa-search';
+            return 'fas fa-search';
 
     }
 }
@@ -2793,7 +2777,7 @@ function resetPlots() {
             '<h3>' + graph_selected_initial + ' summary' + '</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<span class="fa-stack fa-stack-lg">' +
-            '<i class="fa fa-chrome fa-stack-2x"></i>' + 
+            '<i class="fab fa-chrome fa-stack-2x"></i>' + 
             '<i class="fa fa-circle fa-stack-1x"/></i></span>' +
             '<h1>Go on!</h1>' +
             '<h4>click a marker on the map</h4>' +
@@ -2804,7 +2788,7 @@ function resetPlots() {
             '</div>';
         violinHTML =
             '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-area-chart" style="color: #2C699E; font-size: 12em"></i>' +
+            '<i class="fa fa-chart-area" style="color: #2C699E; font-size: 12em"></i>' +
             '<h1>Go on!</h1>' +
             '<h4>click a marker on the map</h4>' +
             '<h4>to plot some real data</h4> ' +
@@ -2824,7 +2808,7 @@ function resetPlots() {
             '<h3>' + graph_selected_initial + ' summary' + '</h3>' +            
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<span class="fa-stack fa-stack-lg">' +
-            '<i class="fa fa-chrome fa-stack-2x"></i>' + 
+            '<i class="fab fa-chrome fa-stack-2x"></i>' + 
             '<i class="fa fa-circle fa-stack-1x"/></i></span>' +
             '<h4>click a marker on the map</h4>' +
             '</div>' +
@@ -2833,7 +2817,7 @@ function resetPlots() {
             '</div>';
         violinHTML =
             '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-area-chart" style="color: #2C699E; font-size: 12em"></i>' +
+            '<i class="fa fa-chart-area" style="color: #2C699E; font-size: 12em"></i>' +
             '<h4>click a marker on the map</h4>' +
             '</div>';
         tableHTML =

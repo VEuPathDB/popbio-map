@@ -8,7 +8,8 @@
 
     <!-- Remote CSS styles -->
     <link rel="stylesheet" href="css/vectorbase.css" type="text/css" media="screen"/>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
           rel="stylesheet">
     <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" type="text/css" media="screen"/>-->
@@ -214,11 +215,11 @@
             </a></li>
             <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="Summary statistics"><a id="#graphs" role="tab">
                 <span class="fa-stack fa-stack-sm">
-                    <i class="fa fa-chrome fa-stack-2x"></i>
+                    <i class="fab fa-chrome fa-stack-2x"></i>
                     <i class="fa fa-circle fa-stack-1x"></i>
                 </span></a>
             </li>
-            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="View-specific data visualizations"><a id="#swarm-plots" role="tab"><i class="fa fa-area-chart"></i></a></li>
+            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="View-specific data visualizations"><a id="#swarm-plots" role="tab"><i class="fa fa-chart-area"></i></a></li>
             <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="List details"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
             <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="Download data"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
             <!--<li class="sidebar-icon">-->
@@ -273,7 +274,7 @@
 
                 <div id="pie-chart-header" style="text-align: center; margin-top: 30px">
                     <span class="fa-stack fa-stack-lg">
-                        <i class="fa fa-chrome fa-stack-2x"></i>
+                        <i class="fab fa-chrome fa-stack-2x"></i>
                         <i class="fa fa-circle fa-stack-1x"></i>
                     </span>
 
@@ -292,7 +293,7 @@
                 <h3>Population Biology Map Graph Area</h3>
                 <div id="swarm-chart-area">
                     <div style="text-align: center; margin-top: 30px">
-                        <i class="fa fa-area-chart" style="color: #2c699e; font-size: 12em"></i>
+                        <i class="fa fa-chart-area" style="color: #2c699e; font-size: 12em"></i>
 
                         <h1>Go on!</h1>
 
@@ -398,7 +399,7 @@
                             <td class="col-md-4">
                                 <div class="btn-group" style="width:100%">
                                     <button type="button" class="btn btn-default" style="width:100%">
-                                        <i class="rotate fa fa-calendar"></i> Date search
+                                        <i class="rotate far fa-calendar-alt"></i> Date search
                                     </button>
                                 </div>
                             </td>
@@ -410,7 +411,7 @@
                             <td calss="col-md-4">
                                 <div class="btn-group" style="width:100%">
                                     <button type="button" class="btn btn-default">
-                                        <i class="rotate fa fa-calendar-check-o"></i> Seasonal search
+                                        <i class="rotate far fa-calendar-check"></i> Seasonal search
                                     </button>
                                 </div>
                             </td>
@@ -517,7 +518,7 @@
                         <tr>
                             <td class="col-md-4">
                                 <span class="fa-stack fa-stack-sm leaflet-bar leaflet-control" style="height:32px;width:32px;font-size:8px">
-                                    <i class="fa fa-chrome fa-stack-2x"></i>
+                                    <i class="fab fa-chrome fa-stack-2x"></i>
                                     <i class="fa fa-circle fa-stack-1x" style="background:transparent;font-size:1.4em"></i>
                                 </span>
                             </td>
@@ -528,7 +529,7 @@
                         <tr>
                             <td class="col-md-4">
                                 <span class="leaflet-bar leaflet-control">
-                                    <i class="fa fa-area-chart"></i>
+                                    <i class="fa fa-chart-area"></i>
                                 </span>
                             </td>
                             <td>
@@ -656,17 +657,17 @@
                 <div id="export-selection" style="margin-top: 30px;">
                     <h5>Download a CSV file containing</h5>
                     <div>
-                        <select id="select-export" class="selectpicker" data-icon-Base="fa fa-fw"
-                                data-tick-Icon="fa-check" data-width="90%">
-                            <option data-icon="fa-search" value="1">data matching search</option>
-                            <option data-icon="fa-desktop" value="2">data visible on screen</option>
-                            <option data-icon="fa-dot-circle-o" value="3">data for selected marker on map</option>
-                            <option data-icon="fa-globe" value="4">all data</option>
+                        <select id="select-export" class="selectpicker" data-icon-Base="fa-fw"
+                                data-tick-Icon="fa fa-check" data-width="90%">
+                            <option data-icon="fa fa-search" value="1">data matching search</option>
+                            <option data-icon="fa fa-desktop" value="2">data visible on screen</option>
+                            <option data-icon="far fa-dot-circle" value="3">data for selected marker on map</option>
+                            <option data-icon="fa fa-globe-americas" value="4">all data</option>
                         </select>
                         <h5>with the following fields</h5>
                         <select id="select-export-fields" class="selectpicker" multiple data-actions-box="true"
-                                data-icon-Base="fa fa-fw" data-selected-text-format="count > 2"
-                                data-tick-Icon="fa-check" data-width="90%">
+                                data-icon-Base="fa-fw" data-selected-text-format="count > 2"
+                                data-tick-Icon="fa fa-check" data-width="90%">
                         </select>
                         <div id="div-export-zeroes" class="checkbox">
                             <label><input id="checkbox-export-zeroes" type="checkbox" value="1">Include zero count samples</label>
@@ -859,9 +860,10 @@
                     <select id="SelectView" class="selectpicker" style="text-align: center;"
                         data-width="100%" data-icon-Base="fa fa-fw">
                         <option  data-icon="fa-tags" value="smpl">Samples</option>
-                        <option data-icon="fa-eyedropper" value="ir">Insecticide Resistance</option>
-                        <option data-icon="fa-line-chart" value="abnd">Abundance</option>
-                        <option data-icon="fa-sliders" value="geno">Genotypes</option>
+                        <option data-icon="fa-spray-can" value="ir">Insecticide Resistance</option>
+                        <option data-icon="fa-dna" value="geno">Genotypes</option>
+                        <option data-icon="fa-chart-line" value="abnd">Abundance</option>
+                        <option data-icon="fa-thermometer-half" value="path">Pathogen</option>
                     </select>
                     </span>
 
@@ -872,7 +874,7 @@
                                 data-toggle="collapse"
                                 data-target="#daterange"
                         >
-                        <i class="rotate fa fa-calendar"
+                        <i class="rotate far fa-calendar-alt"
                            id="calendar-icon"></i> Date search
                         </button>
                     </span>
@@ -884,7 +886,7 @@
                                 data-toggle="collapse"
                                 data-target="#seasonal"
                         >
-                        <i class="rotate fa fa-calendar-check-o"
+                        <i class="rotate far fa-calendar-check"
                            id="seasonal-icon"></i> Seasonal search
                         </button>
                     </span>
@@ -892,8 +894,8 @@
                     <div class="btn wrapper">
                         <div class="btn wrapper inner" data-tooltip="tooltip" title="Toggle Global or Local search box auto-complete suggestions" data-placement="bottom">
                         <input id="world-toggle" type="checkbox" data-toggle="toggle"
-                            data-on="<i class='fa fa-globe'></i> Local suggestions"
-                            data-off="<i class='fa fa-globe'></i> Global suggestions">
+                            data-on="<i class='fa fa-globe-americas'></i> Local suggestions"
+                            data-off="<i class='fa fa-globe-americas'></i> Global suggestions">
                         </div>
                     </div>
                 </div>
@@ -902,7 +904,7 @@
             <div class="collapse main-menu" id="daterange">
                 <div class="input-daterange input-group" id="datepicker" style="margin-top: 5px;">
                     <span class="input-group-addon"
-                    title="Select a custom date range"><i class="fa fa-calendar fa-fw"></i></span>
+                    title="Select a custom date range"><i class="far fa-calendar-alt fa-fw"></i></span>
                     <input id="date-start" type="text" class="form-control" name="start" placeholder="DD/MM/YYYY"/>
                     <span class="input-group-addon">to</span>
                     <input id="date-end" type="text" class="form-control" name="end" placeholder="DD/MM/YYYY"/>
@@ -1039,7 +1041,7 @@
                     {{html:accession}}
                 </span>
                 <a href="{{url:url}}" target="_blank">
-                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                 </a>
             {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -1055,7 +1057,7 @@
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    <i class="fa fa-fw fa-calendar " title="Collection date" style="color: {{attr:bgColor}};"></i>
+                    <i class="far fa-fw fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
                     {{for collectionDate}}
                         {{>#data}}
                     {{else}}
@@ -1065,7 +1067,7 @@
             </div>
             <div class="col-md-6">
                 <p>
-                    <i class="fa fa-fw fa-map-marker " title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
@@ -1104,7 +1106,7 @@
                             ></i>
                         </span>
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa fa-fw fa-external-link  " aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -1137,7 +1139,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-fw fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1184,7 +1186,7 @@
                     {{html:accession}}
                 </span>
                 <a href="{{url:url}}" target="_blank">
-                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                 </a>
             {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -1199,7 +1201,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="fa fa-fw fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                <p><i class="far fa-fw fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
                 {{for collectionDate}}
                     {{>#data}}
                 {{else}}
@@ -1208,7 +1210,7 @@
                 </p>
             </div>
             <div class="col-md-6">
-                <p><i class="fa fa-fw fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
@@ -1247,7 +1249,7 @@
                             ></i>
                         </span>
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -1292,20 +1294,20 @@
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    <i class="fa fa-fw fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
+                    <i class="fas fa-fw fa-eye-dropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="Insecticides" value="{{attr:insecticide}}">
                         {{html:insecticide}}
                     </span>
                 </p>
                 {{if concentration && concentrationUnit}}
-                    <p><i class="fa fa-fw fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
+                    <p><i class="fa fa-fw fa-tachometer-alt" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
                 {{/if}}
                 {{if duration && durationUnit}}
-                    <p><i class="fa fa-fw fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
+                    <p><i class="far fa-fw fa-clock" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
                 {{/if}}
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-fw fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1346,7 +1348,7 @@
                     {{html:accession}}
                 </span>
                 <a href="{{url:url}}" target="_blank">
-                    <i class="fa  fa-external-link " aria-hidden="true"></i>
+                    <i class="fa  fa-external-link-alt " aria-hidden="true"></i>
                 </a>
             {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -1361,7 +1363,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="fa  fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                <p><i class="far fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
                 {{for collectionDate}}
                     {{>#data}}
                 {{else}}
@@ -1370,7 +1372,7 @@
                 </p>
             </div>
             <div class="col-md-6">
-                <p><i class="fa  fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                <p><i class="fa  fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
@@ -1409,7 +1411,7 @@
                             ></i>
                         </span>
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa  fa-external-link " aria-hidden="true"></i>
+                            <i class="fa  fa-external-link-alt " aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -1454,11 +1456,11 @@
         <div class="row">
             <div class="col-md-6">
 				<p><i class="fa  fa-bug" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:sampleSize}} individual(s)</p>
-				<p><i class="fa  fa-calendar-check-o" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:collectionDuration}} day(s)</p>
+				<p><i class="far fa-calendar-check" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:collectionDuration}} day(s)</p>
 
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};"><i class="fas fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1504,7 +1506,7 @@
                     {{html:accession}}
                 </span>
                 <a href="{{url:url}}" target="_blank">
-                    <i class="fa  fa-external-link " aria-hidden="true"></i>
+                    <i class="fa  fa-external-link-alt " aria-hidden="true"></i>
                 </a>
             {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
@@ -1519,7 +1521,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="fa  fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                <p><i class="far fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
                 {{for collectionDate}}
                     {{>#data}}
                 {{else}}
@@ -1528,7 +1530,7 @@
                 </p>
             </div>
             <div class="col-md-6">
-                <p><i class="fa  fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                <p><i class="fa  fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
@@ -1567,7 +1569,7 @@
                             ></i>
                         </span>
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa  fa-external-link " aria-hidden="true"></i>
+                            <i class="fa  fa-external-link-alt" aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -1621,7 +1623,7 @@
                 </ul>
               </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa  fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};"><i class="fas fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1662,7 +1664,7 @@
                     {{html:accession}}
                 </span>
                 <a href="{{url:url}}" target="_blank">
-                    <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                 </a>            {{if sampleSize}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}}
@@ -1676,7 +1678,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="fa fa-fw fa-calendar" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                <p><i class="far fa-fw fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
                 {{for collectionDate}}
                     {{>#data}}
                 {{else}}
@@ -1685,7 +1687,7 @@
                 </p>
             </div>
             <div class="col-md-6">
-                <p><i class="fa fa-fw fa-map-marker" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
@@ -1724,7 +1726,7 @@
                             ></i>
                         </span>
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
-                            <i class="fa fa-fw fa-external-link " aria-hidden="true"></i>
+                            <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                         </a>
                     </li>
                 {{/for}}
@@ -1769,20 +1771,20 @@
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    <i class="fa fa-fw fa-eyedropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
+                    <i class="fas fa-fw fa-eye-dropper" title="Insecticide" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="Insecticides" value="{{attr:insecticide}}">
                         {{html:insecticide}}
                     </span>
                 </p>
                 {{if concentration && concentrationUnit}}
-                    <p><i class="fa fa-fw fa-tachometer" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
+                    <p><i class="fa fa-fw fa-tachometer-alt" title="Concentration" style="color: {{attr:bgColor}};"></i> {{html:concentration}} {{>concentrationUnit}}</p>
                 {{/if}}
                 {{if duration && durationUnit}}
-                    <p><i class="fa fa-fw fa-clock-o" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
+                    <p><i class="far fa-fw fa-clock" title="Duration" style="color: {{attr:bgColor}};"></i> {{html:duration}} {{>durationUnit}}</p>
                 {{/if}}
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-fw fa-sort-amount-desc" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1828,7 +1830,7 @@
                     {{html:id}}
                 </span>
                 <a href={{url:entityURL}} target="_blank">
-                    <i class="fa fa-fw fa-external-link" style="color: {{attr:textColor}};" aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-external-link-alt" style="color: {{attr:textColor}};" aria-hidden="true"></i>
                 </a>
             </h3>
         </div>
@@ -1847,7 +1849,7 @@
         <div class="row less-margin">
             <div class="col-md-12" >
                 <h5 style="color: {{attr:bgColor}}; text-align: center;">
-                <i class="fa fa-fw fa-files-o " title="Publications"></i>
+                <i class="far fa-fw fa-copy" title="Publications"></i>
                 Publications</h5>
             </div>
         </div>
@@ -1941,7 +1943,7 @@
         <div class="row less-margin">
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-calendar " title="In VectorBase since"></i><b> In VectorBase since</b>
+                    <i class="far fa-fw fa-calendar-alt " title="In VectorBase since"></i><b> In VectorBase since</b>
                 </p>
                 <ul><li>
                 {{attr:creation_date}}
@@ -1949,7 +1951,7 @@
             </div>
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-calendar " title="Last modification date"></i><b> Last modified on</b>
+                    <i class="far fa-fw fa-calendar-alt" title="Last modification date"></i><b> Last modified on</b>
                 </p>
                 <ul><li>
                 {{attr:last_modified_date}}
