@@ -202,6 +202,6 @@
 
     </fields>
     <uniqueKey>id</uniqueKey>
-    <df>textng</df>
-    <solrQueryParser q.op="AND"/>
+    <defaultSearchField>textng</defaultSearchField> 
+    <solrQueryParser defaultOperator="AND"/>
 </schema>
