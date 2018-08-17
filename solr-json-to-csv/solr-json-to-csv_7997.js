@@ -44,7 +44,7 @@ var defaultOptions = {
     invalidParams: ['qt', 'stream'],
     backend: {
         host: 'localhost',
-        port: 8080
+        port: 7997
     },
     validator: validateRequest
 };
