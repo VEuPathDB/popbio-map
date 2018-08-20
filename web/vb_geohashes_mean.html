@@ -1648,6 +1648,180 @@
     </div>
 </script>
 
+<!-- jsrender template for sample info in the table slider (IR view)-->
+
+<script type="text/x-jsrender" id="pathRowTemplate">
+    <div class="row no-pad marker-row">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
+                    <i> {{html:species}}</i>
+                </span>
+            </h3>
+            <p>{{html:bundleName}}
+                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                    {{html:accession}}
+                </span>
+                <a href="{{url:url}}" target="_blank">
+                    <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
+                </a>
+            {{if sampleSize}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}})
+                </span></p>
+            {{/if}}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p><i class="far fa-fw fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
+                {{for collectionDate}}
+                    {{>#data}}
+                {{else}}
+                    No date
+                {{/for}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                        {{html:geolocation}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
+                </p>
+                <ul>
+                {{for projects}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                </p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Pathogen infection data</h5>
+            </div>
+        </div>
+        {{if phenotypeValueType}}
+            <div class="row">
+                <div class="col-md-12" >
+                    <h5 style="text-align: center;">
+                        <b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}
+                    </h5>
+                </div>
+            </div>
+        {{/if}}
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};">
+                    <i class="fas fa-fw fa-thermometer-half" title="Pathogen" style="color: {{attr:bgColor}};"></i>
+                    <b> Pathogen</b>
+                </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="Pathogen" value="{{attr:pathogen}}">
+                            {{html:pathogen}}
+                        </span>
+                    </li>
+                </ul>
+                <p>
+                    <i class="fas fa-fw fa-bullseye" title="Infection Status" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="Infection status" value="{{attr:infectionStatus}}">
+                        {{html:infectionStatus}}
+                    </span>
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
 <!-- jsrender template for point info in beeswarm plot (IR view)-->
 <script type="text/x-jsrender" id="irBsPointTemplate">
     <div class="row no-pad" style="width: 370px;">
