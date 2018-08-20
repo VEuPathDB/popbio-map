@@ -287,25 +287,46 @@
             // VB-7622 default with ?view=geno at URL (e.g., selecting the menu from Popbio page or using Share Link) is set to Allele (active-legend) at initializeMap()
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
+            if (viewMode === "path") glbSummarizeBy = "Pathogen";
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
                 if (glbSummarizeBy === "Insecticide") {
                     if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
+                    } else if  (viewMode === "path") {
+                        glbSummarizeBy = "Pathogen";
                     } else {
                         glbSummarizeBy = "Species";
                     } 
                 }
             }
 
+            //Might not be needed will remove once done testing
             if (viewMode !== "geno") {
                 // $('#SelectView').val('smpl');
-                if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") glbSummarizeBy = "Species";
+                if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") {
+                    if (viewMode === "path") {
+                        glbSummarizeBy = "Pathogen";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
+            }
+
+            if (viewMode !== "path") {
+                // $('#SelectView').val('smpl');
+                if (glbSummarizeBy === "Pathogen" || glbSummarizeBy === "Infection status") {
+                    if (viewMode === "geno") {
+                        glbSummarizeBy = "Allele";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
             }
 
             //Add and remove the disabled class for the sidebar
-            if (viewMode !== "ir" && viewMode !== "abnd") {
+            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
                 //Get the current sidebar that is active
                 var active_sidebar = $(".sidebar-icon.active a").attr("id");
 
@@ -1451,6 +1472,82 @@
                             addDatepickerItem(startDate, endDate);
                         }
                         break   
+                    case "pathogen":
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }   
+                                $('#search_ac').tagsinput('add', {
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
+                                    activeTerm: true,
+                                    type: 'Pathogen',
+                                    field: mapTypeToField('Pathogen'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });
+                            })
+                        } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = true;
+                            }
+                            $('#search_ac').tagsinput('add', {
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
+                                activeTerm: true,
+                                type: 'Pathogen',
+                                field: mapTypeToField('Pathogen'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
+                            });
+                        }
+                        break;
+                    case "infection_status":
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }   
+                                $('#search_ac').tagsinput('add', {
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
+                                    activeTerm: true,
+                                    type: 'Infection status',
+                                    field: mapTypeToField('Infection status'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });
+                            })
+                        } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = true;
+                            }
+                            $('#search_ac').tagsinput('add', {
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
+                                activeTerm: true,
+                                type: 'Infection status',
+                                field: mapTypeToField('Infection status'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
+                            });
+                        }
+                        break;
                     case "markerID":
                         highlightedId  = urlParams[key];
                         break;
@@ -1484,7 +1581,7 @@
         updateExportFields(viewMode);
 
         // Add and remove the disabled class for the sidebar
-        if (viewMode !== "ir" && viewMode !== "abnd") {
+        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
             $('#\\#swarm-plots').addClass('disabled');
             $("#\\#swarm-plots").parent("li").attr("title", "Disabled on this view");
 
@@ -1595,6 +1692,10 @@
                 return "pubmed";
             case "Datepicker":
                 return "datepicker";
+            case "Pathogen":
+                return "pathogen";
+            case "Infection status":
+                return "infection_status";
             default:
                 return "text"
                 break;
