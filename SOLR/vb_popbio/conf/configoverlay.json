@@ -54,11 +54,11 @@
         "wt": "json",
         "json.nl": "map",
         "rows": 0,
-        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"-sample_size_i:0\",\"has_geodata:true\"],facet:{geo:{type:terms,field:\"${geo:geohash_2}\",limit:2000,mincount:1,sort:{count:desc},facet:{maxAbnd:\"sum(div(sample_size_i,collection_duration_days_i))\",terms:{type:terms,field:\"${term:species_category}\",limit:2000,mincount:1,sort:{count:desc}}}}}}"
+        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\"],facet:{geo:{type:terms,field:\"${geo:geohash_2}\",limit:2000,mincount:1,sort:{count:desc},facet:{maxAbnd:\"sum(div(sample_size_i,collection_duration_days_i))\",terms:{type:terms,field:\"${term:species_category}\",limit:2000,mincount:1,sort:{count:desc}}}}}}"
       }
     },
-    "/abndProjects": {
-      "name": "/abndProjects",
+    "/abndMarkerYearRange": {
+      "name": "/abndMarkerYearRange",
       "class": "solr.SearchHandler",
       "defaults": {
         "echoParams": "none",
@@ -73,7 +73,7 @@
         "facet.mincount": "1",
         "facet": "true",
         "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\"]}",
-        "json.facet": "{\"projects_category\":{\"terms\":\"projects_category\"},\"collection_year_s\":{\"type\":\"terms\",\"field\":\"collection_year_s\",\"sort\":\"index\"},\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
+        "json.facet": "{\"collection_year_s\":{\"type\":\"terms\",\"field\":\"collection_year_s\",\"sort\":\"index\"},\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
       }
     },
     "/projectsCoordinates": {
@@ -105,9 +105,8 @@
     "invariants": {
         "wt": "json",
         "json.nl": "map",
-        "rows": 1,
+        "rows": 0,
         "facet": "true",
-        "fl": "project_titles_txt",
         "json": "{\"filter\":[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\",\"${date_resolution}:*\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":-1,\"field\":\"${term:species_category}\",\"facet\":{\"collection_dates\":{\"type\":\"terms\",\"limit\":2000,\"sort\":\"index\",\"field\":\"${date_resolution:collection_day_s}\",\"facet\":{\"num_collections\":\"unique(collection_assay_id_s)\",\"sum_abundance\":\"sum(div(sample_size_i, collection_duration_days_i))\"}}}}}}"
       }
     },
@@ -204,23 +203,6 @@
         //"json": "{filter:[\"bundle:pop_sample\",\"genotype_cvterms:variant_frequency\",\"-sample_size_i:0\",\"has_geodata:true\"],facet:{geo:{type:terms,field:\"${geo:geohash_2}\",limit:2000,mincount:1,sort:{count:desc},facet:{maxAbnd:\"sum(div(sample_size_i,collection_duration_days_i))\",terms:{type:terms,field:\"${term:species_category}\",limit:2000,mincount:1,sort:{count:desc}}}}}}"
       }
     },
-    "/genoProjects": {
-      "name": "/genoProjects",
-      "class": "solr.SearchHandler",
-      "defaults": {
-        "echoParams": "none",
-        "df": "text"
-      },
-      "invariants": {
-        "wt": "json",
-        "json.nl": "map",
-        "rows": 0,
-        "facet.field": "projects_category",
-        "facet.mincount": "1",
-        "facet": "true",
-        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\"]}"
-      }
-    },
     "/genoGraphdata": {
       "name": "/genoGraphdata",
       "class": "solr.SearchHandler",
@@ -250,6 +232,22 @@
       },
       "appends": {
         "json": "{filter:[\"bundle:pop_sample_genotype\",\"has_geodata:true\",\"-sample_size_i:0\",\"sample_size_i:*\",\"genotype_type_s:\\\"mutated protein\\\"\",\"genotype_cvterms:variant_frequency\"]}"
+      },
+      "components": [ "query" ]
+    },
+    "/pathExport": {
+      "name": "/pathExport",
+      "class": "solr.SearchHandler",
+      "defaults": {
+        "fl": "exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_sample_size_i,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_phenotype_type_s,exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s,exp_infection_source_s,exp_infection_status_s,,exp_citations_ss"
+      },
+      "invariants": {
+        "rq": "{!xport}",
+        "wt": "xsort",
+        "distrib": "false"
+      },
+      "appends": {
+        "json": "{filter:[\"bundle:pop_sample_phenotype\",\"has_geodata:true\",\"phenotype_type_s:\\\"infection status\\\"\",\"infection_status_s:*\"]}"
       },
       "components": [ "query" ]
     }

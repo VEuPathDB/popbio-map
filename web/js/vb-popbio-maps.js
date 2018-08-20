@@ -1047,15 +1047,119 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Mutated Protein Value')
         }
     ];
-    
+
+    var pathFields = [
+        {
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_assay_id_s',
+            label: 'Assay ID',
+            icon: mapTypeToIcon('Assay ID')
+        },
+        {
+            value: 'exp_bundle_name_s',
+            label: 'Record type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_species_s',
+            label: 'Species',
+            icon: mapTypeToIcon('Taxonomy')
+        },
+        {
+            value: 'exp_sample_type_s',
+            label: 'Sample type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_label_s',
+            label: 'Label',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            icon: mapTypeToIcon('Date')
+        },
+        {
+            value: 'exp_collection_protocols_ss',
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
+        },
+        {
+            value: 'exp_projects_ss',
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
+        },
+        {
+            value: 'exp_geolocations_ss',
+            label: 'Locations',
+            icon: mapTypeToIcon('Location')
+        },
+        {
+            value: 'exp_phenotype_type_s',
+            label: 'Phenotype type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_protocols_ss',
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
+        },
+        {
+            value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
+            label: 'Phenotype value',
+            subtext: 'value, unit, type',
+            icon: mapTypeToIcon('Phenotype')
+        },
+        {
+            value: 'exp_infection_source_s',
+            label: 'Pathogen',
+            icon: mapTypeToIcon('Pathogen')
+        },
+        {
+            value: 'exp_infection_status_s',
+            label: 'Infection status',
+            icon: mapTypeToIcon('Infection status')
+        }
+    ];
+
     // empty the dropdown
     $('#select-export-fields').empty();
 
-    if (viewMode === 'ir') {
-        // IR fields have grouped fields, with subtext, e.g.
-        // text: Concentration
-        // subtext: value, unit
-        $.each(irFields, function (index, obj) {
+    //Set fields that can be downloaded for the view
+    var simpleFields = smplFields;
+    // Need to update this code since it is just repetivie
+    if (viewMode === 'abnd') simpleFields = abndFields;
+    if (viewMode === 'geno') simpleFields = genoFields;
+    if (viewMode === 'ir') simpleFields = irFields;
+    if (viewMode === 'path') simpleFields = pathFields;
+    $.each(simpleFields, function (index, obj) {
+        if (!obj.subtext) {
+            $('#select-export-fields')
+                .append(
+                    $("<option></option>")
+                        .attr("value", obj.value)
+                        .text(obj.label)
+                        .data('icon', obj.icon)
+                );
+        } else {
+            // IR and path fields have grouped fields, with subtext, e.g.
+            // text: Concentration
+            // subtext: value, uniA
             $('#select-export-fields')
                 .append(
                     $("<option></option>")
@@ -1063,26 +1167,9 @@ function updateExportFields(viewMode) {
                         .text(obj.label)
                         .data('subtext', obj.subtext)
                         .data('icon', obj.icon)
-                );
-        })
-
-    } else {
-        // Other view modes have only simple fields:
-        // (but we can probably consolidate these as obj.subtext above is often empty anyway)
-        var simpleFields = smplFields;
-        // Need to update this code since it is just repetivie
-        if (viewMode === 'abnd') simpleFields = abndFields;
-        if (viewMode === 'geno') simpleFields = genoFields;
-        $.each(simpleFields, function (index, obj) {
-            $('#select-export-fields')
-                .append(
-                    $("<option></option>")
-                        .attr("value", obj.value)
-                        .text(obj.label)
-                        .data('icon', obj.icon)
-                );
-        })
-    }
+                 );
+        }
+    })
 
     var checkboxDiv = $('#div-export-zeroes');
     if (viewMode === 'abnd') {
@@ -2172,7 +2259,6 @@ function tableHtml(divid, results) {
                     protocols: borderColor('Protocol', element.protocols),
                     protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i
-
                 };
 
                 template = $.templates("#smplRowTemplate");
@@ -2710,6 +2796,10 @@ function mapTypeToIcon(type) {
             return 'far fa-eye';
         case 'Count':
             return 'fas fa-hashtag';
+        case 'Pathogen':
+            return 'fas fa-thermometer-half';
+        case 'Infection status':
+            return 'fas fa-bullseye';
         default :
             return 'fas fa-search';
 

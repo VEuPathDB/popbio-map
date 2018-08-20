@@ -27,6 +27,8 @@ if (/irExport$/.test(path)) {
     options.fields = fields.abnd;
 } else if (/genoExport$/.test(path)) {
     options.fields = fields.geno;
+} else if (/pathExport$/.test(path)) {
+    options.fields = fields.path;
 } else {
     options.fields = fields.smpl;
 }
