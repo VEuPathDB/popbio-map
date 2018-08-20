@@ -2604,6 +2604,10 @@ function mapTypeToField(type) {
             return "collection_season";
         case "Date":
             return "collection_date_range";
+        case "Pathogen":
+            return "infection_source_cvterms";
+        case "Infection status":
+            return "infection_status_s";
         default :
             return type.toLowerCase()
 
@@ -2654,6 +2658,16 @@ function mapSummarizeByToField(type) {
             // VB-7318 fields.type = Project -> Projects to fix avtive-legend
             fields.type = "Project";
             fields.field = "projects";
+            break;
+        case "Pathogen":
+            fields.summarize = "infection_source_s";
+            fields.type = "Pathogen";
+            fields.field = "infection_source_s";
+            break;
+        case "Infection status":
+            fields.summarize = "infection_status_s";
+            fields.type = "Infection status";
+            fields.field = "infection_status_s";
             break;
         default :
             fields.summarize = "species_category";
@@ -2722,6 +2736,10 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-author';
             case 'Coordinates':
                 return 'label label-success label-coordinates';
+            case 'Pathogen':
+                return 'label label-success label-allele';
+            case 'Infection status':
+                return 'label label-success label-geography';
             default :
                 return 'label label-warning label-default';
         }
