@@ -653,8 +653,9 @@ function initializeMap(parameters) {
     }
     //if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
-    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype view here
+    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype and Pathogen  view here
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
+    if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
 
     // Now generate the legend
     // hardcoded species_category
@@ -1213,7 +1214,7 @@ function loadSolr(parameters) {
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
         // display the number of results
-        if (viewMode === "ir") {
+        if (viewMode === "ir" || viewMode === "path") {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
         } else if (viewMode === "abnd") {
 
@@ -1421,7 +1422,7 @@ function loadSolr(parameters) {
                                     break;
                                 case "swarm-plots":
                                     // Geno viewmode will say that it is not availble in that mode
-                                    if (viewMode === 'abnd') {
+                                    if (viewMode === 'abnd' || viewMode == 'path') {
                                         PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                     } else {
                                         createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -1471,7 +1472,7 @@ function loadSolr(parameters) {
 
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (!panel.data('has-graph')) {
-                                        if (viewMode === 'abnd') {
+                                        if (viewMode === 'abnd' || viewMode === 'path') {
                                             PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                         } else { 
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -1553,7 +1554,7 @@ function loadSolr(parameters) {
                                         gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});                                    
 
                                         // Geno viewmode will say that it is not availble in that mode
-                                        if (viewMode === 'abnd') {
+                                        if (viewMode === 'abnd' || viewMode === 'path') {
                                             PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                         } else {
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -2235,6 +2236,38 @@ function tableHtml(divid, results) {
 
                 row.alleleCount = (element.sample_size_i * element.genotype_mutated_protein_value_f / 50).roundDecimals(0);
                 template = $.templates("#genoRowTemplate");
+                break;
+            case "path":
+                row = {
+                    accession: element.accession,
+                    accessionType: 'Assay ID',
+                    bundleName: 'Sample Assay',
+                    url: element.url,
+                    sampleType: element.sample_type,
+                    sampleTypeType: 'Sample type',
+                    geoCoords: element.geo_coords,
+                    geolocation: element.geolocations[0],
+                    geolocationType: 'Geography',
+                    species: species,
+                    speciesType: 'Taxonomy',
+                    bgColor: bgColor,
+                    textColor: getContrastYIQ(bgColor),
+                    collectionDate: frmDate,
+                    projects: borderColor('Project', element.projects),
+                    projectsType: 'Project',
+                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
+                    collectionProtocolsType: 'Collection protocol',
+                    protocols: borderColor('Protocol', element.protocols),
+                    protocolsType: 'Protocol',
+                    phenotypeValue: element.phenotype_value_f,
+                    phenotypeValueType: element.phenotype_value_type_s,
+                    phenotypeValueUnit: element.phenotype_value_unit_s,
+                    sampleSize: element.sample_size_i,
+                    infectionStatus: element.infection_status_s,
+                    pathogen: element.infection_source_s
+                };
+
+                template = $.templates("#pathRowTemplate");
                 break;
             default:
                 row = {

@@ -1503,6 +1503,32 @@
 
     </requestHandler>
 
+    <requestHandler name="/pathTable" class="solr.SearchHandler">
+        <!-- default values for query parameters can be specified, these
+             will be overridden by parameters in the request
+          -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="df">text</str>
+            <int name="rows">20</int>
+            <str name="wt">json</str>
+            <str name="json.nl">map</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">bundle:pop_sample_phenotype</str>
+            <str name="fq">has_geodata:true</str>
+            <str name="fq">phenotype_type_s:"infection status"</str>
+            <str name="fq">infection_status_s:*</str>
+        </lst>
+        <lst name="invariants">
+            <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
+                species_category, collection_protocols, collection_date, collection_date_range, projects, phenotype_value_f,
+		phenotype_value_type_s, phenotype_value_unit_s, sample_size_i, infection_status_s, infection_source_s
+            </str>
+            <str name="q.op">OR</str>
+        </lst>
+    </requestHandler>
+
     <requestHandler name="/irTable" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
              will be overridden by parameters in the request
