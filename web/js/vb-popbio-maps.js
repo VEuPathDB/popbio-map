@@ -33,6 +33,9 @@ function bindEvents() {
 
         //highlightedId = $('.highlight-marker').attr('id');
         removeHighlight();
+        //Marker is not selected so disable the marker option from the download panel
+        $("#select-export option[value=3]")[0].disabled = true;
+        $("#select-export").selectpicker("refresh");
         // close open panels
         $('.collapse').collapse('hide');
         sidebar.close();
@@ -227,10 +230,20 @@ function bindEvents() {
     // trigger click event on highlighted marker when switching panels
     $('.sidebar-icon').on("click", function () {
         var highlightedMarker = $('.highlight-marker');
-        if (highlightedMarker) {
+        if (highlightedMarker.length) {
+            //Enable marker download option if it was disabled
+            if ($("#select-export option[value=3]")[0].disabled) {
+                $("#select-export option[value=3]")[0].disabled = false;
+                $("#select-export").selectpicker("refresh");
+            }
+
             sidebarClick = true;
             $(highlightedMarker).trigger("click");
             sidebarClick = false;
+        } else {
+            //Marker is not selected so disable the marker option from the download panel
+            $("#select-export option[value=3]")[0].disabled = true;
+            $("#select-export").selectpicker("refresh");
         }
     });
 
@@ -1210,6 +1223,9 @@ function loadSolr(parameters) {
     // this function processes the JSON file requested by jquery
     var buildMap = function (result) {
         var terms = [];
+        //Storing how many results were found so it can be used later
+        PopulationBiologyMap.data.numFound = result.response.numFound;
+
         // using the facet.stats we return statistics for lat and lng for each geohash
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
@@ -1389,7 +1405,7 @@ function loadSolr(parameters) {
             },
             onEachRecord: function (layer, record) {
                 var tooltip = $('#plotTooltip');
-
+                
                 layer.on("dblclick", function () {
                     clearTimeout(timer);
                     prevent = true;
@@ -1400,6 +1416,16 @@ function loadSolr(parameters) {
                     // add GA    
                     // ga('send', 'event', 'Popbio', 'mappoint', 'Map point');
                     gtag('event', 'mappoint', {'event_category': 'Popbio', 'event_label': 'Map point'});
+                    //Store the record information so it can be referenced later in other parts of the code
+                    PopulationBiologyMap.data.record = record;
+                     //Enable marker download option if it was disabled
+                    if ($("#select-export option[value=3]")[0].disabled) {
+                        $("#select-export option[value=3]")[0].disabled = false;
+                        $("#select-export").selectpicker("render");
+                    }
+                    //Reset download panel 
+                    $("#select-export").selectpicker("val", "0");
+                    $("#export-message").hide();
 
                     if (marker.originalEvent.ctrlKey) {
                         if (marker.target instanceof L.Marker) {
@@ -2973,7 +2999,9 @@ function resetPlots() {
     $('#marker-table').off("scroll");
     $('#table-contents-header').html(tableHTML);
     $('#table-contents').empty();
-
+    //Reset download panel 
+    $("#select-export").selectpicker("val", "0");
+    $("#export-message").hide();
 }
 
 

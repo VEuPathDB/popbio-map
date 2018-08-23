@@ -1074,3 +1074,7 @@ div.error div, div.warning div, div.info div, div.hint div {
     border-top-color: rgb(204, 204, 204);
     border-top-style: solid;
 }
+
+#export-message {
+    text-align: center;
+}
