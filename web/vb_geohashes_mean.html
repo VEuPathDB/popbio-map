@@ -659,6 +659,7 @@
                     <div>
                         <select id="select-export" class="selectpicker" data-icon-Base="fa-fw"
                                 data-tick-Icon="fa fa-check" data-width="90%">
+                            <option value="0" disabled selected>Select data to download:</option>
                             <option data-icon="fa fa-search" value="1">data matching search</option>
                             <option data-icon="fa fa-desktop" value="2">data visible on screen</option>
                             <option data-icon="far fa-dot-circle" value="3">data for selected marker on map</option>
@@ -672,6 +673,7 @@
                         <div id="div-export-zeroes" class="checkbox">
                             <label><input id="checkbox-export-zeroes" type="checkbox" value="1">Include zero count samples</label>
                         </div>
+                        <div id="export-message"></div>
                         <div style="margin-top: 20px;">
                             <!-- VB-6938 add Bootstrap modal -->
                             <!-- <a type="button" class="btn btn-primary" id="download-button"><i class="fa fa-floppy-o"></i> -->
