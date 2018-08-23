@@ -775,7 +775,7 @@
         if (resolution === "Yearly") {
             dataType = "Year";
             startDate = Highcharts.dateFormat('%b %d', startDate);
-            endDate = Highcharts.dateFormat('%b %d', new Date(year, 12, 31));
+            endDate = Highcharts.dateFormat('%b %d', new Date(year, 11, 31));
             collectionDate = startDate + " to " + endDate;
         } else if (resolution === "Monthly") {
             dataType = "Month";
