@@ -368,8 +368,8 @@
                     '<i class="fa fa-chart-area" style="color: #C3312D; font-size: 12em"></i>' +
                     '<h4>Too many points to plot</h4>' +
                     '<h4>Apply filters to plot less data</h4>' +
-                    '<h4><b>Points</b>: ' + result_count.toString() + '</h4>' +
-                    '<h4><b>Limit</b>: ' + result_limit.toString() + '</h4>' +
+                    '<h4><b>Points</b>: ' + resultCount.toString() + '</h4>' +
+                    '<h4><b>Limit</b>: ' + resultLimit.toString() + '</h4>' +
                     '</div>'
                 );
 
@@ -813,19 +813,27 @@
         return tooltip;
     }
 
-    //Return first Sunday of the epi week
+    //Return first Sunday of the Epi-Week
     function getDateFromWeek(w, y) {
-        var _days;
-        if(w == 53){
-            _days = (1 + (w - 1) * 7);
+        var days;
+
+        //Use the first of January to eventually find Sunaday of first Epi-Week
+        var date = new Date(y,0,1);
+
+        //Decide when to start first Epi-Week
+        if (date.getDay() <= 3) {
+            //Start on Sunday before 1st of month
+            date.setDate(date.getDate() - date.getDay());
         } else {
-            _days = (w * 7);
+            //Start on Sunday after 1st of the month
+            date.setDate(date.getDate() + (7 - date.getDay()));
         }
 
-        var _date = new Date(y,0,_days);
-        _date.setDate(_date.getDate() - _date.getDay());
+        //Fron the beginning of the first epiWeek, skip forward number of days 
+        days = (w - 1) * 7;
+        date.setDate(date.getDate() + days);
 
-        return _date;
+        return date;
     }
 
     //Allows one to use strings representing an object key to access the value of an object
