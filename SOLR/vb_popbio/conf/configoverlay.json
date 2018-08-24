@@ -154,23 +154,21 @@
       },
       "components": [ "query" ]
     },
-
-    /*"/genoGeoclust": {
-      "name": "/genoGeoclust",
+    "/abndTable": {
+      "name": "/abndTable",
       "class": "solr.SearchHandler",
       "defaults": {
         "echoParams": "none",
-        "df": "text"
+        "df": "text",
+        "rows": 20
       },
       "invariants": {
         "wt": "json",
         "json.nl": "map",
-        "rows": 0,
-        //"facet.threads": 2,
-        //"json": "{filter:[\"bundle:pop_sample\",\"has_geodata:true\",\"${bbox}\"],facet:{sumSmp:\"sum(sample_size_i)\",geo:{type:terms,field:${geo:geohash_2},limit:2000,mincount:1,sort:{count:desc},facet:{ltAvg:\"avg(geo_coords_ll_0_coordinate)\",ltMin:\"min(geo_coords_ll_0_coordinate)\",ltMax:\"max(geo_coords_ll_0_coordinate)\",lnAvg:\"avg(geo_coords_ll_1_coordinate)\",lnMin:\"min(geo_coords_ll_1_coordinate)\",lnMax:\"max(geo_coords_ll_1_coordinate)\",sumSmp:\"sum(sample_size_i)\",atomicCount:\"unique(${geomax:geohash_7})\",term:{type:terms,field:${term:species_category},limit:2000,mincount:1,sort:{count:desc},facet:{sumSmp:\"sum(sample_size_i)\"}}}}}}"
-        "json": "{\"filter\":[\"bundle:pop_sample_genotype\",\"has_geodata:true\",\"-sample_size_i:0\",\"sample_size_i:*\",\"genotype_type_s:\\\"mutated protein\\\"\",\"genotype_cvterms:variant_frequency\",\"genotype_mutated_protein_unit_s:percent\",\"${bbox}\"],\"facet\":{\"geo\":{\"type\":\"terms\",\"field\":\"${geo:geohash_2}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"},\"facet\":{\"ltAvg\":\"avg(geo_coords_ll_0_coordinate)\",\"ltMin\":\"min(geo_coords_ll_0_coordinate)\",\"ltMax\":\"max(geo_coords_ll_0_coordinate)\",\"lnAvg\":\"avg(geo_coords_ll_1_coordinate)\",\"lnMin\":\"min(geo_coords_ll_1_coordinate)\",\"lnMax\":\"max(geo_coords_ll_1_coordinate)\",atomicCount:\"unique(${geomax:geohash_7})\",\"term\":{\"type\":\"terms\",\"field\":\"${term:species_category}\",\"limit\":2000,\"mincount\":1}}}}}"
-       }
-    },*/
+        "fl": "accession,bundle_name,sample_type,url,geolocations,geo_coords,protocols,species_category,collection_protocols,collection_date,collection_date_range,projects,sample_size_i,collection_duration_days_i",
+        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_geodata:true\",\"has_abundance_data_b:true\",\"${zeroFilter:sample_size_i:*}\"]}"
+      }
+    },
     "/genoGeoclust": {
       "name": "/genoGeoclust",
       "class": "solr.SearchHandler",
@@ -182,8 +180,6 @@
         "wt": "json",
         "json.nl": "map",
         "rows": 0,
-        //"facet.threads": 2,
-        //"json": "{filter:[\"bundle:pop_sample\",\"has_geodata:true\",\"${bbox}\"],facet:{sumSmp:\"sum(sample_size_i)\",geo:{type:terms,field:${geo:geohash_2},limit:2000,mincount:1,sort:{count:desc},facet:{ltAvg:\"avg(geo_coords_ll_0_coordinate)\",ltMin:\"min(geo_coords_ll_0_coordinate)\",ltMax:\"max(geo_coords_ll_0_coordinate)\",lnAvg:\"avg(geo_coords_ll_1_coordinate)\",lnMin:\"min(geo_coords_ll_1_coordinate)\",lnMax:\"max(geo_coords_ll_1_coordinate)\",sumSmp:\"sum(sample_size_i)\",atomicCount:\"unique(${geomax:geohash_7})\",term:{type:terms,field:${term:species_category},limit:2000,mincount:1,sort:{count:desc},facet:{sumSmp:\"sum(sample_size_i)\"}}}}}}"
         "json": "{\"filter\":[\"bundle:pop_sample_genotype\",\"has_geodata:true\",\"-sample_size_i:0\",\"sample_size_i:*\",\"genotype_type_s:\\\"mutated protein\\\"\",\"genotype_cvterms:variant_frequency\",\"genotype_mutated_protein_unit_s:percent\",\"${bbox}\"],\"facet\":{\"alleleCount\":\"sum(mul(sample_size_i,div(genotype_mutated_protein_value_f,50)))\",\"geo\":{\"type\":\"terms\",\"field\":\"${geo:geohash_2}\",\"limit\":-1,\"mincount\":1,\"sort\":{\"count\":\"desc\"},\"facet\":{\"ltAvg\":\"avg(geo_coords_ll_0_coordinate)\",\"ltMin\":\"min(geo_coords_ll_0_coordinate)\",\"ltMax\":\"max(geo_coords_ll_0_coordinate)\",\"lnAvg\":\"avg(geo_coords_ll_1_coordinate)\",\"lnMin\":\"min(geo_coords_ll_1_coordinate)\",\"lnMax\":\"max(geo_coords_ll_1_coordinate)\",\"alleleCount\":\"sum(mul(sample_size_i,div(genotype_mutated_protein_value_f,50)))\",atomicCount:\"unique(${geomax:geohash_7})\",\"term\":{\"type\":\"terms\",\"field\":\"${term:genotype_name_s}\",\"limit\":-1,\"mincount\":1,\"facet\":{\"alleleCount\":\"sum(mul(sample_size_i,div(genotype_mutated_protein_value_f,50)))\"}}}}}}"
        }
     },
@@ -199,8 +195,6 @@
         "json.nl": "map",
         "rows": 0,
 	"json": "{\"filter\":[\"bundle:pop_sample_genotype\",\"has_geodata:true\",\"-sample_size_i:0\",\"sample_size_i:*\",\"genotype_cvterms:variant_frequency\",\"genotype_type_s:\\\"mutated protein\\\"\", \"genotype_mutated_protein_unit_s:percent\"],\"facet\":{\"geo\":{\"type\":\"terms\",\"field\":\"${geo:geohash_2}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"},\"facet\":{\"terms\":{\"type\":\"terms\",\"field\":\"${term:species_category}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"}}}}}}"
-      
-        //"json": "{filter:[\"bundle:pop_sample\",\"genotype_cvterms:variant_frequency\",\"-sample_size_i:0\",\"has_geodata:true\"],facet:{geo:{type:terms,field:\"${geo:geohash_2}\",limit:2000,mincount:1,sort:{count:desc},facet:{maxAbnd:\"sum(div(sample_size_i,collection_duration_days_i))\",terms:{type:terms,field:\"${term:species_category}\",limit:2000,mincount:1,sort:{count:desc}}}}}}"
       }
     },
     "/genoGraphdata": {
@@ -267,7 +261,7 @@
       "name": "/pathGraphdata",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
     "invariants": {
@@ -315,6 +309,3 @@
     }
   }
 }
-
-
-
