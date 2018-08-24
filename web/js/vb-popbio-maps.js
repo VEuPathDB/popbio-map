@@ -135,6 +135,9 @@ function bindEvents() {
             viewBox = buildBbox(map.getBounds()),
             fieldsStr = '&fl=',
             zeroFilter = '';
+        var notBoolean = false;
+        var query = qryUrl;
+
 
         if (viewMode === 'abnd') {
             zeroFilter = '&zeroFilter=' + ($('#checkbox-export-zeroes').is(":checked") ? '' : '-sample_size_i:0');
@@ -158,15 +161,30 @@ function bindEvents() {
             return;
         }
 
+        //Check if one of terms is a NOT Query, if it is, update flag 
+        $('#search_ac').tagsinput('items').forEach(function (item) {
+            if (item.notBoolean) {
+                notBoolean = true;
+                return;
+            }
+        });
+
+        //Preprend query with *:* if notBoolean is true otherwise export will not work
+        if (notBoolean) {
+            query = query.split(/\((.+)/);
+            query.pop();
+            query = query.join("(*:* ");
+        }
+
         switch (selectedOption) {
             // data matching search
             case "1":
-                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                url += viewMode + 'Export?' + query + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data visible on screen
             case "2":
-                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                url += viewMode + 'Export?' + query + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data for selected marker
@@ -189,7 +207,7 @@ function bindEvents() {
                         .html('');
 
                     // build the url and download the data
-                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                    url += viewMode + 'Export?' + query + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                     this.href = url;
                 } else { // no marker is selected
                     // inform the user that there are no selected markers
