@@ -161,7 +161,7 @@ function bindEvents() {
             return;
         }
 
-        //Check if one of terms is a NOT Query if it update flag 
+        //Check if one of terms is a NOT Query, if it is, update flag 
         $('#search_ac').tagsinput('items').forEach(function (item) {
             if (item.notBoolean) {
                 notBoolean = true;
