@@ -821,7 +821,7 @@
         var date = new Date(y,0,1);
 
         //Decide when to start first Epi-Week
-        if (date.getDay() < 3) {
+        if (date.getDay() <= 3) {
             //Start on Sunday before 1st of month
             date.setDate(date.getDate() - date.getDay());
         } else {
