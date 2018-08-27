@@ -2186,7 +2186,7 @@ function tableHtml(divid, results) {
                 row = {
                     accession: element.accession,
                     accessionType: 'Assay ID',
-                    bundleName: 'Sample Assay',
+                    bundleName: 'Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
@@ -2253,7 +2253,7 @@ function tableHtml(divid, results) {
                 row = {
                     accession: element.accession,
                     accessionType: 'Assay ID',
-                    bundleName: 'Sample Assay',
+                    bundleName: 'Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
@@ -2283,9 +2283,9 @@ function tableHtml(divid, results) {
                 break;
             case "path":
                 row = {
-                    accession: element.accession,
+                    accession: element.assay_id_s,
                     accessionType: 'Assay ID',
-                    bundleName: 'Sample Assay',
+                    bundleName: 'Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
