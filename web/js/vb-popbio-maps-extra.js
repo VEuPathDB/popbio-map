@@ -287,25 +287,46 @@
             // VB-7622 default with ?view=geno at URL (e.g., selecting the menu from Popbio page or using Share Link) is set to Allele (active-legend) at initializeMap()
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
+            if (viewMode === "path") glbSummarizeBy = "Pathogen";
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
                 if (glbSummarizeBy === "Insecticide") {
                     if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
+                    } else if  (viewMode === "path") {
+                        glbSummarizeBy = "Pathogen";
                     } else {
                         glbSummarizeBy = "Species";
                     } 
                 }
             }
 
+            //Might not be needed will remove once done testing
             if (viewMode !== "geno") {
                 // $('#SelectView').val('smpl');
-                if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") glbSummarizeBy = "Species";
+                if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") {
+                    if (viewMode === "path") {
+                        glbSummarizeBy = "Pathogen";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
+            }
+
+            if (viewMode !== "path") {
+                // $('#SelectView').val('smpl');
+                if (glbSummarizeBy === "Pathogen" || glbSummarizeBy === "Infection status") {
+                    if (viewMode === "geno") {
+                        glbSummarizeBy = "Allele";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
             }
 
             //Add and remove the disabled class for the sidebar
-            if (viewMode !== "ir" && viewMode !== "abnd") {
+            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
                 //Get the current sidebar that is active
                 var active_sidebar = $(".sidebar-icon.active a").attr("id");
 
@@ -1451,6 +1472,82 @@
                             addDatepickerItem(startDate, endDate);
                         }
                         break   
+                    case "pathogen":
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }   
+                                $('#search_ac').tagsinput('add', {
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
+                                    activeTerm: true,
+                                    type: 'Pathogen',
+                                    field: mapTypeToField('Pathogen'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });
+                            })
+                        } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = true;
+                            }
+                            $('#search_ac').tagsinput('add', {
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
+                                activeTerm: true,
+                                type: 'Pathogen',
+                                field: mapTypeToField('Pathogen'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
+                            });
+                        }
+                        break;
+                    case "infection_status":
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }   
+                                $('#search_ac').tagsinput('add', {
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
+                                    activeTerm: true,
+                                    type: 'Infection status',
+                                    field: mapTypeToField('Infection status'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });
+                            })
+                        } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = true;
+                            }
+                            $('#search_ac').tagsinput('add', {
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
+                                activeTerm: true,
+                                type: 'Infection status',
+                                field: mapTypeToField('Infection status'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
+                            });
+                        }
+                        break;
                     case "markerID":
                         highlightedId  = urlParams[key];
                         break;
@@ -1484,7 +1581,7 @@
         updateExportFields(viewMode);
 
         // Add and remove the disabled class for the sidebar
-        if (viewMode !== "ir" && viewMode !== "abnd") {
+        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
             $('#\\#swarm-plots').addClass('disabled');
             $("#\\#swarm-plots").parent("li").attr("title", "Disabled on this view");
 
@@ -1595,10 +1692,72 @@
                 return "pubmed";
             case "Datepicker":
                 return "datepicker";
+            case "Pathogen":
+                return "pathogen";
+            case "Infection status":
+                return "infection_status";
             default:
                 return "text"
                 break;
         }
+    }
+
+    //Used to update the download count message for the download panel
+    function updateDownloadCountMessage(selectedOption) {
+        $("#export-message").hide();
+
+        //Replace red border with default color
+        if (selectedOption) {
+            $("[data-id='select-export']").css("border-color", "rgb(231,231,231)");
+            var url = solrPopbioUrl + viewMode + "Table?rows=0&";
+
+            //Update the Url for abundance if we want to include or not include zero values
+            if (viewMode === "abnd") {
+                url += "zeroFilter=" + ($("#checkbox-export-zeroes").is(":checked") ? "" : "-sample_size_i:0") + "&";
+            }
+
+            if (selectedOption === "1") {
+                url += qryUrl;
+                setDownloadCountMessage(url);
+            } else if (selectedOption === "2") {
+                if (viewMode !== "abnd") {
+                    $("#export-message").text(PopulationBiologyMap.data.numFound + " row(s)will be downloaded").fadeIn();;
+                } else {
+                    url += qryUrl + buildBbox(map.getBounds());
+                    setDownloadCountMessage(url);
+                }
+            } else if (selectedOption === "3") {
+                //Use record count for the message for certain views since record count matches what would have been returned from the AJAX call
+                if (viewMode !== "abnd" && viewMode !== "geno") {
+                    $("#export-message").text(PopulationBiologyMap.data.record.count + " row(s) will be downloaded").fadeIn();
+                } else {
+                    //for abnd and geno view do an ajax call to get the rows that will be downloaded since number in marker means something different 
+                    //e.g for abnd, the number in marker means the number of mosquitoes
+                    var recBounds = L.latLngBounds(PopulationBiologyMap.data.record.bounds);
+                    url += qryUrl + buildBbox(recBounds);
+                    setDownloadCountMessage(url);
+                }
+            } else {
+                url += "q=*:*";
+                setDownloadCountMessage(url);
+            }
+        }
+    }
+
+    //Use a URL to get the number of rows that will be in the download and display it to the user
+    function setDownloadCountMessage(url) {
+        $.getJSON(url, {
+            cache: true,
+            headers: {
+                'Cache-Control': 'max-age=2592000'
+            }
+        }, function (result) {
+            $("#export-message").text(result.response.numFound + " row(s) will be downloaded").fadeIn();;
+            
+        })
+        .fail(function () {
+            $("#export-message").text("Failed to get download counts").fadeIn();
+        });
     }
 
     //Tasks that need to be done or events defined  when the page loads
@@ -2050,6 +2209,41 @@
                 $(this).tooltip("disable");
                 $(this).data("preventTooltip", true);
             }
+        });
+
+        //Doing some verification to ensure the user has selected an options from the dropdown to decide what data to download
+        $("[data-target='#DownloadModal']").click ( function (event) {
+            var selectedOption = $('#select-export').val()
+
+            //Prevent the download modal from showing up if user did not select a valid options
+            //Also add red border to signify an error
+            if (!selectedOption) {
+                event.stopPropagation();
+                $("[data-id='select-export']").css("border-color", "red");
+            }
+        });
+
+        $("#select-export").on("changed.bs.select", function(event) {
+            var selectedOption = $(this).val();
+            updateDownloadCountMessage(selectedOption);
+
+        });
+
+        $("#select-export").on("refreshed.bs.select", function (event) {
+            var selectedOption = $(this).val();
+            updateDownloadCountMessage(selectedOption);
+        });
+
+        //Modifying the text of the bootstrap selectpicker field when more than two options are checked
+        $("#select-export-fields")
+            .selectpicker({
+                countSelectedText: "{0} fields selected",
+                selectedTextFormat: "count > 2"
+            });
+
+        //Event used to update the counts in the download pannel
+        $("#checkbox-export-zeroes").change(function (event) {
+            $("#select-export").selectpicker("refresh");
         });
     }
 

@@ -33,6 +33,9 @@ function bindEvents() {
 
         //highlightedId = $('.highlight-marker').attr('id');
         removeHighlight();
+        //Marker is not selected so disable the marker option from the download panel
+        $("#select-export option[value=3]")[0].disabled = true;
+        $("#select-export").selectpicker("refresh");
         // close open panels
         $('.collapse').collapse('hide');
         sidebar.close();
@@ -132,6 +135,9 @@ function bindEvents() {
             viewBox = buildBbox(map.getBounds()),
             fieldsStr = '&fl=',
             zeroFilter = '';
+        var notBoolean = false;
+        var query = qryUrl;
+
 
         if (viewMode === 'abnd') {
             zeroFilter = '&zeroFilter=' + ($('#checkbox-export-zeroes').is(":checked") ? '' : '-sample_size_i:0');
@@ -155,15 +161,30 @@ function bindEvents() {
             return;
         }
 
+        //Check if one of terms is a NOT Query, if it is, update flag 
+        $('#search_ac').tagsinput('items').forEach(function (item) {
+            if (item.notBoolean) {
+                notBoolean = true;
+                return;
+            }
+        });
+
+        //Preprend query with *:* if notBoolean is true otherwise export will not work
+        if (notBoolean) {
+            query = query.split(/\((.+)/);
+            query.pop();
+            query = query.join("(*:* ");
+        }
+
         switch (selectedOption) {
             // data matching search
             case "1":
-                url += viewMode + 'Export?' + qryUrl + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                url += viewMode + 'Export?' + query + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data visible on screen
             case "2":
-                url += viewMode + 'Export?' + qryUrl + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                url += viewMode + 'Export?' + query + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data for selected marker
@@ -186,7 +207,7 @@ function bindEvents() {
                         .html('');
 
                     // build the url and download the data
-                    url += viewMode + 'Export?' + qryUrl + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                    url += viewMode + 'Export?' + query + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
                     this.href = url;
                 } else { // no marker is selected
                     // inform the user that there are no selected markers
@@ -227,10 +248,20 @@ function bindEvents() {
     // trigger click event on highlighted marker when switching panels
     $('.sidebar-icon').on("click", function () {
         var highlightedMarker = $('.highlight-marker');
-        if (highlightedMarker) {
+        if (highlightedMarker.length) {
+            //Enable marker download option if it was disabled
+            if ($("#select-export option[value=3]")[0].disabled) {
+                $("#select-export option[value=3]")[0].disabled = false;
+                $("#select-export").selectpicker("refresh");
+            }
+
             sidebarClick = true;
             $(highlightedMarker).trigger("click");
             sidebarClick = false;
+        } else {
+            //Marker is not selected so disable the marker option from the download panel
+            $("#select-export option[value=3]")[0].disabled = true;
+            $("#select-export").selectpicker("refresh");
         }
     });
 
@@ -653,8 +684,9 @@ function initializeMap(parameters) {
     }
     //if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
-    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype view here
+    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype and Pathogen  view here
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
+    if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
 
     // Now generate the legend
     // hardcoded species_category
@@ -1047,16 +1079,119 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Mutated Protein Value')
         }
     ];
-    
+
+    var pathFields = [
+        {
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_assay_id_s',
+            label: 'Assay ID',
+            icon: mapTypeToIcon('Assay ID')
+        },
+        {
+            value: 'exp_bundle_name_s',
+            label: 'Record type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_species_s',
+            label: 'Species',
+            icon: mapTypeToIcon('Taxonomy')
+        },
+        {
+            value: 'exp_sample_type_s',
+            label: 'Sample type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_label_s',
+            label: 'Label',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            icon: mapTypeToIcon('Date')
+        },
+        {
+            value: 'exp_collection_protocols_ss',
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
+        },
+        {
+            value: 'exp_projects_ss',
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
+        },
+        {
+            value: 'exp_geolocations_ss',
+            label: 'Locations',
+            icon: mapTypeToIcon('Location')
+        },
+        {
+            value: 'exp_phenotype_type_s',
+            label: 'Phenotype type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_protocols_ss',
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
+        },
+        {
+            value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
+            label: 'Phenotype value',
+            subtext: 'value, unit, type',
+            icon: mapTypeToIcon('Phenotype')
+        },
+        {
+            value: 'exp_infection_source_s',
+            label: 'Pathogen',
+            icon: mapTypeToIcon('Pathogen')
+        },
+        {
+            value: 'exp_infection_status_s',
+            label: 'Infection status',
+            icon: mapTypeToIcon('Infection status')
+        }
+    ];
 
     // empty the dropdown
     $('#select-export-fields').empty();
 
-    if (viewMode === 'ir') {
-        // IR fields have grouped fields, with subtext, e.g.
-        // text: Concentration
-        // subtext: value, unit
-        $.each(irFields, function (index, obj) {
+    //Set fields that can be downloaded for the view
+    var simpleFields = smplFields;
+    // Need to update this code since it is just repetivie
+    if (viewMode === 'abnd') simpleFields = abndFields;
+    if (viewMode === 'geno') simpleFields = genoFields;
+    if (viewMode === 'ir') simpleFields = irFields;
+    if (viewMode === 'path') simpleFields = pathFields;
+    $.each(simpleFields, function (index, obj) {
+        if (!obj.subtext) {
+            $('#select-export-fields')
+                .append(
+                    $("<option></option>")
+                        .attr("value", obj.value)
+                        .text(obj.label)
+                        .data('icon', obj.icon)
+                );
+        } else {
+            // IR and path fields have grouped fields, with subtext, e.g.
+            // text: Concentration
+            // subtext: value, uniA
             $('#select-export-fields')
                 .append(
                     $("<option></option>")
@@ -1064,26 +1199,9 @@ function updateExportFields(viewMode) {
                         .text(obj.label)
                         .data('subtext', obj.subtext)
                         .data('icon', obj.icon)
-                );
-        })
-
-    } else {
-        // Other view modes have only simple fields:
-        // (but we can probably consolidate these as obj.subtext above is often empty anyway)
-        var simpleFields = smplFields;
-        // Need to update this code since it is just repetivie
-        if (viewMode === 'abnd') simpleFields = abndFields;
-        if (viewMode === 'geno') simpleFields = genoFields;
-        $.each(simpleFields, function (index, obj) {
-            $('#select-export-fields')
-                .append(
-                    $("<option></option>")
-                        .attr("value", obj.value)
-                        .text(obj.label)
-                        .data('icon', obj.icon)
-                );
-        })
-    }
+                 );
+        }
+    })
 
     var checkboxDiv = $('#div-export-zeroes');
     if (viewMode === 'abnd') {
@@ -1123,11 +1241,14 @@ function loadSolr(parameters) {
     // this function processes the JSON file requested by jquery
     var buildMap = function (result) {
         var terms = [];
+        //Storing how many results were found so it can be used later
+        PopulationBiologyMap.data.numFound = result.response.numFound;
+
         // using the facet.stats we return statistics for lat and lng for each geohash
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
         // display the number of results
-        if (viewMode === "ir") {
+        if (viewMode === "ir" || viewMode === "path") {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
         } else if (viewMode === "abnd") {
 
@@ -1302,7 +1423,7 @@ function loadSolr(parameters) {
             },
             onEachRecord: function (layer, record) {
                 var tooltip = $('#plotTooltip');
-
+                
                 layer.on("dblclick", function () {
                     clearTimeout(timer);
                     prevent = true;
@@ -1313,6 +1434,16 @@ function loadSolr(parameters) {
                     // add GA    
                     // ga('send', 'event', 'Popbio', 'mappoint', 'Map point');
                     gtag('event', 'mappoint', {'event_category': 'Popbio', 'event_label': 'Map point'});
+                    //Store the record information so it can be referenced later in other parts of the code
+                    PopulationBiologyMap.data.record = record;
+                     //Enable marker download option if it was disabled
+                    if ($("#select-export option[value=3]")[0].disabled) {
+                        $("#select-export option[value=3]")[0].disabled = false;
+                        $("#select-export").selectpicker("render");
+                    }
+                    //Reset download panel 
+                    $("#select-export").selectpicker("val", "0");
+                    $("#export-message").hide();
 
                     if (marker.originalEvent.ctrlKey) {
                         if (marker.target instanceof L.Marker) {
@@ -1335,8 +1466,8 @@ function loadSolr(parameters) {
                                     break;
                                 case "swarm-plots":
                                     // Geno viewmode will say that it is not availble in that mode
-                                    if (viewMode === 'abnd') {
-                                        PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                    if (viewMode === 'abnd' || viewMode == 'path') {
+                                        PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                     } else {
                                         createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                     }
@@ -1385,8 +1516,8 @@ function loadSolr(parameters) {
 
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (!panel.data('has-graph')) {
-                                        if (viewMode === 'abnd') {
-                                            PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                        if (viewMode === 'abnd' || viewMode === 'path') {
+                                            PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                         } else { 
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                         }
@@ -1467,8 +1598,8 @@ function loadSolr(parameters) {
                                         gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});                                    
 
                                         // Geno viewmode will say that it is not availble in that mode
-                                        if (viewMode === 'abnd') {
-                                            PopulationBiologyMap.methods.createAbundanceGraph("#swarm-plots", buildBbox(recBounds));
+                                        if (viewMode === 'abnd' || viewMode === 'path') {
+                                            PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
                                         } else {
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                             panel.data('has-graph', true);
@@ -1843,6 +1974,9 @@ function updatePieChart(population, stats) {
                 .title(population)   // VB-7427 set title                         
             ;
 
+            // Must manually remove <title>s lingering from previous draw
+            $('#pie-chart-area .nv-series title').remove();
+
             chart.legend.vers('classic')
                 .rightAlign(false)
                 .maxKeyLength(23)
@@ -2052,7 +2186,7 @@ function tableHtml(divid, results) {
                 row = {
                     accession: element.accession,
                     accessionType: 'Assay ID',
-                    bundleName: 'Sample Assay',
+                    bundleName: 'Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
@@ -2080,12 +2214,10 @@ function tableHtml(divid, results) {
                     concentrationUnit: element.concentration_unit_s,
                     duration: element.duration_f,
                     durationUnit: element.duration_unit_s
-
                 };
 
                 template = $.templates("#irRowTemplate");
                 break;
-
             case "abnd":
                 row = {
                     accession: element.accession,
@@ -2115,16 +2247,13 @@ function tableHtml(divid, results) {
                 };
 
                 row.smplAvgAbnd = row.sampleSize / row.collectionDuration;
-
                 template = $.templates("#abndRowTemplate");
-
                 break;
-
             case "geno":
                 row = {
                     accession: element.accession,
                     accessionType: 'Assay ID',
-                    bundleName: 'Sample Assay',
+                    bundleName: 'Assay',
                     url: element.url,
                     sampleType: element.sample_type,
                     sampleTypeType: 'Sample type',
@@ -2150,11 +2279,40 @@ function tableHtml(divid, results) {
                 };
 
                 row.alleleCount = (element.sample_size_i * element.genotype_mutated_protein_value_f / 50).roundDecimals(0);
-
                 template = $.templates("#genoRowTemplate");
-
                 break;
+            case "path":
+                row = {
+                    accession: element.assay_id_s,
+                    accessionType: 'Assay ID',
+                    bundleName: 'Assay',
+                    url: element.url,
+                    sampleType: element.sample_type,
+                    sampleTypeType: 'Sample type',
+                    geoCoords: element.geo_coords,
+                    geolocation: element.geolocations[0],
+                    geolocationType: 'Geography',
+                    species: species,
+                    speciesType: 'Taxonomy',
+                    bgColor: bgColor,
+                    textColor: getContrastYIQ(bgColor),
+                    collectionDate: frmDate,
+                    projects: borderColor('Project', element.projects),
+                    projectsType: 'Project',
+                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
+                    collectionProtocolsType: 'Collection protocol',
+                    protocols: borderColor('Protocol', element.protocols),
+                    protocolsType: 'Protocol',
+                    phenotypeValue: element.phenotype_value_f,
+                    phenotypeValueType: element.phenotype_value_type_s,
+                    phenotypeValueUnit: element.phenotype_value_unit_s,
+                    sampleSize: element.sample_size_i,
+                    infectionStatus: element.infection_status_s,
+                    pathogen: element.infection_source_s
+                };
 
+                template = $.templates("#pathRowTemplate");
+                break;
             default:
                 row = {
                     accession: element.accession,
@@ -2178,22 +2336,15 @@ function tableHtml(divid, results) {
                     protocols: borderColor('Protocol', element.protocols),
                     protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i
-
                 };
 
                 template = $.templates("#smplRowTemplate");
                 break;
         }
-        ;
-
 
         var htmlOutput = template.render(row);
         $(divid).append(htmlOutput);
         $('.marker-row').fadeIn();
-        // $('.marker-row').each(function (i, e) {
-        //     $(this).delay(i*50).slideDown('fast');
-        // });
-
     });
 
     //Applying tooltip to active terms in table 
@@ -2530,6 +2681,10 @@ function mapTypeToField(type) {
             return "collection_season";
         case "Date":
             return "collection_date_range";
+        case "Pathogen":
+            return "infection_source_cvterms";
+        case "Infection status":
+            return "infection_status_s";
         default :
             return type.toLowerCase()
 
@@ -2580,6 +2735,16 @@ function mapSummarizeByToField(type) {
             // VB-7318 fields.type = Project -> Projects to fix avtive-legend
             fields.type = "Project";
             fields.field = "projects";
+            break;
+        case "Pathogen":
+            fields.summarize = "infection_source_s";
+            fields.type = "Pathogen";
+            fields.field = "infection_source_s";
+            break;
+        case "Infection status":
+            fields.summarize = "infection_status_s";
+            fields.type = "Infection status";
+            fields.field = "infection_status_s";
             break;
         default :
             fields.summarize = "species_category";
@@ -2648,7 +2813,10 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-author';
             case 'Coordinates':
                 return 'label label-success label-coordinates';
-
+            case 'Pathogen':
+                return 'label label-success label-allele';
+            case 'Infection status':
+                return 'label label-success label-geography';
             default :
                 return 'label label-warning label-default';
         }
@@ -2657,74 +2825,78 @@ function mapTypeToLabel(type) {
 function mapTypeToIcon(type) {
     switch (type) {
         case 'Taxonomy'   :
-            return 'fa-sitemap';
+            return 'fas fa-sitemap';
         case 'Geography':
-            return 'fa-map-marker';
+            return 'fas fa-map-markeralt';
         case 'Title'  :
-            return 'fa-tag';
+            return 'fas fa-tag';
         case 'Description':
-            return 'fa-info-circle';
+            return 'fas fa-info-circle';
         case 'Project'   :
-            return 'fa-database';
+            return 'fas fa-database';
         case 'Project title'   :
-            return 'fa-database';
+            return 'fas fa-database';
         case 'Anywhere'   :
-            return 'fa-search';
+            return 'fas fa-search';
         case 'PubMed' :
-            return 'fa-book';
+            return 'fas fa-book';
         case 'Insecticide' :
-            return 'fa-eyedropper';
+            return 'fas fa-eye-dropper';
         case 'Collection protocol' :
-            return 'fa-shopping-cart';
+            return 'fas fa-shopping-cart';
         case 'Date' :
-            return 'fa-calendar';
+            return 'far fa-calendar-alt';
         case 'Datepicker' :
-            return 'fa-calendar';
+            return 'far fa-calendar-alt';
         case 'Seasonal' :
-            return 'fa-calendar-check-o';
+            return 'far fa-calendar-check';
         case 'Norm-IR' :
-            return 'fa-bolt';
+            return 'fas fa-bolt';
         case 'Collection ID' :
         // VB-7622 add class for Collection ID: same to Assay ID
-            return 'fa-tag';        
+            return 'fas fa-tag';        
         // VB-7622 add class for Stable ID: same to Assay ID
         case 'Stable ID' :
-            return 'fa-tag';                    
+            return 'fas fa-tag';                    
         // VB-7622 add class for Stable ID: same to Assay ID
         case 'Sample ID' :
-            return 'fa-tag';                            
+            return 'fas fa-tag';                            
         case 'Assay ID' :
-            return 'fa-tag';
+            return 'fas fa-tag';
         case 'Sample' :
-            return 'fa-map-pin';
+            return 'fas fa-map-pin';
         case 'Sample type' :
-            return 'fa-file-o';
+            return 'far fa-file';
         case 'Protocol' :
-            return 'fa-sort-amount-desc';
+            return 'fas fa-sort-amount-down';
         case 'Author' :
-            return 'fa-user';
+            return 'fas fa-user';
         case 'Coordinates':
-            return 'fa-map-marker';
+            return 'fas fa-map-marker-alt';
         case 'Location':
-            return 'fa-location-arrow';
+            return 'fas fa-location-arrow';
         // VB-7318 VB-7622 duplicate with above
         // case 'Insecticide':
         //     return 'fa-eyedropper';
         //Modifies what gets used as the icon in the search bar
         case 'Allele':
-            return 'fa-sliders';
+            return 'fas fa-sliders';
         case 'Locus':
-            return 'fa-thumb-tack';
+            return 'fas fa-thumbtack';
         case 'Concentration':
-            return 'fa-tachometer';
+            return 'fas fa-tachometer-alt';
         case 'Duration':
-            return 'fa-clock-o';
+            return 'far fa-clock';
         case 'Phenotype':
-            return 'fa-eye';
+            return 'far fa-eye';
         case 'Count':
-            return 'fa-hashtag';
+            return 'fas fa-hashtag';
+        case 'Pathogen':
+            return 'fas fa-thermometer-half';
+        case 'Infection status':
+            return 'fas fa-bullseye';
         default :
-            return 'fa-search';
+            return 'fas fa-search';
 
     }
 }
@@ -2790,7 +2962,7 @@ function resetPlots() {
             '<h3>' + graph_selected_initial + ' summary' + '</h3>' +
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<span class="fa-stack fa-stack-lg">' +
-            '<i class="fa fa-chrome fa-stack-2x"></i>' + 
+            '<i class="fab fa-chrome fa-stack-2x"></i>' + 
             '<i class="fa fa-circle fa-stack-1x"/></i></span>' +
             '<h1>Go on!</h1>' +
             '<h4>click a marker on the map</h4>' +
@@ -2801,7 +2973,7 @@ function resetPlots() {
             '</div>';
         violinHTML =
             '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-area-chart" style="color: #2C699E; font-size: 12em"></i>' +
+            '<i class="fa fa-chart-area" style="color: #2C699E; font-size: 12em"></i>' +
             '<h1>Go on!</h1>' +
             '<h4>click a marker on the map</h4>' +
             '<h4>to plot some real data</h4> ' +
@@ -2821,7 +2993,7 @@ function resetPlots() {
             '<h3>' + graph_selected_initial + ' summary' + '</h3>' +            
             '<div id="pie-chart-header" style="text-align: center; margin-top: 30px">' +
             '<span class="fa-stack fa-stack-lg">' +
-            '<i class="fa fa-chrome fa-stack-2x"></i>' + 
+            '<i class="fab fa-chrome fa-stack-2x"></i>' + 
             '<i class="fa fa-circle fa-stack-1x"/></i></span>' +
             '<h4>click a marker on the map</h4>' +
             '</div>' +
@@ -2830,7 +3002,7 @@ function resetPlots() {
             '</div>';
         violinHTML =
             '<div style="text-align: center; margin-top: 30px">' +
-            '<i class="fa fa-area-chart" style="color: #2C699E; font-size: 12em"></i>' +
+            '<i class="fa fa-chart-area" style="color: #2C699E; font-size: 12em"></i>' +
             '<h4>click a marker on the map</h4>' +
             '</div>';
         tableHTML =
@@ -2845,7 +3017,9 @@ function resetPlots() {
     $('#marker-table').off("scroll");
     $('#table-contents-header').html(tableHTML);
     $('#table-contents').empty();
-
+    //Reset download panel 
+    $("#select-export").selectpicker("val", "0");
+    $("#export-message").hide();
 }
 
 

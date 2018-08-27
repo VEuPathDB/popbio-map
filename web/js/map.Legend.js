@@ -382,6 +382,8 @@ L.Control.MapLegend = L.Control.extend({
             '<ul class = "dropdown-menu" aria-labelledby="summByDropdown"> ' +
             (viewMode === 'geno' ? '<li><a href="#" data-value="Locus">Locus</a></li> ' : '') +
             (viewMode === 'geno' ? '<li><a href="#" data-value="Allele">Allele</a></li> ' : '') +
+            (viewMode === 'path' ? '<li><a href="#" data-value="Pathogen">Pathogen</a></li> ' : '') +
+            (viewMode === 'path' ? '<li><a href="#" data-value="Infection status">Infection status</a></li> ' : '') +
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
@@ -449,6 +451,8 @@ L.Control.MapLegend = L.Control.extend({
             '<ul class = "dropdown-menu dropdown-menu-right" aria-labelledby="summByDropdown"> ' +
             (viewMode === 'geno' ? '<li><a href="#" data-value="Locus">Locus</a></li> ' : '') +
             (viewMode === 'geno' ? '<li><a href="#" data-value="Allele">Allele</a></li> ' : '') +
+            (viewMode === 'path' ? '<li><a href="#" data-value="Pathogen">Pathogen</a></li> ' : '') +
+            (viewMode === 'path' ? '<li><a href="#" data-value="Infection status">Infection status</a></li> ' : '') +
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
