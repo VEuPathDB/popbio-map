@@ -2136,30 +2136,40 @@ function tableHtml(divid, results) {
 
     results.forEach(function (element) {
         var dates = element.collection_date_range;
-        var frmDate;
+        var collectionDates = [];
 
         if (dates && dates.length > 0) {
-            var dateString = dates[0];
-            // Match date ranges such as [2009-10 TO 2009-12]
-            if (/TO/.test(dateString)) {
-                // Successful match
-                var myregexp = /\[(\S+)\sTO\s(\S+)\]/;
-                var match = myregexp.exec(dateString);
-                var startDateString = match[1], endDateString = match[2];
-                frmDate = dateResolution(startDateString) + ' to ' + dateResolution(endDateString);
+            //Go throught the dates of document and store then in array
+            $.each( dates, function (index, value) {
+                var frmDate;
+                var dateString = value;
+                // Match date ranges such as [2009-10 TO 2009-12]
+                if (/TO/.test(dateString)) {
+                    // Successful match
+                    var myregexp = /\[(\S+)\sTO\s(\S+)\]/;
+                    var match = myregexp.exec(dateString);
+                    var startDateString = match[1], endDateString = match[2];
+                    frmDate = dateResolution(startDateString) + ' to ' + dateResolution(endDateString);
 
-                // match 2009 or 2009-10 but not 2009-10-11 or any longer dates
-            } else if (/^\d{4}(?:-\d{2})?$/.test(dateString)) {
+                    // match 2009 or 2009-10 but not 2009-10-11 or any longer dates
+                } else if (/^\d{4}(?:-\d{2})?$/.test(dateString)) {
 
-                frmDate = dateResolution(dateString);
+                    frmDate = dateResolution(dateString);
 
-                // Match ISO any other date formats (currently only ISO)
-            } else {
-                var date = new Date(dateString);
-                frmDate = date.toDateString();
+                    // Match ISO any other date formats (currently only ISO)
+                } else {
+                    var date = new Date(dateString);
+                    frmDate = date.toLocaleString([], {
+                        timeZone: "UTC",
+                        weekday: "short",
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric"    
+                    });
+                }
 
-            }
-
+                collectionDates.push(frmDate);
+            });
         }
 
         // hardcoded species_category
@@ -2197,7 +2207,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
@@ -2235,7 +2245,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
@@ -2264,7 +2274,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
@@ -2296,7 +2306,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
@@ -2328,7 +2338,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
