@@ -45,28 +45,6 @@ function bindEvents() {
     })
 
         .on("click", PopulationBiologyMap.methods.resetMap);
-    // if we are in abundance view and the zoom level exceeds 8 then switch to open street maps layer
-
-    // map.on('zoomend', function() {
-    //     if (map.getZoom() <10){
-    //         if (map.hasLayer(points)) {
-    //             map.removeLayer(points);
-    //         } else {
-    //             console.log("no point layer active");
-    //         }
-    //     }
-    //     if (map.getZoom() >= 10){
-    //         if (map.hasLayer(points)){
-    //             console.log("layer already added");
-    //         } else {
-    //             map.addLayer(points);
-    //         }
-    //     }
-    // });
-
-
-    // Set current view
-
 
     $(document).on("click", '.dropdown-menu li a', function () {
 
@@ -377,8 +355,20 @@ function bindEvents() {
             var newCreationDate = new Date(entityJson.creation_date);
             var newLastModifiedDate = new Date(entityJson.last_modified_date);
 
-            entityJson.creation_date = newCreationDate.toDateString();
-            entityJson.last_modified_date = newLastModifiedDate.toDateString();
+            entityJson.creation_date = newCreationDate.toLocaleString([], {
+                timeZone: "UTC",
+                weekday: "short",
+                month: "short",
+                day: "2-digit",
+                year: "numeric"    
+            });
+            entityJson.last_modified_date = newLastModifiedDate.toLocaleString([], {
+                timeZone: "UTC",
+                weekday: "short",
+                month: "short",
+                day: "2-digit",
+                year: "numeric"    
+            });
 
             // add the background and text colour
             entityJson.bgColor = bgColor;
@@ -2387,7 +2377,10 @@ function filterMarkers(items, flyTo) {
     items.forEach(function (element) {
 
         //VB-7318 
-        if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
+        //Prevent Datepicker from creating an entry in terms object
+        if (element.type !== "Datepicker") {
+            if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
+        }
 
         if (element.type === 'Date') {
             var format = "YYYY-MM-DD";
@@ -2415,7 +2408,7 @@ function filterMarkers(items, flyTo) {
             var endDate = dateConvert(element.endDate, format);
 
             terms["Date"].push({
-                "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']'
+                "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']', "notBoolean": element.notBoolean
             });
 
             return
@@ -2475,137 +2468,38 @@ function filterMarkers(items, flyTo) {
 
     for (var obj in terms) {
         var qries = {}; // store category terms grouped by field
-        var k = 0;
-        var arr = terms[obj];
+        var term = terms[obj];
+        var termQueries = [];
+        var field = undefined;
 
+        // Working with Date field so only construct an array
         // sort the elements by field
-        arr.sort(function (a, b) {
-            if (a.field < b.field) return -1;
-            if (a.field > b.field) return 1;
-            return 0;
-        }).forEach(function (element, index) {  // concatenate and store the terms for each field
-            // VB-7318 making query?
-            if (element.notBoolean) {
-                qries[element.field] ? qries[element.field] += ' OR ' + '!' + element.value : qries[element.field] = '!' + element.value;
-            } else {
-                qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;               
+        term.forEach(function (element, index) {  // concatenate and store the terms for each field
+            if (qries[element.field] === undefined) {
+              qries[element.field] = [];
             }
+
+            //All the elements should have the same field
+            if (field === undefined && obj !== "Anywhere") {
+              field = element.field
+            }
+            //Might be possible to set the field value to text instead of using this
+            else if (field === undefined && obj === "Anywhere") {
+              field = "text";
+            }
+
+            termQueries.push({value: element.value, notBoolean: element.notBoolean});
         });
 
-        // get the numbeer of different field queries per category (this is usually one or two)
-        var alen = Object.keys(qries).length;
+        qryUrl += getSolrQueryFromTerm(obj, field, termQueries);
 
         // more than one categories
         if (i < tlen - 1) {
-            // more than one fields for this category
-            if (k < alen - 1) {
-                if (obj === 'Anywhere') {
-                    qryUrl += 'text:(' + qries['anywhere'] + ') AND ';
-                    // qryUrl += '(text:' + qries['anywhere'] + ') AND ';
-                } else {
-                    qryUrl += '(';
-                    for (var fieldQry in qries) {
-                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
-                        // checking multiple values
-                        var fieldValue = qries[fieldQry];
-                        if (fieldValue.includes("OR")) {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
-                        } else if (fieldValue.includes("!")) {
-                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
-                        } else {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        }
-
-                        if (k === alen - 1) {
-                            qryUrl += ') AND ';
-                            continue;
-                        }
-                        qryUrl += ' OR ';
-                        k++;
-                    }
-                }
-
-            } else {
-                if (obj === 'Anywhere') {
-                    qryUrl += 'text:(' + qries['anywhere'] + ') AND ';
-                    // qryUrl += '(text:' + qries['anywhere'] + ') AND ';
-                } else {
-                    for (var fieldQry in qries) {
-                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
-                        // checking multiple values
-                        var fieldValue = qries[fieldQry];
-                        if (fieldValue.includes("OR")) {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
-                        } else if (fieldValue.includes("!")) {
-                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
-                        } else {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        }
-
-                        if (k === alen - 1) {
-                            qryUrl += ' AND ';
-                            continue;
-                        }
-                        qryUrl += ' OR ';
-                        k++;
-                    }
-                }
-
-            }
+            //Adding boolean operator since we have more terms to add to query
+            qryUrl += " AND ";
         } else {    
-            if (k < alen - 1) {
-                if (obj === 'Anywhere') {
-                    //do nothing
-                } else {
-                    qryUrl += '(';
-                    for (var fieldQry in qries) {
-                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
-                        // checking multiple values
-                        var fieldValue = qries[fieldQry];
-                        if (fieldValue.includes("OR")) {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
-                        } else if (fieldValue.includes("!")) {
-                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
-                        } else {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        }
-
-                        if (k === alen - 1) {
-                            qryUrl += ')';
-                            continue;
-                        }
-                        qryUrl += ' OR ';
-                        k++;
-                    }
-                }
-
-            } else {
-                if (obj === 'Anywhere') {
-                    qryUrl += 'text:(' + qries['anywhere'] + '))';
-                    // qryUrl += '(text:' + qries['anywhere'] + '))';
-                } else {
-                    for (var fieldQry in qries) {
-                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
-                        // checking multiple values
-                        var fieldValue = qries[fieldQry];
-                        if (fieldValue.includes("OR")) {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
-                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry] + ')';
-                        } else if (fieldValue.includes("!")) {
-                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + '))';
-                        } else {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
-                        }
-
-                    }
-                }
-
-            }
-            k++;
-
+            //Closing the query since there are no more terms
+            qryUrl += ")";
         }
         i++;
     }
@@ -2616,6 +2510,47 @@ function filterMarkers(items, flyTo) {
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
     loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo})
+}
+
+function getSolrQueryFromTerm(obj, field, termQueries) {
+    var solrQuery = [];
+    var solrNotQuery = [];
+    var queryString;
+
+    if ( obj === "Date" ) {
+        $.each(termQueries, function (index, query) {
+           
+          if (query.notBoolean) {
+            solrQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
+          }
+          else {
+            solrQuery.push("{!field f=" + field + " op=Within v='" + query.value + "'}");
+          }
+        });
+        queryString = "(" + solrQuery.join(" OR ") + ")";
+    } else {
+        $.each(termQueries, function (index, query) {   
+          if (query.notBoolean) {
+              solrNotQuery.push(query.value);
+          }
+          else {
+              solrQuery.push(query.value);
+          }
+        });
+
+        //Only modfy qryUrl if solrQuery or solrNotQuery have elements
+        if (solrQuery.length !== 0 && solrNotQuery.length !== 0) {
+            queryString = field + ":(" + solrQuery.join(" OR ") + ") AND !" + field + ":(" + solrQuery.join(" OR ") + ")";
+        } 
+        else if (solrQuery.length !== 0) {
+            queryString = field + ":(" + solrQuery.join(" OR ") + ")";
+        } else {
+            queryString = "!" + field + ":(" + solrNotQuery.join(" OR ") + ")";
+        }
+    }
+
+    return queryString;
+
 }
 
 function borderColor(type, element) {
@@ -3152,7 +3087,13 @@ function dateResolution(dateString) {
     var date = new Date(dateString);
 
     if (typeof day !== 'undefined') {
-        return date.toDateString();
+        return date.toLocaleString([], {
+            timeZone: "UTC",
+            weekday: "short",
+            month: "short",
+            day: "2-digit",
+            year: "numeric"    
+        });
     }
 
     if (typeof month !== 'undefined') {
@@ -3173,13 +3114,13 @@ function getRandom(min, max) {
 }
 
 function dateConvert(dateobj, format) {
-    var year = dateobj.getFullYear();
-    var month = ("0" + (dateobj.getMonth() + 1)).slice(-2);
-    var date = ("0" + dateobj.getDate()).slice(-2);
-    var hours = ("0" + dateobj.getHours()).slice(-2);
-    var minutes = ("0" + dateobj.getMinutes()).slice(-2);
-    var seconds = ("0" + dateobj.getSeconds()).slice(-2);
-    var day = dateobj.getDay();
+    var year = dateobj.getUTCFullYear();
+    var month = ("0" + (dateobj.getUTCMonth() + 1)).slice(-2);
+    var date = ("0" + dateobj.getUTCDate()).slice(-2);
+    var hours = ("0" + dateobj.getUTCHours()).slice(-2);
+    var minutes = ("0" + dateobj.getUTCMinutes()).slice(-2);
+    var seconds = ("0" + dateobj.getUTCSeconds()).slice(-2);
+    var day = dateobj.getUTCDay();
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var dates = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     var converted_date = "";
