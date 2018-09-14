@@ -421,6 +421,7 @@
 
         dateStartString = dateRange[0];
 
+        //Fixing issue when only one day was searched
         if (dateRange[1] === undefined) {
             dateEndString = dateRange[0];
         } else {
@@ -1477,7 +1478,7 @@
                                 addDatepickerItem(startDate, endDate, valueForNot);
                             })
                         } else {
-                            if (element.startsWith('!!!')) {
+                            if (param.startsWith('!!!')) {
                                 valueForNot = true;
                             } else {
                                 valueForNot = false;

@@ -2519,7 +2519,6 @@ function getSolrQueryFromTerm(obj, field, termQueries) {
 
     if ( obj === "Date" ) {
         $.each(termQueries, function (index, query) {
-           
           if (query.notBoolean) {
             solrQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
           }
