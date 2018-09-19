@@ -2462,7 +2462,9 @@ function filterMarkers(items, flyTo) {
     });
 
     var i = 0;
-    qryUrl = 'q=(';
+    var fqUrl = [];
+    qryUrl = [];
+
     // get the count of terms categories (types)
     var tlen = Object.keys(terms).length;
 
@@ -2471,9 +2473,10 @@ function filterMarkers(items, flyTo) {
         var term = terms[obj];
         var termQueries = [];
         var field = undefined;
+        //Will store the parts that will be concatenated to create qryUrl
+        var queryObject;
 
-        // Working with Date field so only construct an array
-        // sort the elements by field
+        //Construct an array of all the terms that will be used to construct the query
         term.forEach(function (element, index) {  // concatenate and store the terms for each field
             if (qries[element.field] === undefined) {
               qries[element.field] = [];
@@ -2491,17 +2494,30 @@ function filterMarkers(items, flyTo) {
             termQueries.push({value: element.value, notBoolean: element.notBoolean});
         });
 
-        qryUrl += getSolrQueryFromTerm(obj, field, termQueries);
+        //Get the q and fq parts of the query
+        queryObject = getSolrQueryFromTerm(obj, field, termQueries);
 
-        // more than one categories
-        if (i < tlen - 1) {
-            //Adding boolean operator since we have more terms to add to query
-            qryUrl += " AND ";
-        } else {    
-            //Closing the query since there are no more terms
-            qryUrl += ")";
+        if (queryObject.q !== undefined) {
+            qryUrl.push(queryObject.q);
         }
+
+        if (queryObject.fq !== undefined) {
+            fqUrl.push(queryObject.fq);
+        }
+
         i++;
+    }
+
+    //Concatenate fqUrl and qryUrl into global variable qryUrl
+    //Construct a different query depending on the type of terms we are searching
+    if (qryUrl.length !== 0 && fqUrl.length !== 0) {
+        qryUrl = "q=(" + qryUrl.join(" AND ") + ")&fq=" + fqUrl.join("&fq=");
+    } 
+    else if (qryUrl.length !== 0) {
+        qryUrl = "q=(" + qryUrl.join(" AND ") + ")"
+    } 
+    else {
+        qryUrl = "q=*:*&fq=" . fqUrl.join("&fq=");
     }
 
     // VB-7318 need to remove !!! as it is generated whenever pressing share link
@@ -2516,17 +2532,25 @@ function getSolrQueryFromTerm(obj, field, termQueries) {
     var solrQuery = [];
     var solrNotQuery = [];
     var queryString;
+    var fqString;
 
     if ( obj === "Date" ) {
         $.each(termQueries, function (index, query) {
           if (query.notBoolean) {
-            solrQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
+            solrNotQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
           }
           else {
             solrQuery.push("{!field f=" + field + " op=Within v='" + query.value + "'}");
           }
         });
-        queryString = "(" + solrQuery.join(" OR ") + ")";
+
+        if (solrQuery.length !== 0) {
+            queryString = "(" + solrQuery.join(" OR ") + ")";
+        }
+       
+        if (solrNotQuery.length !== 0) {
+            fqString = solrNotQuery.join("&fq=");
+        }
     } else {
         $.each(termQueries, function (index, query) {   
           if (query.notBoolean) {
@@ -2537,19 +2561,16 @@ function getSolrQueryFromTerm(obj, field, termQueries) {
           }
         });
 
-        //Only modfy qryUrl if solrQuery or solrNotQuery have elements
-        if (solrQuery.length !== 0 && solrNotQuery.length !== 0) {
-            queryString = field + ":(" + solrQuery.join(" OR ") + ") AND !" + field + ":(" + solrQuery.join(" OR ") + ")";
-        } 
-        else if (solrQuery.length !== 0) {
+        if (solrQuery.length !== 0) {
             queryString = field + ":(" + solrQuery.join(" OR ") + ")";
-        } else {
-            queryString = "!" + field + ":(" + solrNotQuery.join(" OR ") + ")";
+        } 
+        
+        if (solrNotQuery.length !== 0) {
+            fqString = "!" + field + ":(" + solrNotQuery.join(" OR ") + ")";
         }
     }
 
-    return queryString;
-
+    return {q: queryString, fq: fqString};
 }
 
 function borderColor(type, element) {
@@ -3097,12 +3118,12 @@ function dateResolution(dateString) {
 
     if (typeof month !== 'undefined') {
         var format = "MMM YYYY";
-        return dateConvert(date, format);
+        return dateConvert(date, format, true);
     }
 
     if (typeof year !== 'undefined') {
         var format = "YYYY";
-        return dateConvert(date, format);
+        return dateConvert(date, format, true);
     }
 
     return false;
@@ -3112,14 +3133,28 @@ function getRandom(min, max) {
     return Math.random() * (max - min + 1) + min;
 }
 
-function dateConvert(dateobj, format) {
-    var year = dateobj.getUTCFullYear();
-    var month = ("0" + (dateobj.getUTCMonth() + 1)).slice(-2);
-    var date = ("0" + dateobj.getUTCDate()).slice(-2);
-    var hours = ("0" + dateobj.getUTCHours()).slice(-2);
-    var minutes = ("0" + dateobj.getUTCMinutes()).slice(-2);
-    var seconds = ("0" + dateobj.getUTCSeconds()).slice(-2);
-    var day = dateobj.getUTCDay();
+function dateConvert(dateobj, format, utc = false) {
+
+    //Some parts of the map use this function to display things (not just to create the query)
+    //So when using it when displaying the dates, use UTC
+    if (utc) {
+        var year = dateobj.getUTCFullYear();
+        var month = ("0" + (dateobj.getUTCMonth() + 1)).slice(-2);
+        var date = ("0" + dateobj.getUTCDate()).slice(-2);
+        var hours = ("0" + dateobj.getUTCHours()).slice(-2);
+        var minutes = ("0" + dateobj.getUTCMinutes()).slice(-2);
+        var seconds = ("0" + dateobj.getUTCSeconds()).slice(-2);
+        var day = dateobj.getUTCDay();
+    }
+    else {
+        var year = dateobj.getFullYear();
+        var month = ("0" + (dateobj.getMonth() + 1)).slice(-2);
+        var date = ("0" + dateobj.getDate()).slice(-2);
+        var hours = ("0" + dateobj.getHours()).slice(-2);
+        var minutes = ("0" + dateobj.getMinutes()).slice(-2);
+        var seconds = ("0" + dateobj.getSeconds()).slice(-2);
+        var day = dateobj.getDay();
+    }
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var dates = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     var converted_date = "";
