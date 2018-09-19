@@ -2516,8 +2516,10 @@ function filterMarkers(items, flyTo) {
     else if (qryUrl.length !== 0) {
         qryUrl = "q=(" + qryUrl.join(" AND ") + ")"
     } 
-    else {
+    else if (fqUrl.length !== 0) {
         qryUrl = "q=*:*&fq=" . fqUrl.join("&fq=");
+    } else {
+        qryUrl = "q=*:*";
     }
 
     // VB-7318 need to remove !!! as it is generated whenever pressing share link
