@@ -420,7 +420,13 @@
         dateRange = dateRange.split("-");
 
         dateStartString = dateRange[0];
-        dateEndString = dateRange[1];
+
+        //Fixing issue when only one day was searched
+        if (dateRange[1] === undefined) {
+            dateEndString = dateRange[0];
+        } else {
+            dateEndString = dateRange[1];
+        }
 
         dateStartString.split('/').map( function (value, index) {
             if (index === 0) {
@@ -498,7 +504,7 @@
     }
 
     //Add the dates picked through the datepicker range to the search bar
-    function addDatepickerItem(startDate, endDate) {
+    function addDatepickerItem(startDate, endDate, notBoolean = false) {
         var value;
 
         if (startDate.getTime() === endDate.getTime()) {
@@ -512,6 +518,7 @@
             value: value,
             startDate: startDate,
             endDate: endDate,
+            notBoolean: notBoolean,
             type: 'Datepicker',
             field: 'collection_date_range',
         });
@@ -1460,16 +1467,26 @@
 
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
-                                dateRange = retrieveDatepickerDates(element);
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }
+                                dateRange = retrieveDatepickerDates(element.replace('!!!', ''));
                                 startDate = dateRange[0];
                                 endDate = dateRange[1];
-                                addDatepickerItem(startDate, endDate);
+                                addDatepickerItem(startDate, endDate, valueForNot);
                             })
                         } else {
-                            dateRange = retrieveDatepickerDates(param);
+                            if (param.startsWith('!!!')) {
+                                valueForNot = true;
+                            } else {
+                                valueForNot = false;
+                            }
+                            dateRange = retrieveDatepickerDates(param.replace('!!!', ''));
                             startDate = dateRange[0];
                             endDate = dateRange[1];
-                            addDatepickerItem(startDate, endDate);
+                            addDatepickerItem(startDate, endDate, valueForNot);
                         }
                         break   
                     case "pathogen":
