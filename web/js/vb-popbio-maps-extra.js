@@ -982,6 +982,44 @@
                             });
                         }
                         break;
+                    case "attractant":
+                        var param = urlParams[key];
+                        if (Array.isArray(param)) {
+                            param.forEach(function (element) {
+                                // VB-7318 add notBoolean field depending on the presence of !!!
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }
+                                $('#search_ac').tagsinput('add', {
+                                    // VB-7318 add replace
+                                    value: element.replace('!!!',''),
+                                    activeTerm: true,
+                                    type: 'Attractant',
+                                    field: mapTypeToField('Attractant'),
+                                    qtype: 'exact',
+                                    // VB-7318 add notBoolean field
+                                    notBoolean: valueForNot
+                                });
+                            })
+                        } else {
+                            // VB-7318
+                            if (urlParams[key].startsWith('!!!')) {
+                                valueForNot = true;
+                            }
+                            $('#search_ac').tagsinput('add', {
+                                // VB-7318 add replace
+                                value: urlParams[key].replace('!!!',''),
+                                activeTerm: true,
+                                type: 'Attractant',
+                                field: mapTypeToField('Attractant'),
+                                qtype: 'exact',
+                                // VB-7318 add notBoolean field
+                                notBoolean: valueForNot
+                            });
+                        }
+                        break;
                     case "protocols_cvterms":
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
@@ -1679,6 +1717,8 @@
                 return "text";
             case "Collection protocol":
                 return "collection_protocol";
+            case "Attractant":
+                return "attractant";
             case "Taxonomy":
                 return "species";
             case "Protocol":

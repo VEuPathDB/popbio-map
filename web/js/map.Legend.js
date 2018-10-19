@@ -387,6 +387,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
+            (viewMode === 'abnd' ? '<li><a href="#" data-value="Attractant">Attractant</a></li> ' : '') +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
             '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
             (viewMode === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +
@@ -456,6 +457,7 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" data-value="Species">Species</a></li> ' +
             '<li><a href="#" data-value="Sample type">Sample type</a></li> ' +
             '<li><a href="#" data-value="Collection protocol">Collection protocol</a></li> ' +
+            (viewMode === 'abnd' ? '<li><a href="#" data-value="Attractant">Attractant</a></li> ' : '') +
             '<li><a href="#" data-value="Project">Project </a></li> ' +
             '<li><a href="#" data-value="Protocol">Protocol</a></li> ' +
             (viewMode === 'ir' ? '<li><a href="#" data-value="Insecticide">Insecticide</a> </li> ' : '') +

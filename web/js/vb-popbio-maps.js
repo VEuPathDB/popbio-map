@@ -2240,6 +2240,8 @@ function tableHtml(divid, results) {
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                     collectionProtocolsType: 'Collection protocol',
+                    attractants: borderColor('Attractant', element.attractants_ss),
+                    attractantsType: 'Attractant',
                     protocols: borderColor('Protocol', element.protocols),
                     protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i,
@@ -2613,6 +2615,8 @@ function mapTypeToField(type) {
             return "geolocations_cvterms";
         case "Collection protocol":
             return "collection_protocols_cvterms";
+        case "Attractant":
+            return "attractants_cvterms";
         case "Protocol":
             return "protocols_cvterms";
         case "Collection ID":
@@ -2674,6 +2678,11 @@ function mapSummarizeByToField(type) {
             fields.summarize = "collection_protocols_category";
             fields.type = "Collection protocol";
             fields.field = "collection_protocols";
+            break;
+        case "Attractant":
+            fields.summarize = "attractants_ss"; // may have to copyField to attractants_category
+            fields.type = "Attractant";
+            fields.field = "attractants_ss";
             break;
         case "Protocol":
             fields.summarize = "protocols_category";
@@ -2749,6 +2758,8 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-locus';
             case 'Collection protocol' :
                 return 'label label-success label-collection-protocol';
+            case 'Attractant' :
+                return 'label label-success label-attractant';
             case 'Date' :
                 return 'label label-info label-date'
             case 'Datepicker' :
@@ -2809,6 +2820,8 @@ function mapTypeToIcon(type) {
             return 'fas fa-eye-dropper';
         case 'Collection protocol' :
             return 'fas fa-shopping-cart';
+        case 'Attractant' :
+            return 'fas fa-magnet';
         case 'Date' :
             return 'far fa-calendar-alt';
         case 'Datepicker' :
