@@ -204,17 +204,17 @@
             itemText: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
                 if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal')) {
-                    return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
-                    return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
                 }   
             },
             itemHTML: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
                 if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean))  && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal')) {
-                    return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
-                    return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
                 }    
             },
             typeaheadjs: ({

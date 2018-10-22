@@ -2732,6 +2732,8 @@ function mapSummarizeByToField(type) {
 }
 
 // VB-7318 changes are made when calling this function, instead
+// bootstrap classes here: https://www.w3schools.com/bootstrap/bootstrap_badges_labels.asp
+// needs some rational overhaul
 function mapTypeToLabel(type) {    
         switch (type) {
             case 'Taxonomy'   :
@@ -2808,14 +2810,14 @@ function mapTypeToIcon(type) {
             return 'fas fa-sitemap';
         case 'Geography':
             return 'fas fa-map-marker';
-        case 'Title'  :
-            return 'fas fa-tag';
+        case 'Title'  : // think about renaming this to External ID
+            return 'fas fa-sign';
         case 'Description':
             return 'fas fa-info-circle';
         case 'Project'   :
             return 'fas fa-database';
         case 'Project title'   :
-            return 'fas fa-database';
+            return 'fas fa-sign';
         case 'Anywhere'   :
             return 'fas fa-search';
         case 'PubMed' :
@@ -2840,33 +2842,29 @@ function mapTypeToIcon(type) {
             return 'fas fa-id-card';
         case 'Assay ID' :
             return 'fas fa-vial';
-        case 'Sample' :
+        case 'Sample' : //? not used
             return 'fas fa-map-pin';
         case 'Sample type' :
-            return 'far fa-file';
+            return 'fas fa-cookie';
         case 'Protocol' :
             return 'fas fa-sort-amount-down';
         case 'Author' :
             return 'fas fa-user';
-        case 'Coordinates':
+        case 'Coordinates': //? not used
             return 'fas fa-map-marker-alt';
-        case 'Location':
+        case 'Location':  //? not used
             return 'fas fa-location-arrow';
-        // VB-7318 VB-7622 duplicate with above
-        // case 'Insecticide':
-        //     return 'fa-eyedropper';
-        //Modifies what gets used as the icon in the search bar
         case 'Allele':
-            return 'fas fa-sliders';
+            return 'fas fa-sliders-h';
         case 'Locus':
             return 'fas fa-thumbtack';
-        case 'Concentration':
+        case 'Concentration':  //? not used
             return 'fas fa-tachometer-alt';
-        case 'Duration':
+        case 'Duration': //? not used
             return 'far fa-clock';
-        case 'Phenotype':
+        case 'Phenotype':  //? not used
             return 'far fa-eye';
-        case 'Count':
+        case 'Count':  //? not used
             return 'fas fa-hashtag';
         case 'Pathogen':
             return 'fas fa-thermometer-half';
