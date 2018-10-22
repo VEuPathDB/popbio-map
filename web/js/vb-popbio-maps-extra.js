@@ -325,6 +325,18 @@
                 }
             }
 
+            if (viewMode !== "abnd") {
+                if (glbSummarizeBy === "Attractant") {
+                    if (viewMode === "path") {
+                        glbSummarizeBy = "Pathogen";
+                    } else if (viewMode === "geno") {
+                        glbSummarizeBy = "Allele";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
+            }
+
             //Add and remove the disabled class for the sidebar
             if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
                 //Get the current sidebar that is active

@@ -2809,7 +2809,7 @@ function mapTypeToIcon(type) {
         case 'Taxonomy'   :
             return 'fas fa-sitemap';
         case 'Geography':
-            return 'fas fa-map-marker';
+            return 'fas fa-map-marker-alt';
         case 'Title'  : // think about renaming this to External ID
             return 'fas fa-sign';
         case 'Description':
@@ -2842,7 +2842,7 @@ function mapTypeToIcon(type) {
             return 'fas fa-id-card';
         case 'Assay ID' :
             return 'fas fa-vial';
-        case 'Sample' : //? not used
+        case 'Sample' :
             return 'fas fa-map-pin';
         case 'Sample type' :
             return 'fas fa-cookie';
@@ -2850,21 +2850,21 @@ function mapTypeToIcon(type) {
             return 'fas fa-sort-amount-down';
         case 'Author' :
             return 'fas fa-user';
-        case 'Coordinates': //? not used
+        case 'Coordinates':
             return 'fas fa-map-marker-alt';
-        case 'Location':  //? not used
+        case 'Location':
             return 'fas fa-location-arrow';
         case 'Allele':
             return 'fas fa-sliders-h';
         case 'Locus':
             return 'fas fa-thumbtack';
-        case 'Concentration':  //? not used
+        case 'Concentration':
             return 'fas fa-tachometer-alt';
-        case 'Duration': //? not used
+        case 'Duration':
             return 'far fa-clock';
-        case 'Phenotype':  //? not used
+        case 'Phenotype':
             return 'far fa-eye';
-        case 'Count':  //? not used
+        case 'Count':
             return 'fas fa-hashtag';
         case 'Pathogen':
             return 'fas fa-thermometer-half';
