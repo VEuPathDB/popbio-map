@@ -134,6 +134,31 @@ module.exports = {
             name: 'exp_citations_ss',
             label: 'Citations',
             quoted: true
+        },
+        {
+            name: 'exp_tags_ss',
+            label: 'Tag',
+            quoted: true            
+        },
+        {
+            name: 'exp_attractants_ss',
+            label: 'Attractants',
+            quoted: true            
+        },
+        {
+            name: 'exp_licenses_ss',
+            label: 'Usage license',
+            quoted: true            
+        },
+        {
+            name: 'exp_sex_s',
+            label: 'Sex',
+            quoted: false            
+        },
+        {
+            name: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            quoted: true            
         }
     ],
     smpl: [
@@ -204,7 +229,32 @@ module.exports = {
             name: 'exp_citations_ss',
             label: 'Citations',
             quoted: true
-        }
+        },
+        {
+            name: 'exp_tags_ss',
+            label: 'Tag',
+            quoted: true            
+        },
+        {
+            name: 'exp_attractants_ss',
+            label: 'Attractants',
+            quoted: true            
+        },
+        {
+            name: 'exp_licenses_ss',
+            label: 'Usage license',
+            quoted: true            
+        },
+        {
+            name: 'exp_sex_s',
+            label: 'Sex',
+            quoted: false            
+        },
+        {
+            name: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            quoted: true            
+        }        
     ],
     abnd: [
         {
@@ -284,6 +334,31 @@ module.exports = {
             name: 'exp_citations_ss',
             label: 'Citations',
             quoted: true
+        },
+        {
+            name: 'exp_tags_ss',
+            label: 'Tag',
+            quoted: true            
+        },
+        {
+            name: 'exp_attractants_ss',
+            label: 'Attractants',
+            quoted: true            
+        },
+        {
+            name: 'exp_licenses_ss',
+            label: 'Usage license',
+            quoted: true            
+        },
+        {
+            name: 'exp_sex_s',
+            label: 'Sex',
+            quoted: false            
+        },
+        {
+            name: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            quoted: true            
         }
     ],
     geno: [
@@ -404,6 +479,31 @@ module.exports = {
             name: 'exp_citations_ss',
             label: 'Citations',
             quoted: true
+        },
+        {
+            name: 'exp_tags_ss',
+            label: 'Tag',
+            quoted: true            
+        },
+        {
+            name: 'exp_attractants_ss',
+            label: 'Attractants',
+            quoted: true            
+        },
+        {
+            name: 'exp_licenses_ss',
+            label: 'Usage license',
+            quoted: true            
+        },
+        {
+            name: 'exp_sex_s',
+            label: 'Sex',
+            quoted: false            
+        },
+        {
+            name: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            quoted: true            
         }
     ],
     path: [
@@ -519,6 +619,31 @@ module.exports = {
             name: 'exp_citations_ss',
             label: 'Citations',
             quoted: true
+        },
+        {
+            name: 'exp_tags_ss',
+            label: 'Tag',
+            quoted: true            
+        },
+        {
+            name: 'exp_attractants_ss',
+            label: 'Attractants',
+            quoted: true            
+        },
+        {
+            name: 'exp_licenses_ss',
+            label: 'Usage license',
+            quoted: true            
+        },
+        {
+            name: 'exp_sex_s',
+            label: 'Sex',
+            quoted: false            
+        },
+        {
+            name: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            quoted: true            
         }
     ],
 };
