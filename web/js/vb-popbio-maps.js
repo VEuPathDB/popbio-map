@@ -129,7 +129,7 @@ function bindEvents() {
 
         if ($('#select-export-fields').val()) {
             fieldsStr += $('#select-export-fields').val().join();
-            fieldsStr += ',exp_citations_ss'; // mandatory citations field
+            fieldsStr += ',exp_citations_ss,exp_licenses_ss'; // mandatory citations field + license (DKDK)
         } else {
             // no marker is selected
             // inform the user that there are no selected markers
@@ -785,8 +785,27 @@ function updateExportFields(viewMode) {
             value: 'exp_protocols_ss',
             label: 'Protocol',
             icon: mapTypeToIcon('Protocol')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
-
     ];
     var irFields = [
         {
@@ -881,6 +900,26 @@ function updateExportFields(viewMode) {
             label: 'Phenotype value',
             subtext: 'value, unit, type',
             icon: mapTypeToIcon('Phenotype')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
     ];
     var abndFields = [
@@ -953,6 +992,26 @@ function updateExportFields(viewMode) {
             value: 'exp_collection_duration_days_i',
             label: 'Collection duration (days)',
             icon: mapTypeToIcon('Duration')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
     ];
     var genoFields = [
@@ -1067,6 +1126,26 @@ function updateExportFields(viewMode) {
             value: 'exp_genotype_mutated_protein_value_f',
             label: 'Mutated Protein Value',
             icon: mapTypeToIcon('Mutated Protein Value')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
     ];
 
@@ -1156,6 +1235,26 @@ function updateExportFields(viewMode) {
             value: 'exp_infection_status_s',
             label: 'Infection status',
             icon: mapTypeToIcon('Infection status')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
     ];
 
