@@ -516,8 +516,13 @@
     }
 
     //Add the dates picked through the datepicker range to the search bar
-    function addDatepickerItem(startDate, endDate, notBoolean = false) {
+    function addDatepickerItem(startDate, endDate, notBoolean) {
         var value;
+
+        //Minimizer code complains when doing notBoolean = false in parameters
+        if (notBoolean === undefined) {
+            notBoolean = false;
+        }
 
         if (startDate.getTime() === endDate.getTime()) {
             value = startDate.toLocaleDateString('en-GB', {timezone: 'utc'});

@@ -3250,7 +3250,11 @@ function getRandom(min, max) {
     return Math.random() * (max - min + 1) + min;
 }
 
-function dateConvert(dateobj, format, utc = false) {
+function dateConvert(dateobj, format, utc) {
+    //Minimizing code complains if we do utc = false as parameter so doing it this way
+    if (utc === undefined) {
+        utc = false;
+    }
 
     //Some parts of the map use this function to display things (not just to create the query)
     //So when using it when displaying the dates, use UTC
