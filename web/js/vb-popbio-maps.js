@@ -2320,8 +2320,6 @@ function tableHtml(divid, results) {
             case "abnd":
                 row = {
                     accession: element.accession,
-                    // VB-7622 Sample ID?
-                    // accessionType: 'Stable ID',
                     accessionType: 'Sample ID',                    
                     bundleName: element.bundle_name,
                     url: element.url,
@@ -2339,6 +2337,8 @@ function tableHtml(divid, results) {
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                     collectionProtocolsType: 'Collection protocol',
+                    attractants: borderColor('Attractant', element.attractants_ss),
+                    attractantsType: 'Attractant',
                     protocols: borderColor('Protocol', element.protocols),
                     protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i,
@@ -2712,6 +2712,8 @@ function mapTypeToField(type) {
             return "geolocations_cvterms";
         case "Collection protocol":
             return "collection_protocols_cvterms";
+        case "Attractant":
+            return "attractants_cvterms";
         case "Protocol":
             return "protocols_cvterms";
         case "Collection ID":
@@ -2732,13 +2734,8 @@ function mapTypeToField(type) {
             return "project_authors_txt";
         case "Project title":
             return "project_titles_txt";
-        // VB-7622 Stable ID? assay_id_s: actually this is Assay ID but just leave it as is
-        case "Stable ID":
-            return "assay_id_s";
-        // VB-7622 Need Sample ID exp_sample_id_s
         case "Sample ID":
             return "exp_sample_id_s";
-        // VB-7622 Need Assay ID assay_id_s
         case "Assay ID":
             return "assay_id_s";            
         case "Seasonal":
@@ -2749,6 +2746,14 @@ function mapTypeToField(type) {
             return "infection_source_cvterms";
         case "Infection status":
             return "infection_status_s";
+        case "Sex":
+            return "sex_s";
+        case "Developmental stage":
+            return "dev_stages_cvterms";
+        case "License":
+            return "licenses_cvterms";
+        case "Tag":
+            return "tags_cvterms";
         default :
             return type.toLowerCase()
 
@@ -2773,6 +2778,11 @@ function mapSummarizeByToField(type) {
             fields.summarize = "collection_protocols_category";
             fields.type = "Collection protocol";
             fields.field = "collection_protocols";
+            break;
+        case "Attractant":
+            fields.summarize = "attractants_ss"; // may have to copyField to attractants_category
+            fields.type = "Attractant";
+            fields.field = "attractants_ss";
             break;
         case "Protocol":
             fields.summarize = "protocols_category";
@@ -2821,6 +2831,8 @@ function mapSummarizeByToField(type) {
 }
 
 // VB-7318 changes are made when calling this function, instead
+// bootstrap classes here: https://www.w3schools.com/bootstrap/bootstrap_badges_labels.asp
+// needs some rational overhaul
 function mapTypeToLabel(type) {    
         switch (type) {
             case 'Taxonomy'   :
@@ -2848,6 +2860,8 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-locus';
             case 'Collection protocol' :
                 return 'label label-success label-collection-protocol';
+            case 'Attractant' :
+                return 'label label-success label-attractant';
             case 'Date' :
                 return 'label label-info label-date'
             case 'Datepicker' :
@@ -2858,13 +2872,8 @@ function mapTypeToLabel(type) {
                 return 'label label-secondary label-norm-ir';
             case 'Collection ID' :
                 return 'label label-warning label-collection-id';
-            // VB-7622 add class for Stable ID: same to Project
-            case 'Stable ID' :
-                return 'label label-success label-stable-id';            
-            // VB-7622 add class for Sample ID: same to Stable ID
             case 'Sample ID' :
                 return 'label label-success label-sample-id';            
-            // VB-7622 add class for Assay ID: same to Stable ID
             case 'Assay ID' :
                 return 'label label-success label-assay-id';                            
             case 'Sample' :
@@ -2881,6 +2890,14 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-allele';
             case 'Infection status':
                 return 'label label-success label-geography';
+            case 'Sex':
+                return 'label label-info label-sex';
+            case 'Developmental stage':
+                return 'label label-warning label-dev-stage';
+            case 'License':
+                return 'label label-info label-license';
+            case 'Tag':
+                return 'label label-info label-tag';
             default :
                 return 'label label-warning label-default';
         }
@@ -2891,15 +2908,15 @@ function mapTypeToIcon(type) {
         case 'Taxonomy'   :
             return 'fas fa-sitemap';
         case 'Geography':
-            return 'fas fa-map-markeralt';
-        case 'Title'  :
-            return 'fas fa-tag';
+            return 'fas fa-map-marker-alt';
+        case 'Title'  : // think about renaming this to External ID
+            return 'fas fa-sign';
         case 'Description':
             return 'fas fa-info-circle';
         case 'Project'   :
             return 'fas fa-database';
         case 'Project title'   :
-            return 'fas fa-database';
+            return 'fas fa-sign';
         case 'Anywhere'   :
             return 'fas fa-search';
         case 'PubMed' :
@@ -2908,6 +2925,8 @@ function mapTypeToIcon(type) {
             return 'fas fa-eye-dropper';
         case 'Collection protocol' :
             return 'fas fa-shopping-cart';
+        case 'Attractant' :
+            return 'fas fa-magnet';
         case 'Date' :
             return 'far fa-calendar-alt';
         case 'Datepicker' :
@@ -2917,20 +2936,15 @@ function mapTypeToIcon(type) {
         case 'Norm-IR' :
             return 'fas fa-bolt';
         case 'Collection ID' :
-        // VB-7622 add class for Collection ID: same to Assay ID
-            return 'fas fa-tag';        
-        // VB-7622 add class for Stable ID: same to Assay ID
-        case 'Stable ID' :
-            return 'fas fa-tag';                    
-        // VB-7622 add class for Stable ID: same to Assay ID
+            return 'fas fa-shopping-cart';
         case 'Sample ID' :
-            return 'fas fa-tag';                            
+            return 'fas fa-id-card';
         case 'Assay ID' :
-            return 'fas fa-tag';
+            return 'fas fa-vial';
         case 'Sample' :
             return 'fas fa-map-pin';
         case 'Sample type' :
-            return 'far fa-file';
+            return 'fas fa-cookie';
         case 'Protocol' :
             return 'fas fa-sort-amount-down';
         case 'Author' :
@@ -2939,12 +2953,8 @@ function mapTypeToIcon(type) {
             return 'fas fa-map-marker-alt';
         case 'Location':
             return 'fas fa-location-arrow';
-        // VB-7318 VB-7622 duplicate with above
-        // case 'Insecticide':
-        //     return 'fa-eyedropper';
-        //Modifies what gets used as the icon in the search bar
         case 'Allele':
-            return 'fas fa-sliders';
+            return 'fas fa-sliders-h';
         case 'Locus':
             return 'fas fa-thumbtack';
         case 'Concentration':
@@ -2959,16 +2969,14 @@ function mapTypeToIcon(type) {
             return 'fas fa-thermometer-half';
         case 'Infection status':
             return 'fas fa-bullseye';
-        case 'Tag':
-            return 'fas fa-tags';
-        case 'Attractants':
-            return 'fas fa-bullseye';
-        case 'Usage license':
-            return 'fab fa-creative-commons';
         case 'Sex':
-            return 'fab fa-transgender';
+            return 'fas fa-venus-mars';
         case 'Developmental stage':
-            return 'fas fa-bullseye';
+            return 'fas fa-sync';
+        case 'Tag':
+            return 'fas fa-tag';
+        case 'License':
+            return 'fab fa-creative-commons';
         default :
             return 'fas fa-search';
 
