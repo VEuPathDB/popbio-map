@@ -1058,14 +1058,22 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p>
-                    <i class="far fa-fw fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
-                    {{for collectionDate}}
-                        {{>#data}}
-                    {{else}}
-                        No date
-                    {{/for}}
+                <p style="color: {{attr:bgColor}};" title="Collection date">
+                    <i class="far fa-fw fa-calendar-alt"></i><b> Col. Date(s)</b>
                 </p>
+                <ul>
+                    {{for collectionDate}}
+                        <li>
+                        <span>
+                        {{>#data}}
+                        </span>
+                        </li>
+                    {{else}}
+                        <li>
+                        No date
+                        </li>
+                    {{/for}}
+                </ul>
             </div>
             <div class="col-md-6">
                 <p>
@@ -1078,8 +1086,8 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Projects">
+                    <i class="fa fa-fw fa-database"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
@@ -1115,8 +1123,8 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Collection Protocols">
+                    <i class="fa fa-fw fa-shopping-cart"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
@@ -1141,7 +1149,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};" title="Protocols"><i class="fas fa-fw fa-sort-amount-down"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1203,13 +1211,22 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="far fa-fw fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
-                {{for collectionDate}}
-                    {{>#data}}
-                {{else}}
-                    No date
-                {{/for}}
+                <p style="color: {{attr:bgColor}};" title="Collection date">
+                    <i class="far fa-fw fa-calendar-alt"></i><b> Col. Date(s)</b>
                 </p>
+                <ul>
+                    {{for collectionDate}}
+                        <li>
+                        <span>
+                        {{>#data}}
+                        </span>
+                        </li>
+                    {{else}}
+                        <li>
+                        No date
+                        </li>
+                    {{/for}}
+                </ul>
             </div>
             <div class="col-md-6">
                 <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
@@ -1221,8 +1238,8 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Projects">
+                    <i class="fa fa-fw fa-database"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
@@ -1258,8 +1275,8 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Collection Protocols">
+                    <i class="fa fa-fw fa-shopping-cart"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
@@ -1309,7 +1326,7 @@
                 {{/if}}
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};" title="Protocols"><i class="fas fa-fw fa-sort-amount-down"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1365,13 +1382,22 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="far fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
-                {{for collectionDate}}
-                    {{>#data}}
-                {{else}}
-                    No date
-                {{/for}}
+                <p style="color: {{attr:bgColor}};" title="Collection date">
+                    <i class="far fa-fw fa-calendar-alt"></i><b> Col. Date(s)</b>
                 </p>
+                <ul>
+                    {{for collectionDate}}
+                        <li>
+                        <span>
+                        {{>#data}}
+                        </span>
+                        </li>
+                    {{else}}
+                        <li>
+                        No date
+                        </li>
+                    {{/for}}
+                </ul>
             </div>
             <div class="col-md-6">
                 <p><i class="fa  fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
@@ -1383,8 +1409,8 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa  fa-database " title="Projects"></i><b> Project(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Projects">
+                    <i class="fa  fa-database"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
@@ -1420,8 +1446,8 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa  fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Collection Protocols">
+                    <i class="fa  fa-shopping-cart"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
@@ -1435,7 +1461,27 @@
                                 <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
                         {{else}}
                                 <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
-
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+                <p style="color: {{attr:bgColor}};" title="Attractants">
+                    <i class="fa  fa-magnet"></i><b> Attractant(s)</b>
+                </p>
+                <ul>
+                {{for attractants}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Attractants" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Attractants" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa  fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Attractants" value="{{attr:#data.name}}">
                         {{/if}}
                             {{>#data.name}}
                             </span>
@@ -1462,7 +1508,7 @@
 
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fas fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};" title="Protocols"><i class="fas fa-sort-amount-down"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1523,13 +1569,22 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="far fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
-                {{for collectionDate}}
-                    {{>#data}}
-                {{else}}
-                    No date
-                {{/for}}
+                <p style="color: {{attr:bgColor}};" title="Collection date">
+                    <i class="far fa-fw fa-calendar-alt"></i><b> Col. Date(s)</b>
                 </p>
+                <ul>
+                    {{for collectionDate}}
+                        <li>
+                        <span>
+                        {{>#data}}
+                        </span>
+                        </li>
+                    {{else}}
+                        <li>
+                        No date
+                        </li>
+                    {{/for}}
+                </ul>
             </div>
             <div class="col-md-6">
                 <p><i class="fa  fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
@@ -1541,8 +1596,8 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa  fa-database " title="Projects"></i><b> Project(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Projects">
+                    <i class="fa  fa-database"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
@@ -1578,8 +1633,8 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa  fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Collection Protocols">
+                    <i class="fa  fa-shopping-cart"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
@@ -1617,7 +1672,7 @@
             <div class="col-md-6">
 				<p><i class="fa  fa-bug" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:sampleSize}} individual(s)</p>
 				<p><i class="fa  fa-book" title="Sample size" style="color: {{attr:bgColor}};"></i> {{html:label}}</p>
-                <p style="color: {{attr:bgColor}};"><i class="fa fa-archive" title="Genotype Name"></i><b> Genotype Name</b></p>
+                <p style="color: {{attr:bgColor}};" title="Genotype Name"><i class="fa fa-archive"></i><b> Genotype Name</b></p>
                 <ul>
                     <li>
                         {{html:genotypeName}}
@@ -1625,7 +1680,7 @@
                 </ul>
               </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fas fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};" title="Protocols"><i class="fas fa-sort-amount-down"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1682,13 +1737,22 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="far fa-fw fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
-                {{for collectionDate}}
-                    {{>#data}}
-                {{else}}
-                    No date
-                {{/for}}
+                <p style="color: {{attr:bgColor}};" title="Collection date">
+                    <i class="far fa-fw fa-calendar-alt"></i><b> Col. Date(s)</b>
                 </p>
+                <ul>
+                    {{for collectionDate}}
+                        <li>
+                        <span>
+                        {{>#data}}
+                        </span>
+                        </li>
+                    {{else}}
+                        <li>
+                        No date
+                        </li>
+                    {{/for}}
+                </ul>
             </div>
             <div class="col-md-6">
                 <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
@@ -1700,8 +1764,8 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Projects">
+                    <i class="fa fa-fw fa-database"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
@@ -1737,8 +1801,8 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Collection Protocols">
+                    <i class="fa fa-fw fa-shopping-cart"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
@@ -1778,8 +1842,8 @@
         {{/if}}
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fas fa-fw fa-thermometer-half" title="Pathogen" style="color: {{attr:bgColor}};"></i>
+                <p style="color: {{attr:bgColor}};" title="Pathogen" >
+                    <i class="fas fa-fw fa-thermometer-half"></i>
                     <b> Pathogen</b>
                 </p>
                 <ul>
@@ -1796,8 +1860,8 @@
                     </span>
                 </p>
             </div>
-            <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
+            <div class="col-md-6" title="Protocols">
+                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
@@ -1854,13 +1918,22 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p><i class="far fa-fw fa-calendar-alt" title="Collection date" style="color: {{attr:bgColor}};"></i>
-                {{for collectionDate}}
-                    {{>#data}}
-                {{else}}
-                    No date
-                {{/for}}
+                <p style="color: {{attr:bgColor}};" title="Collection date">
+                    <i class="far fa-fw fa-calendar-alt"></i><b> Col. Date(s)</b>
                 </p>
+                <ul>
+                    {{for collectionDate}}
+                        <li>
+                        <span>
+                        {{>#data}}
+                        </span>
+                        </li>
+                    {{else}}
+                        <li>
+                        No date
+                        </li>
+                    {{/for}}
+                </ul>
             </div>
             <div class="col-md-6">
                 <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
@@ -1872,8 +1945,8 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-database " title="Projects"></i><b> Project(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Projects">
+                    <i class="fa fa-fw fa-database"></i><b> Project(s)</b>
                 </p>
                 <ul>
                 {{for projects}}
@@ -1909,8 +1982,8 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};">
-                    <i class="fa fa-fw fa-shopping-cart " title="Collection Protocols"></i><b> Col. Protocol(s)</b>
+                <p style="color: {{attr:bgColor}};" title="Collection Protocols">
+                    <i class="fa fa-fw fa-shopping-cart"></i><b> Col. Protocol(s)</b>
                 </p>
                 <ul>
                 {{for collectionProtocols}}
@@ -1960,7 +2033,7 @@
                 {{/if}}
             </div>
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down" title="Protocols"></i><b> Protocol(s)</b></p>
+                <p style="color: {{attr:bgColor}};" title="Protocols"><i class="fas fa-fw fa-sort-amount-down"></i><b> Protocol(s)</b></p>
                 <ul>
                 {{for protocols}}
                     <li>
