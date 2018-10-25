@@ -45,28 +45,6 @@ function bindEvents() {
     })
 
         .on("click", PopulationBiologyMap.methods.resetMap);
-    // if we are in abundance view and the zoom level exceeds 8 then switch to open street maps layer
-
-    // map.on('zoomend', function() {
-    //     if (map.getZoom() <10){
-    //         if (map.hasLayer(points)) {
-    //             map.removeLayer(points);
-    //         } else {
-    //             console.log("no point layer active");
-    //         }
-    //     }
-    //     if (map.getZoom() >= 10){
-    //         if (map.hasLayer(points)){
-    //             console.log("layer already added");
-    //         } else {
-    //             map.addLayer(points);
-    //         }
-    //     }
-    // });
-
-
-    // Set current view
-
 
     $(document).on("click", '.dropdown-menu li a', function () {
 
@@ -151,7 +129,7 @@ function bindEvents() {
 
         if ($('#select-export-fields').val()) {
             fieldsStr += $('#select-export-fields').val().join();
-            fieldsStr += ',exp_citations_ss'; // mandatory citations field
+            fieldsStr += ',exp_citations_ss,exp_licenses_ss'; // mandatory citations field + license (DKDK)
         } else {
             // no marker is selected
             // inform the user that there are no selected markers
@@ -377,8 +355,20 @@ function bindEvents() {
             var newCreationDate = new Date(entityJson.creation_date);
             var newLastModifiedDate = new Date(entityJson.last_modified_date);
 
-            entityJson.creation_date = newCreationDate.toDateString();
-            entityJson.last_modified_date = newLastModifiedDate.toDateString();
+            entityJson.creation_date = newCreationDate.toLocaleString([], {
+                timeZone: "UTC",
+                weekday: "short",
+                month: "short",
+                day: "2-digit",
+                year: "numeric"    
+            });
+            entityJson.last_modified_date = newLastModifiedDate.toLocaleString([], {
+                timeZone: "UTC",
+                weekday: "short",
+                month: "short",
+                day: "2-digit",
+                year: "numeric"    
+            });
 
             // add the background and text colour
             entityJson.bgColor = bgColor;
@@ -795,8 +785,27 @@ function updateExportFields(viewMode) {
             value: 'exp_protocols_ss',
             label: 'Protocol',
             icon: mapTypeToIcon('Protocol')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
-
     ];
     var irFields = [
         {
@@ -891,6 +900,26 @@ function updateExportFields(viewMode) {
             label: 'Phenotype value',
             subtext: 'value, unit, type',
             icon: mapTypeToIcon('Phenotype')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
     ];
     var abndFields = [
@@ -963,6 +992,26 @@ function updateExportFields(viewMode) {
             value: 'exp_collection_duration_days_i',
             label: 'Collection duration (days)',
             icon: mapTypeToIcon('Duration')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
     ];
     var genoFields = [
@@ -1077,6 +1126,26 @@ function updateExportFields(viewMode) {
             value: 'exp_genotype_mutated_protein_value_f',
             label: 'Mutated Protein Value',
             icon: mapTypeToIcon('Mutated Protein Value')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
     ];
 
@@ -1166,6 +1235,26 @@ function updateExportFields(viewMode) {
             value: 'exp_infection_status_s',
             label: 'Infection status',
             icon: mapTypeToIcon('Infection status')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
         }
     ];
 
@@ -2136,30 +2225,40 @@ function tableHtml(divid, results) {
 
     results.forEach(function (element) {
         var dates = element.collection_date_range;
-        var frmDate;
+        var collectionDates = [];
 
         if (dates && dates.length > 0) {
-            var dateString = dates[0];
-            // Match date ranges such as [2009-10 TO 2009-12]
-            if (/TO/.test(dateString)) {
-                // Successful match
-                var myregexp = /\[(\S+)\sTO\s(\S+)\]/;
-                var match = myregexp.exec(dateString);
-                var startDateString = match[1], endDateString = match[2];
-                frmDate = dateResolution(startDateString) + ' to ' + dateResolution(endDateString);
+            //Go throught the dates of document and store then in array
+            $.each( dates, function (index, value) {
+                var frmDate;
+                var dateString = value;
+                // Match date ranges such as [2009-10 TO 2009-12]
+                if (/TO/.test(dateString)) {
+                    // Successful match
+                    var myregexp = /\[(\S+)\sTO\s(\S+)\]/;
+                    var match = myregexp.exec(dateString);
+                    var startDateString = match[1], endDateString = match[2];
+                    frmDate = dateResolution(startDateString) + ' to ' + dateResolution(endDateString);
 
-                // match 2009 or 2009-10 but not 2009-10-11 or any longer dates
-            } else if (/^\d{4}(?:-\d{2})?$/.test(dateString)) {
+                    // match 2009 or 2009-10 but not 2009-10-11 or any longer dates
+                } else if (/^\d{4}(?:-\d{2})?$/.test(dateString)) {
 
-                frmDate = dateResolution(dateString);
+                    frmDate = dateResolution(dateString);
 
-                // Match ISO any other date formats (currently only ISO)
-            } else {
-                var date = new Date(dateString);
-                frmDate = date.toDateString();
+                    // Match ISO any other date formats (currently only ISO)
+                } else {
+                    var date = new Date(dateString);
+                    frmDate = date.toLocaleString([], {
+                        timeZone: "UTC",
+                        weekday: "short",
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric"    
+                    });
+                }
 
-            }
-
+                collectionDates.push(frmDate);
+            });
         }
 
         // hardcoded species_category
@@ -2197,7 +2296,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
@@ -2221,8 +2320,6 @@ function tableHtml(divid, results) {
             case "abnd":
                 row = {
                     accession: element.accession,
-                    // VB-7622 Sample ID?
-                    // accessionType: 'Stable ID',
                     accessionType: 'Sample ID',                    
                     bundleName: element.bundle_name,
                     url: element.url,
@@ -2235,11 +2332,13 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
                     collectionProtocolsType: 'Collection protocol',
+                    attractants: borderColor('Attractant', element.attractants_ss),
+                    attractantsType: 'Attractant',
                     protocols: borderColor('Protocol', element.protocols),
                     protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i,
@@ -2264,7 +2363,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
@@ -2296,7 +2395,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
@@ -2328,7 +2427,7 @@ function tableHtml(divid, results) {
                     speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
-                    collectionDate: frmDate,
+                    collectionDate: collectionDates,
                     projects: borderColor('Project', element.projects),
                     projectsType: 'Project',
                     collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
@@ -2377,7 +2476,10 @@ function filterMarkers(items, flyTo) {
     items.forEach(function (element) {
 
         //VB-7318 
-        if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
+        //Prevent Datepicker from creating an entry in terms object
+        if (element.type !== "Datepicker") {
+            if (!terms.hasOwnProperty(element.type)) terms[element.type] = [];
+        }
 
         if (element.type === 'Date') {
             var format = "YYYY-MM-DD";
@@ -2405,7 +2507,7 @@ function filterMarkers(items, flyTo) {
             var endDate = dateConvert(element.endDate, format);
 
             terms["Date"].push({
-                "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']'
+                "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']', "notBoolean": element.notBoolean
             });
 
             return
@@ -2459,145 +2561,62 @@ function filterMarkers(items, flyTo) {
     });
 
     var i = 0;
-    qryUrl = 'q=(';
+    var fqUrl = [];
+    qryUrl = [];
+
     // get the count of terms categories (types)
     var tlen = Object.keys(terms).length;
 
     for (var obj in terms) {
         var qries = {}; // store category terms grouped by field
-        var k = 0;
-        var arr = terms[obj];
+        var term = terms[obj];
+        var termQueries = [];
+        var field = undefined;
+        //Will store the parts that will be concatenated to create qryUrl
+        var queryObject;
 
-        // sort the elements by field
-        arr.sort(function (a, b) {
-            if (a.field < b.field) return -1;
-            if (a.field > b.field) return 1;
-            return 0;
-        }).forEach(function (element, index) {  // concatenate and store the terms for each field
-            // VB-7318 making query?
-            if (element.notBoolean) {
-                qries[element.field] ? qries[element.field] += ' OR ' + '!' + element.value : qries[element.field] = '!' + element.value;
-            } else {
-                qries[element.field] ? qries[element.field] += ' OR ' + element.value : qries[element.field] = element.value;               
+        //Construct an array of all the terms that will be used to construct the query
+        term.forEach(function (element, index) {  // concatenate and store the terms for each field
+            if (qries[element.field] === undefined) {
+              qries[element.field] = [];
             }
+
+            //All the elements should have the same field
+            if (field === undefined && obj !== "Anywhere") {
+              field = element.field
+            }
+            //Might be possible to set the field value to text instead of using this
+            else if (field === undefined && obj === "Anywhere") {
+              field = "text";
+            }
+
+            termQueries.push({value: element.value, notBoolean: element.notBoolean});
         });
 
-        // get the numbeer of different field queries per category (this is usually one or two)
-        var alen = Object.keys(qries).length;
+        //Get the q and fq parts of the query
+        queryObject = getSolrQueryFromTerm(obj, field, termQueries);
 
-        // more than one categories
-        if (i < tlen - 1) {
-            // more than one fields for this category
-            if (k < alen - 1) {
-                if (obj === 'Anywhere') {
-                    qryUrl += 'text:(' + qries['anywhere'] + ') AND ';
-                    // qryUrl += '(text:' + qries['anywhere'] + ') AND ';
-                } else {
-                    qryUrl += '(';
-                    for (var fieldQry in qries) {
-                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
-                        // checking multiple values
-                        var fieldValue = qries[fieldQry];
-                        if (fieldValue.includes("OR")) {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
-                        } else if (fieldValue.includes("!")) {
-                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
-                        } else {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        }
-
-                        if (k === alen - 1) {
-                            qryUrl += ') AND ';
-                            continue;
-                        }
-                        qryUrl += ' OR ';
-                        k++;
-                    }
-                }
-
-            } else {
-                if (obj === 'Anywhere') {
-                    qryUrl += 'text:(' + qries['anywhere'] + ') AND ';
-                    // qryUrl += '(text:' + qries['anywhere'] + ') AND ';
-                } else {
-                    for (var fieldQry in qries) {
-                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
-                        // checking multiple values
-                        var fieldValue = qries[fieldQry];
-                        if (fieldValue.includes("OR")) {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
-                        } else if (fieldValue.includes("!")) {
-                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
-                        } else {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        }
-
-                        if (k === alen - 1) {
-                            qryUrl += ' AND ';
-                            continue;
-                        }
-                        qryUrl += ' OR ';
-                        k++;
-                    }
-                }
-
-            }
-        } else {    
-            if (k < alen - 1) {
-                if (obj === 'Anywhere') {
-                    //do nothing
-                } else {
-                    qryUrl += '(';
-                    for (var fieldQry in qries) {
-                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
-                        // checking multiple values
-                        var fieldValue = qries[fieldQry];
-                        if (fieldValue.includes("OR")) {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                            // qryUrl += "(" + fieldQry + ':' + qries[fieldQry];                            
-                        } else if (fieldValue.includes("!")) {
-                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + ')';
-                        } else {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + ')';
-                        }
-
-                        if (k === alen - 1) {
-                            qryUrl += ')';
-                            continue;
-                        }
-                        qryUrl += ' OR ';
-                        k++;
-                    }
-                }
-
-            } else {
-                if (obj === 'Anywhere') {
-                    qryUrl += 'text:(' + qries['anywhere'] + '))';
-                    // qryUrl += '(text:' + qries['anywhere'] + '))';
-                } else {
-                    for (var fieldQry in qries) {
-                        // VB-7318 if single value and with !, then convert qryUrl to be !field:"text" instead of field:!"text" 
-                        // checking multiple values
-                        var fieldValue = qries[fieldQry];
-                        if (fieldValue.includes("OR")) {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
-                        // qryUrl += "(" + fieldQry + ':' + qries[fieldQry] + ')';
-                        } else if (fieldValue.includes("!")) {
-                            qryUrl += '!' + fieldQry + ':(' + fieldValue.replace("!","") + '))';
-                        } else {
-                            qryUrl += fieldQry + ':(' + qries[fieldQry] + '))';
-                        }
-
-                    }
-                }
-
-            }
-            k++;
-
+        if (queryObject.q !== undefined) {
+            qryUrl.push(queryObject.q);
         }
+
+        if (queryObject.fq !== undefined) {
+            fqUrl.push(queryObject.fq);
+        }
+
         i++;
+    }
+
+    //Concatenate fqUrl and qryUrl into global variable qryUrl
+    //Construct a different query depending on the type of terms we are searching
+    if (qryUrl.length !== 0 && fqUrl.length !== 0) {
+        qryUrl = "q=(" + qryUrl.join(" AND ") + ")&fq=" + fqUrl.join("&fq=");
+    } 
+    else if (qryUrl.length !== 0) {
+        qryUrl = "q=(" + qryUrl.join(" AND ") + ")"
+    } 
+    else {
+        qryUrl = "q=*:*&fq=" + fqUrl.join("&fq=");
     }
 
     // VB-7318 need to remove !!! as it is generated whenever pressing share link
@@ -2606,6 +2625,51 @@ function filterMarkers(items, flyTo) {
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
     loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo})
+}
+
+function getSolrQueryFromTerm(obj, field, termQueries) {
+    var solrQuery = [];
+    var solrNotQuery = [];
+    var queryString;
+    var fqString;
+
+    if ( obj === "Date" ) {
+        $.each(termQueries, function (index, query) {
+          if (query.notBoolean) {
+            solrNotQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
+          }
+          else {
+            solrQuery.push("{!field f=" + field + " op=Within v='" + query.value + "'}");
+          }
+        });
+
+        if (solrQuery.length !== 0) {
+            queryString = "(" + solrQuery.join(" OR ") + ")";
+        }
+       
+        if (solrNotQuery.length !== 0) {
+            fqString = solrNotQuery.join("&fq=");
+        }
+    } else {
+        $.each(termQueries, function (index, query) {   
+          if (query.notBoolean) {
+              solrNotQuery.push(query.value);
+          }
+          else {
+              solrQuery.push(query.value);
+          }
+        });
+
+        if (solrQuery.length !== 0) {
+            queryString = field + ":(" + solrQuery.join(" OR ") + ")";
+        } 
+        
+        if (solrNotQuery.length !== 0) {
+            fqString = "!" + field + ":(" + solrNotQuery.join(" OR ") + ")";
+        }
+    }
+
+    return {q: queryString, fq: fqString};
 }
 
 function borderColor(type, element) {
@@ -2648,6 +2712,8 @@ function mapTypeToField(type) {
             return "geolocations_cvterms";
         case "Collection protocol":
             return "collection_protocols_cvterms";
+        case "Attractant":
+            return "attractants_cvterms";
         case "Protocol":
             return "protocols_cvterms";
         case "Collection ID":
@@ -2668,13 +2734,8 @@ function mapTypeToField(type) {
             return "project_authors_txt";
         case "Project title":
             return "project_titles_txt";
-        // VB-7622 Stable ID? assay_id_s: actually this is Assay ID but just leave it as is
-        case "Stable ID":
-            return "assay_id_s";
-        // VB-7622 Need Sample ID exp_sample_id_s
         case "Sample ID":
             return "exp_sample_id_s";
-        // VB-7622 Need Assay ID assay_id_s
         case "Assay ID":
             return "assay_id_s";            
         case "Seasonal":
@@ -2685,6 +2746,14 @@ function mapTypeToField(type) {
             return "infection_source_cvterms";
         case "Infection status":
             return "infection_status_s";
+        case "Sex":
+            return "sex_s";
+        case "Developmental stage":
+            return "dev_stages_cvterms";
+        case "License":
+            return "licenses_cvterms";
+        case "Tag":
+            return "tags_cvterms";
         default :
             return type.toLowerCase()
 
@@ -2709,6 +2778,11 @@ function mapSummarizeByToField(type) {
             fields.summarize = "collection_protocols_category";
             fields.type = "Collection protocol";
             fields.field = "collection_protocols";
+            break;
+        case "Attractant":
+            fields.summarize = "attractants_ss"; // may have to copyField to attractants_category
+            fields.type = "Attractant";
+            fields.field = "attractants_ss";
             break;
         case "Protocol":
             fields.summarize = "protocols_category";
@@ -2757,6 +2831,8 @@ function mapSummarizeByToField(type) {
 }
 
 // VB-7318 changes are made when calling this function, instead
+// bootstrap classes here: https://www.w3schools.com/bootstrap/bootstrap_badges_labels.asp
+// needs some rational overhaul
 function mapTypeToLabel(type) {    
         switch (type) {
             case 'Taxonomy'   :
@@ -2784,6 +2860,8 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-locus';
             case 'Collection protocol' :
                 return 'label label-success label-collection-protocol';
+            case 'Attractant' :
+                return 'label label-success label-attractant';
             case 'Date' :
                 return 'label label-info label-date'
             case 'Datepicker' :
@@ -2794,13 +2872,8 @@ function mapTypeToLabel(type) {
                 return 'label label-secondary label-norm-ir';
             case 'Collection ID' :
                 return 'label label-warning label-collection-id';
-            // VB-7622 add class for Stable ID: same to Project
-            case 'Stable ID' :
-                return 'label label-success label-stable-id';            
-            // VB-7622 add class for Sample ID: same to Stable ID
             case 'Sample ID' :
                 return 'label label-success label-sample-id';            
-            // VB-7622 add class for Assay ID: same to Stable ID
             case 'Assay ID' :
                 return 'label label-success label-assay-id';                            
             case 'Sample' :
@@ -2817,6 +2890,14 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-allele';
             case 'Infection status':
                 return 'label label-success label-geography';
+            case 'Sex':
+                return 'label label-info label-sex';
+            case 'Developmental stage':
+                return 'label label-warning label-dev-stage';
+            case 'License':
+                return 'label label-info label-license';
+            case 'Tag':
+                return 'label label-info label-tag';
             default :
                 return 'label label-warning label-default';
         }
@@ -2827,15 +2908,15 @@ function mapTypeToIcon(type) {
         case 'Taxonomy'   :
             return 'fas fa-sitemap';
         case 'Geography':
-            return 'fas fa-map-markeralt';
-        case 'Title'  :
-            return 'fas fa-tag';
+            return 'fas fa-map-marker-alt';
+        case 'Title'  : // think about renaming this to External ID
+            return 'fas fa-sign';
         case 'Description':
             return 'fas fa-info-circle';
         case 'Project'   :
             return 'fas fa-database';
         case 'Project title'   :
-            return 'fas fa-database';
+            return 'fas fa-sign';
         case 'Anywhere'   :
             return 'fas fa-search';
         case 'PubMed' :
@@ -2844,6 +2925,8 @@ function mapTypeToIcon(type) {
             return 'fas fa-eye-dropper';
         case 'Collection protocol' :
             return 'fas fa-shopping-cart';
+        case 'Attractant' :
+            return 'fas fa-magnet';
         case 'Date' :
             return 'far fa-calendar-alt';
         case 'Datepicker' :
@@ -2853,20 +2936,15 @@ function mapTypeToIcon(type) {
         case 'Norm-IR' :
             return 'fas fa-bolt';
         case 'Collection ID' :
-        // VB-7622 add class for Collection ID: same to Assay ID
-            return 'fas fa-tag';        
-        // VB-7622 add class for Stable ID: same to Assay ID
-        case 'Stable ID' :
-            return 'fas fa-tag';                    
-        // VB-7622 add class for Stable ID: same to Assay ID
+            return 'fas fa-shopping-cart';
         case 'Sample ID' :
-            return 'fas fa-tag';                            
+            return 'fas fa-id-card';
         case 'Assay ID' :
-            return 'fas fa-tag';
+            return 'fas fa-vial';
         case 'Sample' :
             return 'fas fa-map-pin';
         case 'Sample type' :
-            return 'far fa-file';
+            return 'fas fa-cookie';
         case 'Protocol' :
             return 'fas fa-sort-amount-down';
         case 'Author' :
@@ -2875,12 +2953,8 @@ function mapTypeToIcon(type) {
             return 'fas fa-map-marker-alt';
         case 'Location':
             return 'fas fa-location-arrow';
-        // VB-7318 VB-7622 duplicate with above
-        // case 'Insecticide':
-        //     return 'fa-eyedropper';
-        //Modifies what gets used as the icon in the search bar
         case 'Allele':
-            return 'fas fa-sliders';
+            return 'fas fa-sliders-h';
         case 'Locus':
             return 'fas fa-thumbtack';
         case 'Concentration':
@@ -2895,6 +2969,14 @@ function mapTypeToIcon(type) {
             return 'fas fa-thermometer-half';
         case 'Infection status':
             return 'fas fa-bullseye';
+        case 'Sex':
+            return 'fas fa-venus-mars';
+        case 'Developmental stage':
+            return 'fas fa-sync';
+        case 'Tag':
+            return 'fas fa-tag';
+        case 'License':
+            return 'fab fa-creative-commons';
         default :
             return 'fas fa-search';
 
@@ -3142,17 +3224,23 @@ function dateResolution(dateString) {
     var date = new Date(dateString);
 
     if (typeof day !== 'undefined') {
-        return date.toDateString();
+        return date.toLocaleString([], {
+            timeZone: "UTC",
+            weekday: "short",
+            month: "short",
+            day: "2-digit",
+            year: "numeric"    
+        });
     }
 
     if (typeof month !== 'undefined') {
         var format = "MMM YYYY";
-        return dateConvert(date, format);
+        return dateConvert(date, format, true);
     }
 
     if (typeof year !== 'undefined') {
         var format = "YYYY";
-        return dateConvert(date, format);
+        return dateConvert(date, format, true);
     }
 
     return false;
@@ -3162,14 +3250,32 @@ function getRandom(min, max) {
     return Math.random() * (max - min + 1) + min;
 }
 
-function dateConvert(dateobj, format) {
-    var year = dateobj.getFullYear();
-    var month = ("0" + (dateobj.getMonth() + 1)).slice(-2);
-    var date = ("0" + dateobj.getDate()).slice(-2);
-    var hours = ("0" + dateobj.getHours()).slice(-2);
-    var minutes = ("0" + dateobj.getMinutes()).slice(-2);
-    var seconds = ("0" + dateobj.getSeconds()).slice(-2);
-    var day = dateobj.getDay();
+function dateConvert(dateobj, format, utc) {
+    //Minimizing code complains if we do utc = false as parameter so doing it this way
+    if (utc === undefined) {
+        utc = false;
+    }
+
+    //Some parts of the map use this function to display things (not just to create the query)
+    //So when using it when displaying the dates, use UTC
+    if (utc) {
+        var year = dateobj.getUTCFullYear();
+        var month = ("0" + (dateobj.getUTCMonth() + 1)).slice(-2);
+        var date = ("0" + dateobj.getUTCDate()).slice(-2);
+        var hours = ("0" + dateobj.getUTCHours()).slice(-2);
+        var minutes = ("0" + dateobj.getUTCMinutes()).slice(-2);
+        var seconds = ("0" + dateobj.getUTCSeconds()).slice(-2);
+        var day = dateobj.getUTCDay();
+    }
+    else {
+        var year = dateobj.getFullYear();
+        var month = ("0" + (dateobj.getMonth() + 1)).slice(-2);
+        var date = ("0" + dateobj.getDate()).slice(-2);
+        var hours = ("0" + dateobj.getHours()).slice(-2);
+        var minutes = ("0" + dateobj.getMinutes()).slice(-2);
+        var seconds = ("0" + dateobj.getSeconds()).slice(-2);
+        var day = dateobj.getDay();
+    }
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var dates = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     var converted_date = "";

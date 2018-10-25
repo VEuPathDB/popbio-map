@@ -204,17 +204,17 @@
             itemText: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
                 if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal')) {
-                    return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
-                    return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
                 }   
             },
             itemHTML: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
                 if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean))  && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal')) {
-                    return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
                 } else {
-                    return '<i class="fa ' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
                 }    
             },
             typeaheadjs: ({
@@ -325,6 +325,18 @@
                 }
             }
 
+            if (viewMode !== "abnd") {
+                if (glbSummarizeBy === "Attractant") {
+                    if (viewMode === "path") {
+                        glbSummarizeBy = "Pathogen";
+                    } else if (viewMode === "geno") {
+                        glbSummarizeBy = "Allele";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
+            }
+
             //Add and remove the disabled class for the sidebar
             if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
                 //Get the current sidebar that is active
@@ -420,7 +432,13 @@
         dateRange = dateRange.split("-");
 
         dateStartString = dateRange[0];
-        dateEndString = dateRange[1];
+
+        //Fixing issue when only one day was searched
+        if (dateRange[1] === undefined) {
+            dateEndString = dateRange[0];
+        } else {
+            dateEndString = dateRange[1];
+        }
 
         dateStartString.split('/').map( function (value, index) {
             if (index === 0) {
@@ -498,8 +516,13 @@
     }
 
     //Add the dates picked through the datepicker range to the search bar
-    function addDatepickerItem(startDate, endDate) {
+    function addDatepickerItem(startDate, endDate, notBoolean) {
         var value;
+
+        //Minimizer code complains when doing notBoolean = false in parameters
+        if (notBoolean === undefined) {
+            notBoolean = false;
+        }
 
         if (startDate.getTime() === endDate.getTime()) {
             value = startDate.toLocaleDateString('en-GB', {timezone: 'utc'});
@@ -512,6 +535,7 @@
             value: value,
             startDate: startDate,
             endDate: endDate,
+            notBoolean: notBoolean,
             type: 'Datepicker',
             field: 'collection_date_range',
         });
@@ -693,6 +717,27 @@
                         viewMode = view;
                         break;
                     case "collectionID":
+                    case "projectID":
+                    case "sampleID":
+                    case "assayID":
+                    case "species":
+                    case "collection_protocol":
+                    case "attractant":
+                    case "protocols_cvterms":
+                    case "sample_type":
+                    case "insecticide":
+                    case "allele":
+                    case "locus":
+                    case "geography":
+                    case "project_title":
+                    case "author":
+                    case "title":
+                    case "pathogen":
+                    case "infection_status":
+                    case "pubmed":
+                    case "tag":
+                    case "devstage":
+                    case "license":
                         // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
@@ -707,8 +752,8 @@
                                     // VB-7318 add replace
                                     value: element.replace('!!!',''),
                                     activeTerm: true,
-                                    type: 'Collection ID',
-                                    field: mapTypeToField('Collection ID'),
+                                    type: URLParamToMapType(key),
+                                    field: mapTypeToField(URLParamToMapType(key)),
                                     qtype: 'exact',
                                     // VB-7318 add notBoolean field
                                     notBoolean: valueForNot
@@ -723,593 +768,8 @@
                                 // VB-7318 add replace
                                 value: urlParams[key].replace('!!!',''),
                                 activeTerm: true,
-                                type: 'Collection ID',
-                                field: mapTypeToField('Collection ID'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "projectID":
-                        // have we passed multiple project IDs??
-                        // VB-7318 Project -> Projects
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    // VB-7622 Projects -> Project
-                                    type: 'Project',
-                                    field: mapTypeToField('Project'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                // VB-7622 Projects -> Project                                
-                                type: 'Project',
-                                field: mapTypeToField('Project'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    // VB-7622 add Stable ID (stableID) for SHare Link    
-                    case "stableID":
-                        // have we passed multiple project IDs??
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    // VB-7622 Projects -> Project
-                                    type: 'Stable ID',
-                                    field: mapTypeToField('Stable ID'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                // VB-7622 Projects -> Project                                
-                                type: 'Stable ID',
-                                field: mapTypeToField('Stable ID'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    // VB-7622 add Sample ID (sampleID) for SHare Link    
-                    case "sampleID":
-                        // have we passed multiple project IDs??
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    // VB-7622 Projects -> Project
-                                    type: 'Sample ID',
-                                    field: mapTypeToField('Sample ID'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                // VB-7622 Projects -> Project                                
-                                type: 'Sample ID',
-                                field: mapTypeToField('Sample ID'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    // VB-7622 add Assay ID (assayID) for SHare Link    
-                    case "assayID":
-                        // have we passed multiple project IDs??
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    // VB-7622 Projects -> Project
-                                    type: 'Assay ID',
-                                    field: mapTypeToField('Assay ID'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                // VB-7622 Projects -> Project                                
-                                type: 'Assay ID',
-                                field: mapTypeToField('Assay ID'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;                        
-                    case "species":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Taxonomy',
-                                    field: mapTypeToField('Taxonomy'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });                                    
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            } 
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Taxonomy',
-                                field: mapTypeToField('Taxonomy'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot                                    
-                            });
-                        }
-                        break;
-                    case "collection_protocol":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Collection protocol',
-                                    field: mapTypeToField('Collection protocol'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Collection protocol',
-                                field: mapTypeToField('Collection protocol'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "protocols_cvterms":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Protocol',
-                                    field: mapTypeToField('Protocol'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Protocol',
-                                field: mapTypeToField('Protocol'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "sample_type":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Sample type',
-                                    field: mapTypeToField('Sample type'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Sample type',
-                                field: mapTypeToField('Sample type'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "insecticide":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Insecticide',
-                                    field: mapTypeToField('Insecticide'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Insecticide',
-                                field: mapTypeToField('Insecticide'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "allele":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Allele',
-                                    field: mapTypeToField('Allele'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Allele',
-                                field: mapTypeToField('Allele'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "locus":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Locus',
-                                    field: mapTypeToField('Locus'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Locus',
-                                field: mapTypeToField('Locus'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "geography":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Geography',
-                                    field: mapTypeToField('Geography'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Geography',
-                                field: mapTypeToField('Geography'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "project_title":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Project title',
-                                    field: mapTypeToField('Project title'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Project title',
-                                field: mapTypeToField('Project title'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "author":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Author',
-                                    field: mapTypeToField('Author'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Author',
-                                field: mapTypeToField('Author'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "title":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }
-                                $('#search_ac').tagsinput('add', {
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Title',
-                                    field: mapTypeToField('Title'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Title',
-                                field: mapTypeToField('Title'),
+                                type: URLParamToMapType(key),
+                                field: mapTypeToField(URLParamToMapType(key)),
                                 qtype: 'exact',
                                 // VB-7318 add notBoolean field
                                 notBoolean: valueForNot
@@ -1353,43 +813,6 @@
                                 normIrValues: param,
                                 type: 'Norm-IR',
                                 field: 'phenotype_rescaled_value_f'
-                            });
-                        }
-                        break;
-                    case "pubmed":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }
-                                $('#search_ac').tagsinput('add', {
-                                    value: element.replace('!!!',''),
-                                    type: 'PubMed',
-                                    field: 'pubmed',
-                                    qtype: 'exact',
-                                    is_synoym: false,
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace - also change from param to urlParams[key]
-                                value: urlParams[key].replace('!!!',''),
-                                type: 'PubMed',
-                                field: 'pubmed',
-                                qtype: 'exact',
-                                is_synoym: false,
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
                             });
                         }
                         break;
@@ -1460,94 +883,28 @@
 
                         if (Array.isArray(param)) {
                             param.forEach(function (element) {
-                                dateRange = retrieveDatepickerDates(element);
+                                if (element.startsWith('!!!')) {
+                                    valueForNot = true;
+                                } else {
+                                    valueForNot = false;
+                                }
+                                dateRange = retrieveDatepickerDates(element.replace('!!!', ''));
                                 startDate = dateRange[0];
                                 endDate = dateRange[1];
-                                addDatepickerItem(startDate, endDate);
+                                addDatepickerItem(startDate, endDate, valueForNot);
                             })
                         } else {
-                            dateRange = retrieveDatepickerDates(param);
+                            if (param.startsWith('!!!')) {
+                                valueForNot = true;
+                            } else {
+                                valueForNot = false;
+                            }
+                            dateRange = retrieveDatepickerDates(param.replace('!!!', ''));
                             startDate = dateRange[0];
                             endDate = dateRange[1];
-                            addDatepickerItem(startDate, endDate);
+                            addDatepickerItem(startDate, endDate, valueForNot);
                         }
                         break   
-                    case "pathogen":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Pathogen',
-                                    field: mapTypeToField('Pathogen'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Pathogen',
-                                field: mapTypeToField('Pathogen'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
-                    case "infection_status":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                // VB-7318 add notBoolean field depending on the presence of !!!
-                                if (element.startsWith('!!!')) {
-                                    valueForNot = true;
-                                } else {
-                                    valueForNot = false;
-                                }   
-                                $('#search_ac').tagsinput('add', {
-                                    // VB-7318 add replace
-                                    value: element.replace('!!!',''),
-                                    activeTerm: true,
-                                    type: 'Infection status',
-                                    field: mapTypeToField('Infection status'),
-                                    qtype: 'exact',
-                                    // VB-7318 add notBoolean field
-                                    notBoolean: valueForNot
-                                });
-                            })
-                        } else {
-                            // VB-7318
-                            if (urlParams[key].startsWith('!!!')) {
-                                valueForNot = true;
-                            }
-                            $('#search_ac').tagsinput('add', {
-                                // VB-7318 add replace
-                                value: urlParams[key].replace('!!!',''),
-                                activeTerm: true,
-                                type: 'Infection status',
-                                field: mapTypeToField('Infection status'),
-                                qtype: 'exact',
-                                // VB-7318 add notBoolean field
-                                notBoolean: valueForNot
-                            });
-                        }
-                        break;
                     case "markerID":
                         highlightedId  = urlParams[key];
                         break;
@@ -1646,22 +1003,20 @@
     //Private function to map the field types to the URL query parameters that we accept
     function mapTypeToURLParam(type) {
         switch (type) {
-            // VB-7318 Project to Projects? VB-7622 revert to Project
             case "Project":
                 return "projectID";
-            // VB-7622 add Stable ID for Share Link
-            case "Stable ID":
-                return "stableID";
-            // VB-7622 add Sample ID for Share Link
             case "Sample ID":
                 return "sampleID";                
-            // VB-7622 add Sample ID for Share Link
+            case "Collection ID":
+                return "collectionID";
             case "Assay ID":
                 return "assayID";                                
             case "Anywhere":
                 return "text";
             case "Collection protocol":
                 return "collection_protocol";
+            case "Attractant":
+                return "attractant";
             case "Taxonomy":
                 return "species";
             case "Protocol":
@@ -1696,13 +1051,86 @@
                 return "pathogen";
             case "Infection status":
                 return "infection_status";
+            case "Sex":
+                return "sex";
+            case "Developmental stage":
+                return "devstage";
+            case "Tag":
+                return "tag";
+            case "License":
+                return "license";
             default:
                 return "text"
                 break;
         }
     }
 
-    //Used to update the download count message for the download panel
+    //Private function to map the field types to the URL query parameters that we accept
+    function URLParamToMapType(param_name) {
+        switch (param_name) {
+            // VB-7318 Project to Projects? VB-7622 revert to Project
+            case "projectID":
+                return "Project";
+            case "sampleID":
+                return "Sample ID";
+            case "assayID":
+                return "Assay ID";
+            case "collectionID":
+                return "Collection ID";
+            case "text":
+                return "Anywhere";
+            case "collection_protocol":
+                return "Collection protocol";
+            case "attractant":
+                return "Attractant";
+            case "species":
+                return "Taxonomy";
+            case "protocols_cvterms":
+                return "Protocol";
+            case "collection_season":
+                return "Seasonal";
+            case "date":
+                return "Date";
+            case "sample_type":
+                return "Sample type";
+            case "insecticide":
+                return "Insecticide";
+            case "allele":
+                return "Allele";
+            case "locus":
+                return "Locus";
+            case "geography":
+                return "Geography";
+            case "project_title":
+                return "Project title";
+            case "author":
+                return "Author";
+            case "title":
+                return "Title";
+            case "norm-ir":
+                return "Norm-IR";
+            case "pubmed":
+                return "PubMed";
+            case "datepicker":
+                return "Datepicker";
+            case "pathogen":
+                return "Pathogen";
+            case "infection_status":
+                return "Infection status";
+            case "sex":
+                return "Sex";
+            case "devstage":
+                return "Developmental stage";
+            case "tag":
+                return "Tag";
+            case "license":
+                return "License";
+            default:
+                return "Anywhere";
+        }
+    }
+
+                //Used to update the download count message for the download panel
     function updateDownloadCountMessage(selectedOption) {
         $("#export-message").hide();
 

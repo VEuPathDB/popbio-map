@@ -890,7 +890,7 @@
     <requestHandler name="/smplExport" class="solr.SearchHandler">
         <lst name="defaults">
             <str name="fl">
-                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_citations_ss
+                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_tags_ss,exp_attractants_ss,exp_sex_s,exp_dev_stages_ss,exp_licenses_ss,exp_citations_ss
             </str>
         </lst>
         <lst name="appends">
@@ -912,7 +912,7 @@
     <requestHandler name="/irExport" class="solr.SearchHandler">
         <lst name="defaults">
             <str name="fl">
-                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_id_s,exp_sample_type_s,exp_sample_size_i,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_phenotype_type_s,exp_insecticide_s,exp_protocols_ss,exp_concentration_f,exp_concentration_unit_s,exp_duration_f,exp_duration_unit_s,exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s,exp_citations_ss
+                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_id_s,exp_sample_type_s,exp_sample_size_i,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_phenotype_type_s,exp_insecticide_s,exp_protocols_ss,exp_concentration_f,exp_concentration_unit_s,exp_duration_f,exp_duration_unit_s,exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s,exp_tags_ss,exp_attractants_ss,exp_sex_s,exp_dev_stages_ss,exp_licenses_ss,exp_citations_ss
             </str>
         </lst>
         <lst name="appends">
