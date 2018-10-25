@@ -143,7 +143,7 @@
       "class": "solr.ExportHandler",
       "defaults": {
         "echoParams": "none",
-        "fl": "exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_sample_size_i,exp_collection_duration_days_i,exp_citations_ss"
+        "fl": "exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_sample_size_i,exp_collection_duration_days_i,exp_tags_ss,exp_attractants_ss,exp_sex_s,exp_dev_stages_s,exp_licenses_ss,exp_citations_ss"
       },
       "invariants": {
         "rq": "{!xport}",
@@ -166,7 +166,7 @@
       "invariants": {
         "wt": "json",
         "json.nl": "map",
-        "fl": "accession,bundle_name,sample_type,url,geolocations,geo_coords,protocols,species_category,collection_protocols,collection_date,collection_date_range,projects,sample_size_i,collection_duration_days_i",
+        "fl": "accession,bundle_name,sample_type,url,geolocations,geo_coords,protocols,species_category,collection_protocols,attractants_ss,collection_date,collection_date_range,projects,sample_size_i,collection_duration_days_i",
         "json": "{\"filter\":[\"bundle:pop_sample\",\"has_geodata:true\",\"has_abundance_data_b:true\",\"${zeroFilter:sample_size_i:*}\"]}"
       }
     },
@@ -196,6 +196,8 @@
         "json.nl": "map",
         "rows": 0,
 	"json": "{\"filter\":[\"bundle:pop_sample_genotype\",\"has_geodata:true\",\"-sample_size_i:0\",\"sample_size_i:*\",\"genotype_cvterms:variant_frequency\",\"genotype_type_s:\\\"mutated protein\\\"\", \"genotype_mutated_protein_unit_s:percent\"],\"facet\":{\"geo\":{\"type\":\"terms\",\"field\":\"${geo:geohash_2}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"},\"facet\":{\"terms\":{\"type\":\"terms\",\"field\":\"${term:species_category}\",\"limit\":2000,\"mincount\":1,\"sort\":{\"count\":\"desc\"}}}}}}"
+      
+        //"json": "{filter:[\"bundle:pop_sample\",\"genotype_cvterms:variant_frequency\",\"-sample_size_i:0\",\"has_geodata:true\"],facet:{geo:{type:terms,field:\"${geo:geohash_2}\",limit:2000,mincount:1,sort:{count:desc},facet:{maxAbnd:\"sum(div(sample_size_i,collection_duration_days_i))\",terms:{type:terms,field:\"${term:species_category}\",limit:2000,mincount:1,sort:{count:desc}}}}}}"
       }
     },
     "/genoGraphdata": {
@@ -218,7 +220,7 @@
       "name": "/genoExport",
       "class": "solr.ExportHandler",
       "defaults": {
-        "fl": "exp_label_s,exp_sample_id_s,exp_assay_id_s,exp_description_s,exp_sample_type_s,exp_projects_ss,exp_species_s,exp_geo_coords_s,exp_geolocations_ss,exp_collection_protocols_ss,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_protocols_ss,exp_citations_ss,exp_bundle_name_s,exp_phenotypes_ss,exp_annotations_ss,exp_genotype_type_s,exp_genotype_name_s,exp_genotype_inverted_allele_count_i,exp_genotype_microsatellite_length_i,exp_genotype_mutated_protein_value_f,exp_sample_size_i"
+        "fl": "exp_label_s,exp_sample_id_s,exp_assay_id_s,exp_description_s,exp_sample_type_s,exp_projects_ss,exp_species_s,exp_geo_coords_s,exp_geolocations_ss,exp_collection_protocols_ss,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_protocols_ss,exp_citations_ss,exp_bundle_name_s,exp_phenotypes_ss,exp_annotations_ss,exp_genotype_type_s,exp_genotype_name_s,exp_genotype_inverted_allele_count_i,exp_genotype_microsatellite_length_i,exp_genotype_mutated_protein_value_f,exp_tags_ss,exp_attractants_ss,exp_sex_s,exp_dev_stages_s,exp_licenses_ss,exp_sample_size_i"
       },
       "invariants": {
         "rq": "{!xport}",
@@ -234,7 +236,7 @@
       "name": "/pathGeoclust",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
       "invariants": {
@@ -262,7 +264,7 @@
       "name": "/pathGraphdata",
       "class": "solr.SearchHandler",
       "defaults": {
-        "echoParams": "all",
+        "echoParams": "none",
         "df": "text"
       },
     "invariants": {
@@ -296,7 +298,7 @@
       "name": "/pathExport",
       "class": "solr.ExportHandler",
       "defaults": {
-        "fl": "exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_sample_size_i,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_phenotype_type_s,exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s,exp_infection_source_s,exp_infection_status_s,,exp_citations_ss"
+        "fl": "exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_sample_size_i,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_phenotype_type_s,exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s,exp_infection_source_s,exp_infection_status_s,exp_tags_ss,exp_attractants_ss,exp_sex_s,exp_dev_stages_s,exp_licenses_ss,exp_citations_ss"
       },
       "invariants": {
         "rq": "{!xport}",
@@ -310,3 +312,6 @@
     },
   }
 }
+
+
+
