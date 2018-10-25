@@ -393,6 +393,29 @@
     <field name="exp_citations_ss" type="string" indexed="false" stored="false" multiValued="true"
            docValues="true"/>
 
+    <!-- Adding fields needed for pathogen view export -->
+    <field name="exp_infection_source_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="infection_source_s" dest="exp_infection_source_s"/>
+
+    <field name="exp_infection_status_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="infection_status_s" dest="exp_infection_status_s"/>
+
+    <!-- New Fields Added to Export related to attractants and license -->
+    <field name="exp_tags_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
+    <copyField source="tags_ss" dest="exp_tags_ss"/>
+
+    <field name="exp_attractants_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
+    <copyField source="attractants_ss" dest="exp_attractants_ss"/>
+
+    <field name="exp_licenses_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
+    <copyField source="licenses_ss" dest="exp_licenses_ss"/>
+
+    <field name="exp_sex_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="sex_s" dest="exp_sex_s"/>
+
+    <field name="exp_dev_stages_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
+    <copyField source="dev_stages_ss" dest="exp_dev_stages_ss"/>
+
     <!-- =================================== -->
     <!-- FUNCGEN: site = "funcgen" -->
     <!-- =================================== -->
