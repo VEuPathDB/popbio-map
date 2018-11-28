@@ -20,6 +20,8 @@ function bindEvents() {
 
             // run some function to get results or update markers or something
         }, 500);
+
+        // Refresh the legend when the map is moved.
     }
 
     function mapDragHandler() {
@@ -46,9 +48,9 @@ function bindEvents() {
 
         .on("click", PopulationBiologyMap.methods.resetMap);
 
-    $(document).on("click", '.dropdown-menu li a', function () {
-
-        var selValue = $(this).data('value');
+    //$(document).on("click", '.dropdown-menu li a', function () {
+    var refreshLegend = function () {
+        var selValue = $(this).attr('value');
         var selText = $(this).text();
         var parentID = $(this).closest("div").attr('id');
 
@@ -61,11 +63,7 @@ function bindEvents() {
                     '&json.wrf=?&callback=?';
 
                 highlightedId = $('.highlight-marker').attr('id');
-                /*removeHighlight();
-                sidebar.close();
-                setTimeout(function () {
-                    resetPlots()
-                }, delay);*/
+
                 $.getJSON(url, function (data) {
                     legend._populateLegend(data, glbSummarizeBy)
                     $(".legend .dropdown").tooltip({
@@ -77,7 +75,7 @@ function bindEvents() {
                 break;
 
             case 'sortByDropdown':
-                legend.options.sortBy = selText;
+                legend.options.sortBy = selValue;
                 legend.refreshLegend(legend.options.palette);
 
                 // $('#Filter-Terms').keyup(function() {
@@ -92,18 +90,31 @@ function bindEvents() {
                 break;
 
             default:
-                $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
-                $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+                $(this).parents(".dropdown").find('.btn').html($(this).attr('value') + ' <span class="caret"></span>');
+                $(this).parents(".dropdown").find('.btn').val($(this).attr('value'));
                 break;
         }
+    }
 
-    });
+    $(document).on('click', '.dropdown-menu li a', refreshLegend);
 
     $('#Reset-Filter').click(function () {
         $('#Filter-Terms').val('');
         $('.table-legend-term').show();
 
     });
+
+    // Rescale colors
+    $('.legend').on('click', '#rescale_colors', function() {
+        legend._setPalette(reescale=true);
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+    });
+
+    $(document).on('click', '#reset_colors', function() {
+        legend._setPalette(false);
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+    });
+
 
     // download data
     $('#download-button').click(function () {
@@ -680,7 +691,7 @@ function initializeMap(parameters) {
 
     // Now generate the legend
     // hardcoded species_category
-    var url = solrPopbioUrl +viewMode + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
+    var url = solrPopbioUrl + viewMode + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
 
     legend = new L.control.legend(url, {
         summarizeBy: glbSummarizeBy,
@@ -1372,6 +1383,9 @@ function loadSolr(parameters) {
             statistics = {}, // keep the species/term count for each geohash
             fullStatistics = {}; // keep the species/term count for each geohash
 
+        // Update legend earlier
+        //legend.refreshLegend();
+
         facetResults.forEach(function (el) {
             // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be
             // processed later at the same time exclude them from [terms] so as to not display them twice
@@ -1458,6 +1472,9 @@ function loadSolr(parameters) {
             if (minLon > el.lnMin) minLon = el.lnMin;
             if (maxLon < el.lnMax) maxLon = el.lnMax;
         });
+
+        // Update legend earlier
+        //legend.refreshLegend();
 
         // update bounding box containing all markers
         markersBounds = [[minLat, minLon], [maxLat, maxLon]];
@@ -3305,7 +3322,7 @@ function dateConvert(dateobj, format, utc) {
 }
 
 // truncate any string longer than *max* and append *add* at the end (three ellipses by default)
-String.prototype.truncString = function (max, add) {
+String.prototype.truncate = function (max, add) {
     add = add || '...';
     return (this.length > max ? this.substring(0, max) + add : this);
 };

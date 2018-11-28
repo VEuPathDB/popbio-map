@@ -29,6 +29,7 @@
         // close open panels
         //$('.collapse').collapse('hide');
         setTimeout(function () {
+            legend.refreshLegend();
             resetPlots()
         }, delay);
     }
@@ -40,9 +41,8 @@
      inputs:
      outputs:
      */
-    PopulationBiologyMap.methods.initializeSearch = function() {
-
-        // Reset search "button"
+    PopulationBiologyMap.methods.initializeSearch = function () {
+        // Reset search button
         $('#reset-search').click(function () {
             $('#search_ac').tagsinput('removeAll');
 
@@ -69,7 +69,7 @@
             }, delay);
         });
 
-        //FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case
+        // FixMe: Result counts from acOtherResults and the main SOLR core don't match, possibly due to different case
         // handling update: the issue was with the number of results Anywhere. When within a certain categories the results
         // seem to match will keep an eye on it ToDo: Add copy/paste support of IDs (low priority)
         var acSuggestions = new Bloodhound({
@@ -204,17 +204,17 @@
             itemText: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
                 if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean)) && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal')) {
-                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncate(80)
                 } else {
-                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncate(80)
                 }   
             },
             itemHTML: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
                 if (((clickType.ctrlKey || clickType.metaKey) || (item.notBoolean))  && (item.type !== 'Anywhere' && item.type !== 'Date' && item.type !== 'Seasonal')) {
-                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncate(80)
                 } else {
-                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncString(80)
+                    return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncate(80)
                 }    
             },
             typeaheadjs: ({
@@ -302,7 +302,7 @@
                 }
             }
 
-            //Might not be needed will remove once done testing
+            // Might not be needed will remove once done testing
             if (viewMode !== "geno") {
                 // $('#SelectView').val('smpl');
                 if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") {
@@ -337,12 +337,12 @@
                 }
             }
 
-            //Add and remove the disabled class for the sidebar
+            // Add and remove the disabled class for the sidebar
             if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
-                //Get the current sidebar that is active
+                // Get the current sidebar that is active
                 var active_sidebar = $(".sidebar-icon.active a").attr("id");
 
-                //Check if the previous active panel was the plots and switch to the pie panel
+                // Check if the previous active panel was the plots and switch to the pie panel
                 if (active_sidebar === "#swarm-plots") {
                     $(".sidebar-pane.active").removeClass("active");
                     $(".sidebar-icon.active").removeClass("active");
@@ -358,7 +358,7 @@
             }
 
             if (viewMode !== 'abnd') {
-                //Hiding the notices from the abundance graph
+                // Hiding the notices from the abundance graph
                 $("#projects-notice").hide();
                 $("#resolution-selector-group").hide();
             }
@@ -366,8 +366,10 @@
             // update the export fields dropdown
             updateExportFields(viewMode);
 
+            // Note right now this URL is called, but does not really do anything at the moment since only
+            // Use the data from the markers to construct the legend
             var url = solrPopbioUrl + viewMode + 'Palette?q=*:*&geo=geohash_2&term=' +
-                mapSummarizeByToField(glbSummarizeBy).summarize +
+                mapSummarizeByToField(glbSummarizeBy).summarize + //buildBbox(map.getBounds()) +
                 '&json.wrf=?&callback=?';
 
             //highlightedId = $('.highlight-marker').attr('id');
@@ -384,12 +386,17 @@
         });
     }
 
-    //Properly add the seasonal filter to search
+    // Handle updating legend
+    // Could probably just remove this
+    PopulationBiologyMap.methods.refreshLegend = function () {
+        legend.refreshLegend();
+    }
+
+    // Properly add the seasonal filter to search
     PopulationBiologyMap.methods.addSeason = function (months) {
         var objRanges = constructSeasonal(months);
 
-        //Check if no months are toggled on
-
+        // Check if no months are toggled on
         if (objRanges.ranges.length) {
             // add the filter, by keeping the value the same ('seasonal') we ensure
             // that there's only one seasonal filter enabled at any given point
@@ -418,7 +425,7 @@
         }
     }
 
-    //Gets the dates from datepicker query parameter and returns them in format to use in the addDatepickerItem function
+    // Gets the dates from datepicker query parameter and returns them in format to use in the addDatepickerItem function
     function retrieveDatepickerDates(dateRange) {
         var dateStartString;
         var dateEndString;
@@ -428,7 +435,7 @@
         var day;
         var year;
 
-        //Get the start and end date
+        // Get the start and end date
         dateRange = dateRange.split("-");
 
         dateStartString = dateRange[0];
@@ -1191,7 +1198,7 @@
     //Tasks that need to be done or events defined  when the page loads
     PopulationBiologyMap.extra.init = function() {
         new Clipboard('#generate-link');
-        //PopulationBiologyMap.methods.applyParameters();
+        // PopulationBiologyMap.methods.applyParameters();
         $("#generate-link").click(function () {
             var view_param = "view=" + viewMode;
             var zoom_param = "&zoom_level=" + map.getZoom();
@@ -1404,6 +1411,7 @@
         // $(document).on("click", '.active-term', function () {
         $(document).on("click", '.active-term', function (e) {
             highlightedId = $('.highlight-marker').attr('id');
+            //var highlightedId = $('.highlight-marker').attr('id');
 
             if ($('.sidebar-pane.active').attr('id') === 'swarm-plots') {
                 selectedPlotType = $('#plotType').val();
@@ -1491,6 +1499,9 @@
             if (highlightedId && PopulationBiologyMap.data.highlightedId == undefined) {
                 PopulationBiologyMap.data.highlightedId = highlightedId;
             }
+
+            // Refresh the legend after json is loaded
+            //legend.refreshLegend(legend.options.palette);
         });
 
         //VB-7318 KEEP this for a while. Testing for selection via click event: although below works in general, it causes an issue of readiness of DOM at initial stage

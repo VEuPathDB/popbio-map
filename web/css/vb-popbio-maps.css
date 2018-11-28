@@ -97,7 +97,7 @@ BODY {
     color         : #555555;
     margin-bottom : 5px !important;
     border-radius : 0 !important;
-    width     : 225px;
+    width     : 280px;
     min-height    : 300px;
     /*max-width     : 230px;
     position: absolute;
@@ -111,6 +111,18 @@ BODY {
     margin-right  : 8px;
     opacity       : 1;
     border-radius : 10px;
+}
+
+.legend-count {
+    float: right;
+    min-width: 50px;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: 800;
+}
+
+.legend-others {
+    margin-left: 68px;
 }
 
 .min-value, .max-value {
@@ -766,7 +778,7 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 .leaflet-bottom.leaflet-right .easy-button-container.active {
-    right: 245px;
+    right: 300px;
 }
 
 .leaflet-bottom.leaflet-right .leaflet-bar button {
@@ -855,10 +867,11 @@ div.error div, div.warning div, div.info div, div.hint div {
     /*min-height: 300px;*/
 }
 
-/*.leaflet-top.leaflet-left .leaflet-bar {
-    border: none !important;
+.leaflet-bottom.leaflet-right .leaflet-bar {
+    /*border: none !important;*/
+    display: none;
 }
-
+/*
 .leaflet-top.leaflet-left .leaflet-bar a {
     border: none !important;
 }
