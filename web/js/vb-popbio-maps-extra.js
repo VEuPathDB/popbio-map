@@ -29,7 +29,6 @@
         // close open panels
         //$('.collapse').collapse('hide');
         setTimeout(function () {
-            legend.refreshLegend();
             resetPlots()
         }, delay);
     }
@@ -1499,9 +1498,6 @@
             if (highlightedId && PopulationBiologyMap.data.highlightedId == undefined) {
                 PopulationBiologyMap.data.highlightedId = highlightedId;
             }
-
-            // Refresh the legend after json is loaded
-            //legend.refreshLegend(legend.options.palette);
         });
 
         //VB-7318 KEEP this for a while. Testing for selection via click event: although below works in general, it causes an issue of readiness of DOM at initial stage
