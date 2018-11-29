@@ -133,8 +133,13 @@ BODY {
     text-align : center;
 }
 .sort-by {
-    margin-right : 2px !important;
+    margin: 3px 3px 0 0 !important;
 }
+
+#sortByDropdown li {
+    text-transform: capitalize;
+}
+
 /*center the search box*/
 .mapbox {
     position     : relative;

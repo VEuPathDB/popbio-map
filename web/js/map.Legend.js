@@ -2,12 +2,13 @@
 const SORT_BY_HTML = {
     'name':'<i class="fa fa-sort-alpha-down sort-by"></i>',
     'color': '<i class="sort-by" style="background:radial-gradient(#4D4D4D, #CCCCCC);"></i>',
-    'count': '#'
+    'count': '<i class="fa fa-hashtag sort-by"></i>',
 }
 
 const SORT_CHOICES = '<li>' + _.map(SORT_BY_HTML,
                                     function(k, v) {
-                                        return '<a href="#" value="' + v + '">' + k + v + '</a>';
+                                        // Use CSS to capitalize first letter of dropdown
+                                        return '<a href="#" value="' + v + '">' + k  + v + '</a>';
                                     })
                                 .join('</li><li>') + '</li>';
 
@@ -478,7 +479,7 @@ L.Control.MapLegend = L.Control.extend({
             (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Infection status">Infection status</a></li> ' : '') +
             '<li><a href="#" value="Species">Species</a></li>' +
-            '<li><a href="#" value="Sample type">Sample Type</a></li>' +
+            '<li><a href="#" value="Sample type">Sample type</a></li>' +
             '<li><a href="#" value="Collection protocol">Collection protocol</a></li>' +
             (viewMode === 'abnd' ? '<li><a href="#" value="Attractant">Attractant</a></li> ' : '') +
             '<li><a href="#" value="Project">Project</a></li>' +
@@ -516,9 +517,9 @@ L.Control.MapLegend = L.Control.extend({
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
             //sortByHTML +
             SORT_BY_HTML[options.sortBy] + 
-            '<span class="caret"></span>' +
+            ' <span class="caret"></span>' +
             '</button>' +
-            '<ul class = "dropdown-menu" aria-labelledby="sortByDropdown"> ' +
+            '<ul class = "dropdown-menu dropdown-menu-right" aria-labelledby="sortByDropdown"> ' +
             SORT_CHOICES +
             '</ul>' +
             '</div>';
