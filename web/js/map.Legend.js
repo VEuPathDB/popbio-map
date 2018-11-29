@@ -49,7 +49,8 @@ L.Control.MapLegend = L.Control.extend({
         trafficlight: {
             colorBrewer: L.ColorBrewer.Diverging.RdYlBu[10].slice()
         },
-        palette: {}
+        palette: {},
+        colorsArr: L.ColorBrewer.Diverging.RdYlBu[10].slice().reverse()
     },
 
     // Click event handler of legend would fire after map click event
@@ -591,15 +592,7 @@ L.Control.MapLegend = L.Control.extend({
         // add Unknown
         // inHtml += '<i style="background: #000000;"></i> Unknown<br />';
         // options.palette['Unknown'] = '#000000';
-        
-        // Adding a wrapper div to make vertical-align work correctly
-        if (viewMode !== 'ir') {
-            inHtml = '<div class="legend-contents">' + inHtml + '</div>';
-        }
 
-        $('#legend').html(inHtml);
-
-        var colorsArr = options.trafficlight.colorBrewer;
         // if in IR mode add the IR resistance color scale
         if (viewMode === 'ir') {
             inHtml += '<div class="data-layer-legend" style="border: 0">';
@@ -608,7 +601,7 @@ L.Control.MapLegend = L.Control.extend({
             inHtml += '<div class="min-value" style="border: 0">Low</div>';
             inHtml += '<div class="scale-bars">';
             // var colorsArr = L.ColorBrewer.Diverging.RdYlBu[10].slice(); // using slice to copy array by value
-            $.each(colorsArr.reverse(), function (index, value) {
+            $.each(options.colorsArr, function (index, value) {
                 inHtml += '<i style="margin: 0; color: ' + value + '; background: ' + value + ' ;"></i>';
             });
 
@@ -619,10 +612,10 @@ L.Control.MapLegend = L.Control.extend({
                 ' resistance/susceptibility. ' +
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
                 'More info</span></p>';
-
-            // Adding a wrapper div to make vertical-align work correctly
-            inHtml = '<div class="legend-contents">' + inHtml + '</div>'
         }
+
+        // Adding a wrapper div to make vertical-align work correctly
+        inHtml = '<div class="legend-contents">' + inHtml + '</div>';
 
         // Populate legend when added to map
         legend.onAdd = function (map) {
