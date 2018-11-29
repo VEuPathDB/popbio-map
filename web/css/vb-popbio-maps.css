@@ -117,8 +117,13 @@ BODY {
     float: right;
     min-width: 50px;
     text-align: right;
-    margin-right: 10px;
-    font-weight: 800;
+    font-weight: 600;
+    width: 30%;
+}
+
+.summ-by-value {
+    float: left;
+    width: 70%;
 }
 
 .legend-others {
@@ -646,8 +651,10 @@ div.error div, div.warning div, div.info div, div.hint div {
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
+}
+
+.active-legend {
     line-height: 17px;
-    /*border-bottom: 1px dotted;*/
 }
 
 .active-legend i, #Other-Terms-List i{
@@ -830,6 +837,17 @@ div.error div, div.warning div, div.info div, div.hint div {
     z-index: 10000;
 }
 
+.legend > div {
+    padding: 0 8px;
+}
+
+.legend p {
+    font-size: smaller;
+    word-wrap: break-word;
+    max-width: 280px;
+    margin-top: 20px;
+    text-align: justify;
+}
 
 .legend-contents {
     padding: 6px 8px 6px 8px;
