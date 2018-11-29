@@ -125,7 +125,7 @@ BODY {
     float: left;
     width: 70%;
     text-overflow: ellipsis;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .legend-others {
