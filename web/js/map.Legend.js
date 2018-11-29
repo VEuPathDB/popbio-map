@@ -563,9 +563,9 @@ L.Control.MapLegend = L.Control.extend({
                 var label = '<em>' + label + '</em>';
             }
 
-            return '<div class="active-legend detailedTip" type="' + type + '"value="' + item.name + '">' +
-                        '<div class="summ-by-value">' +
-                            '<i style="border-color:' + item.color + ';" title="' + item.name.capitalizeFirstLetter() + '"></i>' +
+            return '<div class="active-legend" type="' + type + '"value="' + item.name + '">' +
+                        '<div class="summ-by-value detailedTip">' +
+                            '<i style="border-color:' + item.color + '"></i>' +
                             label +
                         '</div>' +
                         '<div class="legend-count">' + item.count + '</div>' +
@@ -582,7 +582,7 @@ L.Control.MapLegend = L.Control.extend({
         }*/
 
         var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")";
-        inHtml += '<div class="active-others detailedTip" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '">' + 
+        inHtml += '<div class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '">' + 
                         '<i style="background:' + othersBg + ';"></i> ' + 'Complete List<br>' +
                   '</div>';
 
@@ -598,7 +598,7 @@ L.Control.MapLegend = L.Control.extend({
         // if in IR mode add the IR resistance color scale
         if (viewMode === 'ir') {
             inHtml += '<div class="data-layer-legend" style="border: 0">';
-            inHtml += '<p style="text-align: left">Resistance</p>';
+            inHtml += '<div style="text-align: left; display: block; margin: 1em 0;">Resistance</div>';
             inHtml += '<div id="legend-ir-scale-bar">';
             inHtml += '<div class="min-value" style="border: 0">Low</div>';
             inHtml += '<div class="scale-bars">';
