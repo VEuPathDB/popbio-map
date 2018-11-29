@@ -117,8 +117,15 @@ BODY {
     float: right;
     min-width: 50px;
     text-align: right;
-    margin-right: 10px;
-    font-weight: 800;
+    font-weight: 600;
+    width: 30%;
+}
+
+.summ-by-value {
+    float: left;
+    width: 70%;
+    text-overflow: ellipsis;
+    overflow: auto;
 }
 
 .legend-others {
@@ -830,6 +837,13 @@ div.error div, div.warning div, div.info div, div.hint div {
     z-index: 10000;
 }
 
+.legend p {
+    font-size: smaller;
+    word-wrap: break-word;
+    max-width: 264px;
+    margin-top: 20px;
+    text-align: justify;
+}
 
 .legend-contents {
     padding: 6px 8px 6px 8px;

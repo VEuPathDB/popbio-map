@@ -564,9 +564,11 @@ L.Control.MapLegend = L.Control.extend({
             }
 
             return '<div class="active-legend detailedTip" type="' + type + '"value="' + item.name + '">' +
-                        '<i style="border-color:' + item.color + ';" title="' + item.name.capitalizeFirstLetter() + '"></i>' +
+                        '<div class="summ-by-value">' +
+                            '<i style="border-color:' + item.color + ';" title="' + item.name.capitalizeFirstLetter() + '"></i>' +
+                            label +
+                        '</div>' +
                         '<div class="legend-count">' + item.count + '</div>' +
-                        label +
                     '</div>';
                         
         }).join('')
@@ -607,7 +609,7 @@ L.Control.MapLegend = L.Control.extend({
 
             inHtml += '</div></div>' +
                 '<div class="max-value" style="border: 0;">High</div></div>' +
-                '<p style="font-size: smaller; word-wrap: break-word; width: 100%; max-width: 190px; margin-top: 20px;">' +
+                '<p>' +
                 'Values have been rescaled globally and only give a relative indication of' +
                 ' resistance/susceptibility. ' +
                 '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
