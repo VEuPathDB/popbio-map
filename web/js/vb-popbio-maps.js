@@ -45,8 +45,7 @@ function bindEvents() {
             resetPlots()
         }, delay);
     })
-
-        .on("click", PopulationBiologyMap.methods.resetMap);
+    .on("click", PopulationBiologyMap.methods.resetMap);
 
     //$(document).on("click", '.dropdown-menu li a', function () {
     var refreshLegend = function () {
@@ -1374,6 +1373,9 @@ function loadSolr(parameters) {
             }
             if (rectHighlight !== null) map.removeLayer(rectHighlight);
             rectHighlight = null;
+
+            // Update the legend if no results
+            legend.refreshLegend();
             map.spin(false);
             return;
         }
@@ -1382,9 +1384,6 @@ function loadSolr(parameters) {
             populations = {}, // keep the total marker count for each geohash
             statistics = {}, // keep the species/term count for each geohash
             fullStatistics = {}; // keep the species/term count for each geohash
-
-        // Update legend earlier
-        //legend.refreshLegend();
 
         facetResults.forEach(function (el) {
             // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be
@@ -1472,9 +1471,6 @@ function loadSolr(parameters) {
             if (minLon > el.lnMin) minLon = el.lnMin;
             if (maxLon < el.lnMax) maxLon = el.lnMax;
         });
-
-        // Update legend earlier
-        //legend.refreshLegend();
 
         // update bounding box containing all markers
         markersBounds = [[minLat, minLon], [maxLat, maxLon]];
@@ -1886,6 +1882,9 @@ function loadSolr(parameters) {
                 } else {
                     PopulationBiologyMap.methods.resetMap();
                 }
+
+                // Refresh legend when all the new markers have been added and old markers have been removed
+                legend.refreshLegend();
             }, 800);
         }, 50)
 
