@@ -587,8 +587,8 @@ L.Control.MapLegend = L.Control.extend({
                   '</div>';
 
         inHtml += '<div class="text-center border-top border-primary"><div class="btn-group" role="group">' +
-                        '<div id="rescale_colors" class="btn btn-primary btn-sm btn-link">Rescale Colors</div>' +
-                        '<div id="reset_colors" class="btn btn-primary btn-sm btn-link">Reset Colors</div>' +
+                        '<div id="rescale_colors" class="btn btn-primary btn-sm btn-link">Optimize Colors</div>' +
+                        '<div id="reset_colors" class="btn btn-primary btn-sm btn-link">Default Colors</div>' +
                   '</div></div>';;
 
         // add Unknown
@@ -658,24 +658,20 @@ L.Control.MapLegend = L.Control.extend({
 
         var sortBy = this.options.sortBy;
         var features = getFeaturesInView();
-        var palette = _.chain(getFeaturesInView())
-                        .map('options')
-                        .map('icon')
-                        .map('options')
-                        .map('stats')
-                        .flatten()
-                        .groupBy('label')
-                        .map(function (val, species) {
-                            if (_(colors).has(species)) {
-                                color = colors[species];
+        var paletteCategories = _.chain(features).map('options').map('icon').map('options').map('stats').flatten().groupBy('label').value();
+
+        var palette = _(paletteCategories).map(function (val, name) {
+                            if (_(colors).has(name)) {
+                                color = colors[name];
                             }
                             else {
+                                // Get the color assigned to the marker
                                 color = val[0].color;
                             }
                             var out = {
-                                name: species,
-                                name_lower: _.lowerCase(species),
-                                species: species,
+                                name: name,
+                                name_lower: _.lowerCase(name),
+                                species: name,
                                 count: _.sumBy(val, 'value'),
                                 color: color
                             }
@@ -683,6 +679,49 @@ L.Control.MapLegend = L.Control.extend({
                             return out;
                         });
 
+        palette = this._sortPalette(palette.value(), sortBy);
+
+        // Now go through the complete palette and construct it in a similar
+        // format as the palette created from lodash
+        var completePalette = [];
+        
+        _.forOwn(this.options.palette, function(color, name) {
+
+            var val = paletteCategories[name];
+
+            if (val) {
+                paletteEntry = {
+                    name:name,
+                    name_lower: _.lowerCase(name),
+                    species: name,
+                    count: _.sumBy(val, 'value'),
+                    color: color
+                }
+            }
+            else {
+                paletteEntry = {
+                    name:name,
+                    name_lower: _.lowerCase(name),
+                    species: name,
+                    count: 0,
+                    color: color
+                }
+            }
+
+            completePalette.push(paletteEntry);
+        });
+
+        completePalette = this._sortPalette(completePalette, sortBy);
+
+        this._generateLegendHtml(palette, palette.length);
+
+        this._generateTableHtml(completePalette);
+
+        // Adding here for now, need to check if it is hidden
+        $('.leaflet-bottom.leaflet-right .leaflet-bar').show();
+    },
+
+    _sortPalette: function(palette, sortBy) {
         if (sortBy === 'name') {
             palette = _(palette).sortBy(['name_lower']);
         }
@@ -694,25 +733,12 @@ L.Control.MapLegend = L.Control.extend({
                 var colorObj = this._constructColor(x.color);
                 x['hue'] = colorObj.hue;
                 return x;
-            }.bind(this)).sortBy('hue').reverse();
+            }.bind(this));
+            
+            palette = _(palette).sortBy('hue').reverse();
         }
 
-        /*this._generateLegendHtml(sortedPalette, paletteSize);
-
-        if (options.sortBy === 'Name') {
-            sortedPalette = this._outputNames(unsortedPalette);
-        } else {    // sort by color
-            sortedPalette = this._outputColors(unsortedPalette);
-        }*/
-
-        // this._generateLegendHtml(sortedPalette, paletteSize);
-        //this._generateTableHtml(sortedPalette, paletteSize);
-        var palette = palette.value();
-        this._generateLegendHtml(palette, palette.length);
-        this._generateTableHtml(palette, palette.length);
-
-        // Adding here for now, need to check if it is hidden
-        $('.leaflet-bottom.leaflet-right .leaflet-bar').show();
+        return palette.value();
     },
 
     _setPalette: function(rescale=false) {
@@ -738,8 +764,7 @@ L.Control.MapLegend = L.Control.extend({
             }).value();
         }
 
-        var options = this.options;
-        options.palette = this.generatePalette(sortedItems);
+        this.options.palette = this.generatePalette(sortedItems);
         //this.refreshLegend(options.palette);
     },
 
@@ -831,7 +856,7 @@ L.Control.MapLegend = L.Control.extend({
         var sortedItems = this._sortHashByValue(items);
 
         this.sortedItems = sortedItems;
-        this._setPalette(sortedItems);
+        this._setPalette();
 
         //Initialize tooltip only if it has not been initialized already
         if ($(".legend").attr("data-original-title") === undefined) {
@@ -894,7 +919,7 @@ L.Control.MapLegend = L.Control.extend({
 
         $('#Other-Terms-List').html(inHtml).removeClass();
 
-        if (type === "Projects") {
+        if (type === "Project") {
             $('#Other-Terms-List').addClass('multiColumn-5')
         } else {
             $('#Other-Terms-List').addClass('multiColumn-3')
