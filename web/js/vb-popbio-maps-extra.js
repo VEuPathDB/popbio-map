@@ -1500,18 +1500,6 @@
             }
         });
 
-        //VB-7318 KEEP this for a while. Testing for selection via click event: although below works in general, it causes an issue of readiness of DOM at initial stage
-        /*$(document).on("click", '.ac_items', function (e) {
-            clickType.ctrlKey = e.ctrlKey;
-            clickType.metaKey = e.metaKey;
-        });*/
-
-        //Antelmo- I tried to use this, but itemAdded would run first so had to use the keyUp and keyDown functions to set this instead
-        /*$(".tt-dropdown-menu").click(function (e) {
-             clickType.ctrlKey = e.ctrlKey;
-            clickType.metaKey = e.metaKey;
-        });*/
-
         $('#search_ac').on('itemAdded', function (event) {
             // itemAdded gets executed by applyParameters now so need to check if notBoolean was set - added more conditions after refactoring!
             if (((clickType.ctrlKey  || clickType.metaKey) || event.item.notBoolean) && (event.item.type !== 'Anywhere' && event.item.type !== 'Date' && event.item.type !== 'Seasonal'))  {
