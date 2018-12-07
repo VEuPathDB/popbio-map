@@ -287,7 +287,9 @@ L.Control.MapLegend = L.Control.extend({
         colorObj.hue = hue;
         colorObj.sat = sat;
         colorObj.val = val;
-        colorObj.luma = 0.3 * r + 0.59 * g + 0.11 * b;
+        //colorObj.luma = 0.3 * r + 0.59 * g + 0.11 * b;
+        // Improving weights that hopefully give better sorting
+        colorObj.luma = 0.241 * r + 0.691 * g + 0.068 * b;
         colorObj.red = parseInt(hex.substring(0, 2), 16);
         colorObj.green = parseInt(hex.substring(2, 4), 16);
         colorObj.blue = parseInt(hex.substring(4, 6), 16);
@@ -295,7 +297,7 @@ L.Control.MapLegend = L.Control.extend({
         return colorObj;
     },
 
-   /* _sortColorsByHue: function (colors) {
+   /*_sortColorsByHue: function (colors) {
         var tuples = [];
         var sortedPalette = {};
         for (var colorsKey in colors) if (colors.hasOwnProperty(colorsKey)) {
@@ -317,7 +319,6 @@ L.Control.MapLegend = L.Control.extend({
 
         return sortedPalette;
     },*/
-
 
     /*
      function _colorLuminance
@@ -724,21 +725,49 @@ L.Control.MapLegend = L.Control.extend({
     _sortPalette: function(palette, sortBy) {
         if (sortBy === 'name') {
             palette = _(palette).sortBy(['name_lower']);
+
+            return palette.value();
         }
         else if (sortBy === 'count') {
             palette = _(palette).sortBy(['count']).reverse();
+
         }
         else if (sortBy === 'color') {
             palette = palette.map(function (x) {
                 var colorObj = this._constructColor(x.color);
                 x['hue'] = colorObj.hue;
+                x['luma'] = colorObj.luma;
+                x['sat'] = colorObj.sat;
+                x['val'] = colorObj.val;
                 return x;
             }.bind(this));
+
+            // For some reason color and greyscale palettes do not get ordered correctly together
+            // So sorting them separately.
             
-            palette = _(palette).sortBy('hue').reverse();
+            // Get only colors
+            colorPalette = _.filter(palette, function(o) {
+                return o.hue != 0;
+            });
+            //.sortBy('hue').reverse();
+            colorPalette = _(colorPalette).sortBy('luma').value();
+            //colorPalette = this._sortColorsByHue(colorPalette);
+
+            // Get only greyscale
+            greyPalette = _.filter(palette, function(o) {
+               return o.hue === 0;
+            });//.sortBy('hue');
+            greyPalette = _(greyPalette).sortBy('luma').value();
+            //greyPalette = this._sortColorsByHue(greyPalette);
+
+            palette = _(colorPalette.concat(greyPalette));
+
+            // Sorting by luminosity seems to give better results than by hue
+            //palette = _(palette).sortBy('luma');
+           // palette = _(palette).sortBy('hue').reverse();
         }
 
-        return palette.value();
+         return palette.value();
     },
 
     _setPalette: function(rescale=false) {
@@ -748,6 +777,13 @@ L.Control.MapLegend = L.Control.extend({
         var sortedItems = this.sortedItems;
 
         if (rescale) {
+            // Since we are giving more importance to visible markers, get the items
+            // object so we can update their importance/abundance value
+            var items = this.items;
+            // Get highest ranked value and use that to rank up the visible markers higher
+            highestValue = sortedItems[0][1];
+
+
             var visibleMarkers = _.chain(getFeaturesInView())
                                     .map('options')
                                     .map('icon')
@@ -758,10 +794,14 @@ L.Control.MapLegend = L.Control.extend({
                                     .keys()
                                     .value();
 
-            // Filter sorted items using their visibility on the map
-            var sortedItems = _(sortedItems).sortBy(function(x) {
-                return -visibleMarkers.indexOf(x[0]) >= 0;
-            }).value();
+            // Go through the visible marker items and give them more importance in the
+            // items object
+            for (var i = 0; i < visibleMarkers.length; ++i) {
+                item = visibleMarkers[i];
+                items[item] += highestValue;
+            }
+
+            var sortedItems = this._sortHashByValue(items);
         }
 
         this.options.palette = this.generatePalette(sortedItems);
@@ -769,7 +809,6 @@ L.Control.MapLegend = L.Control.extend({
     },
 
     _populateLegend: function (result, fieldName, flyTo) {
-        debugger;
         var options = this.options;
         //var geohashLevel = "geohash_2";
         if (typeof (flyTo) === 'undefined') flyTo = options.flyTo;
@@ -855,6 +894,7 @@ L.Control.MapLegend = L.Control.extend({
 
         var sortedItems = this._sortHashByValue(items);
 
+        this.items = items;
         this.sortedItems = sortedItems;
         this._setPalette();
 
