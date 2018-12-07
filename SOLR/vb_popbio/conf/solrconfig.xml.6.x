@@ -918,6 +918,7 @@
         <lst name="appends">
             <str name="fq">bundle:pop_sample_phenotype</str>
             <str name="fq">has_geodata:true</str>
+            <str name="fq">phenotype_type_s:insecticide*</str>
         </lst>
         <lst name="invariants">
             <str name="rq">{!xport}</str>
