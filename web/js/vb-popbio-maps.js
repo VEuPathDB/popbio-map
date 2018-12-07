@@ -17,8 +17,6 @@ function bindEvents() {
         timeoutHandler = window.setTimeout(function () {
             endingZoom = map.getZoom();
             loadSolr({clear: 1, zoomLevel: map.getZoom()});
-
-            // run some function to get results or update markers or something
         }, 500);
     }
 
@@ -30,8 +28,6 @@ function bindEvents() {
     // detect when user changes zoom or pans around the map
     map.on("movestart", function () {
         startingZooom = map.getZoom();
-
-        //highlightedId = $('.highlight-marker').attr('id');
         removeHighlight();
         //Marker is not selected so disable the marker option from the download panel
         $("#select-export option[value=3]")[0].disabled = true;
@@ -43,12 +39,10 @@ function bindEvents() {
             resetPlots()
         }, delay);
     })
+    .on("click", PopulationBiologyMap.methods.resetMap);
 
-        .on("click", PopulationBiologyMap.methods.resetMap);
-
-    $(document).on("click", '.dropdown-menu li a', function () {
-
-        var selValue = $(this).data('value');
+    var refreshLegend = function () {
+        var selValue = $(this).attr('value');
         var selText = $(this).text();
         var parentID = $(this).closest("div").attr('id');
 
@@ -61,11 +55,7 @@ function bindEvents() {
                     '&json.wrf=?&callback=?';
 
                 highlightedId = $('.highlight-marker').attr('id');
-                /*removeHighlight();
-                sidebar.close();
-                setTimeout(function () {
-                    resetPlots()
-                }, delay);*/
+
                 $.getJSON(url, function (data) {
                     legend._populateLegend(data, glbSummarizeBy)
                     $(".legend .dropdown").tooltip({
@@ -75,29 +65,25 @@ function bindEvents() {
                 });
                 $('#Filter-Terms').val('');
                 break;
-
             case 'sortByDropdown':
-                legend.options.sortBy = selText;
+                legend.options.sortBy = selValue;
                 legend.refreshLegend(legend.options.palette);
 
-                // $('#Filter-Terms').keyup(function() {
                 var val = $.trim($('#Filter-Terms').val()).replace(/ +/g, ' ').toLowerCase();
 
                 $('.table-legend-term').show().filter(function () {
                     var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
                     return !~text.indexOf(val);
                 }).hide();
-                // });
-
                 break;
-
             default:
-                $(this).parents(".dropdown").find('.btn').html($(this).data('value') + ' <span class="caret"></span>');
-                $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+                $(this).parents(".dropdown").find('.btn').html($(this).attr('value') + ' <span class="caret"></span>');
+                $(this).parents(".dropdown").find('.btn').val($(this).attr('value'));
                 break;
         }
+    }
 
-    });
+    $(document).on('click', '.dropdown-menu li a', refreshLegend);
 
     $('#Reset-Filter').click(function () {
         $('#Filter-Terms').val('');
@@ -105,10 +91,21 @@ function bindEvents() {
 
     });
 
+    // Rescale colors
+    $('.legend').on('click', '#rescale_colors', function() {
+        legend._setPalette(reescale=true);
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+    });
+
+    $(document).on('click', '#reset_colors', function() {
+        legend._setPalette(false);
+        loadSolr({clear: 1, zoomLevel: map.getZoom()});
+    });
+
+
     // download data
     $('#download-button').click(function () {
         var selectedOption = $('#select-export').val(),
-            // viewMode = $("#SelectView").val(),
             url = solrExportUrl,
             viewBox = buildBbox(map.getBounds()),
             fieldsStr = '&fl=',
@@ -400,9 +397,6 @@ function bindEvents() {
                 },
                 delay);
 
-            // entityTooltip.css("left", (event.pageX + 10) + "px")
-            //     .css("top", (tooltipY) + "px")
-
             // check if the popup has a vertical scrollbar
             if (entityTooltip.has_scrollbar()) {
                 $('#entity-cancel-hover').css('margin-right', '10px')
@@ -526,19 +520,6 @@ function bindEvents() {
         var normIrValues = normIrSlider.bslider('getValue');
         var firstVal = normIrValues[0], secondVal = normIrValues[1];
 
-        //This does not seem to be used anywhere
-        //var inHtml = '';
-        // console.log(firstVal + ' - ' + secondVal);
-        //$.each(legend.options.trafficlight.colorBrewer.reverse().slice(firstVal, secondVal + 1), function (index, value) {
-        //    inHtml += '<i style="margin: 0; border-radius: 0; border: 0; color: ' + value +
-        //        ';width: 6px; background - color: ' + value +
-        //        ';>&nbsp &nbsp</i>';
-        //});
-        // $('#menu-scale-bars').html(inHtml);
-
-        // reverse the values, 0-> high resistance, 1-> low resistance
-        // normIrValues = (1 - (secondVal / 10 + 0.1)).roundDecimals(1) + ' TO ' + (1 - (firstVal /
-        // 10)).roundDecimals(1);
         normIrValues = scaleToIrMap[secondVal] + ' TO ' + scaleToIrMap[firstVal];
 
         $('#search_ac').tagsinput('add', {
@@ -672,7 +653,6 @@ function initializeMap(parameters) {
     } else {
         addGeohashes(map, true);
     }
-    //if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
 
     //Default glbSummarizeBy is Species set in the html file, updating it for Genotype and Pathogen  view here
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
@@ -680,7 +660,7 @@ function initializeMap(parameters) {
 
     // Now generate the legend
     // hardcoded species_category
-    var url = solrPopbioUrl +viewMode + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
+    var url = solrPopbioUrl + viewMode + 'Palette?q=*:*&geo=geohash_2&term=' + mapSummarizeByToField(glbSummarizeBy).summarize + '&json.wrf=?&callback=?';
 
     legend = new L.control.legend(url, {
         summarizeBy: glbSummarizeBy,
@@ -1321,9 +1301,6 @@ function loadSolr(parameters) {
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
-    // viewMode = $('#SelectView').val();
-    // if (hiddenViewMode) {viewMode = hiddenViewMode};
-
     // Store the visible marker geo limits to build a bbox
     var minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
 
@@ -1363,6 +1340,9 @@ function loadSolr(parameters) {
             }
             if (rectHighlight !== null) map.removeLayer(rectHighlight);
             rectHighlight = null;
+
+            // Update the legend if no results
+            legend.refreshLegend();
             map.spin(false);
             return;
         }
@@ -1417,7 +1397,6 @@ function loadSolr(parameters) {
 
                 // store the total counts
                 tagsTotalCount += inCount;
-                // if (viewMode === 'abnd') geoAbndSum += inEl.avgAbnd;
             });
 
             if (geoCount - tagsTotalCount > 0) {
@@ -1720,16 +1699,6 @@ function loadSolr(parameters) {
                         fill: true,
                         clickable: false
                     }).addTo(map);
-
-                    // tooltip.css("left", e.containerPoint.x + 20)
-                    //     .css("top", e.containerPoint.y - 20)
-                    //     .clearQueue()
-                    //     .animate({
-                    //             opacity: 1
-                    //         }, 400, function () {
-                    //             //Animation complete
-                    //         }
-                    //     );
                 })
                 .on("mouseout", function () {
                     removeTopMarker(layer);
@@ -1801,7 +1770,6 @@ function loadSolr(parameters) {
         rectHighlight = null;
         map.spin(false);
 
-        // assetLayerGroup.bringToBack();
         // wrap this around a timeout call since it's not working otherwise
         setTimeout(function () {
             assetLayerGroup.eachLayer(function (marker) {
@@ -1814,8 +1782,6 @@ function loadSolr(parameters) {
                         if (zoomDelta >= 0) {
                             $(icon).addClass("leaflet-marker-icon-fout");
                             setTimeout(function () {
-                                // var lakis = marker.getLatLng
-                                // marker.setLatLng(lakis)
                                 marker.setOpacity(0);
                                 setTimeout(function () {
                                     assetLayerGroup.removeLayer(marker);  
@@ -1825,8 +1791,6 @@ function loadSolr(parameters) {
                             $(icon).addClass("leaflet-marker-icon-anim")
                             var finalLatLng = assetLayerGroup.startingLatLng(marker);
                             setTimeout(function () {
-                                // var lakis = marker.getLatLng
-                                // marker.setLatLng(lakis)
                                 marker.setLatLng(finalLatLng);
                                 marker.setOpacity(0);
                                 setTimeout(function () {
@@ -1869,11 +1833,13 @@ function loadSolr(parameters) {
                 } else {
                     PopulationBiologyMap.methods.resetMap();
                 }
+
+                // Refresh legend when all the new markers have been added and old markers have been removed
+                legend.refreshLegend();
             }, 800);
         }, 50)
 
         // build a geohash grid
-        // urlParams.grid === "true"
         if ($('#grid-toggle').prop('checked')) addGeohashes(map, false);
     };
 
@@ -2687,14 +2653,11 @@ function borderColor(type, element) {
 
     for (var i = 0; i < element.length; i++) {
         var obj = element[i];
-        // var brdColor = type === glbSummarizeBy ? palette[obj] : 'transparent';
-        objWithBorderColors.push(
-            {
-                name: obj,
-                brdColor: type === glbSummarizeBy ? legend.options.palette[obj] : ''
-            }
-        )
 
+        objWithBorderColors.push({
+            name: obj,
+            brdColor: type === glbSummarizeBy ? legend.options.palette[obj] : ''
+        });
     }
 
     return objWithBorderColors;
@@ -3021,12 +2984,6 @@ function removeTopMarker(marker) {
 
 function removeHighlight(marker) {
     $(".highlight-marker").removeClass("highlight-marker")
-    // check for highlight
-    // if (highlight !== null) {
-    //     $(highlight).removeClass("highlight-marker");
-    //     marker ? highlight = marker : highlight = null;
-    // }
-
 }
 
 function resetPlots() {
@@ -3125,16 +3082,6 @@ String.prototype.capitalizeFirstLetter = function () {
 };
 Number.prototype.roundDecimals = function (decimals) {
     return Number(Math.round(this.valueOf() + 'e' + decimals) + 'e-' + decimals);
-    //
-    // if (Math.floor(this.valueOf()) === this.valueOf()) return this.valueOf();
-    // var noDecimals = this.toString().split(".")[1].length;
-    //
-    // if (noDecimals < decimals) {
-    //     return this.valueOf()
-    // } else {
-    //     return this.valueOf().toFixed(decimals)
-    // }
-
 };
 
 function constructSeasonal(selectedMonths) {
@@ -3305,7 +3252,7 @@ function dateConvert(dateobj, format, utc) {
 }
 
 // truncate any string longer than *max* and append *add* at the end (three ellipses by default)
-String.prototype.truncString = function (max, add) {
+String.prototype.truncate = function (max, add) {
     add = add || '...';
     return (this.length > max ? this.substring(0, max) + add : this);
 };
