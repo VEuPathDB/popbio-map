@@ -287,7 +287,9 @@ L.Control.MapLegend = L.Control.extend({
         colorObj.hue = hue;
         colorObj.sat = sat;
         colorObj.val = val;
-        colorObj.luma = 0.3 * r + 0.59 * g + 0.11 * b;
+        //colorObj.luma = 0.3 * r + 0.59 * g + 0.11 * b;
+        // Improving weights that hopefully give better sorting
+        colorObj.luma = 0.241 * r + 0.691 * g + 0.068 * b;
         colorObj.red = parseInt(hex.substring(0, 2), 16);
         colorObj.green = parseInt(hex.substring(2, 4), 16);
         colorObj.blue = parseInt(hex.substring(4, 6), 16);
@@ -295,7 +297,7 @@ L.Control.MapLegend = L.Control.extend({
         return colorObj;
     },
 
-   /* _sortColorsByHue: function (colors) {
+   /*_sortColorsByHue: function (colors) {
         var tuples = [];
         var sortedPalette = {};
         for (var colorsKey in colors) if (colors.hasOwnProperty(colorsKey)) {
@@ -317,7 +319,6 @@ L.Control.MapLegend = L.Control.extend({
 
         return sortedPalette;
     },*/
-
 
     /*
      function _colorLuminance
@@ -587,8 +588,8 @@ L.Control.MapLegend = L.Control.extend({
                   '</div>';
 
         inHtml += '<div class="text-center border-top border-primary"><div class="btn-group" role="group">' +
-                        '<div id="rescale_colors" class="btn btn-primary btn-sm btn-link">Rescale Colors</div>' +
-                        '<div id="reset_colors" class="btn btn-primary btn-sm btn-link">Reset Colors</div>' +
+                        '<div id="rescale_colors" class="btn btn-primary btn-sm btn-link">Optimize Colors</div>' +
+                        '<div id="reset_colors" class="btn btn-primary btn-sm btn-link">Default Colors</div>' +
                   '</div></div>';;
 
         // add Unknown
@@ -658,24 +659,20 @@ L.Control.MapLegend = L.Control.extend({
 
         var sortBy = this.options.sortBy;
         var features = getFeaturesInView();
-        var palette = _.chain(getFeaturesInView())
-                        .map('options')
-                        .map('icon')
-                        .map('options')
-                        .map('stats')
-                        .flatten()
-                        .groupBy('label')
-                        .map(function (val, species) {
-                            if (_(colors).has(species)) {
-                                color = colors[species];
+        var paletteCategories = _.chain(features).map('options').map('icon').map('options').map('stats').flatten().groupBy('label').value();
+
+        var palette = _(paletteCategories).map(function (val, name) {
+                            if (_(colors).has(name)) {
+                                color = colors[name];
                             }
                             else {
+                                // Get the color assigned to the marker
                                 color = val[0].color;
                             }
                             var out = {
-                                name: species,
-                                name_lower: _.lowerCase(species),
-                                species: species,
+                                name: name,
+                                name_lower: _.lowerCase(name),
+                                species: name,
                                 count: _.sumBy(val, 'value'),
                                 color: color
                             }
@@ -683,36 +680,94 @@ L.Control.MapLegend = L.Control.extend({
                             return out;
                         });
 
+        palette = this._sortPalette(palette.value(), sortBy);
+
+        // Now go through the complete palette and construct it in a similar
+        // format as the palette created from lodash
+        var completePalette = [];
+        
+        _.forOwn(this.options.palette, function(color, name) {
+
+            var val = paletteCategories[name];
+
+            if (val) {
+                paletteEntry = {
+                    name:name,
+                    name_lower: _.lowerCase(name),
+                    species: name,
+                    count: _.sumBy(val, 'value'),
+                    color: color
+                }
+            }
+            else {
+                paletteEntry = {
+                    name:name,
+                    name_lower: _.lowerCase(name),
+                    species: name,
+                    count: 0,
+                    color: color
+                }
+            }
+
+            completePalette.push(paletteEntry);
+        });
+
+        completePalette = this._sortPalette(completePalette, sortBy);
+
+        this._generateLegendHtml(palette, palette.length);
+
+        this._generateTableHtml(completePalette);
+
+        // Adding here for now, need to check if it is hidden
+        $('.leaflet-bottom.leaflet-right .leaflet-bar').show();
+    },
+
+    _sortPalette: function(palette, sortBy) {
         if (sortBy === 'name') {
             palette = _(palette).sortBy(['name_lower']);
+
+            return palette.value();
         }
         else if (sortBy === 'count') {
             palette = _(palette).sortBy(['count']).reverse();
+
         }
         else if (sortBy === 'color') {
             palette = palette.map(function (x) {
                 var colorObj = this._constructColor(x.color);
                 x['hue'] = colorObj.hue;
+                x['luma'] = colorObj.luma;
+                x['sat'] = colorObj.sat;
+                x['val'] = colorObj.val;
                 return x;
-            }.bind(this)).sortBy('hue').reverse();
+            }.bind(this));
+
+            // For some reason color and greyscale palettes do not get ordered correctly together
+            // So sorting them separately.
+            
+            // Get only colors
+            colorPalette = _.filter(palette, function(o) {
+                return o.hue != 0;
+            });
+            //.sortBy('hue').reverse();
+            colorPalette = _(colorPalette).sortBy('luma').value();
+            //colorPalette = this._sortColorsByHue(colorPalette);
+
+            // Get only greyscale
+            greyPalette = _.filter(palette, function(o) {
+               return o.hue === 0;
+            });//.sortBy('hue');
+            greyPalette = _(greyPalette).sortBy('luma').value();
+            //greyPalette = this._sortColorsByHue(greyPalette);
+
+            palette = _(colorPalette.concat(greyPalette));
+
+            // Sorting by luminosity seems to give better results than by hue
+            //palette = _(palette).sortBy('luma');
+           // palette = _(palette).sortBy('hue').reverse();
         }
 
-        /*this._generateLegendHtml(sortedPalette, paletteSize);
-
-        if (options.sortBy === 'Name') {
-            sortedPalette = this._outputNames(unsortedPalette);
-        } else {    // sort by color
-            sortedPalette = this._outputColors(unsortedPalette);
-        }*/
-
-        // this._generateLegendHtml(sortedPalette, paletteSize);
-        //this._generateTableHtml(sortedPalette, paletteSize);
-        var palette = palette.value();
-        this._generateLegendHtml(palette, palette.length);
-        this._generateTableHtml(palette, palette.length);
-
-        // Adding here for now, need to check if it is hidden
-        $('.leaflet-bottom.leaflet-right .leaflet-bar').show();
+         return palette.value();
     },
 
     _setPalette: function(rescale=false) {
@@ -722,6 +777,13 @@ L.Control.MapLegend = L.Control.extend({
         var sortedItems = this.sortedItems;
 
         if (rescale) {
+            // Since we are giving more importance to visible markers, get the items
+            // object so we can update their importance/abundance value
+            var items = this.items;
+            // Get highest ranked value and use that to rank up the visible markers higher
+            highestValue = sortedItems[0][1];
+
+
             var visibleMarkers = _.chain(getFeaturesInView())
                                     .map('options')
                                     .map('icon')
@@ -732,19 +794,21 @@ L.Control.MapLegend = L.Control.extend({
                                     .keys()
                                     .value();
 
-            // Filter sorted items using their visibility on the map
-            var sortedItems = _(sortedItems).sortBy(function(x) {
-                return -visibleMarkers.indexOf(x[0]) >= 0;
-            }).value();
+            // Go through the visible marker items and give them more importance in the
+            // items object
+            for (var i = 0; i < visibleMarkers.length; ++i) {
+                item = visibleMarkers[i];
+                items[item] += highestValue;
+            }
+
+            var sortedItems = this._sortHashByValue(items);
         }
 
-        var options = this.options;
-        options.palette = this.generatePalette(sortedItems);
+        this.options.palette = this.generatePalette(sortedItems);
         //this.refreshLegend(options.palette);
     },
 
     _populateLegend: function (result, fieldName, flyTo) {
-        debugger;
         var options = this.options;
         //var geohashLevel = "geohash_2";
         if (typeof (flyTo) === 'undefined') flyTo = options.flyTo;
@@ -830,8 +894,9 @@ L.Control.MapLegend = L.Control.extend({
 
         var sortedItems = this._sortHashByValue(items);
 
+        this.items = items;
         this.sortedItems = sortedItems;
-        this._setPalette(sortedItems);
+        this._setPalette();
 
         //Initialize tooltip only if it has not been initialized already
         if ($(".legend").attr("data-original-title") === undefined) {
@@ -894,7 +959,7 @@ L.Control.MapLegend = L.Control.extend({
 
         $('#Other-Terms-List').html(inHtml).removeClass();
 
-        if (type === "Projects") {
+        if (type === "Project") {
             $('#Other-Terms-List').addClass('multiColumn-5')
         } else {
             $('#Other-Terms-List').addClass('multiColumn-3')
