@@ -328,7 +328,7 @@ L.Control.MapLegend = L.Control.extend({
         return rgb;
     },
 
-    _generateViewSelect(viewMode) {
+    _generateViewSelect: function (viewMode) {
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
             (viewMode === 'geno' ? '<li><a href="#" value="Locus">Locus</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
@@ -454,12 +454,16 @@ L.Control.MapLegend = L.Control.extend({
             sortedPalette = this._outputColors(unsortedPalette, options.numberOfColors);
         }*/
 
-    refreshLegend: function (colors=null) {
+    refreshLegend: function (colors) {
         /*
             VB-7096: Dynamic color palettes
             The chain below extracts visible species and filters the legend based on it
             The function is run asynchronously for speed
         */
+
+        if (colors === undefined) {
+            colors = null;
+        }
 
         var sortBy = this.options.sortBy;
         var features = getFeaturesInView();
@@ -568,10 +572,15 @@ L.Control.MapLegend = L.Control.extend({
          return palette.value();
     },
 
-    _setPalette: function(rescale=false) {
+    _setPalette: function(rescale) {
         /*
             Sets the palette
         */
+
+        if (rescae === undefined) {
+            rescale = false;
+        }
+
         var sortedItems = this.sortedItems;
 
         if (rescale) {
