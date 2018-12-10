@@ -97,7 +97,7 @@ BODY {
     color         : #555555;
     margin-bottom : 5px !important;
     border-radius : 0 !important;
-    width     : 225px;
+    width     : 280px;
     min-height    : 300px;
     /*max-width     : 230px;
     position: absolute;
@@ -113,6 +113,23 @@ BODY {
     border-radius : 10px;
 }
 
+.legend-count {
+    float: right;
+    min-width: 50px;
+    text-align: right;
+    font-weight: 600;
+    width: 30%;
+}
+
+.summ-by-value {
+    float: left;
+    width: 70%;
+}
+
+.legend-others {
+    margin-left: 68px;
+}
+
 .min-value, .max-value {
     vertical-align : middle;
     width          : 25px;
@@ -121,8 +138,13 @@ BODY {
     text-align : center;
 }
 .sort-by {
-    margin-right : 2px !important;
+    margin: 3px 3px 0 0 !important;
 }
+
+#sortByDropdown li {
+    text-transform: capitalize;
+}
+
 /*center the search box*/
 .mapbox {
     position     : relative;
@@ -629,8 +651,10 @@ div.error div, div.warning div, div.info div, div.hint div {
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
+}
+
+.active-legend {
     line-height: 17px;
-    /*border-bottom: 1px dotted;*/
 }
 
 .active-legend i, #Other-Terms-List i{
@@ -766,7 +790,7 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 .leaflet-bottom.leaflet-right .easy-button-container.active {
-    right: 245px;
+    right: 300px;
 }
 
 .leaflet-bottom.leaflet-right .leaflet-bar button {
@@ -813,6 +837,17 @@ div.error div, div.warning div, div.info div, div.hint div {
     z-index: 10000;
 }
 
+.legend > div {
+    padding: 0 8px;
+}
+
+.legend p {
+    font-size: smaller;
+    word-wrap: break-word;
+    max-width: 280px;
+    margin-top: 20px;
+    text-align: justify;
+}
 
 .legend-contents {
     padding: 6px 8px 6px 8px;
@@ -855,10 +890,11 @@ div.error div, div.warning div, div.info div, div.hint div {
     /*min-height: 300px;*/
 }
 
-/*.leaflet-top.leaflet-left .leaflet-bar {
-    border: none !important;
+.leaflet-bottom.leaflet-right .leaflet-bar {
+    /*border: none !important;*/
+    display: none;
 }
-
+/*
 .leaflet-top.leaflet-left .leaflet-bar a {
     border: none !important;
 }
