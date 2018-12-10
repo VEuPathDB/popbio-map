@@ -577,7 +577,7 @@ L.Control.MapLegend = L.Control.extend({
             Sets the palette
         */
 
-        if (rescae === undefined) {
+        if (rescale === undefined) {
             rescale = false;
         }
 
