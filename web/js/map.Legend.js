@@ -586,29 +586,32 @@ L.Control.MapLegend = L.Control.extend({
         if (rescale) {
             // Since we are giving more importance to visible markers, get the items
             // object so we can update their importance/abundance value
-            var items = this.items;
+            var items = $.extend(true, {}, this.items); // make a deep copy with jQuery
             // Get highest ranked value and use that to rank up the visible markers higher
             highestValue = sortedItems[0][1];
 
-
-            var visibleMarkers = _.chain(getFeaturesInView())
-                                    .map('options')
-                                    .map('icon')
-                                    .map('options')
-                                    .map('stats')
-                                    .flatten()
-                                    .groupBy('label')
-                                    .keys()
-                                    .value();
+            var visibleValueSums = {};
+            // sum up the "value" attribute for the markers for each "species"
+            _.chain(getFeaturesInView())
+                .map('options')
+                .map('icon')
+                .map('options')
+                .map('stats')
+                .flatten()
+                .groupBy('label')
+                .map(function(array){
+                    visibleValueSums[array[0].label] =
+                        _.reduce(array, function(memo, item){return memo + item.value;},0);
+                })
+                .value();
 
             // Go through the visible marker items and give them more importance in the
             // items object
-            for (var i = 0; i < visibleMarkers.length; ++i) {
-                item = visibleMarkers[i];
-                items[item] += highestValue;
+            for (var item in visibleValueSums) {
+                items[item] = highestValue + visibleValueSums[item];
             }
 
-            var sortedItems = this._sortHashByValue(items);
+            sortedItems = this._sortHashByValue(items);
         }
 
         this.options.palette = this.generatePalette(sortedItems);
