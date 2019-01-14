@@ -495,12 +495,14 @@
             },
             plotOptions: plotOptions,
             xAxis: {
+                //DKDK VB-8096 set ordinal false for hichart.stockchart
+                ordinal: false,
                 events: {
                     afterSetExtremes: afterSetExtremes
                 },
                 min: minDate,
                 max: maxDate,
-                minRange: minRange,
+                minRange: minRange
             },
             yAxis: yAxis, 
             credits: {
