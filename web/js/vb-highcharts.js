@@ -484,7 +484,11 @@
             legend: {
                 enabled: true,
                 labelFormat: "<i>{name}</i>",
-                symbolRadius: 0
+                symbolRadius: 0,
+                //DKDK VB-8112 disabling cursor change on swarm chart legend
+                itemStyle: {
+                    cursor: 'default'
+                },
             },
             chart: {
                 height: "200%"
