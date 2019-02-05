@@ -25,6 +25,12 @@
     var resolutionSelector = false;
     var highcharts = {};
     var monthString = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    var disabledResolutions = {
+      Yearly: false,
+      Monthly: false,
+      EpiWeekly: false,
+      Daily: false,
+    }
 
     //Object that contain the configuration of how certain views are supposed to be graphed with highcharts
     //Preferably, this configuration should be constructed using information stored in a database
@@ -47,7 +53,7 @@
                     stacking: 'normal',
                     groupPadding: 0.01,
                     events: {
-                        //DKDK VB-8112 disable legend click at histock
+                        //DKDK VB-8112 disable legend click at highstock
                         // legendItemClick: setExternalActionFlag
                         legendItemClick: function () {
                             return false;
@@ -88,16 +94,15 @@
                     stacking: 'normal',
                     groupPadding: 0.01,
                     events: {
-                        //DKDK VB-8112 disable legend click at histock
+                        //DKDK VB-8112 disable legend click at highstock
                         // legendItemClick: setExternalActionFlag
                         legendItemClick: function () {
                             return false;
-                        }
-                    }
+                        }                    }
                 },
                 line: {
                     events: {
-                        //DKDK VB-8112 disable legend click at histock
+                        //DKDK VB-8112 disable legend click at highstock
                         // legendItemClick: setExternalActionFlag
                         legendItemClick: function () {
                             return false;
@@ -255,11 +260,14 @@
                     //More than 10 years, do not give users option of viewing EpiWeekly and Daily
                     $("#EpiWeekly").addClass("disabled");
                     $("#Daily").addClass("disabled");
+                    disabledResolutions.EpiWeekly = true;
+                    disabledResolutions.Daily = true;
                 } else if (numberOfDays > 1095) {
                     //More than 3 years but less than 10 years get monthly data
                     resolution = "Monthly";
                     //More than 3 years but less than 10 years, do not allow users to see Daily data
                     $("#Daily").addClass("disabled");
+                    disabledResolutions.Daily = true;
                 } else if (numberOfDays > 365) {
                     //More than 1 year, but less than 3 years gets EpiWeekly
                     resolution = "EpiWeekly";
@@ -591,7 +599,7 @@
         // @todo: Find a better way of knowing when to update HighchartsGraph.dd
         // This check causes a bug that if one decreases the navigator in a lower resolution, 
         // and then switches to a higher resolution, the graph will not retrieve additional data
-        if (oldResolution !== resolution) {
+        if (oldResolution !== resolution || disabledResolutions[resolution]) {
             updateHighchartsGraph(startDate, endDate, resolution);
         }
     }
@@ -604,8 +612,19 @@
         //Construct the URL that will be used to get the new data
         var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
         var dateResolutionField = resolutionToSolrField[resolution];
-        var startDateString = startDate.toISOString();
-        var endDateString = endDate.toISOString();
+
+        if (disabledResolutions[resolution]) {
+          var startDateString = startDate.toISOString();
+          endDate = updateNavigatorEndDate(endDate, resolution)
+          var endDateString = endDate.toISOString();
+        }
+        else {
+          var newStartDate = new Date(minDate);
+          var newEndDate = new Date(maxDate);
+          var startDateString = newStartDate.toISOString();
+          var endDateString = newEndDate.toISOString();
+        } 
+
         var baseUrl = solrPopbioUrl + viewMode + dataEndpoint + "?";
         var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
         var queryUrl = baseUrl + qryUrl + facetTerm + highchartsFilter + "&fq=collection_date:[" + startDateString + " TO " + endDateString +"]";
@@ -936,6 +955,24 @@
       }
 
       return startDate;
+    }
+
+    // Allows the data to be retrieved correctly when continously updating what gets graphed for resolutions that were initially disabled
+    function updateNavigatorEndDate(endDate, resolution) {
+      var endDateYear = endDate.getUTCFullYear();
+      var endDateMonth = endDate.getUTCMonth() + 1;
+      var endDateDay = endDate.getUTCDate();
+
+      if (resolution == "Yearly") {
+          endDate = new Date(endDateYear + '-12-31T00:00:00Z');
+      } else if (resolution == "Monthly" || resolution == "EpiWeekly") {
+          endDate = new Date(endDateYear + '-' + monthString[endDateMonth] + '-15T00:00:00Z');
+      } /*else if (resolution == "EpiWeekly") {
+          endDate = new Date(endDateYear + '-' + monthString[startDateMonth] + '-' + pad(startDateDay, 2) + 'T00:00:00Z');
+          startDate.setDate(startDate.getDate() - startDate.getDay());
+      }*/
+
+      return endDate;
     }
 
     function pad(number, size) {
