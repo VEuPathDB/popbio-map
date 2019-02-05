@@ -2,6 +2,7 @@
     //Private variables used for the chart
     var dataEndpoint = "Graphdata";
     var resolutionEndpoint = "MarkerYearRange"
+    var statsFilter = "&stats.field=collection_month_s&stats.field=collection_year_s&stats.field=collection_epiweek_s&stats.field=collection_day_s";
     var resultLimit = 500000;
     var collectionResolutions;
     var highestResolution;
@@ -11,12 +12,19 @@
     var resolution;
     var minDate;
     var maxDate;
+    var minYearDate;
+    var maxYearDate;
+    var minMonthDate;
+    var maxMonthDate;
+    var minDayDate;
+    var maxDayDate;
     var minRange;
     var graphConfig;
     var afterSetExtremesTriggered = false;
     var externalAction = false;
     var resolutionSelector = false;
     var highcharts = {};
+    var monthString = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 
     //Object that contain the configuration of how certain views are supposed to be graphed with highcharts
     //Preferably, this configuration should be constructed using information stored in a database
@@ -137,7 +145,7 @@
     PopulationBiologyMap.methods.createHighchartsGraph = function(divid, filter) {
         //How the URL will be constructed
         var baseUrl = solrPopbioUrl + viewMode + resolutionEndpoint + "?";
-        var queryUrl = baseUrl + qryUrl + filter;
+        var queryUrl = baseUrl + qryUrl + filter + statsFilter;
         
         //Resets/updates variables related to the data being graphed
         collectionResolutions = [];
@@ -167,15 +175,27 @@
             url: queryUrl,
             dataType: "json",
             success: function (json) {
-                //Get the resolutions of the data being graphed
-                var collectionResolutionList = json.facets.collection_resolution.buckets;
-                //Get the min and max dates of data
-                var collectionYearList = json.facets[resolutionToSolrField.Yearly].buckets;
-                var lastYearPosition = collectionYearList.length - 1;
-                minDate = new Date(collectionYearList[0].val + '-01-01T00:00:00Z').getTime();
-                maxDate = new Date(collectionYearList[lastYearPosition].val + '-12-31T00:00:00Z').getTime();
-                //Calculate number of days the data of query will could cover
-                var numberOfDays = (maxDate-minDate) / (1000 * 3600 * 24);
+                // Get the resolutions of the data being graphed
+                var collectionResolutionList = json.facets.collection_resolution.buckets
+                
+                // Get the maximum and minimum boundaries of the different resolutions
+                // For now specifying 
+                var collectionDate = json.stats.stats_fields.collection_date;
+                var collectionDateMin = new Date(collectionDate.min);
+                var collectionDateMax = new Date(collectionDate.max);
+                var minYear = collectionDateMin.getUTCFullYear();
+                var maxYear = collectionDateMax.getUTCFullYear();
+                var minMonth = collectionDateMin.getUTCMonth();
+                var maxMonth = collectionDateMax.getUTCMonth();
+                var minDay = collectionDateMin.getUTCDate();
+                var maxDay = collectionDateMax.getUTCDate();
+                minYearDate = new Date(minYear + '-01-01T00:00:00Z').getTime();
+                maxYearDate = new Date(maxYear + '-12-31T00:00:00Z').getTime();
+                minMonthDate = new Date(minYear + '-' + monthString[minMonth] + '-01T00:00:00Z').getTime();
+                maxMonthDate = new Date(maxYear + '-' + monthString[maxMonth] + '-01T00:00:00Z').getTime();
+                minDayDate = new Date(minYear + '-' + monthString[minMonth] + '-' + pad(minDay, 2) + 'T00:00:00Z').getTime();
+                maxDayDate = new Date(maxYear + '-' + monthString[maxMonth] + '-' + pad(maxDay, 2) + 'T00:00:00Z').getTime();
+                var numberOfDays = (maxYearDate-minYearDate) / (1000 * 3600 * 24);
 
                 //Store the resolutions of the data
                 for (var j = 0; j < collectionResolutionList.length; j++) {
@@ -226,17 +246,14 @@
                 } else if (numberOfDays > 1095) {
                     //More than 3 years but less than 10 years get monthly data
                     resolution = "Monthly";
-
                     //More than 3 years but less than 10 years, do not allow users to see Daily data
                     $("#Daily").addClass("disabled");
                 } else if (numberOfDays > 365) {
                     //More than 1 year, but less than 3 years gets EpiWeekly
                     resolution = "EpiWeekly";
-
                 } else {
                     //Less than one year gets daily data
                     resolution = "Daily";
-
                 }
 
                 //Set the default tooltip message for disabled buttons
@@ -291,7 +308,10 @@
                     $("#resolution-selector-title .fa-exclamation-triangle").show();
                 }
 
-                resultCount = json.response.numFound;
+                // Set the minDate and maxDate for the xAxis based on the resolution being graphed
+                setxAxisDates(resolution); 
+
+                //resultCount = json.response.numFound;
             },
             error: function() {
                 PaneSpin('swarm-plots', 'stop');
@@ -359,54 +379,37 @@
             var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
             var queryUrl = baseUrl + qryUrl + facetTerm + filter;
 
-            //Check if the results that will be retrieved from query are more than what we allow to be graphed
-            //Hopefully this will not be needed anymore once graphing by resolution is implemented
-            if (resultCount > resultLimit) {
-                //Display message letting user know why data was not graphed
-                $("#swarm-chart-area").html(
-                    '<div style="text-align: center; margin-top: 30px">' +
-                    '<i class="fa fa-chart-area" style="color: #C3312D; font-size: 12em"></i>' +
-                    '<h4>Too many points to plot</h4>' +
-                    '<h4>Apply filters to plot less data</h4>' +
-                    '<h4><b>Points</b>: ' + resultCount.toString() + '</h4>' +
-                    '<h4><b>Limit</b>: ' + resultLimit.toString() + '</h4>' +
-                    '</div>'
-                );
+            $.ajax({
+                beforeSend: function(xhr) {
+                    //Clear chart area and start the spinner
+                    PaneSpin('swarm-plots', 'start');
+                    $('#swarm-chart-area').empty();
+                    $(divid + ' select').remove();
+                    $(divid + ' label').remove();
 
-                $("#resolution-selector-group").hide();
-            } else {
-                //Limit not reached so get actual data used to create graph
-                $.ajax({
-                    beforeSend: function(xhr) {
-                        //Clear chart area and start the spinner
-                        PaneSpin('swarm-plots', 'start');
-                        $('#swarm-chart-area').empty();
-                        $(divid + ' select').remove();
-                        $(divid + ' label').remove();
-
-                        //Probably not nessary
-                        if (xhr && xhr.overrideMimeType) {
-                            xhr.overrideMimeType('application/json;charset-utf-8');
-                        }
-                    },
-                    url: queryUrl,
-                    dataType: 'json',
-                    success: function(json) {
-                        setHighchartsData(json);
-                    },
-                    error: function() {
-                        PaneSpin('swarm-plots', 'stop');
-                        console.log("An error has occurred");
-                    },
-                    complete: function() {
-                        //Construct graph using the data that was received from Solr
-                        var data = highcharts.series;
-                        var yAxis = highcharts.yAxis;
-                        createStockchart(yAxis, data);
-                        PaneSpin('swarm-plots', 'stop');
+                    //Probably not nessary
+                    if (xhr && xhr.overrideMimeType) {
+                        xhr.overrideMimeType('application/json;charset-utf-8');
                     }
-                });
-            }
+                },
+                url: queryUrl,
+                dataType: 'json',
+                success: function(json) {
+                    setHighchartsData(json);
+                },
+                error: function() {
+                    PaneSpin('swarm-plots', 'stop');
+                    console.log("An error has occurred");
+                },
+                complete: function() {
+                    //Construct graph using the data that was received from Solr
+                    var data = highcharts.series;
+                    var yAxis = highcharts.yAxis;
+                    createStockchart(yAxis, data);
+                    PaneSpin('swarm-plots', 'stop');
+                }
+            });
+            //}
         });
     }
 
@@ -431,8 +434,8 @@
 
                 var chart = Highcharts.charts[0];
                 var extremes = chart.xAxis[0].getExtremes();
-                var startDate = new Date(extremes.min).toISOString();
-                var endDate = new Date(extremes.max).toISOString();
+                var startDate = new Date(extremes.min);
+                var endDate = new Date(extremes.max);
                 var numberOfDays = (extremes.max-extremes.min) / (1001 * 3600 * 24);
 
                 //Update the graph
@@ -495,7 +498,7 @@
             },
             plotOptions: plotOptions,
             xAxis: {
-                //DKDK VB-8096 set ordinal false for hichart.stockchart
+                //DKDK VB-8096 set ordinal false for highchart.stockchart
                 ordinal: false,
                 events: {
                     afterSetExtremes: afterSetExtremes
@@ -517,8 +520,8 @@
      */
     function afterSetExtremes(e) {
         var chart = Highcharts.charts[0];
-        var startDate = new Date(e.min).toISOString();
-        var endDate = new Date(e.max).toISOString();
+        var startDate = new Date(e.min);
+        var endDate = new Date(e.max);
         var numberOfDays = (e.max-e.min) / (1000 * 3600 * 24);
         var oldResolution = resolution;
 
@@ -569,6 +572,9 @@
         }
 
         //Only update the graph if the resolution was changed
+        // @todo: Find a better way of knowing when to update HighchartsGraph.dd
+        // This check causes a bug that if one decreases the navigator in a lower resolution, 
+        // and then switches to a higher resolution, the graph will not retrieve additional data
         if (oldResolution !== resolution) {
             updateHighchartsGraph(startDate, endDate, resolution);
         }
@@ -576,12 +582,17 @@
 
     //Creaates query for new data, does a request, and updates the graph
     function updateHighchartsGraph(startDate, endDate, resolution) {
+        setxAxisDates(resolution);
+        startDate  = updateNavigatorStartDate(startDate, resolution);
+
         //Construct the URL that will be used to get the new data
         var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
         var dateResolutionField = resolutionToSolrField[resolution];
+        var startDateString = startDate.toISOString();
+        var endDateString = endDate.toISOString();
         var baseUrl = solrPopbioUrl + viewMode + dataEndpoint + "?";
         var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
-        var queryUrl = baseUrl + qryUrl + facetTerm + highchartsFilter + "&fq=collection_date:[" + startDate + " TO " + endDate +"]";
+        var queryUrl = baseUrl + qryUrl + facetTerm + highchartsFilter + "&fq=collection_date:[" + startDateString + " TO " + endDateString +"]";
         var chart = Highcharts.charts[0];
 
         chart.showLoading("Loading data from server...");
@@ -591,7 +602,6 @@
             $(".highcharts-series-group").show();
 
             if (json.facets.term) {
-                //chart.showLoading('Loading data from server...');
                 setHighchartsData(json);
                 setExternalActionFlag();
                 var data = highcharts.series;
@@ -607,6 +617,8 @@
 
                 chart.redraw();
                 chart.hideLoading();
+                chart.xAxis[1].update({min: minDate, max: maxDate});
+                chart.xAxis[0].setExtremes(startDate.getTime(), endDate.getTime());
             } else {
                 chart.showLoading("No data found");
 
@@ -615,7 +627,6 @@
             }
         });
     }
-
 
     //Uses the response from SOLR to construct the data array that will be used by Highcharts
     function setHighchartsData(json) {
@@ -684,15 +695,6 @@
                         } else {
                             var yValue = Object.byString(collectionsDate, valueKey);
                         }
-
-                        //Only take into consideration no_data if the graph is columns type
-                        //if (chart_type === "column") {
-                        //    if (no_data && y_value !== 0) {
-                        //       no_data = false;
-                        //    } 
-                        //} else if (no_data) {
-                        //    no_data = false;
-                        //}
                         
                         //Could support different values on x-axis so checking the data_type which will not do anything for now
                         if (graphConfig.dataType === "timeplot") {
@@ -725,7 +727,6 @@
                                 });
                             }
                             
-
                             if (resolution === "EpiWeekly") {
                                 data.epiWeek = {label: "Epi Week", value: [epiWeek]};
                             }
@@ -877,6 +878,57 @@
         if (!afterSetExtremesTriggered) {
             externalAction = true;
         }
+    }
+
+    function setxAxisDates(resolution) {
+        // Set the minDate and maxDate based on the resolution being graphed
+        if (resolution == "Yearly") {
+            minDate = minYearDate;
+            maxDate = maxDayDate;
+        } else if (resolution == "Monthly") {
+            minDate = minMonthDate;
+            maxDate = maxDayDate; 
+        } else if (resolution == "EpiWeekly") {
+            minDate = new Date(minDayDate);
+            minDate.setDate(minDate.getUTCDate() - (minDate.getUTCDay() + 1));
+            minDate = minDate.getTime();
+            maxDate = maxDayDate;
+           
+        } else {
+            minDate = minDayDate;
+            maxDate = maxDayDate;
+        }
+    }
+
+    // Used to ensure the extremes make a bit more sense when changing resolutions in the graph
+    function updateNavigatorStartDate(startDate, resolution) {
+      var startDateYear = startDate.getUTCFullYear();
+      var startDateMonth = startDate.getUTCMonth();
+      var startDateDay = startDate.getUTCDate();
+
+      if (resolution == "Yearly") {
+          startDate = new Date(startDateYear + '-01-01T00:00:00Z');
+      } else if (resolution == "Monthly") {
+          startDate = new Date(startDateYear + '-' + monthString[startDateMonth] + '-01T00:00:00Z');
+      } else if (resolution == "EpiWeekly") {
+          startDate = new Date(startDateYear + '-' + monthString[startDateMonth] + '-' + pad(startDateDay, 2) + 'T00:00:00Z');
+          startDate.setDate(startDate.getDate() - startDate.getDay());
+      }
+
+      if (startDate.getTime() < minDate) {
+        startDate = new Date(minDate);
+      }
+
+      return startDate;
+    }
+
+    function pad(number, size) {
+      var stringNumber = String(number);
+      while (stringNumber.length < size) {
+        stringNumber = "0" + stringNumber;
+      }
+
+      return stringNumber;
     }
 
     $(document).ready(function () {

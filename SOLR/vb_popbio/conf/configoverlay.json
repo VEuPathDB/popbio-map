@@ -68,12 +68,14 @@
         "wt": "json",
         "json.nl": "map",
         "rows": 0,
+				"stats": "true",
+				"stats.field": "collection_date",
         "facet.sort": "index",
         "facet.limit": "-1",
         "facet.mincount": "1",
         "facet": "true",
         "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\"]}",
-        "json.facet": "{\"collection_year_s\":{\"type\":\"terms\",\"field\":\"collection_year_s\",\"sort\":\"index\"},\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
+        "json.facet": "{\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
       }
     },
     "/projectsCoordinates": {
@@ -283,12 +285,14 @@
         "wt": "json",
         "json.nl": "map",
         "rows": 0,
+				"stats": "true",
+				"stats.field": "collection_date",
         "facet.sort": "index",
         "facet.limit": "-1",
         "facet.mincount": "1",
         "facet": "true",
         "json": "{\"filter\":[\"bundle:pop_sample_phenotype\",\"phenotype_type_s:\\\"infection status\\\"\",\"infection_status_s:*\",\"has_geodata:true\"]}",
-        "json.facet": "{\"collection_year_s\":{\"type\":\"terms\",\"field\":\"collection_year_s\",\"sort\":\"index\"},\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
+        "json.facet": "{\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
       }
     },
     "/pathExport": {
