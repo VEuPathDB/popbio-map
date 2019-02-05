@@ -2044,6 +2044,9 @@ function updatePieChart(population, stats) {
                 chart.tooltip.applyClass('nv-legend-text-italics');
             }
 
+            //DKDK VB-8112 disable donut legend (nvd3)
+            chart.legend.updateState(false);
+
             // Overwrite valueFormatter to return integers
             chart.tooltip.valueFormatter(function (d, i) {
                 return d.roundDecimals(0);

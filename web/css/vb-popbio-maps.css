@@ -1114,3 +1114,8 @@ div.error div, div.warning div, div.info div, div.hint div {
 #export-message {
     text-align: center;
 }
+
+/* DKDK VB-8112 disabling cursor change on pie chart legend */
+.nvd3 .nv-legend .nv-series {    
+    cursor: default !important;
+}
