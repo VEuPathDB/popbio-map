@@ -203,11 +203,6 @@
         </div>
     </div>
 
-    <!--Message that will appear when clicking on the button-->
-    <div id="generate-link-msg" class="alert alert-success" role="alert">
-        The link has been generated and copied to your clipboard!
-    </div>
-
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
@@ -226,7 +221,8 @@
             <!--<li class="sidebar-icon">-->
                 <!-- add GA -->
                 <!-- <a class="sidebar-icon" id="generate-link" title="Share view" onclick="ga('send', 'event', 'Popbio', 'shareview', 'Share view');"> -->
-                <a class="sidebar-icon" id="generate-link" onclick="gtag('event', 'shareview', {'event_category': 'Popbio', 'event_label': 'Share view'});" data-tooltip="tooltip" data-placement="right" title="Share current map view">
+                <!-- DKDK VB-8113 shared link popup -->
+                <a class="sidebar-icon" id="generate-link" onclick="gtag('event', 'shareview', {'event_category': 'Popbio', 'event_label': 'Share view'});" data-tooltip="tooltip" data-placement="right" title="Share current map view" data-toggle="modal" data-target="#sharedlinkModal">
                     <i class="fa fa-share-alt"></i>
                 </a>
             <!--</li>-->
@@ -1028,6 +1024,26 @@
         </div>
     </div>
 </div>
+
+
+<!-- DKDK VB-8113 Create popup for shared link using Bootstrap Modal -->
+<div id="sharedlinkModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b>Shared Link</b></h4>
+            </div>
+            <div class="modal-body" style="font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.7; color: inherit;">
+                A link has been generated and copied to your clipboard. Be aware different browsers and screen sizes may render data visualization differently and/or show more or less geographic area.
+               <div style="margin-top: 30px;">
+                   <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- jsrender template for sample info in the table slider (samples view)-->
 

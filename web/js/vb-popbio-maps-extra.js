@@ -1253,13 +1253,8 @@
 
             //Add URL to attribute used to copy to clipboard
             $("#generate-link").attr("data-clipboard-text", url);
-            $("#generate-link-msg").show();
         });
         
-        $("#generate-link").mousemove(function (){
-            $("#generate-link-msg").fadeOut();
-        });
-
         //Disable the panel from opening if it was disabled
         $(".sidebar-icon a").click(function (e) {
             if ($(this).hasClass("disabled")) {
