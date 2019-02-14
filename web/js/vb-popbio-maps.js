@@ -1535,7 +1535,7 @@ function loadSolr(parameters) {
                                 case "swarm-plots":
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (viewMode === 'abnd' || viewMode == 'path') {
-                                        PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
+                                        PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                     } else {
                                         createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                     }
@@ -1585,7 +1585,7 @@ function loadSolr(parameters) {
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (!panel.data('has-graph')) {
                                         if (viewMode === 'abnd' || viewMode === 'path') {
-                                            PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
+                                            PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                         } else { 
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                         }
@@ -1667,7 +1667,7 @@ function loadSolr(parameters) {
 
                                         // Geno viewmode will say that it is not availble in that mode
                                         if (viewMode === 'abnd' || viewMode === 'path') {
-                                            PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
+                                            PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                         } else {
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                             panel.data('has-graph', true);
