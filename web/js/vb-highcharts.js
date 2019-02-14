@@ -321,9 +321,6 @@
                 }
 
                 $("#resolution-selector .disabled").tooltip("enable");
-
-                //Display the control panel that allows users to select the resolution and limit terms graphed
-                $("#plots-control-panel").fadeIn();
                 $("#" + resolution).addClass("btn-primary").removeClass("btn-default");
 
                 //Hide warning icon if only one resolution is present in data being graphed
@@ -454,6 +451,8 @@
                     var data = highcharts.series;
                     var yAxis = highcharts.yAxis;
                     createStockchart(yAxis, data);
+                    //Display the control panel that allows users to select the resolution and limit terms graphed
+                    $("#plots-control-panel").fadeIn();
                     PaneSpin('swarm-plots', 'stop');
                 }
             });
