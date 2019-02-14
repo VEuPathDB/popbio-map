@@ -2315,7 +2315,10 @@ function tableHtml(divid, results) {
                 };
 
                 //DKDK VB-8161 rounding to 2 decimal places
-                row.smplAvgAbnd = (row.sampleSize / row.collectionDuration).toFixed(2);                
+                row.smplAvgAbnd = row.sampleSize / row.collectionDuration;
+                if (Number.isInteger(row.smplAvgAbnd) == false) {
+                    row.smplAvgAbnd = row.smplAvgAbnd.toFixed(2);
+                }
                 template = $.templates("#abndRowTemplate");
                 break;
             case "geno":
