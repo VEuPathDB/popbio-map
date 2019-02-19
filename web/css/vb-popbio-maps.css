@@ -691,7 +691,7 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 .highcharts-container {
-		margin: auto;
+    margin: auto;
 }
 
 .highcharts-title {
@@ -705,14 +705,14 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 #plots-control-panel {
-		width: 90%;
-		max-width: 400px;
-		margin: auto;
-		text-align: center;
-		padding: 20px;
-		border-radius: 5px;
-		background-color: #EEEEEE;
-		display: none;
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #EEEEEE;
+    display: none;
 }
 
 #plots-control-panel i {
@@ -736,27 +736,27 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 #limit-terms-toggle-group {
-		display: inline-block;
-		width: 264px;
-		text-align: left;
+    display: inline-block;
+    width: 264px;
+    text-align: left;
 }
 
 #limit-terms-toggle-label {
-		float: left;
+    float: left;
 }
 
 #limit-terms-toggle-title > span {
-		font-size: 14px;
-		font-weight: bold;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 #limit-terms-toggle-details {
-		font-size: 12px;
-		font-style: italic;
+	font-size: 12px;
+    font-style: italic;
 }
 
 #limit-terms-toggle{
-		float: right;
+    float: right;
 }
 
 #limit-terms-toggle .toggle.disabled {
@@ -1043,9 +1043,7 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 .sidebar-icon a.disabled, .sidebar-icon a.disabled:hover, #swarm-plots .disabled, #swarm-plots .disabled:hover {
-    /*color: #ddd;
-    background-color: #FFFFFF;*/
-		opacity: .65;
+	opacity: .65;
     cursor: not-allowed;
 }
 
