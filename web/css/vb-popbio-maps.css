@@ -759,6 +759,20 @@ div.error div, div.warning div, div.info div, div.hint div {
 		float: right;
 }
 
+#limit-terms-toggle .toggle.disabled {
+    background-color: #FFFFFF;
+    border-color: #E7E7E7;
+}
+
+#limit-terms-toggle label.disabled {
+    background-color: #FFFFFF;
+    color: #333333;
+}
+
+#limit-terms-toggle .toggle-group .btn-default {
+    background-color: #FFFFFF;
+}
+
 #sidebar {
     min-width: 460px;
     background: none;

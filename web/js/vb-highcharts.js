@@ -23,6 +23,7 @@
     var maxDayDate;
     var minRange;
     var graphConfig;
+    var ordinal;
     var afterSetExtremesTriggered = false;
     var externalAction = false;
     var resolutionSelector = false;
@@ -164,8 +165,9 @@
 
     PopulationBiologyMap.methods.createHighchartsGraph = function(filter) {
         //How the URL will be constructed
+        var term  = "&term=" + mapSummarizeByToField(glbSummarizeBy).summarize;
         var baseUrl = solrPopbioUrl + viewMode + resolutionEndpoint + "?";
-        var queryUrl = baseUrl + qryUrl + filter + statsFilter;
+        var queryUrl = baseUrl + qryUrl + filter + statsFilter + term;
         
         //Resets/updates variables related to the data being graphed
         collectionResolutions = [];
@@ -409,6 +411,7 @@
                 // TODO: Might not want a hardcoded termlimit
                 queryUrl = queryUrl + "&termLimit=14";
                 $('#limit-terms-toggle-input').bootstrapToggle('enable');
+                $('#limit-terms-toggle .toggle').removeClass('disabled');
                 $('#limit-terms-toggle label').removeClass('disabled');
                 limitTermsMessage = "Top 14 (of " + maxTerms + ") categories shown";
             }
@@ -416,11 +419,13 @@
                 // This ensures to reenable the button when moving between markers
                 // and the marker has more than 14 terms
                 $('#limit-terms-toggle-input').bootstrapToggle('enable');
+                $('#limit-terms-toggle .toggle').removeClass('disabled');
                 $('#limit-terms-toggle label').removeClass('disabled');
             }
             else {
                 // Disable the button since there are less than 14 terms available to be graphed
                 $('#limit-terms-toggle-input').bootstrapToggle('disable');
+                $('#limit-terms-toggle .toggle').addClass('disabled');
                 $('#limit-terms-toggle label').addClass('disabled');
             }
 
@@ -484,6 +489,13 @@
                 var startDate = new Date(extremes.min);
                 var endDate = new Date(extremes.max);
                 var numberOfDays = (extremes.max-extremes.min) / (1001 * 3600 * 24);
+
+                // Prevents overlap of yearly resolution in projects selection in legend
+                if (resolution === "Yearly" && glbSummarizeBy === "Project") {
+                    ordinal = true;
+                } else {
+                    ordinal = false;
+                }
 
                 //Update the graph
                 updateHighchartsGraph(startDate, endDate, resolution);
@@ -569,7 +581,7 @@
             plotOptions: plotOptions,
             xAxis: {
                 //DKDK VB-8096 set ordinal false for highchart.stockchart
-                ordinal: false,
+                ordinal: ordinal,
                 events: {
                     afterSetExtremes: afterSetExtremes
                 },
@@ -705,6 +717,7 @@
                 chart.redraw();
                 chart.hideLoading();
                 chart.xAxis[1].update({min: minDate, max: maxDate});
+                chart.xAxis[0].update({ordinal: ordinal});
                 chart.xAxis[0].setExtremes(startDate.getTime(), endDate.getTime());
             } else {
                 chart.showLoading("No data found");
@@ -821,6 +834,23 @@
                             singleTermData.data.push({x:unixDate, y:yValue, data:data});
                         }
                     });
+
+                    // Prevents overlap of yearly resolution in projects selection in legend
+                    if (resolution === "Yearly" && glbSummarizeBy === "Project") {
+                        ordinal = true;
+
+                        // Prevents the left and right columns from getting cut off by adding dummy data
+                        if (singleTermData.data.length === 1) {
+                            termDataDate = singleTermData.data[0].x;
+
+                            if (termDataDate === minDate) {
+                                singleTermData.data.push({x:maxDate, y:0});
+                                tempDate = new Date(maxDate);
+                            }
+                        }
+                    } else {
+                        ordinal = false;
+                    }
 
                     //Add series data
                     highcharts.series.push(singleTermData);
