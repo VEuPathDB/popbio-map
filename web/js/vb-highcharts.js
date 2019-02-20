@@ -213,12 +213,15 @@
                 var maxMonth = collectionDateMax.getUTCMonth();
                 var minDay = collectionDateMin.getUTCDate();
                 var maxDay = collectionDateMax.getUTCDate();
-                minYearDate = new Date(minYear + '-01-01T00:00:00Z').getTime();
-                maxYearDate = new Date(maxYear + '-12-31T00:00:00Z').getTime();
-                minMonthDate = new Date(minYear + '-' + monthString[minMonth] + '-01T00:00:00Z').getTime();
-                maxMonthDate = new Date(maxYear + '-' + monthString[maxMonth] + '-01T00:00:00Z').getTime();
-                minDayDate = new Date(minYear + '-' + monthString[minMonth] + '-' + pad(minDay, 2) + 'T00:00:00Z').getTime();
-                maxDayDate = new Date(maxYear + '-' + monthString[maxMonth] + '-' + pad(maxDay, 2) + 'T00:00:00Z').getTime();
+                var tempMaxMonth = maxMonth + 1;
+
+                minYearDate = new Date(Date.UTC(minYear,0,1)).getTime();
+                maxYearDate = new Date(Date.UTC(maxYear, 11, 31)).getTime();
+                minMonthDate = new Date(Date.UTC(minYear, minMonth, 1)).getTime();
+                maxMonthDate = new Date(Date.UTC(maxYear, tempMaxMonth, 0)).getTime();
+                minDayDate = new Date(Date.UTC(minYear, minMonth, pad(minDay, 2))).getTime();
+                maxDayDate = new Date(Date.UTC(maxYear, maxMonth, pad(maxDay, 2))).getTime();
+
                 var numberOfDays = (maxYearDate-minYearDate) / (1000 * 3600 * 24);
 
                 //Store the resolutions of the data
@@ -1024,11 +1027,10 @@
       var startDateDay = startDate.getUTCDate();
 
       if (resolution == "Yearly") {
-          startDate = new Date(startDateYear + '-01-01T00:00:00Z');
+          startDate = new Date(Date.UTC(startDateYear, 0, 1));
       } else if (resolution == "Monthly") {
-          startDate = new Date(startDateYear + '-' + monthString[startDateMonth] + '-01T00:00:00Z');
+          startDate = new Date(Date.UTC(startDateYear, startDateMonth, 1));
       } else if (resolution == "EpiWeekly") {
-          startDate = new Date(startDateYear + '-' + monthString[startDateMonth] + '-' + pad(startDateDay, 2) + 'T00:00:00Z');
           startDate.setDate(startDate.getDate() - startDate.getDay());
       }
 
@@ -1046,13 +1048,10 @@
       var endDateDay = endDate.getUTCDate();
 
       if (resolution == "Yearly") {
-          endDate = new Date(endDateYear + '-12-31T00:00:00Z');
+          endDate = new Date(Date.UTC(endDateYear, 11, 31));
       } else if (resolution == "Monthly" || resolution == "EpiWeekly") {
-          endDate = new Date(endDateYear + '-' + monthString[endDateMonth] + '-15T00:00:00Z');
-      } /*else if (resolution == "EpiWeekly") {
-          endDate = new Date(endDateYear + '-' + monthString[startDateMonth] + '-' + pad(startDateDay, 2) + 'T00:00:00Z');
-          startDate.setDate(startDate.getDate() - startDate.getDay());
-      }*/
+          endDate = new Date(Date.UTC(endDateYear, endDateMonth, 0));
+      }
 
       return endDate;
     }
