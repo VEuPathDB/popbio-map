@@ -359,7 +359,7 @@
             if (viewMode !== 'abnd') {
                 // Hiding the notices from the abundance graph
                 $("#projects-notice").hide();
-                $("#resolution-selector-group").hide();
+                $("#plots-control-panel").hide();
             }
 
             // update the export fields dropdown
@@ -930,8 +930,15 @@
                     case "summarizeBy":
                         //Update global variable with value we want to summarize by
                         glbSummarizeBy = urlParams[key];
+                        break;
                         //Use to switch the legend data-toggle
                         //$('.legend .dropdown-menu li').find("[data-value='" + summarizeBy + "']").click()
+                    case "limitTerms":
+                        // Toggle the limit to off if we are not limiting terms
+                        if (urlParams[key] === 'false') {
+                            $('#limit-terms-toggle-input').bootstrapToggle('toggle');
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -1211,6 +1218,8 @@
             var panel_param = "";
             var url = window.location.origin + window.location.pathname + "?";
             var search_items = $('#search_ac').tagsinput('items');
+            var limitTerms = "&limitTerms=" + $('#limit-terms-toggle-input').prop('checked');
+            console.log(limitTerms);
             
             //Using an object to store search terms that will be used to generate link
             var search_terms = {};
@@ -1247,7 +1256,7 @@
                 panel_param = "&panelID=" + $(".sidebar-pane.active").attr("id");
             }
 
-            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link;
+            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms;
 
             url = url + encodeURI(query_parameters);
 

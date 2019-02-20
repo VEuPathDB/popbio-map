@@ -202,7 +202,6 @@
             </div>
         </div>
     </div>
-
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
@@ -300,17 +299,32 @@
 
                     </div>
                 </div>
-                <div id="resolution-selector-group">
-                    <div id="resolution-selector-title">
-                        <b>Temporal Resolution </b>
-                        <i class="fa fa-info-circle" style="color: #8C8C8C"></i>
-                        <i class="fa fa-exclamation-triangle"></i>
+                <div id="plots-control-panel" class="control-panel">
+                    <div id="limit-terms-toggle-group">
+                        <div id="limit-terms-toggle-label">
+                            <div id="limit-terms-toggle-title">
+                              <span></span>
+                              <i class="fa fa-info-circle" style="color: #8C8C8C" data-toggle="tooltip" title="Limit the categories that get graphed"></i>
+                            </div>
+                            <div id="limit-terms-toggle-details">
+                            </div>
+                        </div>
+                        <div id="limit-terms-toggle">
+                            <input id="limit-terms-toggle-input" checked type="checkbox" data-toggle="toggle" name="limit-toggle">
+                        </div>
                     </div>
-                    <div id="resolution-selector" class="btn-group" role="group" aria-label="...">
-                        <button id="Yearly" value="Yearly" type="button" class="btn btn-default">Yearly</button>
-                        <button id="Monthly" value="Monthly" type="button" class="btn btn-default">Monthly</button>
-                        <button id="EpiWeekly" value="EpiWeekly" type="button" class="btn btn-default">EpiWeekly</button>
-                        <button id="Daily" value="Daily" type="button" class="btn btn-default">Daily</button>
+                    <div id="resolution-selector-group">
+                        <div id="resolution-selector-title">
+                            <b>Temporal Resolution </b>
+                            <i class="fa fa-info-circle" style="color: #8C8C8C"></i>
+                            <i class="fa fa-exclamation-triangle"></i>
+                        </div>
+                        <div id="resolution-selector" class="btn-group" role="group" aria-label="...">
+                            <button id="Yearly" value="Yearly" type="button" class="btn btn-default">Yearly</button>
+                            <button id="Monthly" value="Monthly" type="button" class="btn btn-default">Monthly</button>
+                            <button id="EpiWeekly" value="EpiWeekly" type="button" class="btn btn-default">EpiWeekly</button>
+                            <button id="Daily" value="Daily" type="button" class="btn btn-default">Daily</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -933,6 +947,7 @@
                                class="date-shortcut" data-on="2010-2014" data-off="2010-2014">
                         <input type="checkbox" name="2015-now" value="2015-now" data-toggle="toggle"
                                class="date-shortcut" data-on="2015-now" data-off="2015-now">
+                        <input type="checkbox" name="limit-toggle" data-toggle="toggle">
                     </span>
                 </div>
             </div>
@@ -1025,7 +1040,6 @@
     </div>
 </div>
 
-
 <!-- DKDK VB-8113 Create popup for shared link using Bootstrap Modal -->
 <div id="sharedlinkModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -1043,7 +1057,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- jsrender template for sample info in the table slider (samples view)-->
 

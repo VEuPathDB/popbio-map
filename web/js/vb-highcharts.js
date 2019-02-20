@@ -8,6 +8,9 @@
     var highestResolution;
     var lowestResolution;
     var resultCount;
+    var maxTerms;
+    var limitTerms = true;
+    var limitTermsMessage;
     var highchartsFilter;
     var resolution;
     var minDate;
@@ -20,6 +23,7 @@
     var maxDayDate;
     var minRange;
     var graphConfig;
+    var ordinal;
     var afterSetExtremesTriggered = false;
     var externalAction = false;
     var resolutionSelector = false;
@@ -159,10 +163,11 @@
         PopulationBiologyMap.methods = {};
     }
 
-    PopulationBiologyMap.methods.createHighchartsGraph = function(divid, filter) {
+    PopulationBiologyMap.methods.createHighchartsGraph = function(filter) {
         //How the URL will be constructed
+        var term  = "&term=" + mapSummarizeByToField(glbSummarizeBy).summarize;
         var baseUrl = solrPopbioUrl + viewMode + resolutionEndpoint + "?";
-        var queryUrl = baseUrl + qryUrl + filter + statsFilter;
+        var queryUrl = baseUrl + qryUrl + filter + statsFilter + term;
         
         //Resets/updates variables related to the data being graphed
         collectionResolutions = [];
@@ -170,12 +175,13 @@
         highestResolution = undefined;
         minRange = undefined;
         graphConfig = viewGraphConfig[viewMode];
+        $('#limit-terms-toggle-title span').text('Limit ' + glbSummarizeBy);
 
         //Set title of graph panel
         $("#swarm-plots h3").text(graphConfig.graphTitle);
 
-        //Hide resolution selector to not show the changes the code does to the buttons
-        $("#resolution-selector-group").hide();
+        //Hide plots control panel to not show the changes the code does to the buttons
+        $("#plots-control-panel").hide();
         //Reset any buttons that were disabled
         $.each($("#resolution-selector .disabled"), function() {
             $(this).removeClass("disabled");
@@ -193,7 +199,8 @@
             dataType: "json",
             success: function (json) {
                 // Get the resolutions of the data being graphed
-                var collectionResolutionList = json.facets.collection_resolution.buckets
+                var collectionResolutionList = json.facets.collection_resolution.buckets;
+                maxTerms = json.facets.term.buckets.length;
                 
                 // Get the maximum and minimum boundaries of the different resolutions
                 // For now specifying 
@@ -316,9 +323,6 @@
                 }
 
                 $("#resolution-selector .disabled").tooltip("enable");
-
-                //Display the resolution selector to let user know the resolution of the data
-                $("#resolution-selector-group").fadeIn();
                 $("#" + resolution).addClass("btn-primary").removeClass("btn-default");
 
                 //Hide warning icon if only one resolution is present in data being graphed
@@ -399,13 +403,39 @@
             var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
             var queryUrl = baseUrl + qryUrl + facetTerm + filter;
 
+            // Set the default message
+            limitTermsMessage = "All categories shown";
+
+            //limit results in query if needed and also update message
+            if (limitTerms && maxTerms > 14) {
+                // TODO: Might not want a hardcoded termlimit
+                queryUrl = queryUrl + "&termLimit=14";
+                $('#limit-terms-toggle-input').bootstrapToggle('enable');
+                $('#limit-terms-toggle .toggle').removeClass('disabled');
+                $('#limit-terms-toggle label').removeClass('disabled');
+                limitTermsMessage = "Top 14 (of " + maxTerms + ") categories shown";
+            }
+            else if (maxTerms > 14) {
+                // This ensures to reenable the button when moving between markers
+                // and the marker has more than 14 terms
+                $('#limit-terms-toggle-input').bootstrapToggle('enable');
+                $('#limit-terms-toggle .toggle').removeClass('disabled');
+                $('#limit-terms-toggle label').removeClass('disabled');
+            }
+            else {
+                // Disable the button since there are less than 14 terms available to be graphed
+                $('#limit-terms-toggle-input').bootstrapToggle('disable');
+                $('#limit-terms-toggle .toggle').addClass('disabled');
+                $('#limit-terms-toggle label').addClass('disabled');
+            }
+
+            $('#limit-terms-toggle-details').text(limitTermsMessage);
+
             $.ajax({
                 beforeSend: function(xhr) {
                     //Clear chart area and start the spinner
                     PaneSpin('swarm-plots', 'start');
                     $('#swarm-chart-area').empty();
-                    $(divid + ' select').remove();
-                    $(divid + ' label').remove();
 
                     //Probably not nessary
                     if (xhr && xhr.overrideMimeType) {
@@ -426,6 +456,8 @@
                     var data = highcharts.series;
                     var yAxis = highcharts.yAxis;
                     createStockchart(yAxis, data);
+                    //Display the control panel that allows users to select the resolution and limit terms graphed
+                    $("#plots-control-panel").fadeIn();
                     PaneSpin('swarm-plots', 'stop');
                 }
             });
@@ -458,10 +490,36 @@
                 var endDate = new Date(extremes.max);
                 var numberOfDays = (extremes.max-extremes.min) / (1001 * 3600 * 24);
 
+                // Prevents overlap of yearly resolution in projects selection in legend
+                if (resolution === "Yearly" && glbSummarizeBy === "Project") {
+                    ordinal = true;
+                } else {
+                    ordinal = false;
+                }
+
                 //Update the graph
                 updateHighchartsGraph(startDate, endDate, resolution);
             }
         });
+
+        $("#limit-terms-toggle-input").change(function() {
+            if ($(this).prop('checked')) {
+              limitTerms = true;
+              limitTermsMessage = "Top 14 (of " + maxTerms + ") categories shown";
+            }
+            else {
+              limitTerms = false;
+              limitTermsMessage = "All categories shown";
+            }
+
+            $("#limit-terms-toggle-details").hide().text(limitTermsMessage).fadeIn();
+
+            // Rerender the graph
+            $("#resolution-selector .btn-primary").click();
+        });
+
+        // Initialize the info tooltip for Limit Categories control
+        $("#limit-terms-toggle-title .fa-info-circle").tooltip();
 
         //Give info on why buttons might get greyed out
         $("#resolution-selector-title .fa-info-circle").tooltip({placement: "top", title: "A higher resolution might get disabled if viewing a broad timeline or when a higher resolution is not available."});
@@ -523,7 +581,7 @@
             plotOptions: plotOptions,
             xAxis: {
                 //DKDK VB-8096 set ordinal false for highchart.stockchart
-                ordinal: false,
+                ordinal: ordinal,
                 events: {
                     afterSetExtremes: afterSetExtremes
                 },
@@ -628,6 +686,12 @@
         var baseUrl = solrPopbioUrl + viewMode + dataEndpoint + "?";
         var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
         var queryUrl = baseUrl + qryUrl + facetTerm + highchartsFilter + "&fq=collection_date:[" + startDateString + " TO " + endDateString +"]";
+
+        if (limitTerms && maxTerms > 14) {
+          // TODO: Might not want a hardcoded term limit
+          queryUrl = queryUrl + "&termLimit=14";
+        }
+
         var chart = Highcharts.charts[0];
 
         chart.showLoading("Loading data from server...");
@@ -653,6 +717,7 @@
                 chart.redraw();
                 chart.hideLoading();
                 chart.xAxis[1].update({min: minDate, max: maxDate});
+                chart.xAxis[0].update({ordinal: ordinal});
                 chart.xAxis[0].setExtremes(startDate.getTime(), endDate.getTime());
             } else {
                 chart.showLoading("No data found");
@@ -769,6 +834,23 @@
                             singleTermData.data.push({x:unixDate, y:yValue, data:data});
                         }
                     });
+
+                    // Prevents overlap of yearly resolution in projects selection in legend
+                    if (resolution === "Yearly" && glbSummarizeBy === "Project") {
+                        ordinal = true;
+
+                        // Prevents the left and right columns from getting cut off by adding dummy data
+                        if (singleTermData.data.length === 1) {
+                            termDataDate = singleTermData.data[0].x;
+
+                            if (termDataDate === minDate) {
+                                singleTermData.data.push({x:maxDate, y:0});
+                                tempDate = new Date(maxDate);
+                            }
+                        }
+                    } else {
+                        ordinal = false;
+                    }
 
                     //Add series data
                     highcharts.series.push(singleTermData);
