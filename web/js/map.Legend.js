@@ -49,7 +49,8 @@ L.Control.MapLegend = L.Control.extend({
             colorBrewer: L.ColorBrewer.Diverging.RdYlBu[10].slice()
         },
         palette: {},
-        colorsArr: L.ColorBrewer.Diverging.RdYlBu[10].slice().reverse()
+        colorsArr: L.ColorBrewer.Diverging.RdYlBu[10].slice().reverse(),
+        rescale: false
     },
 
     // Click event handler of legend would fire after map click event
@@ -60,6 +61,13 @@ L.Control.MapLegend = L.Control.extend({
         // Right now passing options does not affect anything, but adding it since the 
         // correct way of implementing a new control is to use options to modify the object
         this.addLegendIcon(options);
+        if (options.summarizeBy) {
+            this.options.summarizeBy = options.summarizeBy;
+        }
+        this.options.numberOfColors = legendSpecies;
+        this.options.flyTo = options.flyTo;
+        this.options.rescale = options.rescale;
+
     },
 
     // add the legend to the DOM tree
@@ -572,18 +580,15 @@ L.Control.MapLegend = L.Control.extend({
          return palette.value();
     },
 
-    _setPalette: function(rescale) {
+    _setPalette: function() {
         /*
             Sets the palette
         */
 
-        if (rescale === undefined) {
-            rescale = false;
-        }
 
         var sortedItems = this.sortedItems;
 
-        if (rescale) {
+        if (this.options.rescale) {
             // Since we are giving more importance to visible markers, get the items
             // object so we can update their importance/abundance value
             var items = $.extend(true, {}, this.items); // make a deep copy with jQuery
@@ -769,10 +774,6 @@ L.control.legend = function (url, options) {
             options - legend options
     */
     var newLegend = new L.Control.MapLegend(options);
-
-    if (options.summarizeBy) newLegend.options.summarizeBy = options.summarizeBy;
-    newLegend.options.numberOfColors = legendSpecies;
-    newLegend.options.flyTo = options.flyTo;
     newLegend.bindTableFilter();
 
     $.getJSON(url, function (data) {
@@ -790,13 +791,17 @@ L.control.legend = function (url, options) {
 
 // Rescale colors
 $(document).on('click', '#rescale_colors', function() {
-    legend._setPalette(true);
+    legend.options.rescale = true;
+    PopulationBiologyMap.data.rescale = true;
+    legend._setPalette();
     loadSolr({clear: 1, zoomLevel: map.getZoom()});
     //legend.refreshLegend(legend.options.palette);
 });
 
 $(document).on('click', '#reset_colors', function() {
-    legend._setPalette(false);
+    legend.options.rescale = false;
+    PopulationBiologyMap.data.rescale = false;
+    legend._setPalette();
     loadSolr({clear: 1, zoomLevel: map.getZoom()});
 });
 
