@@ -597,7 +597,23 @@
                 enabled: false
             },
             series: data
+        }, function() {
+            var navDates = PopulationBiologyMap.data.navDates;
+            if (navDates) {
+                var navDates = PopulationBiologyMap.data.navDates;
+                var minNavDate = parseInt(navDates[0]);
+                var maxNavDate = parseInt(navDates[1]);
+                this.xAxis[0].setExtremes(minNavDate, maxNavDate);
+                PopulationBiologyMap.data.navDates = undefined;
+
+                if (PopulationBiologyMap.data.resolution != resolution) {
+                    resolution = PopulationBiologyMap.data.resolution;
+                    $("#" + resolution).click();
+                }
+            }
         });
+
+
     };
 
     /**
