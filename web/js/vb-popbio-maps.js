@@ -92,7 +92,7 @@ function bindEvents() {
     });
 
     // Rescale colors
-    $('.legend').on('click', '#rescale_colors', function() {
+    /*$('.legend').on('click', '#rescale_colors', function() {
         legend._setPalette(reescale=true);
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
     });
@@ -100,7 +100,7 @@ function bindEvents() {
     $(document).on('click', '#reset_colors', function() {
         legend._setPalette(false);
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
-    });
+    });*/
 
 
     // download data
@@ -664,7 +664,8 @@ function initializeMap(parameters) {
 
     legend = new L.control.legend(url, {
         summarizeBy: glbSummarizeBy,
-        flyTo: flyTo
+        flyTo: flyTo,
+        rescale: PopulationBiologyMap.data.rescale
     });
 
     if (rectHighlight !== null) map.removeLayer(rectHighlight);
@@ -1836,6 +1837,13 @@ function loadSolr(parameters) {
 
                 // Refresh legend when all the new markers have been added and old markers have been removed
                 legend.refreshLegend();
+                if (PopulationBiologyMap.data.initialLoad) {
+                    if (PopulationBiologyMap.data.rescale) {
+                        $("#rescale_colors").click();
+                    }
+
+                    PopulationBiologyMap.data.initialLoad = false;
+                }
             }, 800);
         }, 50)
 

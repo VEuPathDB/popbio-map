@@ -713,6 +713,8 @@
 
         // VB-7318 set valueForNot variable for shared view
         var valueForNot = false;
+        // Adding a way to tell when we first load the map
+        PopulationBiologyMap.data.initialLoad = true;
 
         for (var key in urlParams) {
             if (urlParams.hasOwnProperty(key)) {
@@ -939,12 +941,19 @@
                             $('#limit-terms-toggle-input').bootstrapToggle('toggle');
                         }
                         break;
+                    case "optimizeColors":
+                        // Check if we are optimizing the legend
+                        if (urlParams[key] === 'true') {
+                            PopulationBiologyMap.data.rescale = true;
+                        }
+                        break;
                     default:
                         break;
                 }
             }
-        // VB-7318 set valueForNot to be false at each loop
-        valueForNot = false;    
+
+            // VB-7318 set valueForNot to be false at each loop
+            valueForNot = false;    
         }
                
         // update the export fields dropdown
@@ -1219,7 +1228,7 @@
             var url = window.location.origin + window.location.pathname + "?";
             var search_items = $('#search_ac').tagsinput('items');
             var limitTerms = "&limitTerms=" + $('#limit-terms-toggle-input').prop('checked');
-            console.log(limitTerms);
+            var rescale = PopulationBiologyMap.data.rescale;
             
             //Using an object to store search terms that will be used to generate link
             var search_terms = {};
@@ -1256,7 +1265,12 @@
                 panel_param = "&panelID=" + $(".sidebar-pane.active").attr("id");
             }
 
-            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms;
+            if (rescale) {
+                rescaleParam = "&optimizeColors=true";
+                $("#rescale_colors").click();
+            }
+
+            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms + rescaleParam;
 
             url = url + encodeURI(query_parameters);
 
@@ -1501,7 +1515,7 @@
         .on("jsonLoaded", function () {
             if (highlightedId && PopulationBiologyMap.data.highlightedId == undefined) {
                 PopulationBiologyMap.data.highlightedId = highlightedId;
-            }
+            } 
         });
 
         $('#search_ac').on('itemAdded', function (event) {
