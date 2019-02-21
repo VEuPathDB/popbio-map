@@ -947,6 +947,12 @@
                             PopulationBiologyMap.data.rescale = true;
                         }
                         break;
+                    case "navDates":
+                        // Let the Highcharts code know we will be updating the navigator
+                        PopulationBiologyMap.data.navDates = urlParams[key].split(',');
+                    case "resolution":
+                        // Store the resolution in case we need to update it
+                        PopulationBiologyMap.data.resolution = urlParams[key];
                     default:
                         break;
                 }
@@ -1229,6 +1235,9 @@
             var search_items = $('#search_ac').tagsinput('items');
             var limitTerms = "&limitTerms=" + $('#limit-terms-toggle-input').prop('checked');
             var rescale = PopulationBiologyMap.data.rescale;
+            var chartResolution = "";
+            var navDates = "";
+            var rescaleParam = "";
             
             //Using an object to store search terms that will be used to generate link
             var search_terms = {};
@@ -1262,7 +1271,8 @@
             //Set the selected marker and panel that was being viewed
             if (highlighted_id != undefined) {
                 marker_param = "&markerID=" + highlighted_id;
-                panel_param = "&panelID=" + $(".sidebar-pane.active").attr("id");
+                activePanel = $(".sidebar-pane.active").attr("id");
+                panel_param = "&panelID=" + activePanel;
             }
 
             if (rescale) {
@@ -1270,7 +1280,19 @@
                 $("#rescale_colors").click();
             }
 
-            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms + rescaleParam;
+            if (Highcharts.charts.length && activePanel === "swarm-plots") {
+                navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
+                navDates = "&navDates=" + navigatorExtremes.min + "," + navigatorExtremes.max;
+                resolution = $("#resolution-selector .btn-primary").val();
+                chartResolution = "&resolution=" + resolution;
+
+                // For some reason clicking on share link button re-renders graph so need to add this in
+                // so graph gets re-rendered to how it was before.
+                PopulationBiologyMap.data.navDates = [navigatorExtremes.min, navigatorExtremes.max];
+                PopulationBiologyMap.data.resolution = resolution;
+            }
+
+            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms + rescaleParam + navDates + chartResolution;
 
             url = url + encodeURI(query_parameters);
 
