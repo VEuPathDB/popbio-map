@@ -679,11 +679,11 @@
              updateRequestProcessorChains that can be used by name
              on each Update Request
           -->
-
+        <!-- disabled Feb 2019
            <lst name="defaults">
              <str name="update.chain">dedupe</str>
            </lst>
-
+         -->
     </requestHandler>
 
     <!-- The following are implicitly added
@@ -1351,6 +1351,7 @@
 
       -->
 
+    <!-- no longer used since Feb 2019 -->
     <updateRequestProcessorChain name="dedupe">
         <processor class="solr.processor.SignatureUpdateProcessorFactory">
             <bool name="enabled">true</bool>

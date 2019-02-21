@@ -690,6 +690,10 @@ div.error div, div.warning div, div.info div, div.hint div {
     left: 10px;
 }
 
+.highcharts-container {
+    margin: auto;
+}
+
 .highcharts-title {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -700,18 +704,27 @@ div.error div, div.warning div, div.info div, div.hint div {
     display: none;
 }
 
-#resolution-selector-group {
-    display: none;
+#plots-control-panel {
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
     text-align: center;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #EEEEEE;
+    display: none;
+}
+
+#plots-control-panel i {
+    margin-left: 4px;
+}
+
+#resolution-selector-group {
     padding: 10px;
 }
 
 #resolution-selector-title {
     padding-bottom: 4px;
-}
-
-#resolution-selector-title i {
-    margin-left: 5px;
 }
 
 #resolution-selector-title .fa-exclamation-triangle {
@@ -720,6 +733,44 @@ div.error div, div.warning div, div.info div, div.hint div {
 
 #resolution-selector-title .fa-exclamation-triangle.danger {
     color: red;
+}
+
+#limit-terms-toggle-group {
+    display: inline-block;
+    width: 264px;
+    text-align: left;
+}
+
+#limit-terms-toggle-label {
+    float: left;
+}
+
+#limit-terms-toggle-title > span {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#limit-terms-toggle-details {
+	font-size: 12px;
+    font-style: italic;
+}
+
+#limit-terms-toggle{
+    float: right;
+}
+
+#limit-terms-toggle .toggle.disabled {
+    background-color: #FFFFFF;
+    border-color: #E7E7E7;
+}
+
+#limit-terms-toggle label.disabled {
+    background-color: #FFFFFF;
+    color: #333333;
+}
+
+#limit-terms-toggle .toggle-group .btn-default {
+    background-color: #FFFFFF;
 }
 
 #sidebar {
@@ -992,8 +1043,7 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 .sidebar-icon a.disabled, .sidebar-icon a.disabled:hover, #swarm-plots .disabled, #swarm-plots .disabled:hover {
-    color: #ddd;
-    background-color: #FFFFFF;
+	opacity: .65;
     cursor: not-allowed;
 }
 
@@ -1113,4 +1163,9 @@ div.error div, div.warning div, div.info div, div.hint div {
 
 #export-message {
     text-align: center;
+}
+
+/* DKDK VB-8112 disabling cursor change on pie chart legend */
+.nvd3 .nv-legend .nv-series {    
+    cursor: default !important;
 }

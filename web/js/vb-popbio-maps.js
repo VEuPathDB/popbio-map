@@ -92,7 +92,7 @@ function bindEvents() {
     });
 
     // Rescale colors
-    $('.legend').on('click', '#rescale_colors', function() {
+    /*$('.legend').on('click', '#rescale_colors', function() {
         legend._setPalette(reescale=true);
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
     });
@@ -100,7 +100,7 @@ function bindEvents() {
     $(document).on('click', '#reset_colors', function() {
         legend._setPalette(false);
         loadSolr({clear: 1, zoomLevel: map.getZoom()});
-    });
+    });*/
 
 
     // download data
@@ -664,7 +664,8 @@ function initializeMap(parameters) {
 
     legend = new L.control.legend(url, {
         summarizeBy: glbSummarizeBy,
-        flyTo: flyTo
+        flyTo: flyTo,
+        rescale: PopulationBiologyMap.data.rescale
     });
 
     if (rectHighlight !== null) map.removeLayer(rectHighlight);
@@ -1535,7 +1536,7 @@ function loadSolr(parameters) {
                                 case "swarm-plots":
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (viewMode === 'abnd' || viewMode == 'path') {
-                                        PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
+                                        PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                     } else {
                                         createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                     }
@@ -1585,7 +1586,7 @@ function loadSolr(parameters) {
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (!panel.data('has-graph')) {
                                         if (viewMode === 'abnd' || viewMode === 'path') {
-                                            PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
+                                            PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                         } else { 
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                         }
@@ -1667,7 +1668,7 @@ function loadSolr(parameters) {
 
                                         // Geno viewmode will say that it is not availble in that mode
                                         if (viewMode === 'abnd' || viewMode === 'path') {
-                                            PopulationBiologyMap.methods.createHighchartsGraph("#swarm-plots", buildBbox(recBounds));
+                                            PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                         } else {
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
                                             panel.data('has-graph', true);
@@ -1836,6 +1837,13 @@ function loadSolr(parameters) {
 
                 // Refresh legend when all the new markers have been added and old markers have been removed
                 legend.refreshLegend();
+                if (PopulationBiologyMap.data.initialLoad) {
+                    if (PopulationBiologyMap.data.rescale) {
+                        $("#rescale_colors").click();
+                    }
+
+                    PopulationBiologyMap.data.initialLoad = false;
+                }
             }, 800);
         }, 50)
 
@@ -2043,6 +2051,9 @@ function updatePieChart(population, stats) {
                 chart.legend.applyClass('nv-legend-text-italics');
                 chart.tooltip.applyClass('nv-legend-text-italics');
             }
+
+            //DKDK VB-8112 disable donut legend (nvd3)
+            chart.legend.updateState(false);
 
             // Overwrite valueFormatter to return integers
             chart.tooltip.valueFormatter(function (d, i) {
@@ -2311,7 +2322,11 @@ function tableHtml(divid, results) {
                     collectionDuration: element.collection_duration_days_i
                 };
 
+                //DKDK VB-8161 rounding to 2 decimal places
                 row.smplAvgAbnd = row.sampleSize / row.collectionDuration;
+                if (Number.isInteger(row.smplAvgAbnd) == false) {
+                    row.smplAvgAbnd = row.smplAvgAbnd.toFixed(2);
+                }
                 template = $.templates("#abndRowTemplate");
                 break;
             case "geno":

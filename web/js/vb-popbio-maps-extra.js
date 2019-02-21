@@ -359,7 +359,7 @@
             if (viewMode !== 'abnd') {
                 // Hiding the notices from the abundance graph
                 $("#projects-notice").hide();
-                $("#resolution-selector-group").hide();
+                $("#plots-control-panel").hide();
             }
 
             // update the export fields dropdown
@@ -713,6 +713,8 @@
 
         // VB-7318 set valueForNot variable for shared view
         var valueForNot = false;
+        // Adding a way to tell when we first load the map
+        PopulationBiologyMap.data.initialLoad = true;
 
         for (var key in urlParams) {
             if (urlParams.hasOwnProperty(key)) {
@@ -930,14 +932,34 @@
                     case "summarizeBy":
                         //Update global variable with value we want to summarize by
                         glbSummarizeBy = urlParams[key];
+                        break;
                         //Use to switch the legend data-toggle
                         //$('.legend .dropdown-menu li').find("[data-value='" + summarizeBy + "']").click()
+                    case "limitTerms":
+                        // Toggle the limit to off if we are not limiting terms
+                        if (urlParams[key] === 'false') {
+                            $('#limit-terms-toggle-input').bootstrapToggle('toggle');
+                        }
+                        break;
+                    case "optimizeColors":
+                        // Check if we are optimizing the legend
+                        if (urlParams[key] === 'true') {
+                            PopulationBiologyMap.data.rescale = true;
+                        }
+                        break;
+                    case "navDates":
+                        // Let the Highcharts code know we will be updating the navigator
+                        PopulationBiologyMap.data.navDates = urlParams[key].split(',');
+                    case "resolution":
+                        // Store the resolution in case we need to update it
+                        PopulationBiologyMap.data.resolution = urlParams[key];
                     default:
                         break;
                 }
             }
-        // VB-7318 set valueForNot to be false at each loop
-        valueForNot = false;    
+
+            // VB-7318 set valueForNot to be false at each loop
+            valueForNot = false;    
         }
                
         // update the export fields dropdown
@@ -1211,6 +1233,11 @@
             var panel_param = "";
             var url = window.location.origin + window.location.pathname + "?";
             var search_items = $('#search_ac').tagsinput('items');
+            var limitTerms = "&limitTerms=" + $('#limit-terms-toggle-input').prop('checked');
+            var rescale = PopulationBiologyMap.data.rescale;
+            var chartResolution = "";
+            var navDates = "";
+            var rescaleParam = "";
             
             //Using an object to store search terms that will be used to generate link
             var search_terms = {};
@@ -1244,22 +1271,35 @@
             //Set the selected marker and panel that was being viewed
             if (highlighted_id != undefined) {
                 marker_param = "&markerID=" + highlighted_id;
-                panel_param = "&panelID=" + $(".sidebar-pane.active").attr("id");
+                activePanel = $(".sidebar-pane.active").attr("id");
+                panel_param = "&panelID=" + activePanel;
             }
 
-            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link;
+            if (rescale) {
+                rescaleParam = "&optimizeColors=true";
+                $("#rescale_colors").click();
+            }
+
+            if (Highcharts.charts.length && activePanel === "swarm-plots") {
+                navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
+                navDates = "&navDates=" + navigatorExtremes.min + "," + navigatorExtremes.max;
+                resolution = $("#resolution-selector .btn-primary").val();
+                chartResolution = "&resolution=" + resolution;
+
+                // For some reason clicking on share link button re-renders graph so need to add this in
+                // so graph gets re-rendered to how it was before.
+                PopulationBiologyMap.data.navDates = [navigatorExtremes.min, navigatorExtremes.max];
+                PopulationBiologyMap.data.resolution = resolution;
+            }
+
+            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms + rescaleParam + navDates + chartResolution;
 
             url = url + encodeURI(query_parameters);
 
             //Add URL to attribute used to copy to clipboard
             $("#generate-link").attr("data-clipboard-text", url);
-            $("#generate-link-msg").show();
         });
         
-        $("#generate-link").mousemove(function (){
-            $("#generate-link-msg").fadeOut();
-        });
-
         //Disable the panel from opening if it was disabled
         $(".sidebar-icon a").click(function (e) {
             if ($(this).hasClass("disabled")) {
@@ -1497,7 +1537,7 @@
         .on("jsonLoaded", function () {
             if (highlightedId && PopulationBiologyMap.data.highlightedId == undefined) {
                 PopulationBiologyMap.data.highlightedId = highlightedId;
-            }
+            } 
         });
 
         $('#search_ac').on('itemAdded', function (event) {

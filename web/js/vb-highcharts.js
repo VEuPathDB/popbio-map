@@ -2,21 +2,39 @@
     //Private variables used for the chart
     var dataEndpoint = "Graphdata";
     var resolutionEndpoint = "MarkerYearRange"
+    var statsFilter = "&stats.field=collection_month_s&stats.field=collection_year_s&stats.field=collection_epiweek_s&stats.field=collection_day_s";
     var resultLimit = 500000;
     var collectionResolutions;
     var highestResolution;
     var lowestResolution;
     var resultCount;
+    var maxTerms;
+    var limitTerms = true;
+    var limitTermsMessage;
     var highchartsFilter;
     var resolution;
     var minDate;
     var maxDate;
+    var minYearDate;
+    var maxYearDate;
+    var minMonthDate;
+    var maxMonthDate;
+    var minDayDate;
+    var maxDayDate;
     var minRange;
     var graphConfig;
+    var ordinal;
     var afterSetExtremesTriggered = false;
     var externalAction = false;
     var resolutionSelector = false;
     var highcharts = {};
+    var monthString = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    var disabledResolutions = {
+      Yearly: false,
+      Monthly: false,
+      EpiWeekly: false,
+      Daily: false,
+    }
 
     //Object that contain the configuration of how certain views are supposed to be graphed with highcharts
     //Preferably, this configuration should be constructed using information stored in a database
@@ -39,7 +57,11 @@
                     stacking: 'normal',
                     groupPadding: 0.01,
                     events: {
-                        legendItemClick: setExternalActionFlag
+                        //DKDK VB-8112 disable legend click at highstock
+                        // legendItemClick: setExternalActionFlag
+                        legendItemClick: function () {
+                            return false;
+                        }
                     }
                 }
             },
@@ -76,12 +98,19 @@
                     stacking: 'normal',
                     groupPadding: 0.01,
                     events: {
-                        legendItemClick: setExternalActionFlag
-                    }
+                        //DKDK VB-8112 disable legend click at highstock
+                        // legendItemClick: setExternalActionFlag
+                        legendItemClick: function () {
+                            return false;
+                        }                    }
                 },
                 line: {
                     events: {
-                        legendItemClick: setExternalActionFlag
+                        //DKDK VB-8112 disable legend click at highstock
+                        // legendItemClick: setExternalActionFlag
+                        legendItemClick: function () {
+                            return false;
+                        }
                     },
                     marker: {
                         enabled: true,
@@ -134,10 +163,11 @@
         PopulationBiologyMap.methods = {};
     }
 
-    PopulationBiologyMap.methods.createHighchartsGraph = function(divid, filter) {
+    PopulationBiologyMap.methods.createHighchartsGraph = function(filter) {
         //How the URL will be constructed
+        var term  = "&term=" + mapSummarizeByToField(glbSummarizeBy).summarize;
         var baseUrl = solrPopbioUrl + viewMode + resolutionEndpoint + "?";
-        var queryUrl = baseUrl + qryUrl + filter;
+        var queryUrl = baseUrl + qryUrl + filter + statsFilter + term;
         
         //Resets/updates variables related to the data being graphed
         collectionResolutions = [];
@@ -145,12 +175,13 @@
         highestResolution = undefined;
         minRange = undefined;
         graphConfig = viewGraphConfig[viewMode];
+        $('#limit-terms-toggle-title span').text('Limit ' + glbSummarizeBy);
 
         //Set title of graph panel
         $("#swarm-plots h3").text(graphConfig.graphTitle);
 
-        //Hide resolution selector to not show the changes the code does to the buttons
-        $("#resolution-selector-group").hide();
+        //Hide plots control panel to not show the changes the code does to the buttons
+        $("#plots-control-panel").hide();
         //Reset any buttons that were disabled
         $.each($("#resolution-selector .disabled"), function() {
             $(this).removeClass("disabled");
@@ -167,15 +198,31 @@
             url: queryUrl,
             dataType: "json",
             success: function (json) {
-                //Get the resolutions of the data being graphed
+                // Get the resolutions of the data being graphed
                 var collectionResolutionList = json.facets.collection_resolution.buckets;
-                //Get the min and max dates of data
-                var collectionYearList = json.facets[resolutionToSolrField.Yearly].buckets;
-                var lastYearPosition = collectionYearList.length - 1;
-                minDate = new Date(collectionYearList[0].val + '-01-01T00:00:00Z').getTime();
-                maxDate = new Date(collectionYearList[lastYearPosition].val + '-12-31T00:00:00Z').getTime();
-                //Calculate number of days the data of query will could cover
-                var numberOfDays = (maxDate-minDate) / (1000 * 3600 * 24);
+                maxTerms = json.facets.term.buckets.length;
+                
+                // Get the maximum and minimum boundaries of the different resolutions
+                // For now specifying 
+                var collectionDate = json.stats.stats_fields.collection_date;
+                var collectionDateMin = new Date(collectionDate.min);
+                var collectionDateMax = new Date(collectionDate.max);
+                var minYear = collectionDateMin.getUTCFullYear();
+                var maxYear = collectionDateMax.getUTCFullYear();
+                var minMonth = collectionDateMin.getUTCMonth();
+                var maxMonth = collectionDateMax.getUTCMonth();
+                var minDay = collectionDateMin.getUTCDate();
+                var maxDay = collectionDateMax.getUTCDate();
+                var tempMaxMonth = maxMonth + 1;
+
+                minYearDate = new Date(Date.UTC(minYear,0,1)).getTime();
+                maxYearDate = new Date(Date.UTC(maxYear, 11, 31)).getTime();
+                minMonthDate = new Date(Date.UTC(minYear, minMonth, 1)).getTime();
+                maxMonthDate = new Date(Date.UTC(maxYear, tempMaxMonth, 0)).getTime();
+                minDayDate = new Date(Date.UTC(minYear, minMonth, pad(minDay, 2))).getTime();
+                maxDayDate = new Date(Date.UTC(maxYear, maxMonth, pad(maxDay, 2))).getTime();
+
+                var numberOfDays = (maxYearDate-minYearDate) / (1000 * 3600 * 24);
 
                 //Store the resolutions of the data
                 for (var j = 0; j < collectionResolutionList.length; j++) {
@@ -223,20 +270,20 @@
                     //More than 10 years, do not give users option of viewing EpiWeekly and Daily
                     $("#EpiWeekly").addClass("disabled");
                     $("#Daily").addClass("disabled");
+                    disabledResolutions.EpiWeekly = true;
+                    disabledResolutions.Daily = true;
                 } else if (numberOfDays > 1095) {
                     //More than 3 years but less than 10 years get monthly data
                     resolution = "Monthly";
-
                     //More than 3 years but less than 10 years, do not allow users to see Daily data
                     $("#Daily").addClass("disabled");
+                    disabledResolutions.Daily = true;
                 } else if (numberOfDays > 365) {
                     //More than 1 year, but less than 3 years gets EpiWeekly
                     resolution = "EpiWeekly";
-
                 } else {
                     //Less than one year gets daily data
                     resolution = "Daily";
-
                 }
 
                 //Set the default tooltip message for disabled buttons
@@ -279,9 +326,6 @@
                 }
 
                 $("#resolution-selector .disabled").tooltip("enable");
-
-                //Display the resolution selector to let user know the resolution of the data
-                $("#resolution-selector-group").fadeIn();
                 $("#" + resolution).addClass("btn-primary").removeClass("btn-default");
 
                 //Hide warning icon if only one resolution is present in data being graphed
@@ -291,7 +335,10 @@
                     $("#resolution-selector-title .fa-exclamation-triangle").show();
                 }
 
-                resultCount = json.response.numFound;
+                // Set the minDate and maxDate for the xAxis based on the resolution being graphed
+                setxAxisDates(resolution); 
+
+                //resultCount = json.response.numFound;
             },
             error: function() {
                 PaneSpin('swarm-plots', 'stop');
@@ -359,54 +406,65 @@
             var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
             var queryUrl = baseUrl + qryUrl + facetTerm + filter;
 
-            //Check if the results that will be retrieved from query are more than what we allow to be graphed
-            //Hopefully this will not be needed anymore once graphing by resolution is implemented
-            if (resultCount > resultLimit) {
-                //Display message letting user know why data was not graphed
-                $("#swarm-chart-area").html(
-                    '<div style="text-align: center; margin-top: 30px">' +
-                    '<i class="fa fa-chart-area" style="color: #C3312D; font-size: 12em"></i>' +
-                    '<h4>Too many points to plot</h4>' +
-                    '<h4>Apply filters to plot less data</h4>' +
-                    '<h4><b>Points</b>: ' + resultCount.toString() + '</h4>' +
-                    '<h4><b>Limit</b>: ' + resultLimit.toString() + '</h4>' +
-                    '</div>'
-                );
+            // Set the default message
+            limitTermsMessage = "All categories shown";
 
-                $("#resolution-selector-group").hide();
-            } else {
-                //Limit not reached so get actual data used to create graph
-                $.ajax({
-                    beforeSend: function(xhr) {
-                        //Clear chart area and start the spinner
-                        PaneSpin('swarm-plots', 'start');
-                        $('#swarm-chart-area').empty();
-                        $(divid + ' select').remove();
-                        $(divid + ' label').remove();
-
-                        //Probably not nessary
-                        if (xhr && xhr.overrideMimeType) {
-                            xhr.overrideMimeType('application/json;charset-utf-8');
-                        }
-                    },
-                    url: queryUrl,
-                    dataType: 'json',
-                    success: function(json) {
-                        setHighchartsData(json);
-                    },
-                    error: function() {
-                        PaneSpin('swarm-plots', 'stop');
-                        console.log("An error has occurred");
-                    },
-                    complete: function() {
-                        //Construct graph using the data that was received from Solr
-                        var data = highcharts.series;
-                        var yAxis = highcharts.yAxis;
-                        createStockchart(yAxis, data);
-                        PaneSpin('swarm-plots', 'stop');
-                    }
-                });
+            //limit results in query if needed and also update message
+            if (limitTerms && maxTerms > 14) {
+                // TODO: Might not want a hardcoded termlimit
+                queryUrl = queryUrl + "&termLimit=14";
+                $('#limit-terms-toggle-input').bootstrapToggle('enable');
+                $('#limit-terms-toggle .toggle').removeClass('disabled');
+                $('#limit-terms-toggle label').removeClass('disabled');
+                limitTermsMessage = "Top 14 (of " + maxTerms + ") categories shown";
             }
+            else if (maxTerms > 14) {
+                // This ensures to reenable the button when moving between markers
+                // and the marker has more than 14 terms
+                $('#limit-terms-toggle-input').bootstrapToggle('enable');
+                $('#limit-terms-toggle .toggle').removeClass('disabled');
+                $('#limit-terms-toggle label').removeClass('disabled');
+            }
+            else {
+                // Disable the button since there are less than 14 terms available to be graphed
+                $('#limit-terms-toggle-input').bootstrapToggle('disable');
+                $('#limit-terms-toggle .toggle').addClass('disabled');
+                $('#limit-terms-toggle label').addClass('disabled');
+            }
+
+            $('#limit-terms-toggle-details').text(limitTermsMessage);
+
+            $.ajax({
+                beforeSend: function(xhr) {
+                    //Clear chart area and start the spinner
+                    PaneSpin('swarm-plots', 'start');
+                    $('#swarm-chart-area').empty();
+
+                    //Probably not nessary
+                    if (xhr && xhr.overrideMimeType) {
+                        xhr.overrideMimeType('application/json;charset-utf-8');
+                    }
+                },
+                url: queryUrl,
+                dataType: 'json',
+                success: function(json) {
+                    setHighchartsData(json);
+                },
+                error: function() {
+                    PaneSpin('swarm-plots', 'stop');
+                    console.log("An error has occurred");
+                },
+                complete: function() {
+                    //Construct graph using the data that was received from Solr
+                    var data = highcharts.series;
+                    var yAxis = highcharts.yAxis;
+                    createStockchart(yAxis, data);
+                    //Display the control panel that allows users to select the resolution and limit terms graphed
+                    $("#plots-control-panel").fadeIn();
+                    PaneSpin('swarm-plots', 'stop');
+                }
+            });
+            //}
         });
     }
 
@@ -431,14 +489,40 @@
 
                 var chart = Highcharts.charts[0];
                 var extremes = chart.xAxis[0].getExtremes();
-                var startDate = new Date(extremes.min).toISOString();
-                var endDate = new Date(extremes.max).toISOString();
+                var startDate = new Date(extremes.min);
+                var endDate = new Date(extremes.max);
                 var numberOfDays = (extremes.max-extremes.min) / (1001 * 3600 * 24);
+
+                // Prevents overlap of yearly resolution in projects selection in legend
+                if (resolution === "Yearly" && glbSummarizeBy === "Project") {
+                    ordinal = true;
+                } else {
+                    ordinal = false;
+                }
 
                 //Update the graph
                 updateHighchartsGraph(startDate, endDate, resolution);
             }
         });
+
+        $("#limit-terms-toggle-input").change(function() {
+            if ($(this).prop('checked')) {
+              limitTerms = true;
+              limitTermsMessage = "Top 14 (of " + maxTerms + ") categories shown";
+            }
+            else {
+              limitTerms = false;
+              limitTermsMessage = "All categories shown";
+            }
+
+            $("#limit-terms-toggle-details").hide().text(limitTermsMessage).fadeIn();
+
+            // Rerender the graph
+            $("#resolution-selector .btn-primary").click();
+        });
+
+        // Initialize the info tooltip for Limit Categories control
+        $("#limit-terms-toggle-title .fa-info-circle").tooltip();
 
         //Give info on why buttons might get greyed out
         $("#resolution-selector-title .fa-info-circle").tooltip({placement: "top", title: "A higher resolution might get disabled if viewing a broad timeline or when a higher resolution is not available."});
@@ -472,7 +556,11 @@
             legend: {
                 enabled: true,
                 labelFormat: "<i>{name}</i>",
-                symbolRadius: 0
+                symbolRadius: 0,
+                //DKDK VB-8112 disabling cursor change on swarm chart legend
+                itemStyle: {
+                    cursor: 'default'
+                },
             },
             chart: {
                 height: "200%"
@@ -495,19 +583,37 @@
             },
             plotOptions: plotOptions,
             xAxis: {
+                //DKDK VB-8096 set ordinal false for highchart.stockchart
+                ordinal: ordinal,
                 events: {
                     afterSetExtremes: afterSetExtremes
                 },
                 min: minDate,
                 max: maxDate,
-                minRange: minRange,
+                minRange: minRange
             },
             yAxis: yAxis, 
             credits: {
                 enabled: false
             },
             series: data
+        }, function() {
+            var navDates = PopulationBiologyMap.data.navDates;
+            if (navDates) {
+                var navDates = PopulationBiologyMap.data.navDates;
+                var minNavDate = parseInt(navDates[0]);
+                var maxNavDate = parseInt(navDates[1]);
+                this.xAxis[0].setExtremes(minNavDate, maxNavDate);
+                PopulationBiologyMap.data.navDates = undefined;
+
+                if (PopulationBiologyMap.data.resolution != resolution) {
+                    resolution = PopulationBiologyMap.data.resolution;
+                    $("#" + resolution).click();
+                }
+            }
         });
+
+
     };
 
     /**
@@ -515,8 +621,8 @@
      */
     function afterSetExtremes(e) {
         var chart = Highcharts.charts[0];
-        var startDate = new Date(e.min).toISOString();
-        var endDate = new Date(e.max).toISOString();
+        var startDate = new Date(e.min);
+        var endDate = new Date(e.max);
         var numberOfDays = (e.max-e.min) / (1000 * 3600 * 24);
         var oldResolution = resolution;
 
@@ -567,19 +673,44 @@
         }
 
         //Only update the graph if the resolution was changed
-        if (oldResolution !== resolution) {
+        // @todo: Find a better way of knowing when to update HighchartsGraph.dd
+        // This check causes a bug that if one decreases the navigator in a lower resolution, 
+        // and then switches to a higher resolution, the graph will not retrieve additional data
+        if (oldResolution !== resolution || disabledResolutions[resolution]) {
             updateHighchartsGraph(startDate, endDate, resolution);
         }
     }
 
     //Creaates query for new data, does a request, and updates the graph
     function updateHighchartsGraph(startDate, endDate, resolution) {
+        setxAxisDates(resolution);
+        startDate  = updateNavigatorStartDate(startDate, resolution);
+
         //Construct the URL that will be used to get the new data
         var term  = mapSummarizeByToField(glbSummarizeBy).summarize;
         var dateResolutionField = resolutionToSolrField[resolution];
+
+        if (disabledResolutions[resolution]) {
+          var startDateString = startDate.toISOString();
+          endDate = updateNavigatorEndDate(endDate, resolution)
+          var endDateString = endDate.toISOString();
+        }
+        else {
+          var newStartDate = new Date(minDate);
+          var newEndDate = new Date(maxDate);
+          var startDateString = newStartDate.toISOString();
+          var endDateString = newEndDate.toISOString();
+        } 
+
         var baseUrl = solrPopbioUrl + viewMode + dataEndpoint + "?";
         var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
-        var queryUrl = baseUrl + qryUrl + facetTerm + highchartsFilter + "&fq=collection_date:[" + startDate + " TO " + endDate +"]";
+        var queryUrl = baseUrl + qryUrl + facetTerm + highchartsFilter + "&fq=collection_date:[" + startDateString + " TO " + endDateString +"]";
+
+        if (limitTerms && maxTerms > 14) {
+          // TODO: Might not want a hardcoded term limit
+          queryUrl = queryUrl + "&termLimit=14";
+        }
+
         var chart = Highcharts.charts[0];
 
         chart.showLoading("Loading data from server...");
@@ -589,7 +720,6 @@
             $(".highcharts-series-group").show();
 
             if (json.facets.term) {
-                //chart.showLoading('Loading data from server...');
                 setHighchartsData(json);
                 setExternalActionFlag();
                 var data = highcharts.series;
@@ -605,6 +735,9 @@
 
                 chart.redraw();
                 chart.hideLoading();
+                chart.xAxis[1].update({min: minDate, max: maxDate});
+                chart.xAxis[0].update({ordinal: ordinal});
+                chart.xAxis[0].setExtremes(startDate.getTime(), endDate.getTime());
             } else {
                 chart.showLoading("No data found");
 
@@ -613,7 +746,6 @@
             }
         });
     }
-
 
     //Uses the response from SOLR to construct the data array that will be used by Highcharts
     function setHighchartsData(json) {
@@ -682,15 +814,6 @@
                         } else {
                             var yValue = Object.byString(collectionsDate, valueKey);
                         }
-
-                        //Only take into consideration no_data if the graph is columns type
-                        //if (chart_type === "column") {
-                        //    if (no_data && y_value !== 0) {
-                        //       no_data = false;
-                        //    } 
-                        //} else if (no_data) {
-                        //    no_data = false;
-                        //}
                         
                         //Could support different values on x-axis so checking the data_type which will not do anything for now
                         if (graphConfig.dataType === "timeplot") {
@@ -723,7 +846,6 @@
                                 });
                             }
                             
-
                             if (resolution === "EpiWeekly") {
                                 data.epiWeek = {label: "Epi Week", value: [epiWeek]};
                             }
@@ -731,6 +853,23 @@
                             singleTermData.data.push({x:unixDate, y:yValue, data:data});
                         }
                     });
+
+                    // Prevents overlap of yearly resolution in projects selection in legend
+                    if (resolution === "Yearly" && glbSummarizeBy === "Project") {
+                        ordinal = true;
+
+                        // Prevents the left and right columns from getting cut off by adding dummy data
+                        if (singleTermData.data.length === 1) {
+                            termDataDate = singleTermData.data[0].x;
+
+                            if (termDataDate === minDate) {
+                                singleTermData.data.push({x:maxDate, y:0});
+                                tempDate = new Date(maxDate);
+                            }
+                        }
+                    } else {
+                        ordinal = false;
+                    }
 
                     //Add series data
                     highcharts.series.push(singleTermData);
@@ -875,6 +1014,71 @@
         if (!afterSetExtremesTriggered) {
             externalAction = true;
         }
+    }
+
+    function setxAxisDates(resolution) {
+        // Set the minDate and maxDate based on the resolution being graphed
+        if (resolution == "Yearly") {
+            minDate = minYearDate;
+            maxDate = maxDayDate;
+        } else if (resolution == "Monthly") {
+            minDate = minMonthDate;
+            maxDate = maxDayDate; 
+        } else if (resolution == "EpiWeekly") {
+            minDate = new Date(minDayDate);
+            minDate.setDate(minDate.getUTCDate() - (minDate.getUTCDay() + 1));
+            minDate = minDate.getTime();
+            maxDate = maxDayDate;
+           
+        } else {
+            minDate = minDayDate;
+            maxDate = maxDayDate;
+        }
+    }
+
+    // Used to ensure the extremes make a bit more sense when changing resolutions in the graph
+    function updateNavigatorStartDate(startDate, resolution) {
+      var startDateYear = startDate.getUTCFullYear();
+      var startDateMonth = startDate.getUTCMonth();
+      var startDateDay = startDate.getUTCDate();
+
+      if (resolution == "Yearly") {
+          startDate = new Date(Date.UTC(startDateYear, 0, 1));
+      } else if (resolution == "Monthly") {
+          startDate = new Date(Date.UTC(startDateYear, startDateMonth, 1));
+      } else if (resolution == "EpiWeekly") {
+          startDate.setDate(startDate.getDate() - startDate.getDay());
+      }
+
+      if (startDate.getTime() < minDate) {
+        startDate = new Date(minDate);
+      }
+
+      return startDate;
+    }
+
+    // Allows the data to be retrieved correctly when continously updating what gets graphed for resolutions that were initially disabled
+    function updateNavigatorEndDate(endDate, resolution) {
+      var endDateYear = endDate.getUTCFullYear();
+      var endDateMonth = endDate.getUTCMonth() + 1;
+      var endDateDay = endDate.getUTCDate();
+
+      if (resolution == "Yearly") {
+          endDate = new Date(Date.UTC(endDateYear, 11, 31));
+      } else if (resolution == "Monthly" || resolution == "EpiWeekly") {
+          endDate = new Date(Date.UTC(endDateYear, endDateMonth, 0));
+      }
+
+      return endDate;
+    }
+
+    function pad(number, size) {
+      var stringNumber = String(number);
+      while (stringNumber.length < size) {
+        stringNumber = "0" + stringNumber;
+      }
+
+      return stringNumber;
     }
 
     $(document).ready(function () {

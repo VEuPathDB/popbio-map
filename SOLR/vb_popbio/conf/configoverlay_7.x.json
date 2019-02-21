@@ -68,12 +68,14 @@
         "wt": "json",
         "json.nl": "map",
         "rows": 0,
+        "stats": "true",
+        "stats.field": "collection_date",
         "facet.sort": "index",
         "facet.limit": "-1",
         "facet.mincount": "1",
         "facet": "true",
-        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\"]}",
-        "json.facet": "{\"collection_year_s\":{\"type\":\"terms\",\"field\":\"collection_year_s\",\"sort\":\"index\"},\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
+        "json": "{filter:[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":-1,\"field\":\"${term:species_category}\"}}}",
+        "json.facet": "{\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
       }
     },
     "/projectsCoordinates": {
@@ -107,7 +109,7 @@
         "json.nl": "map",
         "rows": 0,
         "facet": "true",
-        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\",\"${date_resolution}:*\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":-1,\"field\":\"${term:species_category}\",\"facet\":{\"collection_dates\":{\"type\":\"terms\",\"limit\":2000,\"sort\":\"index\",\"field\":\"${date_resolution:collection_day_s}\",\"facet\":{\"num_collections\":\"hll(collection_assay_id_s)\",\"sum_abundance\":\"sum(div(sample_size_i, collection_duration_days_i))\"}}}}}}"
+        "json": "{\"filter\":[\"bundle:pop_sample\",\"has_abundance_data_b:true\",\"has_geodata:true\",\"${date_resolution}:*\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":${termLimit:-1},\"sort\":\"sum_quantity desc\",\"field\":\"${term:species_category}\",\"facet\":{\"sum_quantity\":\"sum(div(sample_size_i, collection_duration_days_i))\",\"collection_dates\":{\"type\":\"terms\",\"limit\":2000,\"sort\":\"index\",\"field\":\"${date_resolution:collection_day_s}\",\"facet\":{\"num_collections\":\"hll(collection_assay_id_s)\",\"sum_abundance\":\"sum(div(sample_size_i, collection_duration_days_i))\"}}}}}}"
       }
     },
     "/smplPalette": {
@@ -272,7 +274,7 @@
         "json.nl": "map",
         "rows": 0,
         "facet": "true",
-        "json": "{\"filter\":[\"bundle:pop_sample_phenotype\",\"phenotype_type_s:\\\"infection status\\\"\",\"infection_status_s:*\",\"has_geodata:true\",\"${date_resolution}:*\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":-1,\"field\":\"${term:species_category}\",\"facet\":{\"collection_dates\":{\"type\":\"terms\",\"limit\":2000,\"sort\":\"index\",\"field\":\"${date_resolution:collection_day_s}\",\"facet\":{\"infected\":{\"type\":\"query\",\"q\":\"infection_status_s:present\",\"facet\":{\"pathogen\":{\"type\":\"terms\",\"field\":\"infection_source_s\"}}}}}}}}}"
+        "json": "{\"filter\":[\"bundle:pop_sample_phenotype\",\"phenotype_type_s:\\\"infection status\\\"\",\"infection_status_s:*\",\"has_geodata:true\",\"${date_resolution}:*\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":${termLimit:-1},\"field\":\"${term:species_category}\",\"facet\":{\"collection_dates\":{\"type\":\"terms\",\"limit\":2000,\"sort\":\"index\",\"field\":\"${date_resolution:collection_day_s}\",\"facet\":{\"infected\":{\"type\":\"query\",\"q\":\"infection_status_s:present\",\"facet\":{\"pathogen\":{\"type\":\"terms\",\"field\":\"infection_source_s\"}}}}}}}}}"
       }
     },
     "/pathMarkerYearRange": {
@@ -286,12 +288,14 @@
         "wt": "json",
         "json.nl": "map",
         "rows": 0,
+        "stats": "true",
+        "stats.field": "collection_date",
         "facet.sort": "index",
         "facet.limit": "-1",
         "facet.mincount": "1",
         "facet": "true",
-        "json": "{\"filter\":[\"bundle:pop_sample_phenotype\",\"phenotype_type_s:\\\"infection status\\\"\",\"infection_status_s:*\",\"has_geodata:true\"]}",
-        "json.facet": "{\"collection_year_s\":{\"type\":\"terms\",\"field\":\"collection_year_s\",\"sort\":\"index\"},\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
+        "json": "{\"filter\":[\"bundle:pop_sample_phenotype\",\"phenotype_type_s:\\\"infection status\\\"\",\"infection_status_s:*\",\"has_geodata:true\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":-1,\"field\":\"${term:species_category}\"}}}",
+        "json.facet": "{\"collection_resolution\":{\"terms\":\"collection_date_resolution_s\"}}"
       }
     },
     "/pathExport": {
