@@ -24,8 +24,21 @@
     //idea to make its own function.  Name can be changed, couldn't think of
     //a better one
     PopulationBiologyMap.methods.resetMap = function() {
+        $("#plots-control-panel").hide();
+
+        // Check if we were in a resizable panel and return it to the old state
+        if ($("#active-pane.ui-resizable").length) {
+            $("#active-pane.ui-resizable").removeAttr("style");
+            $("#active-pane.ui-resizable").resizable("destroy");
+
+            // Restore highcarts to its old width
+            var chart = Highcharts.charts[0];
+            chart.setSize(380, chart.chartHeight);
+        }
+
         removeHighlight();
         sidebar.close();
+
         // close open panels
         //$('.collapse').collapse('hide');
         setTimeout(function () {

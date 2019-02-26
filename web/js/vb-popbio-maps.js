@@ -1523,6 +1523,45 @@ function loadSolr(parameters) {
                         var panel = $('.sidebar-pane.active');
                         var panelId = panel.attr('id');
                         var recBounds = L.latLngBounds(record.bounds);
+                        
+                        // Enable or disable the resizable functionality of the panel
+                        // Only the abundance and pathogen views should have this functionality
+                        if (panelId === "swarm-plots" && (viewMode === "abnd" || viewMode === "path")) {
+                            $("#active-pane").resizable({
+                                handles: 'e',
+                                minWidth: 420,
+                                stop:  function(e, ui) {
+                                    var chart = Highcharts.charts[0];
+                                    var chartWidth = ui.size.width - 40;
+                                    //Change width, but keep same height
+                                    chart.setSize(chartWidth, chart.chartHeight);
+                                    console.log("resized");
+                                }
+                            });
+
+                            // Add the handler font-awesome icon so users know it can be dragged
+                            $(".ui-resizable-e").addClass("fas fa-grip-lines-vertical");
+                        }
+                        else {
+                            // Check if we were in a resizable panel and return it to the old state
+                            if ($("#active-pane.ui-resizable").length) {
+                                // Need to get original value and replace it with 420
+                                $("#active-pane.ui-resizable").animate({
+                                    width: "420px"
+                                },
+                                {
+                                    duration: 300,
+                                    complete: function() {
+                                        $("#active-pane.ui-resizable").removeAttr("style");
+                                        $("#active-pane.ui-resizable").resizable("destroy");
+                                    }
+                                });
+
+                                // Restore highcarts to its old width
+                                var chart = Highcharts.charts[0];
+                                chart.setSize(380, chart.chartHeight);
+                            }
+                        }
 
                         // was a marker already highlighted?
                         if (highlightedId) {
@@ -3430,6 +3469,16 @@ $(document).on('click', '.sidebar-icon', function() {
 });
 
 $(document).on('click', '.sidebar-x', function() {
+
+    // Check if we were in a resizable panel and return it to the old state
+    if ($("#active-pane.ui-resizable").length) {
+        $("#active-pane.ui-resizable").removeAttr("style");
+        $("#active-pane.ui-resizable").resizable("destroy");
+
+        // Restore highcarts to its old width
+        var chart = Highcharts.charts[0];
+        chart.setSize(380, chart.chartHeight);
+    }
     sidebar.close();
 });
 

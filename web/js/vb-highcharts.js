@@ -563,7 +563,7 @@
                 },
             },
             chart: {
-                height: "200%"
+                height: "760"
             },
             navigator: {
                 adaptToUpdateData: false,
