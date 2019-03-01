@@ -1288,21 +1288,16 @@
                 panel_param = "&panelID=" + activePanel;
             }
 
-            if (rescale) {
-                rescaleParam = "&optimizeColors=true";
-                $("#rescale_colors").click();
-            }
-
             if (Highcharts.charts.length && activePanel === "swarm-plots") {
                 navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
                 navDates = "&navDates=" + navigatorExtremes.min + "," + navigatorExtremes.max;
                 resolution = $("#resolution-selector .btn-primary").val();
                 chartResolution = "&resolution=" + resolution;
+            }
 
-                // For some reason clicking on share link button re-renders graph so need to add this in
-                // so graph gets re-rendered to how it was before.
-                PopulationBiologyMap.data.navDates = [navigatorExtremes.min, navigatorExtremes.max];
-                PopulationBiologyMap.data.resolution = resolution;
+            if (rescale) {
+                rescaleParam = "&optimizeColors=true";
+                $("#rescale_colors").click();
             }
 
             query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms + rescaleParam + navDates + chartResolution;

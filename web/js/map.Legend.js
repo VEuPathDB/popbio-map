@@ -793,6 +793,14 @@ L.control.legend = function (url, options) {
 $(document).on('click', '#rescale_colors', function() {
     legend.options.rescale = true;
     PopulationBiologyMap.data.rescale = true;
+
+    // Preserving highchart settings when optimizing colors
+    if (Highcharts.charts.length) {
+        var navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
+        PopulationBiologyMap.data.navDates = [navigatorExtremes.min, navigatorExtremes.max];
+        PopulationBiologyMap.data.resolution = $("#resolution-selector .btn-primary").val();
+    }
+
     legend._setPalette();
     loadSolr({clear: 1, zoomLevel: map.getZoom()});
     //legend.refreshLegend(legend.options.palette);
@@ -801,6 +809,14 @@ $(document).on('click', '#rescale_colors', function() {
 $(document).on('click', '#reset_colors', function() {
     legend.options.rescale = false;
     PopulationBiologyMap.data.rescale = false;
+
+    // Preserving highchart settings when optimizing colors
+    if (Highcharts.charts.length) {
+        var navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
+        PopulationBiologyMap.data.navDates = [navigatorExtremes.min, navigatorExtremes.max];
+        PopulationBiologyMap.data.resolution = $("#resolution-selector .btn-primary").val();
+    }
+
     legend._setPalette();
     loadSolr({clear: 1, zoomLevel: map.getZoom()});
 });
