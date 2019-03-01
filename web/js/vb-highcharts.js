@@ -268,15 +268,12 @@
                     resolution = "Yearly";
                     
                     //More than 10 years, do not give users option of viewing EpiWeekly and Daily
-                    $("#EpiWeekly").addClass("disabled");
-                    $("#Daily").addClass("disabled");
                     disabledResolutions.EpiWeekly = true;
                     disabledResolutions.Daily = true;
                 } else if (numberOfDays > 1095) {
                     //More than 3 years but less than 10 years get monthly data
                     resolution = "Monthly";
                     //More than 3 years but less than 10 years, do not allow users to see Daily data
-                    $("#Daily").addClass("disabled");
                     disabledResolutions.Daily = true;
                 } else if (numberOfDays > 365) {
                     //More than 1 year, but less than 3 years gets EpiWeekly
@@ -306,6 +303,34 @@
                 if (resolutionRank[lowestResolution] > resolutionRank[resolution]) {
                     resolution = solrToResolutionName[lowestResolution];
                 }
+
+                // Update the resolution again if the resolution was set through a query parameter
+                if (PopulationBiologyMap.data.resolution) {
+                    resolution = PopulationBiologyMap.data.resolution;
+
+                    // We have used the share link resolution so now unset it
+                    PopulationBiologyMap.data.resolution = undefined;
+                }
+
+                // Go through the resolutions and depending on the resolution,
+                // disable the buttons the user can select in the resolution selector
+                $.each(disabledResolutions, function (key, value) {
+                    if (resolution === "Yearly") {
+                        if (key === "Epiweekly" || key === "Daily") {
+                            $("#" + key).addClass("disabled");
+                        }
+                    }
+                    else if (resolution === "Monthly") {
+                        if (key === "Daily") {
+                            $("#" + key).addClass("disabled");
+                        }
+                    }
+                    else {
+                        if (value) {
+                            $("#" + key).addClass("disabled");
+                        }
+                    }
+                });
 
                 //Disable buttons based on the highest resolution available
                 if (highestResolution === "year") {
@@ -405,6 +430,24 @@
             // unfortunately 'term' seems to be a misnomer.  'field' would be better!
             var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
             var queryUrl = baseUrl + qryUrl + facetTerm + filter;
+            var navDates = PopulationBiologyMap.data.navDates;
+
+            // If the navigator range was passed as a query parameter and the resolution we are plotting was
+            // supposed to be disabled, get data only from the range of the navigator we passed as a parameter for performance
+            if (navDates && disabledResolutions[resolution]) {
+                var navDates = PopulationBiologyMap.data.navDates;
+                var startDate = new Date(parseInt(navDates[0]));
+                var endDate = new Date(parseInt(navDates[1]));
+                startDate  = updateNavigatorStartDate(startDate, resolution);
+
+
+                var startDateString = startDate.toISOString();
+                endDate = updateNavigatorEndDate(endDate, resolution)
+                var endDateString = endDate.toISOString();
+
+                // Add the date range for which we are retrieving data to the query
+                queryUrl += "&fq=collection_date:[" + startDateString + " TO " + endDateString +"]";
+            }
 
             // Set the default message
             limitTermsMessage = "All categories shown";
@@ -605,11 +648,6 @@
                 var maxNavDate = parseInt(navDates[1]);
                 this.xAxis[0].setExtremes(minNavDate, maxNavDate);
                 PopulationBiologyMap.data.navDates = undefined;
-
-                if (PopulationBiologyMap.data.resolution != resolution) {
-                    resolution = PopulationBiologyMap.data.resolution;
-                    $("#" + resolution).click();
-                }
             }
         });
 

@@ -222,21 +222,25 @@ function bindEvents() {
 
     // trigger click event on highlighted marker when switching panels
     $('.sidebar-icon').on("click", function () {
-        var highlightedMarker = $('.highlight-marker');
-        if (highlightedMarker.length) {
-            //Enable marker download option if it was disabled
-            if ($("#select-export option[value=3]")[0].disabled) {
-                $("#select-export option[value=3]")[0].disabled = false;
+
+        // Only execute this code if not clicking on generate link icon
+        if ($(this).attr("id") !== "generate-link") {
+            var highlightedMarker = $('.highlight-marker');
+            if (highlightedMarker.length) {
+                //Enable marker download option if it was disabled
+                if ($("#select-export option[value=3]")[0].disabled) {
+                    $("#select-export option[value=3]")[0].disabled = false;
+                    $("#select-export").selectpicker("refresh");
+                }
+
+                sidebarClick = true;
+                $(highlightedMarker).trigger("click");
+                sidebarClick = false;
+            } else {
+                //Marker is not selected so disable the marker option from the download panel
+                $("#select-export option[value=3]")[0].disabled = true;
                 $("#select-export").selectpicker("refresh");
             }
-
-            sidebarClick = true;
-            $(highlightedMarker).trigger("click");
-            sidebarClick = false;
-        } else {
-            //Marker is not selected so disable the marker option from the download panel
-            $("#select-export option[value=3]")[0].disabled = true;
-            $("#select-export").selectpicker("refresh");
         }
     });
 
@@ -1879,6 +1883,9 @@ function loadSolr(parameters) {
                 if (PopulationBiologyMap.data.initialLoad) {
                     if (PopulationBiologyMap.data.rescale) {
                         $("#rescale_colors").click();
+                        // This needed to be set in order to fix some synching issues with setTimeouts
+                        // Best solution would be to refactor the code (remove setTimeouts!!!!)
+                        prevent = true;
                     }
 
                     PopulationBiologyMap.data.initialLoad = false;
