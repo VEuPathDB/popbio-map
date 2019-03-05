@@ -69,10 +69,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -215,10 +229,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -310,10 +338,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -420,10 +462,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -570,10 +626,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
