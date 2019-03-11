@@ -119,6 +119,59 @@
                 }
             },
             collectionKey: "facets.term.buckets"
+        },
+        meal: {
+            //Will be used to support different type of data that gets graphed
+            dataType: "timeplot",
+            graphTitle: "Pathogen infection data",
+            quantityLabel: "Number of assays",
+            yAxis: [{
+                value: "count",
+                title: "Total number of assays",
+                chartType: "column",
+                transparent: true,
+                offset: 15
+            },
+            {
+                value: "infected.count",
+                title: "Number of infected assays",
+                chartType: "line",
+                offset: 0,
+                tooltip: {
+                    data: [{
+                        key: "blood_meal",
+                        value: "infected.blood_meal.buckets",
+                        label: "Pathogen(s)",
+                        type: "variable"
+                    }]
+                } //Will contain the configuration to set the tooltip of the graph
+            }],
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    groupPadding: 0.01,
+                    events: {
+                        //DKDK VB-8112 disable legend click at highstock
+                        // legendItemClick: setExternalActionFlag
+                        legendItemClick: function () {
+                            return false;
+                        }                    }
+                },
+                line: {
+                    events: {
+                        //DKDK VB-8112 disable legend click at highstock
+                        // legendItemClick: setExternalActionFlag
+                        legendItemClick: function () {
+                            return false;
+                        }
+                    },
+                    marker: {
+                        enabled: true,
+                        radius: 5
+                    }
+                }
+            },
+            collectionKey: "facets.term.buckets"
         }
     } 
 

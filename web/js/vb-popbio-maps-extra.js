@@ -300,6 +300,7 @@
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
+            if (viewMode === "meal") glbSummarizeBy = "Blood Meal";
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
@@ -308,6 +309,8 @@
                         glbSummarizeBy = "Allele";
                     } else if  (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if  (viewMode === "meal") {
+                        glbSummarizeBy = "Blood Meal";
                     } else {
                         glbSummarizeBy = "Species";
                     } 
@@ -320,6 +323,8 @@
                 if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") {
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if (viewMode === "meal") {
+                        glbSummarizeBy = "Blood Meal";
                     } else {
                         glbSummarizeBy = "Species";
                     }
@@ -337,10 +342,23 @@
                 }
             }
 
+            if (viewMode !== "meal") {
+                // $('#SelectView').val('smpl');
+                if (glbSummarizeBy === "Pathogen" || glbSummarizeBy === "Infection status") {
+                    if (viewMode === "geno") {
+                        glbSummarizeBy = "Allele";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
+            }
+
             if (viewMode !== "abnd") {
                 if (glbSummarizeBy === "Attractant") {
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if (viewMode === "meal") {
+                        glbSummarizeBy = "Blood Meal";
                     } else if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
                     } else {
@@ -350,7 +368,7 @@
             }
 
             // Add and remove the disabled class for the sidebar
-            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
+            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path" && viewMode !== "meal") {
                 // Get the current sidebar that is active
                 var active_sidebar = $(".sidebar-icon.active a").attr("id");
 
@@ -979,7 +997,7 @@
         updateExportFields(viewMode);
 
         // Add and remove the disabled class for the sidebar
-        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
+        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path" && viewMode !== "meal") {
             $('#\\#swarm-plots').addClass('disabled');
             $("#\\#swarm-plots").parent("li").attr("title", "Disabled on this view");
 
