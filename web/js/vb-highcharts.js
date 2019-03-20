@@ -123,28 +123,14 @@
         meal: {
             //Will be used to support different type of data that gets graphed
             dataType: "timeplot",
-            graphTitle: "Pathogen infection data",
+            graphTitle: "Blood meal data",
             quantityLabel: "Number of assays",
             yAxis: [{
                 value: "count",
-                title: "Total number of assays",
+                title: "Number of assays",
                 chartType: "column",
                 transparent: true,
                 offset: 15
-            },
-            {
-                value: "infected.count",
-                title: "Number of infected assays",
-                chartType: "line",
-                offset: 0,
-                tooltip: {
-                    data: [{
-                        key: "blood_meal",
-                        value: "infected.blood_meal.buckets",
-                        label: "Pathogen(s)",
-                        type: "variable"
-                    }]
-                } //Will contain the configuration to set the tooltip of the graph
             }],
             plotOptions: {
                 column: {

@@ -342,11 +342,7 @@ L.Control.MapLegend = L.Control.extend({
             (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Infection status">Infection status</a></li> ' : '') +
-            '<li><a href="#" value="Species">Species</a></li>' +
-            '<li><a href="#" value="Sample type">Sample type</a></li>' +
-            '<li><a href="#" value="Collection protocol">Collection protocol</a></li>' +
-            (viewMode === 'meal' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
-            (viewMode === 'meal' ? '<li><a href="#" value="Infection status">Infection status</a></li> ' : '') +
+            (viewMode === 'meal' ? '<li><a href="#" value="Blood meal">Blood meal</a></li> ' : '') +
             '<li><a href="#" value="Species">Species</a></li>' +
             '<li><a href="#" value="Sample type">Sample type</a></li>' +
             '<li><a href="#" value="Collection protocol">Collection protocol</a></li>' +

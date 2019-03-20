@@ -300,7 +300,7 @@
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
-            if (viewMode === "meal") glbSummarizeBy = "Blood Meal";
+            if (viewMode === "meal") glbSummarizeBy = "Blood meal";
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
@@ -310,7 +310,7 @@
                     } else if  (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
                     } else if  (viewMode === "meal") {
-                        glbSummarizeBy = "Blood Meal";
+                        glbSummarizeBy = "Blood meal";
                     } else {
                         glbSummarizeBy = "Species";
                     } 
@@ -324,7 +324,7 @@
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
                     } else if (viewMode === "meal") {
-                        glbSummarizeBy = "Blood Meal";
+                        glbSummarizeBy = "Blood meal";
                     } else {
                         glbSummarizeBy = "Species";
                     }
@@ -358,7 +358,7 @@
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
                     } else if (viewMode === "meal") {
-                        glbSummarizeBy = "Blood Meal";
+                        glbSummarizeBy = "Blood meal";
                     } else if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
                     } else {

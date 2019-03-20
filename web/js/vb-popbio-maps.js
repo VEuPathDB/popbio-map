@@ -658,10 +658,10 @@ function initializeMap(parameters) {
         addGeohashes(map, true);
     }
 
-    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype and Pathogen  view here
+    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype, Pathogen, and Blood Meal views here
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
     if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
-    if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood Meal";
+    if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal";
 
     // Now generate the legend
     // hardcoded species_category
@@ -1322,14 +1322,9 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Phenotype')
         },
         {
-            value: 'exp_infection_source_s',
-            label: 'Pathogen',
-            icon: mapTypeToIcon('Pathogen')
-        },
-        {
-            value: 'exp_infection_status_s',
-            label: 'Infection status',
-            icon: mapTypeToIcon('Infection status')
+            value: 'blood_meal_source_s',
+            label: 'Blood meal',
+            icon: mapTypeToIcon('Blood meal')
         },
         {
             value: 'exp_tags_ss',
@@ -2911,6 +2906,8 @@ function mapTypeToField(type) {
             return "collection_date_range";
         case "Pathogen":
             return "infection_source_cvterms";
+        case "Blood meal":
+            return "blood_meal_source_s";
         case "Infection status":
             return "infection_status_s";
         case "Sex":
@@ -2987,6 +2984,11 @@ function mapSummarizeByToField(type) {
             fields.type = "Infection status";
             fields.field = "infection_status_s";
             break;
+        case "Blood meal":
+            fields.summarize = "blood_meal_source_s";
+            fields.type = "Blood meal";
+            fields.field = "blood_meal_source_s";
+            break;
         default :
             fields.summarize = "species_category";
             fields.type = "Taxonomy";
@@ -3055,6 +3057,8 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-coordinates';
             case 'Pathogen':
                 return 'label label-success label-allele';
+            case 'Blood meal':
+                return 'label label-success label-blood-meal';
             case 'Infection status':
                 return 'label label-success label-geography';
             case 'Sex':
@@ -3144,6 +3148,8 @@ function mapTypeToIcon(type) {
             return 'fas fa-tag';
         case 'License':
             return 'fab fa-creative-commons';
+        case 'Blood meal':
+            return 'fas fa-tint';
         default :
             return 'fas fa-search';
 
