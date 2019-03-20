@@ -401,6 +401,11 @@
     <copyField source="infection_status_s" dest="exp_infection_status_s"/>
 
     <!-- Blood Meal specific fields -->
+    <field name="exp_blood_meal_source_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="blood_meal_source_s" dest="exp_blood_meal_source_s"/>
+
+    <field name="exp_blood_meal_status_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="blood_meal_status_s" dest="exp_blood_meal_status_s"/>
 
     <!-- New Fields Added to Export related to attractants and license -->
     <field name="exp_tags_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
