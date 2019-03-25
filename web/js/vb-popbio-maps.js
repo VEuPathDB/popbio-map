@@ -2571,8 +2571,7 @@ function tableHtml(divid, results) {
                     phenotypeValueType: element.phenotype_value_type_s,
                     phenotypeValueUnit: element.phenotype_value_unit_s,
                     sampleSize: element.sample_size_i,
-                    infectionStatus: element.infection_status_s,
-                    pathogen: element.infection_source_s
+                    bloodMealSource: element.blood_meal_source_s
                 };
 
                 template = $.templates("#mealRowTemplate");

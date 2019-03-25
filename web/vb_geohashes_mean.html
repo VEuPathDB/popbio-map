@@ -2041,7 +2041,7 @@
         <div class="row">
             <div class="col-md-12" >
                 <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
-                Pathogen infection data</h5>
+                Blood meal data</h5>
             </div>
         </div>
         {{if phenotypeValueType}}
@@ -2055,23 +2055,17 @@
         {{/if}}
         <div class="row">
             <div class="col-md-6">
-                <p style="color: {{attr:bgColor}};" title="Pathogen" >
-                    <i class="fas fa-fw fa-thermometer-half"></i>
-                    <b> Pathogen</b>
+                <p style="color: {{attr:bgColor}};" title="Blood Meal Source" >
+                    <i class="fas fa-fw fa-tint"></i>
+                    <b> Source</b>
                 </p>
                 <ul>
                     <li>
-                        <span class="active-term" type="Pathogen" value="{{attr:pathogen}}">
-                            {{html:pathogen}}
+                        <span class="active-term" type="Blood meal source" value="{{attr:bloodMealSource}}">
+                            {{html:bloodMealSource}}
                         </span>
                     </li>
                 </ul>
-                <p>
-                    <i class="fas fa-fw fa-bullseye" title="Infection Status" style="color: {{attr:bgColor}};"></i>
-                    <span class="active-term" type="Infection status" value="{{attr:infectionStatus}}">
-                        {{html:infectionStatus}}
-                    </span>
-                </p>
             </div>
             <div class="col-md-6" title="Protocols">
                 <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down"></i><b> Protocol(s)</b></p>
