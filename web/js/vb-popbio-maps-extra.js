@@ -344,7 +344,7 @@
 
             if (viewMode !== "meal") {
                 // $('#SelectView').val('smpl');
-                if (glbSummarizeBy === "Pathogen" || glbSummarizeBy === "Infection status") {
+                if (glbSummarizeBy === "Blood meal") {
                     if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
                     } else {
