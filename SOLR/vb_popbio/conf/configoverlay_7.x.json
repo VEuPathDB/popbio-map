@@ -390,7 +390,7 @@
         "distrib": "false"
       },
       "appends": {
-        "json": "{filter:[\"bundle:pop_sample_phenotype\",\"has_geodata:true\",\"phenotype_type_s:\\\"blood meal identification\\\"\",\"blood_meal_status_s:*\"]}"
+        "json": "{filter:[\"bundle:pop_sample_phenotype\",\"has_geodata:true\",\"phenotype_type_s:\\\"blood meal identification\\\"\",\"blood_meal_status_s:present\"]}"
       },
       "components": [ "query" ]
     },

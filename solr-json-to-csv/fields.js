@@ -830,13 +830,8 @@ module.exports = {
             quoted: false
         },
         {
-            name: 'exp_infection_source_s',
-            label: 'Pathogen',
-            quoted: false
-        },
-        {
-            name: 'exp_infection_status_s',
-            label: 'Infection status',
+            name: 'exp_blood_meal_source_s',
+            label: 'Blood meal',
             quoted: false
         },
         {

@@ -1544,8 +1544,8 @@
         <lst name="appends">
             <str name="fq">bundle:pop_sample_phenotype</str>
             <str name="fq">has_geodata:true</str>
-            <str name="fq">phenotype_type_s:"infection status"</str>
-            <str name="fq">infection_status_s:*</str>
+            <str name="fq">phenotype_type_s:"blood meal identification"</str>
+            <str name="fq">blood_meal_status_s:present</str>
         </lst>
         <lst name="invariants">
             <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
