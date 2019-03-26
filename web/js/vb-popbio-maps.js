@@ -1322,7 +1322,7 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Phenotype')
         },
         {
-            value: 'blood_meal_source_s',
+            value: 'exp_blood_meal_source_s',
             label: 'Blood meal',
             icon: mapTypeToIcon('Blood meal')
         },
