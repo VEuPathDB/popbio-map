@@ -124,10 +124,10 @@
             //Will be used to support different type of data that gets graphed
             dataType: "timeplot",
             graphTitle: "Blood meal data",
-            quantityLabel: "Number of assays",
+            quantityLabel: "Number of samples",
             yAxis: [{
                 value: "count",
-                title: "Number of assays",
+                title: "Number of samples",
                 chartType: "column",
                 transparent: true,
                 offset: 15
