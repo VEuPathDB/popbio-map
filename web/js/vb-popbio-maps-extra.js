@@ -773,6 +773,7 @@
                     case "title":
                     case "pathogen":
                     case "infection_status":
+                    case "blood_meal_host":
                     case "pubmed":
                     case "tag":
                     case "devstage":
@@ -1110,6 +1111,8 @@
                 return "pathogen";
             case "Infection status":
                 return "infection_status";
+            case "Blood meal host":
+                return "blood_meal_host";
             case "Sex":
                 return "sex";
             case "Developmental stage":
@@ -1176,6 +1179,8 @@
                 return "Pathogen";
             case "infection_status":
                 return "Infection status";
+            case "blood_meal_host":
+                return "Blood meal host";
             case "sex":
                 return "Sex";
             case "devstage":
