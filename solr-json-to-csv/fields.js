@@ -831,7 +831,7 @@ module.exports = {
         },
         {
             name: 'exp_blood_meal_source_s',
-            label: 'Blood meal',
+            label: 'Blood meal host',
             quoted: false
         },
         {

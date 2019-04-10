@@ -123,7 +123,7 @@
         meal: {
             //Will be used to support different type of data that gets graphed
             dataType: "timeplot",
-            graphTitle: "Blood meal data",
+            graphTitle: "Blood meal host data",
             quantityLabel: "Number of samples",
             yAxis: [{
                 value: "count",

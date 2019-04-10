@@ -300,7 +300,7 @@
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
-            if (viewMode === "meal") glbSummarizeBy = "Blood meal";
+            if (viewMode === "meal") glbSummarizeBy = "Blood meal host";
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
@@ -310,7 +310,7 @@
                     } else if  (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
                     } else if  (viewMode === "meal") {
-                        glbSummarizeBy = "Blood meal";
+                        glbSummarizeBy = "Blood meal host";
                     } else {
                         glbSummarizeBy = "Species";
                     } 
@@ -324,7 +324,7 @@
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
                     } else if (viewMode === "meal") {
-                        glbSummarizeBy = "Blood meal";
+                        glbSummarizeBy = "Blood meal host";
                     } else {
                         glbSummarizeBy = "Species";
                     }
@@ -344,7 +344,7 @@
 
             if (viewMode !== "meal") {
                 // $('#SelectView').val('smpl');
-                if (glbSummarizeBy === "Blood meal") {
+                if (glbSummarizeBy === "Blood meal host") {
                     if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
                     } else {
@@ -358,7 +358,7 @@
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
                     } else if (viewMode === "meal") {
-                        glbSummarizeBy = "Blood meal";
+                        glbSummarizeBy = "Blood meal host";
                     } else if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
                     } else {
