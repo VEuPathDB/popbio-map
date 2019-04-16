@@ -119,6 +119,45 @@
                 }
             },
             collectionKey: "facets.term.buckets"
+        },
+        meal: {
+            //Will be used to support different type of data that gets graphed
+            dataType: "timeplot",
+            graphTitle: "Blood meal host data",
+            quantityLabel: "Number of samples",
+            yAxis: [{
+                value: "count",
+                title: "Number of samples",
+                chartType: "column",
+                transparent: true,
+                offset: 15
+            }],
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    groupPadding: 0.01,
+                    events: {
+                        //DKDK VB-8112 disable legend click at highstock
+                        // legendItemClick: setExternalActionFlag
+                        legendItemClick: function () {
+                            return false;
+                        }                    }
+                },
+                line: {
+                    events: {
+                        //DKDK VB-8112 disable legend click at highstock
+                        // legendItemClick: setExternalActionFlag
+                        legendItemClick: function () {
+                            return false;
+                        }
+                    },
+                    marker: {
+                        enabled: true,
+                        radius: 5
+                    }
+                }
+            },
+            collectionKey: "facets.term.buckets"
         }
     } 
 

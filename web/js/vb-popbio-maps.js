@@ -658,9 +658,10 @@ function initializeMap(parameters) {
         addGeohashes(map, true);
     }
 
-    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype and Pathogen  view here
+    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype, Pathogen, and Blood Meal views here
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
     if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
+    if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal host";
 
     // Now generate the legend
     // hardcoded species_category
@@ -1243,6 +1244,110 @@ function updateExportFields(viewMode) {
         }
     ];
 
+    var mealFields = [
+        {
+            value: 'exp_sample_id_s',
+            label: 'Sample ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_assay_id_s',
+            label: 'Assay ID',
+            icon: mapTypeToIcon('Assay ID')
+        },
+        {
+            value: 'exp_bundle_name_s',
+            label: 'Record type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_species_s',
+            label: 'Species',
+            icon: mapTypeToIcon('Taxonomy')
+        },
+        {
+            value: 'exp_sample_type_s',
+            label: 'Sample type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_label_s',
+            label: 'Label',
+            icon: mapTypeToIcon('Description')
+        },
+        {
+            value: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            icon: mapTypeToIcon('Collection ID')
+        },
+        {
+            value: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            icon: mapTypeToIcon('Date')
+        },
+        {
+            value: 'exp_collection_protocols_ss',
+            label: 'Collection protocol',
+            icon: mapTypeToIcon('Collection protocol')
+        },
+        {
+            value: 'exp_projects_ss',
+            label: 'Project',
+            icon: mapTypeToIcon('Project')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
+        },
+        {
+            value: 'exp_geolocations_ss',
+            label: 'Locations',
+            icon: mapTypeToIcon('Location')
+        },
+        {
+            value: 'exp_phenotype_type_s',
+            label: 'Phenotype type',
+            icon: mapTypeToIcon('Sample type')
+        },
+        {
+            value: 'exp_protocols_ss',
+            label: 'Protocol',
+            icon: mapTypeToIcon('Protocol')
+        },
+        {
+            value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
+            label: 'Phenotype value',
+            subtext: 'value, unit, type',
+            icon: mapTypeToIcon('Phenotype')
+        },
+        {
+            value: 'exp_blood_meal_source_s',
+            label: 'Blood meal host',
+            icon: mapTypeToIcon('Blood meal host')
+        },
+        {
+            value: 'exp_tags_ss',
+            label: 'Tag',
+            icon: mapTypeToIcon('Tag')            
+        },
+        {
+            value: 'exp_attractants_ss',
+            label: 'Attractants',
+            icon: mapTypeToIcon('Attractants')            
+        },
+        {
+            value: 'exp_sex_s',
+            label: 'Sex',
+            icon: mapTypeToIcon('Sex')            
+        },
+        {
+            value: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            icon: mapTypeToIcon('Developmental stage')            
+        }
+    ];
+
     // empty the dropdown
     $('#select-export-fields').empty();
 
@@ -1253,6 +1358,7 @@ function updateExportFields(viewMode) {
     if (viewMode === 'geno') simpleFields = genoFields;
     if (viewMode === 'ir') simpleFields = irFields;
     if (viewMode === 'path') simpleFields = pathFields;
+    if (viewMode === 'meal') simpleFields = mealFields;
     $.each(simpleFields, function (index, obj) {
         if (!obj.subtext) {
             $('#select-export-fields')
@@ -1319,7 +1425,7 @@ function loadSolr(parameters) {
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
         // display the number of results
-        if (viewMode === "ir" || viewMode === "path") {
+        if (viewMode === "ir" || viewMode === "path" || viewMode === "meal") {
             $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
         } else if (viewMode === "abnd") {
 
@@ -1578,7 +1684,7 @@ function loadSolr(parameters) {
                                     break;
                                 case "swarm-plots":
                                     // Geno viewmode will say that it is not availble in that mode
-                                    if (viewMode === 'abnd' || viewMode == 'path') {
+                                    if (viewMode === 'abnd' || viewMode == 'path' || viewMode === 'meal') {
                                         PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                     } else {
                                         createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -1628,7 +1734,7 @@ function loadSolr(parameters) {
 
                                     // Geno viewmode will say that it is not availble in that mode
                                     if (!panel.data('has-graph')) {
-                                        if (viewMode === 'abnd' || viewMode === 'path') {
+                                        if (viewMode === 'abnd' || viewMode === 'path' || viewMode === 'meal') {
                                             PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                         } else { 
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -1710,7 +1816,7 @@ function loadSolr(parameters) {
                                         gtag('event', swarm_name, {'event_category': 'Popbio', 'event_label': 'Popbio swarm'});                                    
 
                                         // Geno viewmode will say that it is not availble in that mode
-                                        if (viewMode === 'abnd' || viewMode === 'path') {
+                                        if (viewMode === 'abnd' || viewMode === 'path' || viewMode === 'meal') {
                                             PopulationBiologyMap.methods.createHighchartsGraph(buildBbox(recBounds));
                                         } else {
                                             createBeeViolinPlot("#swarm-chart-area", buildBbox(recBounds));
@@ -2439,6 +2545,37 @@ function tableHtml(divid, results) {
 
                 template = $.templates("#pathRowTemplate");
                 break;
+             case "meal":
+                row = {
+                    accession: element.assay_id_s,
+                    accessionType: 'Assay ID',
+                    bundleName: 'Assay',
+                    url: element.url,
+                    sampleType: element.sample_type,
+                    sampleTypeType: 'Sample type',
+                    geoCoords: element.geo_coords,
+                    geolocation: element.geolocations[0],
+                    geolocationType: 'Geography',
+                    species: species,
+                    speciesType: 'Taxonomy',
+                    bgColor: bgColor,
+                    textColor: getContrastYIQ(bgColor),
+                    collectionDate: collectionDates,
+                    projects: borderColor('Project', element.projects),
+                    projectsType: 'Project',
+                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
+                    collectionProtocolsType: 'Collection protocol',
+                    protocols: borderColor('Protocol', element.protocols),
+                    protocolsType: 'Protocol',
+                    phenotypeValue: element.phenotype_value_f,
+                    phenotypeValueType: element.phenotype_value_type_s,
+                    phenotypeValueUnit: element.phenotype_value_unit_s,
+                    sampleSize: element.sample_size_i,
+                    bloodMealHost: element.blood_meal_source_s
+                };
+
+                template = $.templates("#mealRowTemplate");
+                break;
             default:
                 row = {
                     accession: element.accession,
@@ -2768,6 +2905,8 @@ function mapTypeToField(type) {
             return "collection_date_range";
         case "Pathogen":
             return "infection_source_cvterms";
+        case "Blood meal host":
+            return "blood_meal_source_s";
         case "Infection status":
             return "infection_status_s";
         case "Sex":
@@ -2844,6 +2983,11 @@ function mapSummarizeByToField(type) {
             fields.type = "Infection status";
             fields.field = "infection_status_s";
             break;
+        case "Blood meal host":
+            fields.summarize = "blood_meal_source_s";
+            fields.type = "Blood meal host";
+            fields.field = "blood_meal_source_s";
+            break;
         default :
             fields.summarize = "species_category";
             fields.type = "Taxonomy";
@@ -2912,6 +3056,8 @@ function mapTypeToLabel(type) {
                 return 'label label-success label-coordinates';
             case 'Pathogen':
                 return 'label label-success label-allele';
+            case 'Blood meal host':
+                return 'label label-success label-blood-meal-host';
             case 'Infection status':
                 return 'label label-success label-geography';
             case 'Sex':
@@ -3001,6 +3147,8 @@ function mapTypeToIcon(type) {
             return 'fas fa-tag';
         case 'License':
             return 'fab fa-creative-commons';
+        case 'Blood meal host':
+            return 'fas fa-tint';
         default :
             return 'fas fa-search';
 

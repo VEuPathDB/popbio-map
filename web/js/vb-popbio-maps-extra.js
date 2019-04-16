@@ -300,6 +300,7 @@
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
+            if (viewMode === "meal") glbSummarizeBy = "Blood meal host";
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
@@ -308,6 +309,8 @@
                         glbSummarizeBy = "Allele";
                     } else if  (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if  (viewMode === "meal") {
+                        glbSummarizeBy = "Blood meal host";
                     } else {
                         glbSummarizeBy = "Species";
                     } 
@@ -320,6 +323,8 @@
                 if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") {
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if (viewMode === "meal") {
+                        glbSummarizeBy = "Blood meal host";
                     } else {
                         glbSummarizeBy = "Species";
                     }
@@ -337,10 +342,23 @@
                 }
             }
 
+            if (viewMode !== "meal") {
+                // $('#SelectView').val('smpl');
+                if (glbSummarizeBy === "Blood meal host") {
+                    if (viewMode === "geno") {
+                        glbSummarizeBy = "Allele";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
+            }
+
             if (viewMode !== "abnd") {
                 if (glbSummarizeBy === "Attractant") {
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if (viewMode === "meal") {
+                        glbSummarizeBy = "Blood meal host";
                     } else if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
                     } else {
@@ -350,7 +368,7 @@
             }
 
             // Add and remove the disabled class for the sidebar
-            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
+            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path" && viewMode !== "meal") {
                 // Get the current sidebar that is active
                 var active_sidebar = $(".sidebar-icon.active a").attr("id");
 
@@ -755,6 +773,7 @@
                     case "title":
                     case "pathogen":
                     case "infection_status":
+                    case "blood_meal_host":
                     case "pubmed":
                     case "tag":
                     case "devstage":
@@ -979,7 +998,7 @@
         updateExportFields(viewMode);
 
         // Add and remove the disabled class for the sidebar
-        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
+        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path" && viewMode !== "meal") {
             $('#\\#swarm-plots').addClass('disabled');
             $("#\\#swarm-plots").parent("li").attr("title", "Disabled on this view");
 
@@ -1092,6 +1111,8 @@
                 return "pathogen";
             case "Infection status":
                 return "infection_status";
+            case "Blood meal host":
+                return "blood_meal_host";
             case "Sex":
                 return "sex";
             case "Developmental stage":
@@ -1158,6 +1179,8 @@
                 return "Pathogen";
             case "infection_status":
                 return "Infection status";
+            case "blood_meal_host":
+                return "Blood meal host";
             case "sex":
                 return "Sex";
             case "devstage":
