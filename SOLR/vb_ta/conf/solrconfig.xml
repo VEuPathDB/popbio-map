@@ -1528,10 +1528,10 @@
             <str name="type1query">type:"Taxonomy"</str>
             <double name="type1boost">1.6</double>
             <str name="type2query">type:("Sample type" OR "Geography")</str>
-            <double name="type2boost">1.6</double>
-            <str name="type3query">type:("Title" OR "Description")</str>
-            <double name="type3boost">1.1</double>
-            <str name="type4query">type:("Project" OR "Stable ID" or "PubMed")</str>
+            <double name="type2boost">1.4</double>
+            <str name="type3query">type:"Protocol"</str>
+            <double name="type3boost">1.3</double>
+            <str name="type4query">type:("Project" OR "PubMed")</str>
             <double name="type4boost">1.5</double>
             <str name="debugQuery">false</str>
         </lst>
@@ -1568,10 +1568,10 @@
             <double name="type1boost">1.6</double>
             <str name="type2query">type:("Protocol" OR "Insecticide")</str>
             <double name="type2boost">1.4</double>
-            <str name="type3query">type:("Project" OR "Stable ID" or "PubMed")</str>
+            <str name="type3query">type:("Project" OR "PubMed")</str>
             <double name="type3boost">1.2</double>
-            <str name="type4query">type:("Title" OR "Description")</str>
-            <double name="type4boost">1.0</double>
+            <str name="type4query">type:"Collection protocol"</str>
+            <double name="type4boost">1.1</double>
             <str name="debugQuery">false</str>
         </lst>
         <lst name="appends">
@@ -1605,12 +1605,12 @@
             <double name="typeboost">2.0</double>
             <str name="type1query">type:"Taxonomy"</str>
             <double name="type1boost">1.6</double>
-            <str name="type2query">type:("Sample type" OR "Geography")</str>
-            <double name="type2boost">1.6</double>
-            <str name="type3query">type:("Title" OR "Description")</str>
-            <double name="type3boost">1.1</double>
-            <str name="type4query">type:("Project" OR "Stable ID")</str>
-            <double name="type4boost">1.5</double>
+            <str name="type2query">type:("Tag" OR "Geography")</str>
+            <double name="type2boost">1.4</double>
+            <str name="type3query">type:("Attractant" OR "Collection protocol")</str>
+            <double name="type3boost">1.2</double>
+            <str name="type4query">type:("Project" OR "PubMed")</str>
+            <double name="type4boost">1.1</double>
             <str name="debugQuery">false</str>
         </lst>
         <lst name="appends">
@@ -1643,13 +1643,13 @@
             </str>
             <double name="typeboost">2.0</double>
             <str name="type1query">type:"Locus"</str>
-            <double name="type1boost">1.8</double>
-            <str name="type2query">type:("Allele" OR "Geography")</str>
-            <double name="type2boost">1.6</double>
-            <str name="type3query">type:("Title" OR "Description" OR "Taxonomy")</str>
+            <double name="type1boost">1.6</double>
+            <str name="type2query">type:"Allele"</str>
+            <double name="type2boost">1.4</double>
+            <str name="type3query">type:("Taxonomy" OR "Project" OR "PubMed")</str>
             <double name="type3boost">1.2</double>
-            <str name="type4query">type:("Projects" OR "Stable ID" or "Taxonomy")</str>
-            <double name="type4boost">1.4</double>
+            <str name="type4query">type:"Title"</str>
+            <double name="type4boost">0.1</double>
             <str name="debugQuery">false</str>
         </lst>
         <lst name="appends">
@@ -1681,14 +1681,14 @@
                 product(map(query($type1query),0,0,1,$type1boost),map(query($type2query),0,0,1,$type2boost),map(query($type3query),0,0,1,$type3boost),map(query($type4query),0,0,1,$type4boost),$typeboost)
             </str>
             <double name="typeboost">2.0</double>
-            <str name="type1query">type:"Taxonomy"</str>
+            <str name="type1query">type:"Pathogen"</str>
             <double name="type1boost">1.6</double>
-            <str name="type2query">type:("Sample type" OR "Geography")</str>
-            <double name="type2boost">1.6</double>
-            <str name="type3query">type:("Title" OR "Description")</str>
-            <double name="type3boost">1.1</double>
-            <str name="type4query">type:("Project" OR "Stable ID")</str>
-            <double name="type4boost">1.5</double>
+            <str name="type2query">type:"Taxonomy"</str>
+            <double name="type2boost">1.4</double>
+            <str name="type3query">type:"Infection status"</str>
+            <double name="type3boost">1.2</double>
+            <str name="type4query">type:("Project" OR "PubMed")</str>
+            <double name="type4boost">1.1</double>
             <str name="debugQuery">false</str>
         </lst>
         <lst name="appends">
@@ -1720,14 +1720,14 @@
                 product(map(query($type1query),0,0,1,$type1boost),map(query($type2query),0,0,1,$type2boost),map(query($type3query),0,0,1,$type3boost),map(query($type4query),0,0,1,$type4boost),$typeboost)
             </str>
             <double name="typeboost">2.0</double>
-            <str name="type1query">type:"Taxonomy"</str>
+            <str name="type1query">type:"Blood meal host"</str>
             <double name="type1boost">1.6</double>
-            <str name="type2query">type:("Sample type" OR "Geography")</str>
-            <double name="type2boost">1.6</double>
-            <str name="type3query">type:("Title" OR "Description")</str>
-            <double name="type3boost">1.1</double>
-            <str name="type4query">type:("Project" OR "Stable ID")</str>
-            <double name="type4boost">1.5</double>
+            <str name="type2query">type:"Taxonomy"</str>
+            <double name="type2boost">1.4</double>
+            <str name="type3query">type:"Protocol"</str>
+            <double name="type3boost">1.2</double>
+            <str name="type4query">type:("Project" OR "PubMed")</str>
+            <double name="type4boost">1.1</double>
             <str name="debugQuery">false</str>
         </lst>
         <lst name="appends">
