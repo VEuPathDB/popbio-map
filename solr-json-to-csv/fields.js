@@ -11,6 +11,12 @@ module.exports = {
             label: 'Sample ID',
             quoted: false
         },
+        //DKDK VB-7133 sample label
+        {
+            name: 'exp_sample_name_s',
+            label: 'Sample label',
+            quoted: true
+        },
         {
             name: 'exp_assay_id_s',
             label: 'Assay ID',
@@ -152,27 +158,27 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
     smpl: [
@@ -261,28 +267,28 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
-        }        
+            quoted: true
+        }
     ],
     abnd: [
         {
@@ -380,27 +386,27 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
     geno: [
@@ -539,27 +545,27 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
     path: [
@@ -567,6 +573,12 @@ module.exports = {
             name: 'exp_sample_id_s',
             label: 'Sample ID',
             quoted: false
+        },
+        //DKDK VB-7133 sample label
+        {
+            name: 'exp_sample_name_s',
+            label: 'Sample label',
+            quoted: true
         },
         {
             name: 'exp_assay_id_s',
@@ -693,27 +705,27 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
     meal: [
@@ -842,27 +854,27 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
 };
