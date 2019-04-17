@@ -1712,9 +1712,10 @@
             <str name="wt">json</str>
             <str name="indent">false</str>
             <str name="wt.nl">"map"</str>
-            <str name="qf">textsuggest^30.0 textnge^20.0 textng^20.0</str>
-            <str name="pf">textnge^30.0</str>
-            <str name="bf">product(log(sum(textboost,1)),100)^20</str>
+            <!-- DKDK VB-8413 applying boost to mealAc and mealAcat as well -->
+            <str name="qf">textnge^20.0 textng^10.0</str>
+            <str name="pf">textsuggest^50.0</str>
+            <str name="bq">is_synonym:false^10</str>
             <!-- Define relative importance between types. May be overridden per request by e.g. &personboost=120 -->
             <str name="boost">
                 product(map(query($type1query),0,0,1,$type1boost),map(query($type2query),0,0,1,$type2boost),map(query($type3query),0,0,1,$type3boost),map(query($type4query),0,0,1,$type4boost),$typeboost)
@@ -1882,9 +1883,10 @@
             <str name="wt">json</str>
             <str name="indent">off</str>
             <str name="json.nl">map</str>
-            <str name="qf">textsuggest^30 textnge^20.0 textng^20.0</str>
-            <str name="pf">textnge^30.0</str>
-            <str name="bf">product(log(sum(textboost,1)),100)^20</str>
+            <!-- DKDK VB-8413 applying boost to mealAc and mealAcat as well -->
+            <str name="qf">textnge^20.0 textng^10.0</str>
+            <str name="pf">textsuggest^50.0</str>
+            <str name="bq">is_synonym:false^10</str>
             <str name="debugQuery">false</str>
         </lst>
         <lst name="appends">
