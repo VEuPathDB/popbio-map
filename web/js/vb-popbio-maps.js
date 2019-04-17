@@ -127,6 +127,10 @@ function bindEvents() {
         if ($('#select-export-fields').val()) {
             fieldsStr += $('#select-export-fields').val().join();
             fieldsStr += ',exp_citations_ss,exp_licenses_ss'; // mandatory citations field + license (DKDK)
+            //DKDK VB-7133 add exp_sample_name_s for ir and path
+            if (viewMode === "ir" || viewMode === "path") {
+                fieldsStr += ',exp_sample_name_s';
+            }    
         } else {
             // no marker is selected
             // inform the user that there are no selected markers
