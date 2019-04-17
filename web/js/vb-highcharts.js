@@ -81,7 +81,8 @@
             },
             {
                 value: "infected.count",
-                title: "Number of infected assays",
+                //DKDK VB-8390 infected* text (added * in the end of title)
+                title: "Number of infected assays*",
                 chartType: "line",
                 offset: 0,
                 tooltip: {
@@ -159,7 +160,7 @@
             },
             collectionKey: "facets.term.buckets"
         }
-    } 
+    }
 
     //Object that maps the resolution value to solr field
     var resolutionToSolrField = {
@@ -207,7 +208,7 @@
         var term  = "&term=" + mapSummarizeByToField(glbSummarizeBy).summarize;
         var baseUrl = solrPopbioUrl + viewMode + resolutionEndpoint + "?";
         var queryUrl = baseUrl + qryUrl + filter + statsFilter + term;
-        
+
         //Resets/updates variables related to the data being graphed
         collectionResolutions = [];
         lowestResolution = undefined;
@@ -240,9 +241,9 @@
                 // Get the resolutions of the data being graphed
                 var collectionResolutionList = json.facets.collection_resolution.buckets;
                 maxTerms = json.facets.term.buckets.length;
-                
+
                 // Get the maximum and minimum boundaries of the different resolutions
-                // For now specifying 
+                // For now specifying
                 var collectionDate = json.stats.stats_fields.collection_date;
                 var collectionDateMin = new Date(collectionDate.min);
                 var collectionDateMax = new Date(collectionDate.max);
@@ -305,7 +306,7 @@
                 if (numberOfDays > 3650) {
                     //More than 10 years gets yearly data
                     resolution = "Yearly";
-                    
+
                     //More than 10 years, do not give users option of viewing EpiWeekly and Daily
                     disabledResolutions.EpiWeekly = true;
                     disabledResolutions.Daily = true;
@@ -400,7 +401,7 @@
                 }
 
                 // Set the minDate and maxDate for the xAxis based on the resolution being graphed
-                setxAxisDates(resolution); 
+                setxAxisDates(resolution);
 
                 //resultCount = json.response.numFound;
             },
@@ -613,7 +614,14 @@
 
     function createStockchart(yAxis, data) {
         var plotOptions = viewGraphConfig[viewMode].plotOptions;
-        
+
+        //DKDK VB-8390 infected* text
+        if (viewMode == 'path') {
+            var pathogenText = '<b>* "infected" includes equivocal results by default</b>';
+        } else {
+            var pathogenText = "";
+        }
+
         //Delete previous created chart object and add a new one
         //when clicking a different marker
         if (Highcharts.charts[0] !== undefined ) {
@@ -661,10 +669,14 @@
             tooltip: {
                 useHTML: true,
                 split: false,
-                formatter: customTooltipFormatter 
+                formatter: customTooltipFormatter
             },
             plotOptions: plotOptions,
             xAxis: {
+                //DKDK VB-8390 infected* text (add xAxis title)
+                title: {
+                    text: pathogenText
+                },
                 //DKDK VB-8096 set ordinal false for highchart.stockchart
                 ordinal: ordinal,
                 events: {
@@ -674,7 +686,7 @@
                 max: maxDate,
                 minRange: minRange
             },
-            yAxis: yAxis, 
+            yAxis: yAxis,
             credits: {
                 enabled: false
             },
@@ -703,7 +715,7 @@
         var numberOfDays = (e.max-e.min) / (1000 * 3600 * 24);
         var oldResolution = resolution;
 
-        //The following code is to fix a small bug where setAfterExtreme gets executed when clicking on a 
+        //The following code is to fix a small bug where setAfterExtreme gets executed when clicking on a
         //legend item if setAfterExtreme has not been executed before
         //Update the flag that the afterSetExtreme function has already been accessed
         if (!afterSetExtremesTriggered) {
@@ -751,7 +763,7 @@
 
         //Only update the graph if the resolution was changed
         // @todo: Find a better way of knowing when to update HighchartsGraph.dd
-        // This check causes a bug that if one decreases the navigator in a lower resolution, 
+        // This check causes a bug that if one decreases the navigator in a lower resolution,
         // and then switches to a higher resolution, the graph will not retrieve additional data
         if (oldResolution !== resolution || disabledResolutions[resolution]) {
             updateHighchartsGraph(startDate, endDate, resolution);
@@ -777,7 +789,7 @@
           var newEndDate = new Date(maxDate);
           var startDateString = newStartDate.toISOString();
           var endDateString = newEndDate.toISOString();
-        } 
+        }
 
         var baseUrl = solrPopbioUrl + viewMode + dataEndpoint + "?";
         var facetTerm = "&term=" + term + "&date_resolution=" + dateResolutionField;
@@ -834,7 +846,7 @@
         if (json.facets.term) {
             var collectionKey = graphConfig.collectionKey;
             //Use the collection key to that was set to get the data that will be used
-            var termCollectionsList = Object.byString(json, collectionKey); 
+            var termCollectionsList = Object.byString(json, collectionKey);
 
             //Used to choose what side to place the y-axis
             var opposite = false;
@@ -842,18 +854,20 @@
 
                 //Flag used to tell if there is non-zero data in series for column charts
                 var noData = true;
-                
+
                 //Go through response to parse data out that will be plotted
                 termCollectionsList.forEach(function (termCollections) {
                     //Get the key of the y-axis we are population
-                    var yAxisKey = opposite ? " infected" : "";
+                    //DKDK VB-8390 infected* text (changing texts for specie names at tooltip and legends)
+                    // var yAxisKey = opposite ? " infected" : "";
+                    var yAxisKey = opposite ? " infected*" : "";
                     var marker = opposite ? "diamond" : "circle";
 
                     //Used to hold the formatted data for a single species (or protocol, etc)  chart
                     var markerColor = legend.options.palette[termCollections.val];
                     var chartType = yAxis.chartType;
                     var transparent = yAxis.transparent;
-                    
+
                     if (transparent) {
                         var r = hexToRgb(markerColor).r;
                         var g = hexToRgb(markerColor).g;
@@ -891,7 +905,7 @@
                         } else {
                             var yValue = Object.byString(collectionsDate, valueKey);
                         }
-                        
+
                         //Could support different values on x-axis so checking the data_type which will not do anything for now
                         if (graphConfig.dataType === "timeplot") {
                             if (resolution === "Yearly") {
@@ -922,7 +936,7 @@
                                     }
                                 });
                             }
-                            
+
                             if (resolution === "EpiWeekly") {
                                 data.epiWeek = {label: "Epi Week", value: [epiWeek]};
                             }
@@ -986,7 +1000,7 @@
         var dataType;
         var quantityLabel = graphConfig.quantityLabel;
 
-        //Right now we are only doing timeplots, but if it changes will need to use graphConfig.dataType to customize how 
+        //Right now we are only doing timeplots, but if it changes will need to use graphConfig.dataType to customize how
         //the tooltip will look with different type of data
         if (resolution === "Yearly") {
             dataType = "Year";
@@ -1045,7 +1059,7 @@
             date.setDate(date.getDate() + (7 - date.getDay()));
         }
 
-        //Fron the beginning of the first epiWeek, skip forward number of days 
+        //Fron the beginning of the first epiWeek, skip forward number of days
         days = (w - 1) * 7;
         date.setDate(date.getDate() + days);
 
@@ -1085,7 +1099,7 @@
         } : null;
     }
 
-    //Sets legend_flag flag to prevent afterSetExtremes from re-rendeing 
+    //Sets legend_flag flag to prevent afterSetExtremes from re-rendeing
     //the graph when toggling a legend item
     function setExternalActionFlag() {
         if (!afterSetExtremesTriggered) {
@@ -1100,13 +1114,13 @@
             maxDate = maxDayDate;
         } else if (resolution == "Monthly") {
             minDate = minMonthDate;
-            maxDate = maxDayDate; 
+            maxDate = maxDayDate;
         } else if (resolution == "EpiWeekly") {
             minDate = new Date(minDayDate);
             minDate.setDate(minDate.getUTCDate() - (minDate.getUTCDay() + 1));
             minDate = minDate.getTime();
             maxDate = maxDayDate;
-           
+
         } else {
             minDate = minDayDate;
             maxDate = maxDayDate;
