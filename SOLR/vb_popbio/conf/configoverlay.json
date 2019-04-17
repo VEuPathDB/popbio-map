@@ -271,7 +271,8 @@
         "json.nl": "map",
         "rows": 0,
         "facet": "true",
-        "json": "{\"filter\":[\"bundle:pop_sample_phenotype\",\"phenotype_type_s:\\\"infection status\\\"\",\"infection_status_s:*\",\"has_geodata:true\",\"${date_resolution}:*\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":${termLimit:-1},\"field\":\"${term:species_category}\",\"facet\":{\"collection_dates\":{\"type\":\"terms\",\"limit\":2000,\"sort\":\"index\",\"field\":\"${date_resolution:collection_day_s}\",\"facet\":{\"infected\":{\"type\":\"query\",\"q\":\"infection_status_s:present\",\"facet\":{\"pathogen\":{\"type\":\"terms\",\"field\":\"infection_source_s\"}}}}}}}}}"
+        //DKDK VB-8390 infection_status_s:* to (present OR equivocal)
+        "json": "{\"filter\":[\"bundle:pop_sample_phenotype\",\"phenotype_type_s:\\\"infection status\\\"\",\"infection_status_s:*\",\"has_geodata:true\",\"${date_resolution}:*\"],\"facet\":{\"term\":{\"type\":\"terms\",\"limit\":${termLimit:-1},\"field\":\"${term:species_category}\",\"facet\":{\"collection_dates\":{\"type\":\"terms\",\"limit\":2000,\"sort\":\"index\",\"field\":\"${date_resolution:collection_day_s}\",\"facet\":{\"infected\":{\"type\":\"query\",\"q\":\"infection_status_s:(present OR equivocal)\",\"facet\":{\"pathogen\":{\"type\":\"terms\",\"field\":\"infection_source_s\"}}}}}}}}}"
       }
     },
     "/pathMarkerYearRange": {
