@@ -168,7 +168,7 @@
       "invariants": {
         "wt": "json",
         "json.nl": "map",
-        "fl": "accession,bundle_name,sample_type,url,geolocations,geo_coords,protocols,species_category,collection_protocols,attractants_ss,collection_date,collection_date_range,projects,sample_size_i,collection_duration_days_i",
+        "fl": "accession,bundle_name,sample_type,url,geolocations,geo_coords,protocols,species_category,collection_protocols,attractants_ss,collection_date,collection_date_range,projects,sample_size_i,collection_duration_days_i,sex_s,dev_stages_ss",
         "json": "{\"filter\":[\"bundle:pop_sample\",\"has_geodata:true\",\"has_abundance_data_b:true\",\"${zeroFilter:sample_size_i:*}\"]}"
       }
     },
