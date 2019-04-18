@@ -2449,7 +2449,10 @@ function tableHtml(divid, results) {
                     concentration: element.concentration_f,
                     concentrationUnit: element.concentration_unit_s,
                     duration: element.duration_f,
-                    durationUnit: element.duration_unit_s
+                    durationUnit: element.duration_unit_s,
+                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
+                    sex: element.sex_s,
+                    devstages: element.dev_stages_ss
                 };
 
                 template = $.templates("#irRowTemplate");
@@ -2479,7 +2482,10 @@ function tableHtml(divid, results) {
                     protocols: borderColor('Protocol', element.protocols),
                     protocolsType: 'Protocol',
                     sampleSize: element.sample_size_i,
-                    collectionDuration: element.collection_duration_days_i
+                    collectionDuration: element.collection_duration_days_i,
+                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
+                    sex: element.sex_s,
+                    devstages: element.dev_stages_ss
                 };
 
                 //DKDK VB-8161 rounding to 2 decimal places
@@ -2515,7 +2521,10 @@ function tableHtml(divid, results) {
                     label: element.label,
                     genotypeName: element.genotype_name_s,
                     mutatedProteinValue: element.genotype_mutated_protein_value_f,
-                    mutatedProteinUnit: element.genotype_mutated_protein_unit_s
+                    mutatedProteinUnit: element.genotype_mutated_protein_unit_s,
+                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
+                    sex: element.sex_s,
+                    devstages: element.dev_stages_ss
                 };
 
                 row.alleleCount = (element.sample_size_i * element.genotype_mutated_protein_value_f / 50).roundDecimals(0);
@@ -2548,7 +2557,10 @@ function tableHtml(divid, results) {
                     phenotypeValueUnit: element.phenotype_value_unit_s,
                     sampleSize: element.sample_size_i,
                     infectionStatus: element.infection_status_s,
-                    pathogen: element.infection_source_s
+                    pathogen: element.infection_source_s,
+                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
+                    sex: element.sex_s,
+                    devstages: element.dev_stages_ss
                 };
 
                 template = $.templates("#pathRowTemplate");
@@ -2579,7 +2591,10 @@ function tableHtml(divid, results) {
                     phenotypeValueType: element.phenotype_value_type_s,
                     phenotypeValueUnit: element.phenotype_value_unit_s,
                     sampleSize: element.sample_size_i,
-                    bloodMealHost: element.blood_meal_source_s
+                    bloodMealHost: element.blood_meal_source_s,
+                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
+                    sex: element.sex_s,
+                    devstages: element.dev_stages_ss
                 };
 
                 template = $.templates("#mealRowTemplate");
@@ -2606,7 +2621,10 @@ function tableHtml(divid, results) {
                     collectionProtocolsType: 'Collection protocol',
                     protocols: borderColor('Protocol', element.protocols),
                     protocolsType: 'Protocol',
-                    sampleSize: element.sample_size_i
+                    sampleSize: element.sample_size_i,
+                    //DKDK VB-8114 displaying sex_s and dev_stage_ss for smpl view (add comma)
+                    sex: element.sex_s,
+                    devstages: element.dev_stages_ss
                 };
 
                 template = $.templates("#smplRowTemplate");
