@@ -40,7 +40,7 @@ var validateRequest = function (request, options) {
 var defaultOptions = {
     listenPort: 8000,
     invalidHttpMethods: ['POST'],
-    validPaths: ['/solr/vb_popbio/smplExport', '/solr/vb_popbio/irExport', '/solr/vb_popbio/abndExport', '/solr/vb_popbio/genoExport', '/solr/vb_popbio/pathExport'],
+    validPaths: ['/solr/vb_popbio/smplExport', '/solr/vb_popbio/irExport', '/solr/vb_popbio/abndExport', '/solr/vb_popbio/genoExport', '/solr/vb_popbio/pathExport', '/solr/vb_popbio/mealExport'],
     invalidParams: ['qt', 'stream'],
     backend: {
         host: 'localhost',

@@ -11,6 +11,12 @@ module.exports = {
             label: 'Sample ID',
             quoted: false
         },
+        //DKDK VB-7133 sample label
+        {
+            name: 'exp_sample_name_s',
+            label: 'Sample label',
+            quoted: true
+        },
         {
             name: 'exp_assay_id_s',
             label: 'Assay ID',
@@ -69,10 +75,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -138,27 +158,27 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
     smpl: [
@@ -215,10 +235,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -233,28 +267,28 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
-        }        
+            quoted: true
+        }
     ],
     abnd: [
         {
@@ -310,10 +344,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -338,27 +386,27 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
     geno: [
@@ -420,10 +468,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -483,30 +545,190 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
     path: [
+        {
+            name: 'exp_sample_id_s',
+            label: 'Sample ID',
+            quoted: false
+        },
+        //DKDK VB-7133 sample label
+        {
+            name: 'exp_sample_name_s',
+            label: 'Sample label',
+            quoted: true
+        },
+        {
+            name: 'exp_assay_id_s',
+            label: 'Assay ID',
+            quoted: false
+        },
+        {
+            name: 'exp_bundle_name_s',
+            label: 'Record type',
+            quoted: false
+        },
+        {
+            name: 'exp_species_s',
+            label: 'Species',
+            quoted: false
+        },
+        {
+            name: 'exp_sample_type_s',
+            label: 'Sample type',
+            quoted: false
+        },
+        {
+            name: 'exp_sample_size_i',
+            label: 'Sample size',
+            quoted: false
+        },
+        {
+            name: 'exp_label_s',
+            label: 'Label',
+            quoted: true
+        },
+        {
+            name: 'exp_collection_assay_id_s',
+            label: 'Collection ID',
+            quoted: false
+        },
+        {
+            name: 'exp_collection_date_range_ss',
+            label: 'Collection date range',
+            quoted: true,
+            filter: function (dates) {
+                var newDates = [];
+                for (var i = 0, len = dates.length; i < len; i++) {
+                    // console.dir(dates[i])
+                    newDates.push(dates[i].replace(/[\[\]]/g, ''));
+                }
+                return newDates
+            }
+        },
+        {
+            name: 'exp_collection_protocols_ss',
+            label: 'Collection protocols',
+            quoted: true
+        },
+        {
+            name: 'exp_projects_ss',
+            label: 'Projects',
+            quoted: true
+        },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
+        },
+        {
+            name: 'exp_geolocations_ss',
+            label: 'Locations',
+            quoted: true
+        },
+        {
+            name: 'exp_phenotype_type_s',
+            label: 'Phenotype type',
+            quoted: false
+        },
+        {
+            name: 'exp_protocols_ss',
+            label: 'Protocols',
+            quoted: true
+        },
+        {
+            name: 'exp_phenotype_value_f',
+            label: 'Phenotype value',
+            quoted: false
+        },
+        {
+            name: 'exp_phenotype_value_unit_s',
+            label: 'Phenotype value unit',
+            quoted: false
+        },
+        {
+            name: 'exp_phenotype_value_type_s',
+            label: 'Phenotype value type',
+            quoted: false
+        },
+        {
+            name: 'exp_infection_source_s',
+            label: 'Pathogen',
+            quoted: false
+        },
+        {
+            name: 'exp_infection_status_s',
+            label: 'Infection status',
+            quoted: false
+        },
+        {
+            name: 'exp_citations_ss',
+            label: 'Citations',
+            quoted: true
+        },
+        {
+            name: 'exp_tags_ss',
+            label: 'Tag',
+            quoted: true
+        },
+        {
+            name: 'exp_attractants_ss',
+            label: 'Attractants',
+            quoted: true
+        },
+        {
+            name: 'exp_licenses_ss',
+            label: 'Usage license',
+            quoted: true
+        },
+        {
+            name: 'exp_sex_s',
+            label: 'Sex',
+            quoted: false
+        },
+        {
+            name: 'exp_dev_stages_ss',
+            label: 'Developmental stage',
+            quoted: true
+        }
+    ],
+    meal: [
         {
             name: 'exp_sample_id_s',
             label: 'Sample ID',
@@ -570,10 +792,24 @@ module.exports = {
             label: 'Projects',
             quoted: true
         },
+        //DKDK VB-8369 separating Coordinates into Lat & Long
         {
             name: 'exp_geo_coords_s',
-            label: 'Coordinates',
-            quoted: true
+            label: 'Latitudes',
+            quoted: true,
+            filter: function (coord) {
+                var latitude = coord.split(',')[0];
+                return latitude
+            }
+        },
+        {
+            name: 'exp_geo_coords_s',
+            label: 'Longitudes',
+            quoted: true,
+            filter: function (coord) {
+                var longitude = coord.split(',')[1];
+                return longitude
+            }
         },
         {
             name: 'exp_geolocations_ss',
@@ -606,13 +842,8 @@ module.exports = {
             quoted: false
         },
         {
-            name: 'exp_infection_source_s',
-            label: 'Pathogen',
-            quoted: false
-        },
-        {
-            name: 'exp_infection_status_s',
-            label: 'Infection status',
+            name: 'exp_blood_meal_source_s',
+            label: 'Blood meal host',
             quoted: false
         },
         {
@@ -623,27 +854,27 @@ module.exports = {
         {
             name: 'exp_tags_ss',
             label: 'Tag',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_attractants_ss',
             label: 'Attractants',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_licenses_ss',
             label: 'Usage license',
-            quoted: true            
+            quoted: true
         },
         {
             name: 'exp_sex_s',
             label: 'Sex',
-            quoted: false            
+            quoted: false
         },
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
-            quoted: true            
+            quoted: true
         }
     ],
 };

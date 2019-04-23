@@ -58,7 +58,7 @@ L.Control.MapLegend = L.Control.extend({
     // and cancel the lick event for the map
     initialize: function (options) {
         this._legendDiv = {};
-        // Right now passing options does not affect anything, but adding it since the 
+        // Right now passing options does not affect anything, but adding it since the
         // correct way of implementing a new control is to use options to modify the object
         this.addLegendIcon(options);
         if (options.summarizeBy) {
@@ -90,7 +90,7 @@ L.Control.MapLegend = L.Control.extend({
                     $(".leaflet-bottom.leaflet-right .leaflet-bar").removeClass("active");
                     button.state('show-legend');
                     $(".leaflet-bottom.leaflet-right .leaflet-bar").tooltip("hide");
-                } 
+                }
             }, {
                 stateName: 'show-legend',
                 onClick: function(button) {
@@ -304,7 +304,7 @@ L.Control.MapLegend = L.Control.extend({
         return colorObj;
     },
 
-   
+
     /*
      function _colorLuminance
      date: 20/03/2015
@@ -342,6 +342,7 @@ L.Control.MapLegend = L.Control.extend({
             (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Infection status">Infection status</a></li> ' : '') +
+            (viewMode === 'meal' ? '<li><a href="#" value="Blood meal host">Blood meal host</a></li> ' : '') +
             '<li><a href="#" value="Species">Species</a></li>' +
             '<li><a href="#" value="Sample type">Sample type</a></li>' +
             '<li><a href="#" value="Collection protocol">Collection protocol</a></li>' +
@@ -357,26 +358,26 @@ L.Control.MapLegend = L.Control.extend({
     _generateLegendHtml: function (palette, numOfItems) {
         var options = this.options;
         var inHtml = ''; // store HTML here
-        
+
         var dropdownsHTML =
-            '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize workers and facet data by...">' + 
+            '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize workers and facet data by...">' +
             '<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
             glbSummarizeBy + ' ' +
             '<span class="caret"></span>' +
             '</button>' +
             this._generateViewSelect(viewMode) +
-            '</div>' + 
+            '</div>' +
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
             //sortByHTML +
-            SORT_BY_HTML[options.sortBy] + 
+            SORT_BY_HTML[options.sortBy] +
             ' <span class="caret"></span>' +
             '</button>' +
             '<ul class = "dropdown-menu dropdown-menu-right" aria-labelledby="sortByDropdown"> ' +
             SORT_CHOICES +
             '</ul>' +
             '</div>';
-            
+
         var type = mapSummarizeByToField(options.summarizeBy).type;
         inHtml += '<div style="border: 0; margin-bottom: 5px;">' + dropdownsHTML + '</div>';
 
@@ -394,12 +395,12 @@ L.Control.MapLegend = L.Control.extend({
                         '</div>' +
                         '<div class="legend-count">' + item.count + '</div>' +
                     '</div>';
-                        
+
         }).join('')
         inHtml += '</div>';
 
         var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")";
-        inHtml += '<div class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '">' + 
+        inHtml += '<div class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '">' +
                         '<i style="background:' + othersBg + ';"></i> ' + 'Complete List<br>' +
                   '</div>';
 
@@ -501,7 +502,7 @@ L.Control.MapLegend = L.Control.extend({
         // Now go through the complete palette and construct it in a similar
         // format as the palette created from lodash
         var completePalette = [];
-        
+
         _.forOwn(this.options.palette, function(color, name) {
 
             var val = paletteCategories[name];
@@ -561,7 +562,7 @@ L.Control.MapLegend = L.Control.extend({
             // For some reason color and greyscale palettes do not get ordered correctly together
             // So sorting them separately.
             // Also sorting by lumanosity since it seems to work better than hue
-            
+
             // Get only colors
             colorPalette = _.filter(palette, function(o) {
                 return o.hue != 0;
@@ -730,7 +731,7 @@ L.Control.MapLegend = L.Control.extend({
             '<div class="btn-group dropdown" role="group" id="sortByDropdown" style="float: right;">' +
             '<button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
             //sortByHTML +
-            SORT_BY_HTML[options.sortBy] + 
+            SORT_BY_HTML[options.sortBy] +
             '<span class="caret"></span>' +
             '</button>' +
             '<ul class = "dropdown-menu" aria-labelledby="sortByDropdown"> ' +
@@ -764,7 +765,7 @@ L.Control.MapLegend = L.Control.extend({
         // Only way I could think of that will allow the click event to clear the markers when selecting an empty spot
         // But allow the legend values to also interact with the map
         map.off("click", PopulationBiologyMap.methods.resetMap);
-    }   
+    }
 });
 
 L.control.legend = function (url, options) {
@@ -793,15 +794,36 @@ L.control.legend = function (url, options) {
 $(document).on('click', '#rescale_colors', function() {
     legend.options.rescale = true;
     PopulationBiologyMap.data.rescale = true;
+
+    // Preserving highchart settings when optimizing colors
+    if (Highcharts.charts.length) {
+        var navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
+        PopulationBiologyMap.data.navDates = [navigatorExtremes.min, navigatorExtremes.max];
+        PopulationBiologyMap.data.resolution = $("#resolution-selector .btn-primary").val();
+    }
+
     legend._setPalette();
     loadSolr({clear: 1, zoomLevel: map.getZoom()});
     //legend.refreshLegend(legend.options.palette);
+
+    //DKDK VB-8372 need to reset map
+    map.on("click", PopulationBiologyMap.methods.resetMap);
 });
 
 $(document).on('click', '#reset_colors', function() {
     legend.options.rescale = false;
     PopulationBiologyMap.data.rescale = false;
+
+    // Preserving highchart settings when optimizing colors
+    if (Highcharts.charts.length) {
+        var navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
+        PopulationBiologyMap.data.navDates = [navigatorExtremes.min, navigatorExtremes.max];
+        PopulationBiologyMap.data.resolution = $("#resolution-selector .btn-primary").val();
+    }
+
     legend._setPalette();
     loadSolr({clear: 1, zoomLevel: map.getZoom()});
-});
 
+    //DKDK VB-8372 need to reset map
+    map.on("click", PopulationBiologyMap.methods.resetMap);
+});

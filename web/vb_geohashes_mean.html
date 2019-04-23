@@ -9,7 +9,7 @@
     <!-- Remote CSS styles -->
     <link rel="stylesheet" href="css/vectorbase.css" type="text/css" media="screen"/>
     <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
           rel="stylesheet">
     <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" type="text/css" media="screen"/>-->
@@ -45,6 +45,7 @@
 
     <!-- Remote Javascript libraries -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <!--<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>-->
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -877,6 +878,7 @@
                         <option data-icon="fa-dna" value="geno">Genotypes</option>
                         <option data-icon="fa-chart-line" value="abnd">Abundance</option>
                         <option data-icon="fa-thermometer-half" value="path">Pathogen</option>
+                        <option data-icon="fa-tint" value="meal">Blood Meal</option>
                     </select>
                     </span>
 
@@ -1075,7 +1077,7 @@
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                 </a>
-            {{if sampleSize}}
+            {{if sampleSize && sampleType != "individual"}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}}
                 </span>
@@ -1201,6 +1203,27 @@
                 </ul>
             </div>
         </div>
+
+        <!-- DKDK VB-8114 displaying sex_s and dev_stage_ss -->
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Sex">
+                    <i class="far fa-fw fas fa-venus-mars"></i><b> Sex</b>
+                </p>
+                <ul><li> {{:sex}} </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Development stages">
+                    <i class="far fa-fw fas fa-sync"></i><b> Development stages</b>
+                </p>
+                <ul>
+                {{for devstages}}
+                    <li> {{:#data}} </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+
     </div>
 
 
@@ -1228,7 +1251,7 @@
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                 </a>
-            {{if sampleSize}}
+            {{if sampleSize && sampleType != "individual"}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}}
                 </span>
@@ -1378,6 +1401,27 @@
                 </ul>
             </div>
         </div>
+
+        <!-- DKDK VB-8114 displaying sex_s and dev_stage_ss -->
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Sex">
+                    <i class="far fa-fw fas fa-venus-mars"></i><b> Sex</b>
+                </p>
+                <ul><li> {{:sex}} </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Development stages">
+                    <i class="far fa-fw fas fa-sync"></i><b> Development stages</b>
+                </p>
+                <ul>
+                {{for devstages}}
+                    <li> {{:#data}} </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+
     </div>
 </script>
 
@@ -1399,7 +1443,7 @@
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa  fa-external-link-alt " aria-hidden="true"></i>
                 </a>
-            {{if sampleSize}}
+            {{if sampleSize && sampleType != "individual"}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}}
                 </span>
@@ -1560,6 +1604,27 @@
                 </ul>
             </div>
         </div>
+
+        <!-- DKDK VB-8114 displaying sex_s and dev_stage_ss -->
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Sex">
+                    <i class="far fa-fw fas fa-venus-mars"></i><b> Sex</b>
+                </p>
+                <ul><li> {{:sex}} </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Development stages">
+                    <i class="far fa-fw fas fa-sync"></i><b> Development stages</b>
+                </p>
+                <ul>
+                {{for devstages}}
+                    <li> {{:#data}} </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+
     </div>
 
 
@@ -1586,7 +1651,7 @@
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa  fa-external-link-alt " aria-hidden="true"></i>
                 </a>
-            {{if sampleSize}}
+            {{if sampleSize && sampleType != "individual"}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}}
                 </span>
@@ -1732,6 +1797,27 @@
                 </ul>
             </div>
         </div>
+
+        <!-- DKDK VB-8114 displaying sex_s and dev_stage_ss -->
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Sex">
+                    <i class="far fa-fw fas fa-venus-mars"></i><b> Sex</b>
+                </p>
+                <ul><li> {{:sex}} </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Development stages">
+                    <i class="far fa-fw fas fa-sync"></i><b> Development stages</b>
+                </p>
+                <ul>
+                {{for devstages}}
+                    <li> {{:#data}} </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+
     </div>
 </script>
 
@@ -1754,7 +1840,7 @@
                 <a href="{{url:url}}" target="_blank">
                     <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                 </a>
-            {{if sampleSize}}
+            {{if sampleSize && sampleType != "individual"}}
                 <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
                     ({{html:sampleType}}
                 </span>
@@ -1913,10 +1999,225 @@
                 </ul>
             </div>
         </div>
+
+        <!-- DKDK VB-8114 displaying sex_s and dev_stage_ss -->
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Sex">
+                    <i class="far fa-fw fas fa-venus-mars"></i><b> Sex</b>
+                </p>
+                <ul><li> {{:sex}} </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Development stages">
+                    <i class="far fa-fw fas fa-sync"></i><b> Development stages</b>
+                </p>
+                <ul>
+                {{for devstages}}
+                    <li> {{:#data}} </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+
     </div>
 </script>
 
+<!-- jsrender template for sample info in the table slider (Blood Meal view)-->
 
+<script type="text/x-jsrender" id="mealRowTemplate">
+    <div class="row no-pad marker-row">
+
+
+        <div class="col-md-12" >
+            <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
+                <span class="active-term" type="{{attr:speciesType}}" value="{{attr:species}}">
+                    <i> {{html:species}}</i>
+                </span>
+            </h3>
+            <p>{{html:bundleName}}
+                <span class="active-term" type="{{attr:accessionType}}" value="{{attr:accession}}">
+                    {{html:accession}}
+                </span>
+                <a href="{{url:url}}" target="_blank">
+                    <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
+                </a>
+            {{if sampleSize && sampleType != "individual"}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}}
+                </span>
+                 of {{>sampleSize}} individuals)</p>
+            {{else}}
+                <span class="active-term" type="{{attr:sampleTypeType}}" value="{{attr:sampleType}}">
+                    ({{html:sampleType}})
+                </span></p>
+            {{/if}}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Collection date">
+                    <i class="far fa-fw fa-calendar-alt"></i><b> Col. Date(s)</b>
+                </p>
+                <ul>
+                    {{for collectionDate}}
+                        <li>
+                        <span>
+                        {{>#data}}
+                        </span>
+                        </li>
+                    {{else}}
+                        <li>
+                        No date
+                        </li>
+                    {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+                    <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                        {{html:geolocation}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Projects">
+                    <i class="fa fa-fw fa-database"></i><b> Project(s)</b>
+                </p>
+                <ul>
+                {{for projects}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Projects" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Projects" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                        <span style="padding-left: 5px;">
+                            <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
+                            aria-hidden="true"
+                            {{if #data.brdColor}}
+                                data-bgColor={{attr:#data.brdColor}}
+                            {{else}}
+                                data-bgColor={{attr:~root.bgColor}}
+                            {{/if}}
+                            ></i>
+                        </span>
+                        <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
+                            <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Collection Protocols">
+                    <i class="fa fa-fw fa-shopping-cart"></i><b> Col. Protocol(s)</b>
+                </p>
+                <ul>
+                {{for collectionProtocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Collection protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Collection protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <h5 style="color: {{attr:bgColor}}; text-align: center; text-decoration: underline;">
+                Blood meal data</h5>
+            </div>
+        </div>
+        {{if phenotypeValueType}}
+            <div class="row">
+                <div class="col-md-12" >
+                    <h5 style="text-align: center;">
+                        <b>{{>phenotypeValueType}}:</b> {{>phenotypeValue}} {{>phenotypeValueUnit}}
+                    </h5>
+                </div>
+            </div>
+        {{/if}}
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Blood Meal Host" >
+                    <i class="fas fa-fw fa-tint"></i>
+                    <b> Host</b>
+                </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="Blood meal host" value="{{attr:bloodMealHost}}">
+                            {{html:bloodMealHost}}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6" title="Protocols">
+                <p style="color: {{attr:bgColor}};"><i class="fas fa-fw fa-sort-amount-down"></i><b> Protocol(s)</b></p>
+                <ul>
+                {{for protocols}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Protocols" value="{{attr:#data.name}}">
+                            {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+                            {{/if}}
+                                <i class="fa fa-fw fa-circle" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Protocols" value="{{attr:#data.name}}">
+
+                        {{/if}}
+                            {{>#data.name}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+
+        <!-- DKDK VB-8114 displaying sex_s and dev_stage_ss -->
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Sex">
+                    <i class="far fa-fw fas fa-venus-mars"></i><b> Sex</b>
+                </p>
+                <ul><li> {{:sex}} </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Development stages">
+                    <i class="far fa-fw fas fa-sync"></i><b> Development stages</b>
+                </p>
+                <ul>
+                {{for devstages}}
+                    <li> {{:#data}} </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</script>
 
 <!-- jsrender template for point info in beeswarm plot (IR view)-->
 <script type="text/x-jsrender" id="irBsPointTemplate">
@@ -2236,6 +2537,24 @@
                 {{attr:last_modified_date}}
                 </li></ul>
 
+            </div>
+        </div>
+
+        <!-- DKDK VB-8114 adding tags array at Project info -->
+        <div class="row less-margin">
+            <div class="col-md-12" >
+                <p style="color: {{attr:bgColor}}; ">
+                    <i class="far fa-fw fas fa-tag" title="Tags"></i><b> Tags</b>
+                </p>
+            </div>
+        </div>
+        <div class="row less-margin">
+            <div class="col-md-12" >
+                <ul>
+                {{for tags}}
+                    <li>{{:#data.name}}</li>
+                {{/for}}
+                </ul>
             </div>
         </div>
 

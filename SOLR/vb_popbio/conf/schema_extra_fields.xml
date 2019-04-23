@@ -262,6 +262,10 @@
     <field name="exp_sample_id_s" type="string" indexed="false" stored="false" docValues="true"/>
     <copyField source="sample_id_s" dest="exp_sample_id_s"/>
 
+    <!-- sample label DKDK VB-7133 -->
+    <field name="exp_sample_name_s" type="string" indexed="false" stored="false" docValues="true"/>
+    <copyField source="sample_name_s" dest="exp_sample_name_s"/>
+
     <!-- assay_id_s -->
     <field name="exp_assay_id_s" type="string" indexed="false" stored="false" docValues="true"/>
     <copyField source="assay_id_s" dest="exp_assay_id_s"/>
@@ -388,7 +392,7 @@
     <field name="exp_genotype_mutated_protein_value_f" type="string" indexed="false" stored="false" multiValued="false"
            docValues="true"/>
     <copyField source="genotype_mutated_protein_value_f" dest="exp_genotype_mutated_protein_value_f"/>
- 
+
     <!-- citations that could be DOI or PMID - DIRECTLY PROVIDED IN SOLR DOCS (no copyField) -->
     <field name="exp_citations_ss" type="string" indexed="false" stored="false" multiValued="true"
            docValues="true"/>
@@ -399,6 +403,10 @@
 
     <field name="exp_infection_status_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
     <copyField source="infection_status_s" dest="exp_infection_status_s"/>
+
+    <!-- Blood Meal specific fields -->
+    <field name="exp_blood_meal_source_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="blood_meal_source_s" dest="exp_blood_meal_source_s"/>
 
     <!-- New Fields Added to Export related to attractants and license -->
     <field name="exp_tags_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>

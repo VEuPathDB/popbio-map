@@ -24,8 +24,21 @@
     //idea to make its own function.  Name can be changed, couldn't think of
     //a better one
     PopulationBiologyMap.methods.resetMap = function() {
+        $("#plots-control-panel").hide();
+
+        // Check if we were in a resizable panel and return it to the old state
+        if ($("#active-pane.ui-resizable").length) {
+            $("#active-pane.ui-resizable").removeAttr("style");
+            $("#active-pane.ui-resizable").resizable("destroy");
+
+            // Restore highcarts to its old width
+            var chart = Highcharts.charts[0];
+            chart.setSize(380, chart.chartHeight);
+        }
+
         removeHighlight();
         sidebar.close();
+
         // close open panels
         //$('.collapse').collapse('hide');
         setTimeout(function () {
@@ -287,6 +300,7 @@
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
+            if (viewMode === "meal") glbSummarizeBy = "Blood meal host";
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
@@ -295,6 +309,8 @@
                         glbSummarizeBy = "Allele";
                     } else if  (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if  (viewMode === "meal") {
+                        glbSummarizeBy = "Blood meal host";
                     } else {
                         glbSummarizeBy = "Species";
                     } 
@@ -307,6 +323,8 @@
                 if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") {
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if (viewMode === "meal") {
+                        glbSummarizeBy = "Blood meal host";
                     } else {
                         glbSummarizeBy = "Species";
                     }
@@ -324,10 +342,23 @@
                 }
             }
 
+            if (viewMode !== "meal") {
+                // $('#SelectView').val('smpl');
+                if (glbSummarizeBy === "Blood meal host") {
+                    if (viewMode === "geno") {
+                        glbSummarizeBy = "Allele";
+                    } else {
+                        glbSummarizeBy = "Species";
+                    }
+                }
+            }
+
             if (viewMode !== "abnd") {
                 if (glbSummarizeBy === "Attractant") {
                     if (viewMode === "path") {
                         glbSummarizeBy = "Pathogen";
+                    } else if (viewMode === "meal") {
+                        glbSummarizeBy = "Blood meal host";
                     } else if (viewMode === "geno") {
                         glbSummarizeBy = "Allele";
                     } else {
@@ -337,7 +368,7 @@
             }
 
             // Add and remove the disabled class for the sidebar
-            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
+            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path" && viewMode !== "meal") {
                 // Get the current sidebar that is active
                 var active_sidebar = $(".sidebar-icon.active a").attr("id");
 
@@ -742,6 +773,7 @@
                     case "title":
                     case "pathogen":
                     case "infection_status":
+                    case "blood_meal_host":
                     case "pubmed":
                     case "tag":
                     case "devstage":
@@ -966,7 +998,7 @@
         updateExportFields(viewMode);
 
         // Add and remove the disabled class for the sidebar
-        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path") {
+        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path" && viewMode !== "meal") {
             $('#\\#swarm-plots').addClass('disabled');
             $("#\\#swarm-plots").parent("li").attr("title", "Disabled on this view");
 
@@ -1079,6 +1111,8 @@
                 return "pathogen";
             case "Infection status":
                 return "infection_status";
+            case "Blood meal host":
+                return "blood_meal_host";
             case "Sex":
                 return "sex";
             case "Developmental stage":
@@ -1145,6 +1179,8 @@
                 return "Pathogen";
             case "infection_status":
                 return "Infection status";
+            case "blood_meal_host":
+                return "Blood meal host";
             case "sex":
                 return "Sex";
             case "devstage":
@@ -1275,21 +1311,16 @@
                 panel_param = "&panelID=" + activePanel;
             }
 
-            if (rescale) {
-                rescaleParam = "&optimizeColors=true";
-                $("#rescale_colors").click();
-            }
-
             if (Highcharts.charts.length && activePanel === "swarm-plots") {
                 navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
                 navDates = "&navDates=" + navigatorExtremes.min + "," + navigatorExtremes.max;
                 resolution = $("#resolution-selector .btn-primary").val();
                 chartResolution = "&resolution=" + resolution;
+            }
 
-                // For some reason clicking on share link button re-renders graph so need to add this in
-                // so graph gets re-rendered to how it was before.
-                PopulationBiologyMap.data.navDates = [navigatorExtremes.min, navigatorExtremes.max];
-                PopulationBiologyMap.data.resolution = resolution;
+            if (rescale) {
+                rescaleParam = "&optimizeColors=true";
+                $("#rescale_colors").click();
             }
 
             query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms + rescaleParam + navDates + chartResolution;
