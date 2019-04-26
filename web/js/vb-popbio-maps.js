@@ -1642,7 +1642,7 @@ function loadSolr(parameters) {
 
                         // Enable or disable the resizable functionality of the panel
                         // Only the abundance and pathogen views should have this functionality
-                        if (panelId === "swarm-plots" && (viewMode === "abnd" || viewMode === "path")) {
+                        if (panelId === "swarm-plots" && (viewMode === "abnd" || viewMode === "path" || viewMode === "meal")) {
                             $("#active-pane").resizable({
                                 handles: 'e',
                                 minWidth: 420,

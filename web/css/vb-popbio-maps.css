@@ -1183,4 +1183,6 @@ div.error div, div.warning div, div.info div, div.hint div {
     top: 50%;
     bottom: 50%;
     color: #BCBCBC;
+    position: absolute;
+    cursor: ew-resize;
 }
