@@ -1905,6 +1905,22 @@ function loadSolr(parameters) {
                 // Move the marker to the starting location
                 marker.setLatLng(startingLatLng);
 
+                //DKDK VB-8116
+                var markerNewTooltipLabel = '';
+                if (viewMode !== 'smpl') {
+                    if (viewMode == 'ir')   markerNewTooltipLabel = ' insecticide resistance assays performed';
+                    if (viewMode == 'geno') markerNewTooltipLabel = ' insecticide resistance allele genotypes performed';
+                    if (viewMode == 'abnd') markerNewTooltipLabel = ' mosquitoes collected';
+                    if (viewMode == 'path') markerNewTooltipLabel = ' pathogen stats assays performed';
+                    if (viewMode == 'meal') markerNewTooltipLabel = ' blood meal assays collected';
+                    marker.bindTooltip(marker.options.icon.options.count + markerNewTooltipLabel, {
+                        // permanent: false,
+                        className: 'markerNewTooltipLabelClass',
+                        direction: 'top',
+                        offset: [0,-13]
+                    }).openTooltip();
+                }
+
                 // Copy the marker to the main layer (but its opacity it's still only 0.2)
                 assetLayerGroup.addLayer(marker);
                 var icon = marker._icon;
