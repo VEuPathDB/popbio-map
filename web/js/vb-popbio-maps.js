@@ -1917,7 +1917,7 @@ function loadSolr(parameters) {
                     // permanent: false,
                     className: 'markerNewTooltipLabelClass',
                     direction: 'top',
-                    offset: [0,-13]
+                    offset: [0,-20]
                 }).openTooltip();
 
                 // Copy the marker to the main layer (but its opacity it's still only 0.2)
