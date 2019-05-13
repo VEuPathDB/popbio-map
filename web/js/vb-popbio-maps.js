@@ -1905,25 +1905,29 @@ function loadSolr(parameters) {
                 // Move the marker to the starting location
                 marker.setLatLng(startingLatLng);
 
-                //DKDK VB-8116
+                //DKDK VB-8116 hover over marker
                 var markerNewTooltipLabel = '';
-                if (viewMode !== 'smpl') {
-                    if (viewMode == 'ir')   markerNewTooltipLabel = ' insecticide resistance assays performed';
-                    if (viewMode == 'geno') markerNewTooltipLabel = ' insecticide resistance allele genotypes performed';
-                    if (viewMode == 'abnd') markerNewTooltipLabel = ' mosquitoes collected';
-                    if (viewMode == 'path') markerNewTooltipLabel = ' pathogen stats assays performed';
-                    if (viewMode == 'meal') markerNewTooltipLabel = ' blood meal assays collected';
-                    marker.bindTooltip(marker.options.icon.options.count + markerNewTooltipLabel, {
-                        // permanent: false,
-                        className: 'markerNewTooltipLabelClass',
-                        direction: 'top',
-                        offset: [0,-13]
-                    }).openTooltip();
-                }
+                if (viewMode == 'smpl') markerNewTooltipLabel = ' records';
+                if (viewMode == 'ir')    markerNewTooltipLabel = ' insecticide resistance assays';
+                if (viewMode == 'geno')  markerNewTooltipLabel = ' insecticide resistance allele genotypes';
+                if (viewMode == 'abnd')  markerNewTooltipLabel = ' mosquitoes';
+                if (viewMode == 'path')  markerNewTooltipLabel = ' pathogen status assays';
+                if (viewMode == 'meal')  markerNewTooltipLabel = ' blood meal assays';
+                marker.bindTooltip(marker.options.icon.options.count + markerNewTooltipLabel, {
+                    // permanent: false,
+                    className: 'markerNewTooltipLabelClass',
+                    direction: 'top',
+                    offset: [0,-13]
+                }).openTooltip();
 
                 // Copy the marker to the main layer (but its opacity it's still only 0.2)
                 assetLayerGroup.addLayer(marker);
                 var icon = marker._icon;
+
+                //DKDK VB-8116 empty marker._icon.title here so that html title popup would not show up
+                if (viewMode !== 'smpl') {
+                    icon.title = "";
+                }
                 // add the class needed to enable animation of the marker
                 if (!marker.options.remove) $(icon).addClass("leaflet-marker-icon-anim");
                 $(icon).one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
