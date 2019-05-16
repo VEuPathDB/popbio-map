@@ -865,6 +865,12 @@ function updateExportFields(viewMode) {
             label: 'Phenotype type',
             icon: mapTypeToIcon('Sample type')
         },
+        //DK VB-8517 add sample_size_i field for path, meal, and IR
+        {
+            value: 'exp_sample_size_i',
+            label: 'Sample size',
+            icon: mapTypeToIcon('Count')
+        },
         {
             value: 'exp_insecticide_s',
             label: 'Insecticide',
@@ -1212,6 +1218,12 @@ function updateExportFields(viewMode) {
             label: 'Protocol',
             icon: mapTypeToIcon('Protocol')
         },
+        //DK VB-8517 add sample_size_i field for path, meal, and IR
+        {
+            value: 'exp_sample_size_i',
+            label: 'Sample size',
+            icon: mapTypeToIcon('Count')
+        },
         {
             value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
             label: 'Phenotype value',
@@ -1320,6 +1332,12 @@ function updateExportFields(viewMode) {
             value: 'exp_protocols_ss',
             label: 'Protocol',
             icon: mapTypeToIcon('Protocol')
+        },
+        //DK VB-8517 add sample_size_i field for path, meal, and IR
+        {
+            value: 'exp_sample_size_i',
+            label: 'Sample size',
+            icon: mapTypeToIcon('Count')
         },
         {
             value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
