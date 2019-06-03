@@ -338,6 +338,8 @@ L.Control.MapLegend = L.Control.extend({
 
     _generateViewSelect: function (viewMode) {
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
+            //DKDK VB-8459 add signposts menu
+            (viewMode === 'smpl' ? '<li><a href="#" value="Signposts">Signposts</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Locus">Locus</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +

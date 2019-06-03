@@ -295,7 +295,6 @@
 
         });
 
-
         $('#SelectView').change(function () {
             viewMode = $('#SelectView').val()
 
@@ -304,6 +303,11 @@
             if (viewMode === "geno") glbSummarizeBy = "Allele";
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
             if (viewMode === "meal") glbSummarizeBy = "Blood meal host";
+            //DKDK VB-8459 with new Signspost, also need to set default value of legend here beyond initializeMap()
+            if (viewMode === "smpl") glbSummarizeBy = "Signposts";
+            if (viewMode === "ir"  ) glbSummarizeBy = "Species";
+            if (viewMode === "abnd") glbSummarizeBy = "Species";
+            //DKDK VB-8459 I am not so sure if below criteria should be used: I doubt it.
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');

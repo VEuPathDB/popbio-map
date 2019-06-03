@@ -668,6 +668,8 @@ function initializeMap(parameters) {
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
     if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
     if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal host";
+    //DKDK VB-8459 signposts as default: perhaps default glbSummarizeBy is Species without specification
+    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Signposts";
 
     // Now generate the legend
     // hardcoded species_category
@@ -2401,7 +2403,9 @@ function tableHtml(divid, results) {
         // hardcoded species_category
         var species = element.species_category ? element.species_category[0] : 'Unknown';
         var bgColor;
+        //DKDK VB-8459 need to modify this as well?
         if (glbSummarizeBy === 'Species') {
+        // if (glbSummarizeBy === 'Species' || glbSummarizeBy === 'Signposts') {
             bgColor = legend.options.palette[species]
         } else {
             var field = mapSummarizeByToField(glbSummarizeBy).field;
@@ -2943,6 +2947,9 @@ function mapTypeToField(type) {
             return "licenses_cvterms";
         case "Tag":
             return "tags_cvterms";
+        //DKDK VB-8459
+        case "Signposts":
+            return "signposts_ss";
         default :
             return type.toLowerCase()
 
@@ -3013,6 +3020,12 @@ function mapSummarizeByToField(type) {
             fields.summarize = "blood_meal_source_s";
             fields.type = "Blood meal host";
             fields.field = "blood_meal_source_s";
+            break;
+        //DKDK VB-8459
+        case "Signposts":
+            fields.summarize = "signposts_ss";
+            fields.type = "Signposts";
+            fields.field = "signposts_ss";
             break;
         default :
             fields.summarize = "species_category";
@@ -3094,6 +3107,9 @@ function mapTypeToLabel(type) {
                 return 'label label-info label-license';
             case 'Tag':
                 return 'label label-info label-tag';
+            //DKDK VB-8459 signposts
+            case 'Signposts':
+                return 'label label-info label-signposts';
             default :
                 return 'label label-warning label-default';
         }
@@ -3175,6 +3191,9 @@ function mapTypeToIcon(type) {
             return 'fab fa-creative-commons';
         case 'Blood meal host':
             return 'fas fa-tint';
+        //DKDK VB-8459 signposts
+        case 'Signposts':
+            return 'fa fa-map-signs';
         default :
             return 'fas fa-search';
 
