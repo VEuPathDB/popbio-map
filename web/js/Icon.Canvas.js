@@ -32,7 +32,10 @@ L.Icon.Canvas = L.Icon.extend({
         //var start = Math.PI * 2;
         var stats = this.options.stats;
         var markerText = this.options.markerText;
-        var count = this.options.count;
+
+        var count = 0; // before VB-8044 was this.options.count;
+        stats.forEach( function(el) { count += el.value; })
+
         var atomic = this.options.atomic;
         var selected = this.options.selected;
 
