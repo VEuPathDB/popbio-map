@@ -785,6 +785,8 @@
                     case "tag":
                     case "devstage":
                     case "license":
+                    //DKDK VB-8459 signposts shared link
+                    case "signposts_ss":
                         // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
@@ -1128,6 +1130,9 @@
                 return "tag";
             case "License":
                 return "license";
+            //DKDK VB-8459 signposts shared link
+            case "Available data types":
+                return "signposts_ss";
             default:
                 return "text"
                 break;
@@ -1196,6 +1201,9 @@
                 return "Tag";
             case "license":
                 return "License";
+            //DKDK VB-8459 signposts shared link
+            case "signposts_ss":
+                return "Available data types";
             default:
                 return "Anywhere";
         }
