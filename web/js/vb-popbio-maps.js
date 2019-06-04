@@ -669,7 +669,7 @@ function initializeMap(parameters) {
     if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
     if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal host";
     //DKDK VB-8459 signposts as default: perhaps default glbSummarizeBy is Species without specification
-    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Signposts";
+    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
 
     // Now generate the legend
     // hardcoded species_category
@@ -2404,9 +2404,11 @@ function tableHtml(divid, results) {
         var species = element.species_category ? element.species_category[0] : 'Unknown';
         var bgColor;
         //DKDK VB-8459 need to modify this as well?
+        // console.log(element);
+        // console.log('glbSummarizeBy',glbSummarizeBy);
+        // console.log('legend.options.',legend.options);
         if (glbSummarizeBy === 'Species') {
-        // if (glbSummarizeBy === 'Species' || glbSummarizeBy === 'Signposts') {
-            bgColor = legend.options.palette[species]
+            bgColor = legend.options.palette[species];
         } else {
             var field = mapSummarizeByToField(glbSummarizeBy).field;
             var fieldContents = element[field];
@@ -2630,6 +2632,11 @@ function tableHtml(divid, results) {
                     sex: element.sex_s,
                     devstages: element.dev_stages_ss
                 };
+
+                //DKDK VB-8459 add signposts_ss here for sample table
+                if (glbSummarizeBy === 'Available data types') {
+                    row.signposts = element.signposts_ss;
+                }
 
                 template = $.templates("#smplRowTemplate");
                 break;
@@ -2948,7 +2955,7 @@ function mapTypeToField(type) {
         case "Tag":
             return "tags_cvterms";
         //DKDK VB-8459
-        case "Signposts":
+        case "Available data types":
             return "signposts_ss";
         default :
             return type.toLowerCase()
@@ -3022,9 +3029,9 @@ function mapSummarizeByToField(type) {
             fields.field = "blood_meal_source_s";
             break;
         //DKDK VB-8459
-        case "Signposts":
+        case "Available data types":
             fields.summarize = "signposts_ss";
-            fields.type = "Signposts";
+            fields.type = "Available data types";
             fields.field = "signposts_ss";
             break;
         default :
@@ -3108,7 +3115,7 @@ function mapTypeToLabel(type) {
             case 'Tag':
                 return 'label label-info label-tag';
             //DKDK VB-8459 signposts
-            case 'Signposts':
+            case 'Available data types':
                 return 'label label-info label-signposts';
             default :
                 return 'label label-warning label-default';
@@ -3192,7 +3199,7 @@ function mapTypeToIcon(type) {
         case 'Blood meal host':
             return 'fas fa-tint';
         //DKDK VB-8459 signposts
-        case 'Signposts':
+        case 'Available data types':
             return 'fa fa-map-signs';
         default :
             return 'fas fa-search';

@@ -339,7 +339,7 @@ L.Control.MapLegend = L.Control.extend({
     _generateViewSelect: function (viewMode) {
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
             //DKDK VB-8459 add signposts menu
-            (viewMode === 'smpl' ? '<li><a href="#" value="Signposts">Signposts</a></li>' : '') +
+            (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Locus">Locus</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
@@ -360,6 +360,14 @@ L.Control.MapLegend = L.Control.extend({
     _generateLegendHtml: function (palette, numOfItems) {
         var options = this.options;
         var inHtml = ''; // store HTML here
+
+        // //DKDK VB-8459 change text for
+        // var glbSummarizeByText;
+        // if (glbSummarizeBy == 'Signposts') {
+        //     glbSummarizeByText = 'Available data types';
+        // } else {
+        //     glbSummarizeByText = glbSummarizeBy;
+        // }
 
         var dropdownsHTML =
             '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize workers and facet data by...">' +
