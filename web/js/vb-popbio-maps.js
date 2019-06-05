@@ -799,6 +799,11 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        {
+            value: 'exp_signposts_ss',
+            label: 'Available data types',
+            icon: mapTypeToIcon('Available data types')
         }
     ];
     var irFields = [
