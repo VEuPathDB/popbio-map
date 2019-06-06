@@ -1925,17 +1925,35 @@ function loadSolr(parameters) {
 
                 //DKDK VB-8116 hover over marker
                 var markerNewTooltipLabel = '';
-                if (viewMode == 'smpl') markerNewTooltipLabel = ' records';
-                if (viewMode == 'ir')    markerNewTooltipLabel = ' insecticide resistance assays';
-                if (viewMode == 'geno')  markerNewTooltipLabel = ' insecticide resistance allele genotypes';
-                if (viewMode == 'abnd')  markerNewTooltipLabel = ' organisms';
-                if (viewMode == 'path')  markerNewTooltipLabel = ' pathogen status assays';
-                if (viewMode == 'meal')  markerNewTooltipLabel = ' blood meal assays';
+                if (viewMode == 'smpl') {
+                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' record';
+                    else markerNewTooltipLabel = ' records';
+                }
+                if (viewMode == 'ir') {
+                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' insecticide resistance assay';
+                    else markerNewTooltipLabel = ' insecticide resistance assays';
+                }
+                if (viewMode == 'geno') {
+                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' insecticide resistance allele genotype';
+                    else markerNewTooltipLabel = ' insecticide resistance allele genotypes';
+                }
+                if (viewMode == 'abnd') {
+                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' specimen collected';
+                    else markerNewTooltipLabel = ' specimens collected';
+                }
+                if (viewMode == 'path') {
+                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' pathogen status assay';
+                    else markerNewTooltipLabel = ' pathogen status assays';
+                }
+                if (viewMode == 'meal') {
+                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' blood meal assay';
+                    else markerNewTooltipLabel = ' blood meal assays';
+                }
                 marker.bindTooltip(marker.options.icon.options.count + markerNewTooltipLabel, {
-                    // permanent: false,
-                    className: 'markerNewTooltipLabelClass',
-                    direction: 'top',
-                    offset: [0,-20]
+                        // permanent: false,
+                        className: 'markerNewTooltipLabelClass',
+                        direction: 'top',
+                        offset: [0,-20]
                 }).openTooltip();
 
                 // Copy the marker to the main layer (but its opacity it's still only 0.2)
