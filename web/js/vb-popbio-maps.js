@@ -2207,9 +2207,10 @@ function updatePieChart(population, stats) {
             // Must manually remove <title>s lingering from previous draw
             $('#pie-chart-area .nv-series title').remove();
 
+            //DKDK VB-8525 donut chart bug - maxKeyLength from 23 to 20
             chart.legend.vers('classic')
                 .rightAlign(false)
-                .maxKeyLength(23)
+                .maxKeyLength(20)
                 .margin({left: 0, right: 0})
                 .width(380)
                 .padding(20);
