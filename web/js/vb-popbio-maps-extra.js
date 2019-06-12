@@ -1493,9 +1493,10 @@
                 $('#plotType').val('none');
             }
             // VB-7318 add checking ctrlKey or metaKey for active-term
-            // Using keyUp and keyDown do not think this is necessary anymore
-            //clickType.ctrlKey = e.ctrlKey;
-            //clickType.metaKey = e.metaKey;
+            // This is necessary as keyup and keydown events won't trigger
+            // if they happen while the map browser window doesn't have focus
+            clickType.ctrlKey = e.ctrlKey;
+            clickType.metaKey = e.metaKey;
 
             // VB-7622 Change plural element.type defined in HTML to single format
             var setCorrectTerms = $(this).attr('type');
@@ -1538,9 +1539,10 @@
             PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
 
             // VB-7318 add checking ctrlKey or metaKey for active-legend
-            // Using keyUp and keyDown do not think this is necessary anymore
-            //clickType.ctrlKey = e.ctrlKey;
-            //clickType.metaKey = e.metaKey;
+            // This is necessary as keyup and keydown events won't trigger
+            // if they happen while the map browser window doesn't have focus
+            clickType.ctrlKey = e.ctrlKey;
+            clickType.metaKey = e.metaKey;
 
             $('#search_ac').tagsinput('add', {
                 value: $(this).attr('value'),
