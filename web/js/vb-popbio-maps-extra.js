@@ -304,7 +304,8 @@
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
             if (viewMode === "meal") glbSummarizeBy = "Blood meal host";
             //DKDK VB-8459 with new Signposts, also need to set default value of legend here beyond initializeMap()
-            if (viewMode === "smpl") glbSummarizeBy = "Available data types";
+            // if (viewMode === "smpl") glbSummarizeBy = "Available data types";
+            if (viewMode === "smpl") glbSummarizeBy = "Species";
             if (viewMode === "ir"  ) glbSummarizeBy = "Species";
             if (viewMode === "abnd") glbSummarizeBy = "Species";
             //DKDK VB-8459 I am not so sure if below criteria should be used: I doubt it.

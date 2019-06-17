@@ -669,7 +669,8 @@ function initializeMap(parameters) {
     if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
     if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal host";
     //DKDK VB-8459 signposts as default: perhaps default glbSummarizeBy is Species without specification
-    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
+    // if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
+    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Species";
 
     // Now generate the legend
     // hardcoded species_category
