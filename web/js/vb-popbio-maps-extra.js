@@ -788,6 +788,8 @@
                     case "license":
                     //DKDK VB-8459 signposts shared link
                     case "signposts_ss":
+                    //DKDK VB-8541 add sex for a GET parameter like sex=male
+                    case "sex":
                         // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
