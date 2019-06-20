@@ -56,6 +56,8 @@
                 column: {
                     stacking: 'normal',
                     groupPadding: 0.01,
+                    //DKDK VB-8429 add minPointLength: 3,
+                    // minPointLength: 3,
                     events: {
                         //DKDK VB-8112 disable legend click at highstock
                         // legendItemClick: setExternalActionFlag
@@ -855,6 +857,22 @@
                 //Flag used to tell if there is non-zero data in series for column charts
                 var noData = true;
 
+                //DKDK VB-8249 add this for abnd (making decimal places 4)
+                if (viewMode == "abnd") {
+                    var zeroTermData = {
+                        "name": "zeroCollectionData",
+                        "marker": {
+                            "symbol": "circle"
+                        },
+                        "type": "column",
+                        "color": "green",
+                        //Use the opposite boolean to decide which yAxis to map the series
+                        "yAxis": opposite ? 1 : 0,
+                        "data": [],
+                        "minPointLength": 3
+                    };
+                }
+
                 //Go through response to parse data out that will be plotted
                 termCollectionsList.forEach(function (termCollections) {
                     //Get the key of the y-axis we are population
@@ -901,7 +919,12 @@
                         if (operator) {
                             var x = Object.byString(collectionsDate, valueKey[0]);
                             var y = Object.byString(collectionsDate, valueKey[1]);
-                            var yValue = performOperation[operator](x,y).roundDecimals(1);
+                            //DKDK VB-8249 add this for abnd (making decimal places 4)
+                            if (viewMode == "abnd") {
+                                var yValue = performOperation[operator](x,y).roundDecimals(4);
+                            } else {
+                                var yValue = performOperation[operator](x,y).roundDecimals(1);
+                            }
                         } else {
                             var yValue = Object.byString(collectionsDate, valueKey);
                         }
@@ -941,7 +964,13 @@
                                 data.epiWeek = {label: "Epi Week", value: [epiWeek]};
                             }
 
+                            //DKDK VB-8249
+                            if (viewMode == "abnd" && yValue == 0) {
+                                zeroTermData.data.push({x:unixDate, y:yValue, data:data});
+                            }
+
                             singleTermData.data.push({x:unixDate, y:yValue, data:data});
+
                         }
                     });
 
@@ -964,13 +993,21 @@
 
                     //Add series data
                     highcharts.series.push(singleTermData);
+
                 });
+
+                //DKDK VB-8249: here it pushes to highcharts.series after termCollectionsList is done; pre-sorting is required to avoid highchart error.
+                if (viewMode == "abnd" && zeroTermData.data !== []) {
+                    zeroTermData.data = sortByKeyAsc(zeroTermData.data,"x");
+                    highcharts.series.push(zeroTermData);
+                }
 
                 //Add the y-axis that will be used
                 highcharts.yAxis.push({
                     opposite: opposite,
                     allowDecimals: false,
                     reversedStacks: false,
+                    //DKDK VB-8249 yAxis minimum value
                     min: 0,
                     offset: yAxis.offset,
                     title: {
@@ -987,6 +1024,14 @@
                 opposite = true;
             });
         }
+    }
+
+    //DKDK VB-8249 sorting zeroCollectionData
+    function sortByKeyAsc(array, key) {
+        return array.sort(function (a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
     }
 
     //Usec to customize the information showed in the tooltip
