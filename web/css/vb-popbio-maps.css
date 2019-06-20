@@ -42,8 +42,6 @@ BODY {
 }
 .bootstrap-tagsinput {
     line-height : 2em;
-    max-height: 8.6em;
-    overflow-y: auto;
 }
 .bootstrap-tagsinput .tag {
     margin-right : 0px;
