@@ -860,7 +860,7 @@
                 //DKDK VB-8249 add this for abnd (making decimal places 4)
                 if (viewMode == "abnd") {
                     var zeroTermData = {
-                        "name": "zeroCollectionData",
+                        "name": "nothing collected",
                         "marker": {
                             "symbol": "circle"
                         },
