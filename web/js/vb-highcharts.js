@@ -869,6 +869,7 @@
                         //Use the opposite boolean to decide which yAxis to map the series
                         "yAxis": opposite ? 1 : 0,
                         "data": [],
+                        // "alldata": [],
                         "minPointLength": 3
                     };
                 }
@@ -965,7 +966,7 @@
                             }
 
                             //DKDK VB-8249
-                            if (viewMode == "abnd" && yValue == 0) {
+                            if (viewMode == "abnd") {
                                 zeroTermData.data.push({x:unixDate, y:yValue, data:data});
                             }
 
@@ -996,10 +997,36 @@
 
                 });
 
+
                 //DKDK VB-8249: here it pushes to highcharts.series after termCollectionsList is done; pre-sorting is required to avoid highchart error.
-                if (viewMode == "abnd" && zeroTermData.data !== []) {
-                    zeroTermData.data = sortByKeyAsc(zeroTermData.data,"x");
-                    highcharts.series.push(zeroTermData);
+                var nonZeroX = [];
+                var nonZeroXIndex = [];
+                if (viewMode == "abnd") {
+                    // finding x value(s) for non-zero y
+                    zeroTermData.data.forEach(function (allzeros) {
+                        if (allzeros.y !== 0) {
+                            nonZeroX.push(allzeros.x);
+                        }
+                    });
+                    // finding indices for non-zero x
+                    for (var i = 0; i < nonZeroX.length; i++) {
+                        for (var j = 0; j < zeroTermData.data.length; j++) {
+                            if (zeroTermData.data[j].x == nonZeroX[i]) {
+                                nonZeroXIndex.push(j);
+                            }
+                        }
+                    }
+                    // sort indices in ascending order
+                    nonZeroXIndex.sort(function(a,b){ return a - b; });
+                    // remove array per indices
+                    for (var i = nonZeroXIndex.length -1; i >= 0; i--) {
+                       zeroTermData.data.splice(nonZeroXIndex[i],1);
+                    }
+                    // push to highchart if not empty
+                    if (zeroTermData.data.length !== 0) {
+                        zeroTermData.data = sortByKeyAsc(zeroTermData.data,"x");
+                        highcharts.series.push(zeroTermData);
+                    }
                 }
 
                 //Add the y-axis that will be used
@@ -1032,6 +1059,10 @@
             var x = a[key]; var y = b[key];
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
+    }
+
+    function removeFromArray(arr, toRemove){
+        return arr.filter(item => toRemove.indexOf(item) === -1)
     }
 
     //Usec to customize the information showed in the tooltip
