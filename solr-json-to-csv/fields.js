@@ -288,6 +288,12 @@ module.exports = {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             quoted: true
+        },
+        //DKDK VB-8459 add signposts_ss for Export
+        {
+            name: 'exp_signposts_ss',
+            label: 'Available data types',
+            quoted: true
         }
     ],
     abnd: [

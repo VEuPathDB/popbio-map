@@ -424,6 +424,10 @@
     <field name="exp_dev_stages_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
     <copyField source="dev_stages_ss" dest="exp_dev_stages_ss"/>
 
+    <!-- DKDK VB-8459 add signposts_ss for Export  -->
+    <field name="exp_signposts_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
+    <copyField source="signposts_ss" dest="exp_signposts_ss"/>
+
     <!-- =================================== -->
     <!-- FUNCGEN: site = "funcgen" -->
     <!-- =================================== -->

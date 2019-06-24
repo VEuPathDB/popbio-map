@@ -337,13 +337,24 @@ L.Control.MapLegend = L.Control.extend({
     },
 
     _generateViewSelect: function (viewMode) {
+        //DKDK VB-8536 Species in Pathogen to Vector Species
+        if (viewMode === 'path') {
+            var pathSpecies = "Vector Species";
+        } else {
+            var pathSpecies = "Species";
+        }
+
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
+            //DKDK VB-8459 add signposts menu; VB-8536 Species in Pathogen to Vector Species
+            // (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Locus">Locus</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Infection status">Infection status</a></li> ' : '') +
             (viewMode === 'meal' ? '<li><a href="#" value="Blood meal host">Blood meal host</a></li> ' : '') +
-            '<li><a href="#" value="Species">Species</a></li>' +
+            //DKDK VB-8536 Species in Pathogen to Vector Species
+            '<li><a href="#" value="' + pathSpecies + '">' + pathSpecies + '</a></li>' +
+            (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
             '<li><a href="#" value="Sample type">Sample type</a></li>' +
             '<li><a href="#" value="Collection protocol">Collection protocol</a></li>' +
             (viewMode === 'abnd' ? '<li><a href="#" value="Attractant">Attractant</a></li> ' : '') +
@@ -358,6 +369,14 @@ L.Control.MapLegend = L.Control.extend({
     _generateLegendHtml: function (palette, numOfItems) {
         var options = this.options;
         var inHtml = ''; // store HTML here
+
+        // //DKDK VB-8459 change text for
+        // var glbSummarizeByText;
+        // if (glbSummarizeBy == 'Signposts') {
+        //     glbSummarizeByText = 'Available data types';
+        // } else {
+        //     glbSummarizeByText = glbSummarizeBy;
+        // }
 
         var dropdownsHTML =
             '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize workers and facet data by...">' +

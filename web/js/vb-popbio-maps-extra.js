@@ -1,4 +1,4 @@
-/*  This file is currently an "extra" file for vb-popbio, but I hope to eventually turn 
+/*  This file is currently an "extra" file for vb-popbio, but I hope to eventually turn
  *  this into the vb-popbio.js file.
  */
 (function (PopulationBiologyMap, $, undefined) {
@@ -38,6 +38,9 @@
 
         removeHighlight();
         sidebar.close();
+
+        //DKDK VB-8399 removing a memory effect on a highlighted marker
+        PopulationBiologyMap.data.highlightedId = undefined;
 
         // close open panels
         //$('.collapse').collapse('hide');
@@ -210,7 +213,7 @@
                     return mapTypeToLabel(item.type) + ' label-not';
                 } else {
                     return mapTypeToLabel(item.type);
-                }    
+                }
             },
             itemValue: 'value',
             itemText: function (item) {
@@ -219,7 +222,7 @@
                     return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncate(80)
                 } else {
                     return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncate(80)
-                }   
+                }
             },
             itemHTML: function (item) {
                 // VB-7318 add NOT text in front of value here - add item.notBoolean for shared view - added more conditions after refactoring
@@ -227,7 +230,7 @@
                     return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + 'NOT ' + item.value.truncate(80)
                 } else {
                     return '<i class="' + mapTypeToIcon(item.type) + '"></i> ' + item.value.truncate(80)
-                }    
+                }
             },
             typeaheadjs: ({
                 options: {
@@ -262,7 +265,7 @@
                             suggestion: function (item) {
                                 // VB-7318 add onclick function
                                // return '<p>' + item.value +
-                                return '<p class="ac_items">' + item.value + 
+                                return '<p class="ac_items">' + item.value +
                                     (item.is_synonym ?
                                         ' (<i class="fa fa-list-ul" title="Duplicate term / Synonym" style="cursor: pointer"></i>)'
                                         : '') +
@@ -292,7 +295,6 @@
 
         });
 
-        
         $('#SelectView').change(function () {
             viewMode = $('#SelectView').val()
 
@@ -301,6 +303,12 @@
             if (viewMode === "geno") glbSummarizeBy = "Allele";
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
             if (viewMode === "meal") glbSummarizeBy = "Blood meal host";
+            //DKDK VB-8459 with new Signposts, also need to set default value of legend here beyond initializeMap()
+            // if (viewMode === "smpl") glbSummarizeBy = "Available data types";
+            if (viewMode === "smpl") glbSummarizeBy = "Species";
+            if (viewMode === "ir"  ) glbSummarizeBy = "Species";
+            if (viewMode === "abnd") glbSummarizeBy = "Species";
+            //DKDK VB-8459 I am not so sure if below criteria should be used: I doubt it.
 
             if (viewMode !== "ir") {
                 // $('#SelectView').val('smpl');
@@ -313,7 +321,7 @@
                         glbSummarizeBy = "Blood meal host";
                     } else {
                         glbSummarizeBy = "Species";
-                    } 
+                    }
                 }
             }
 
@@ -522,7 +530,7 @@
             //Get only 2015
             startYear = dateRange.split('-')[0];
             startDate = new Date(Date.UTC(startYear, 0, 1));
-            endDate = now;   
+            endDate = now;
         } else {
             //[startYear, endYear] = dateRange.split('-');
             dateRange = dateRange.split('-');
@@ -549,7 +557,7 @@
             }
         }
 
-        return dateItemText;  
+        return dateItemText;
     }
 
     //Add the dates picked through the datepicker range to the search bar
@@ -708,7 +716,7 @@
             //Only on the right of the pivot date there is a toggled date
             pivotDate = nextToggledDate.find('input').val();
         }
-    } 
+    }
 
     //Function used to enable/disable the add-dates button if conditions are met
     function toggleAddDatesButton() {
@@ -778,6 +786,10 @@
                     case "tag":
                     case "devstage":
                     case "license":
+                    //DKDK VB-8459 signposts shared link
+                    case "signposts_ss":
+                    //DKDK VB-8541 add sex for a GET parameter like sex=male
+                    case "sex":
                         // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
@@ -787,7 +799,7 @@
                                     valueForNot = true;
                                 } else {
                                     valueForNot = false;
-                                }   
+                                }
                                 $('#search_ac').tagsinput('add', {
                                     // VB-7318 add replace
                                     value: element.replace('!!!',''),
@@ -803,7 +815,7 @@
                             // VB-7318
                             if (urlParams[key].startsWith('!!!')) {
                                 valueForNot = true;
-                            } 
+                            }
                             $('#search_ac').tagsinput('add', {
                                 // VB-7318 add replace
                                 value: urlParams[key].replace('!!!',''),
@@ -898,7 +910,7 @@
                             startDate = dateRange[0];
                             endDate = dateRange[1];
                             dateItemInfo.ranges[dateItemRanges[j]] = {startDate: startDate, endDate: endDate};
-                        } 
+                        }
 
                         //Function that parses the date ranges that will be queried to return what will be dispalyed in the UI
                         dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
@@ -944,7 +956,7 @@
                             endDate = dateRange[1];
                             addDatepickerItem(startDate, endDate, valueForNot);
                         }
-                        break   
+                        break
                     case "markerID":
                         highlightedId  = urlParams[key];
                         break;
@@ -991,9 +1003,9 @@
             }
 
             // VB-7318 set valueForNot to be false at each loop
-            valueForNot = false;    
+            valueForNot = false;
         }
-               
+
         // update the export fields dropdown
         updateExportFields(viewMode);
 
@@ -1004,12 +1016,12 @@
 
             //$("#\\#swarm-plots").tooltip({placement: "right", title: "Disabled On This View"});
         } else {
-            $('#\\#swarm-plots').removeClass('disabled'); 
+            $('#\\#swarm-plots').removeClass('disabled');
         }
 
         // Check if a center parameter was passed with a projectID, assayID, sampleID, or collectionID, if not, find the center to ensure marker will be visible
         // NOTE: Code might need to get improved if there is a case when a link has two of either projectID, assayID, and sampleID
-        // but no center query parameter.  
+        // but no center query parameter.
         if ((urlParams["projectID"] || urlParams["assayID"] || urlParams["sampleID"] || urlParams["collectionID"]) && !urlParams["center"]) {
             var coordinatesUrl = solrPopbioUrl + "projectsCoordinates?";
             var key;
@@ -1031,13 +1043,13 @@
                     key = "sampleID";
                 }
             }
-                
+
             if (Array.isArray(urlParams[key])) {
                 filter += "(" + urlParams[key].join(" OR ") + ")";
             } else {
                 filter += urlParams[key];
             }
-            
+
             queryUrl = coordinatesUrl + filter;
 
             //Get the avarge coordinates of the projects and use that as the center of the map view
@@ -1066,11 +1078,11 @@
             case "Project":
                 return "projectID";
             case "Sample ID":
-                return "sampleID";                
+                return "sampleID";
             case "Collection ID":
                 return "collectionID";
             case "Assay ID":
-                return "assayID";                                
+                return "assayID";
             case "Anywhere":
                 return "text";
             case "Collection protocol":
@@ -1121,6 +1133,9 @@
                 return "tag";
             case "License":
                 return "license";
+            //DKDK VB-8459 signposts shared link
+            case "Available data types":
+                return "signposts_ss";
             default:
                 return "text"
                 break;
@@ -1189,6 +1204,9 @@
                 return "Tag";
             case "license":
                 return "License";
+            //DKDK VB-8459 signposts shared link
+            case "signposts_ss":
+                return "Available data types";
             default:
                 return "Anywhere";
         }
@@ -1223,7 +1241,7 @@
                 if (viewMode !== "abnd" && viewMode !== "geno") {
                     $("#export-message").text(PopulationBiologyMap.data.record.count + " row(s) will be downloaded").fadeIn();
                 } else {
-                    //for abnd and geno view do an ajax call to get the rows that will be downloaded since number in marker means something different 
+                    //for abnd and geno view do an ajax call to get the rows that will be downloaded since number in marker means something different
                     //e.g for abnd, the number in marker means the number of mosquitoes
                     var recBounds = L.latLngBounds(PopulationBiologyMap.data.record.bounds);
                     url += qryUrl + buildBbox(recBounds);
@@ -1245,7 +1263,7 @@
             }
         }, function (result) {
             $("#export-message").text(result.response.numFound + " row(s) will be downloaded").fadeIn();;
-            
+
         })
         .fail(function () {
             $("#export-message").text("Failed to get download counts").fadeIn();
@@ -1274,7 +1292,7 @@
             var chartResolution = "";
             var navDates = "";
             var rescaleParam = "";
-            
+
             //Using an object to store search terms that will be used to generate link
             var search_terms = {};
             var query_parameters = '';
@@ -1287,7 +1305,7 @@
                 // VB-7318 add ! for NOT boolean case - and add condition not to repeat to add !!! whenever pressing share link (pre-existing value preserves string!)
                 if ((search_item.notBoolean) && (search_item.value.startsWith('!!!') != 1)) {
                     search_item.value = '!!!' + search_item.value;
-                } 
+                }
 
                 search_terms[search_item.type].push(search_item.value);
             });
@@ -1330,7 +1348,7 @@
             //Add URL to attribute used to copy to clipboard
             $("#generate-link").attr("data-clipboard-text", url);
         });
-        
+
         //Disable the panel from opening if it was disabled
         $(".sidebar-icon a").click(function (e) {
             if ($(this).hasClass("disabled")) {
@@ -1343,7 +1361,7 @@
         $(".date-shortcut").parent("div").click(function(e) {
             clickType.ctrlKey = e.ctrlKey;
             clickType.shiftKey = e.shiftKey;
-            clickType.metaKey = e.metaKey; 
+            clickType.metaKey = e.metaKey;
         });
 
         //Adding a date filter through the UI
@@ -1385,7 +1403,7 @@
                         dateItemInfo.text = getDateItemText(dateItemInfo.ranges);
                         addDateItem(dateItemInfo, dateItem);
 
-                        //Check if we are unchecking the pivot date and update the pivotDate if we are 
+                        //Check if we are unchecking the pivot date and update the pivotDate if we are
                         if (pivotDate === this.value) {
                             //update the pivotDate to use with the shift click event
                             updatePivotDate(this);
@@ -1467,7 +1485,7 @@
         $("#add-dates").click(function () {
             var startDate = new Date($("#date-start").datepicker('getDate'));
             var endDate = new Date($("#date-end").datepicker('getDate'));
-            
+
             addDatepickerItem(startDate, endDate);
         });
 
@@ -1490,9 +1508,10 @@
                 $('#plotType').val('none');
             }
             // VB-7318 add checking ctrlKey or metaKey for active-term
-            // Using keyUp and keyDown do not think this is necessary anymore
-            //clickType.ctrlKey = e.ctrlKey;
-            //clickType.metaKey = e.metaKey;
+            // This is necessary as keyup and keydown events won't trigger
+            // if they happen while the map browser window doesn't have focus
+            clickType.ctrlKey = e.ctrlKey;
+            clickType.metaKey = e.metaKey;
 
             // VB-7622 Change plural element.type defined in HTML to single format
             var setCorrectTerms = $(this).attr('type');
@@ -1504,15 +1523,15 @@
                 setCorrectTerms = 'Collection protocol';
             } else if (setCorrectTerms == 'Insecticides') {
                 setCorrectTerms = 'Insecticide';
-            } 
+            }
             $('#search_ac').tagsinput('add', {
                 value: $(this).attr('value'),
                 activeTerm: true,
                 // VB-7622 single/plural form
                 // type: $(this).attr('type'),
                 // field: mapTypeToField($(this).attr('type')),
-                type: setCorrectTerms,                
-                field: mapTypeToField(setCorrectTerms),                
+                type: setCorrectTerms,
+                field: mapTypeToField(setCorrectTerms),
                 qtype: 'exact'
 
             });
@@ -1535,9 +1554,10 @@
             PopulationBiologyMap.data.highlightedId = $('.highlight-marker').attr('id');
 
             // VB-7318 add checking ctrlKey or metaKey for active-legend
-            // Using keyUp and keyDown do not think this is necessary anymore
-            //clickType.ctrlKey = e.ctrlKey;
-            //clickType.metaKey = e.metaKey;
+            // This is necessary as keyup and keydown events won't trigger
+            // if they happen while the map browser window doesn't have focus
+            clickType.ctrlKey = e.ctrlKey;
+            clickType.metaKey = e.metaKey;
 
             $('#search_ac').tagsinput('add', {
                 value: $(this).attr('value'),
@@ -1568,14 +1588,14 @@
         .on("jsonLoaded", function () {
             if (highlightedId && PopulationBiologyMap.data.highlightedId == undefined) {
                 PopulationBiologyMap.data.highlightedId = highlightedId;
-            } 
+            }
         });
 
         $('#search_ac').on('itemAdded', function (event) {
             // itemAdded gets executed by applyParameters now so need to check if notBoolean was set - added more conditions after refactoring!
             if (((clickType.ctrlKey  || clickType.metaKey) || event.item.notBoolean) && (event.item.type !== 'Anywhere' && event.item.type !== 'Date' && event.item.type !== 'Seasonal'))  {
                 event.item.notBoolean = true;
-                $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');           
+                $('div.bootstrap-tagsinput span.tag.label.label-not').css('background-color', 'red');
                 // set below two to be false after processing something here
                 //clickType.ctrlKey = false;
                 //clickType.metaKey = false;
