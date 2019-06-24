@@ -1061,10 +1061,6 @@
         });
     }
 
-    function removeFromArray(arr, toRemove){
-        return arr.filter(item => toRemove.indexOf(item) === -1)
-    }
-
     //Usec to customize the information showed in the tooltip
     function customTooltipFormatter() {
         var startDate = new Date(this.x);
