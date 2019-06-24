@@ -1165,6 +1165,39 @@
             </div>
         </div>
 
+        <!-- DKDK VB-8459 displaying signposts_ss -->
+        <div class="row">
+            <div class="col-md-12">
+                <p style="color: {{attr:bgColor}};" title="Available data types">
+                    <i class="far fa-fw fa fa-map-signs"></i><b> Available data types</b>
+                </p>
+<!--                 <ul>
+                {{for signposts}}
+                    <li> {{:#data}} </li>
+                {{/for}}
+                </ul> -->
+                <ul>
+                {{for signposts}}
+                    <li>
+                        {{if #data.brdColor}}
+                            {{if #data.brdColor === '#000000'}}
+                                <span type="Available data types" value="{{attr:#data}}">
+                            {{else}}
+                                <span class="active-term" type="Available data types" value="{{attr:#data}}">
+                            {{/if}}
+                                <i class="fa-fw fa fa-map-signs" aria-hidden="true" style="color:{{attr:#data.brdColor}};"></i>
+                        {{else}}
+                                <span class="active-term" type="Available data types" value="{{attr:#data}}">
+
+                        {{/if}}
+                            {{>#data}}
+                            </span>
+                    </li>
+                {{/for}}
+                </ul>
+            </div>
+        </div>
+
     </div>
 
 
