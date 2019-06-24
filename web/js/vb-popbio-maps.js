@@ -668,6 +668,9 @@ function initializeMap(parameters) {
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
     if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
     if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal host";
+    //DKDK VB-8459 signposts as default: perhaps default glbSummarizeBy is Species without specification
+    // if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
+    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Species";
 
     // Now generate the legend
     // hardcoded species_category
@@ -797,6 +800,11 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        {
+            value: 'exp_signposts_ss',
+            label: 'Available data types',
+            icon: mapTypeToIcon('Available data types')
         }
     ];
     var irFields = [
@@ -2255,9 +2263,10 @@ function updatePieChart(population, stats) {
             // Must manually remove <title>s lingering from previous draw
             $('#pie-chart-area .nv-series title').remove();
 
+            //DKDK VB-8525 donut chart bug - maxKeyLength from 23 to 20
             chart.legend.vers('classic')
                 .rightAlign(false)
-                .maxKeyLength(23)
+                .maxKeyLength(20)
                 .margin({left: 0, right: 0})
                 .width(380)
                 .padding(20);
@@ -2456,8 +2465,12 @@ function tableHtml(divid, results) {
         // hardcoded species_category
         var species = element.species_category ? element.species_category[0] : 'Unknown';
         var bgColor;
+        //DKDK VB-8459 need to modify this as well?
+        // console.log(element);
+        // console.log('glbSummarizeBy',glbSummarizeBy);
+        // console.log('legend.options.',legend.options);
         if (glbSummarizeBy === 'Species') {
-            bgColor = legend.options.palette[species]
+            bgColor = legend.options.palette[species];
         } else {
             var field = mapSummarizeByToField(glbSummarizeBy).field;
             var fieldContents = element[field];
@@ -2681,6 +2694,11 @@ function tableHtml(divid, results) {
                     sex: element.sex_s,
                     devstages: element.dev_stages_ss
                 };
+
+                //DKDK VB-8459 add signposts_ss here for sample table
+                if (glbSummarizeBy === 'Available data types') {
+                    row.signposts = element.signposts_ss;
+                }
 
                 template = $.templates("#smplRowTemplate");
                 break;
@@ -2998,6 +3016,9 @@ function mapTypeToField(type) {
             return "licenses_cvterms";
         case "Tag":
             return "tags_cvterms";
+        //DKDK VB-8459
+        case "Available data types":
+            return "signposts_ss";
         default :
             return type.toLowerCase()
 
@@ -3068,6 +3089,12 @@ function mapSummarizeByToField(type) {
             fields.summarize = "blood_meal_source_s";
             fields.type = "Blood meal host";
             fields.field = "blood_meal_source_s";
+            break;
+        //DKDK VB-8459
+        case "Available data types":
+            fields.summarize = "signposts_ss";
+            fields.type = "Available data types";
+            fields.field = "signposts_ss";
             break;
         default :
             fields.summarize = "species_category";
@@ -3149,6 +3176,9 @@ function mapTypeToLabel(type) {
                 return 'label label-info label-license';
             case 'Tag':
                 return 'label label-info label-tag';
+            //DKDK VB-8459 signposts
+            case 'Available data types':
+                return 'label label-info label-signposts';
             default :
                 return 'label label-warning label-default';
         }
@@ -3230,6 +3260,9 @@ function mapTypeToIcon(type) {
             return 'fab fa-creative-commons';
         case 'Blood meal host':
             return 'fas fa-tint';
+        //DKDK VB-8459 signposts
+        case 'Available data types':
+            return 'fa fa-map-signs';
         default :
             return 'fas fa-search';
 
