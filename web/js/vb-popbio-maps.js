@@ -2932,6 +2932,11 @@ function getSolrQueryFromTerm(obj, field, termQueries) {
         }
     }
 
+    //DKDK VB-8591 add fq for Seasonal search
+    if ( obj === "Seasonal") {
+        fqString = "collection_date_resolution_s:(day OR month)";
+    }
+
     return {q: queryString, fq: fqString};
 }
 
