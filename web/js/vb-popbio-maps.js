@@ -2750,8 +2750,9 @@ function filterMarkers(items, flyTo) {
             if (element.ranges) {
                 //Go through the object date range
                 for (var key in  element.ranges) {
-                    var endDate = dateConvert(element.ranges[key].endDate, format);
-                    var startDate = dateConvert(element.ranges[key].startDate, format);
+                    //DKDK VB-8640 date - need to add utc option when calling dateConvert
+                    var endDate = dateConvert(element.ranges[key].endDate, format, 'utc');
+                    var startDate = dateConvert(element.ranges[key].startDate, format, 'utc');
 
                     terms[element.type].push({
                         "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']'
@@ -2896,7 +2897,25 @@ function getSolrQueryFromTerm(obj, field, termQueries) {
     var queryString;
     var fqString;
 
+    //DKDK VB-8591 change query for Seasonal search like Date
     if ( obj === "Date" ) {
+        $.each(termQueries, function (index, query) {
+          if (query.notBoolean) {
+            solrNotQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
+          }
+          else {
+            solrQuery.push("{!field f=" + field + " op=Within v='" + query.value + "'}");
+          }
+        });
+
+        if (solrQuery.length !== 0) {
+            queryString = "(" + solrQuery.join(" OR ") + ")";
+        }
+
+        if (solrNotQuery.length !== 0) {
+            fqString = solrNotQuery.join("&fq=");
+        }
+    } else if ( obj === "Seasonal" ) {
         $.each(termQueries, function (index, query) {
           if (query.notBoolean) {
             solrNotQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
@@ -2930,6 +2949,11 @@ function getSolrQueryFromTerm(obj, field, termQueries) {
         if (solrNotQuery.length !== 0) {
             fqString = "!" + field + ":(" + solrNotQuery.join(" OR ") + ")";
         }
+    }
+
+    //DKDK VB-8591 add fq for Seasonal search
+    if ( obj === "Seasonal") {
+        fqString = "collection_date_resolution_s:(day OR month)";
     }
 
     return {q: queryString, fq: fqString};
