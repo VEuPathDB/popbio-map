@@ -1471,8 +1471,10 @@ function loadSolr(parameters) {
             if (result.facets.alleleCount === undefined) {
                 result.facets.alleleCount = 0;
             }
-
+            //DKDK VB-8640
             $("#markersCount").html(result.facets.alleleCount.roundDecimals(0) + ' visible genotypes summarized by ' + glbSummarizeBy + '</u>');
+            console.log('result.facets.alleleCount',result.facets.alleleCount);
+            // $("#markersCount").html(result.facets.alleleCount.floorDecimals() + ' visible genotypes summarized by ' + glbSummarizeBy + '</u>');
         } else {
             $("#markersCount").html(result.response.numFound + ' visible samples summarized by ' + glbSummarizeBy + '</u>');
         }
@@ -1505,7 +1507,16 @@ function loadSolr(parameters) {
             } else if (viewMode === 'geno') {
                 //Using this to return a number
                 //el.alleleCount = Math.round(el.alleleCount * 10) / 10;
-                var geoCount = el.alleleCount.roundDecimals(0);
+                //DKDK VB-8646
+                // var geoCount = el.alleleCount.roundDecimals(0);
+                // var geoCount = el.alleleCount.floorDecimals();
+                var geoCount = el.alleleCount;
+                // var geoCountOriginal = geoCount;
+                // console.log('geoCount before floor',geoCount);
+                // geoCount = Math.floor(geoCount);
+                console.log('geoCount after floor',geoCount);
+                // var dkTest1 = el.alleleCount.floorDecimals();
+                // console.log('dkTest1',dkTest1);
             } else {
                 var geoCount = el.count;
             }
@@ -1524,7 +1535,9 @@ function loadSolr(parameters) {
                     var inCount = inEl.sumSmp;
                 } else if (viewMode === 'geno') {
                     //Using this to return a number
-                    var inCount = inEl.alleleCount.roundDecimals(0);
+                    //DKDK VB-8640
+                    // var inCount = inEl.alleleCount.roundDecimals(0);
+                    var inCount = inEl.alleleCount;
                 } else {
                     var inCount = inEl.count;
                 }
@@ -1533,7 +1546,9 @@ function loadSolr(parameters) {
                 if (inCount > 0) {
                     fullElStats.push({
                         "label": inKey,
-                        "value": inCount,
+                        //DKDK VB-8640
+                        // "value": inCount,
+                        "value": inCount.roundDecimals(0),
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
                 }
@@ -1542,13 +1557,26 @@ function loadSolr(parameters) {
                 tagsTotalCount += inCount;
             });
 
-            if (geoCount - tagsTotalCount > 0) {
+            //DKDK VB-8646
+            console.log('tagsTotalCount',tagsTotalCount);
+            // if (geoCount - tagsTotalCount > 0) {
+            //     fullElStats.push({
+            //         "label": 'Unknown',
+            //         "value": geoCount - tagsTotalCount,
+            //         "color": (legend.options.palette['Unknown'])
+            //     });
+            // }
+            var remainder = geoCount - tagsTotalCount;
+            remainder = remainder.floorDecimals();
+            if (remainder > 0) {
                 fullElStats.push({
                     "label": 'Unknown',
-                    "value": geoCount - tagsTotalCount,
+                    "value": remainder,
                     "color": (legend.options.palette['Unknown'])
                 });
             }
+            //DKDK VB-8646 set geoCount to be default roundDecimals for marker/donut display
+            geoCount = el.alleleCount.roundDecimals(0);
 
             fullStatistics[key] = fullElStats;
 
@@ -3406,6 +3434,12 @@ String.prototype.capitalizeFirstLetter = function () {
 Number.prototype.roundDecimals = function (decimals) {
     return Number(Math.round(this.valueOf() + 'e' + decimals) + 'e-' + decimals);
 };
+
+//DKDK 8640
+Number.prototype.floorDecimals = function () {
+    return Number(Math.floor(this.valueOf()));
+};
+
 
 function constructSeasonal(selectedMonths) {
     // build ranges
