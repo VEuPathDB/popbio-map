@@ -1505,7 +1505,8 @@ function loadSolr(parameters) {
             } else if (viewMode === 'geno') {
                 //Using this to return a number
                 //el.alleleCount = Math.round(el.alleleCount * 10) / 10;
-                var geoCount = el.alleleCount.roundDecimals(0);
+                //DKDK VB-8646
+                var geoCount = el.alleleCount;
             } else {
                 var geoCount = el.count;
             }
@@ -1524,7 +1525,8 @@ function loadSolr(parameters) {
                     var inCount = inEl.sumSmp;
                 } else if (viewMode === 'geno') {
                     //Using this to return a number
-                    var inCount = inEl.alleleCount.roundDecimals(0);
+                    //DKDK VB-8646
+                    var inCount = inEl.alleleCount;
                 } else {
                     var inCount = inEl.count;
                 }
@@ -1533,7 +1535,8 @@ function loadSolr(parameters) {
                 if (inCount > 0) {
                     fullElStats.push({
                         "label": inKey,
-                        "value": inCount,
+                        //DKDK VB-8646
+                        "value": inCount.roundDecimals(0),
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
                 }
@@ -1542,13 +1545,18 @@ function loadSolr(parameters) {
                 tagsTotalCount += inCount;
             });
 
-            if (geoCount - tagsTotalCount > 0) {
+            //DKDK VB-8646
+            var remainder = geoCount - tagsTotalCount;
+            remainder = remainder.floorDecimals();
+            if (remainder > 0) {
                 fullElStats.push({
                     "label": 'Unknown',
-                    "value": geoCount - tagsTotalCount,
+                    "value": remainder,
                     "color": (legend.options.palette['Unknown'])
                 });
             }
+            //DKDK VB-8646 set geoCount to be default roundDecimals for marker/donut display
+            geoCount = el.alleleCount.roundDecimals(0);
 
             fullStatistics[key] = fullElStats;
 
@@ -3429,6 +3437,11 @@ String.prototype.capitalizeFirstLetter = function () {
 };
 Number.prototype.roundDecimals = function (decimals) {
     return Number(Math.round(this.valueOf() + 'e' + decimals) + 'e-' + decimals);
+};
+
+//DKDK VB-8646
+Number.prototype.floorDecimals = function () {
+    return Number(Math.floor(this.valueOf()));
 };
 
 function constructSeasonal(selectedMonths) {
