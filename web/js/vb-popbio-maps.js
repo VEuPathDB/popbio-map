@@ -1556,7 +1556,9 @@ function loadSolr(parameters) {
                 });
             }
             //DKDK VB-8646 set geoCount to be default roundDecimals for marker/donut display
-            geoCount = el.alleleCount.roundDecimals(0);
+            if (viewMode === 'geno') {
+                geoCount = el.alleleCount.roundDecimals(0);
+            }
 
             fullStatistics[key] = fullElStats;
 
