@@ -725,7 +725,8 @@
         <requestParsers enableRemoteStreaming="true"
                         multipartUploadLimitInKB="2048000"
                         formdataUploadLimitInKB="2048"
-                        addHttpRequestToContext="false"/>
+                        addHttpRequestToContext="false"
+			enableStreamBody="true"/>
 
         <!-- HTTP Caching
 
@@ -890,7 +891,8 @@
     <requestHandler name="/smplExport" class="solr.SearchHandler">
         <lst name="defaults">
             <str name="fl">
-                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_tags_ss,exp_attractants_ss,exp_sex_s,exp_dev_stages_ss,exp_licenses_ss,exp_citations_ss
+                <!-- DKDK VB-8459 add signposts_ss for Export  -->
+                exp_sample_id_s,exp_bundle_name_s,exp_species_s,exp_sample_type_s,exp_label_s,exp_collection_assay_id_s,exp_collection_date_range_ss,exp_collection_protocols_ss,exp_projects_ss,exp_geo_coords_s,exp_geolocations_ss,exp_protocols_ss,exp_tags_ss,exp_attractants_ss,exp_sex_s,exp_dev_stages_ss,exp_licenses_ss,exp_citations_ss,exp_signposts_ss
             </str>
         </lst>
         <lst name="appends">
@@ -1382,36 +1384,6 @@
     </requestHandler>
 
 
-    <requestHandler name="/abndBeeswarm" class="solr.SearchHandler">
-        <!-- default values for query parameters can be specified, these
-             will be overridden by parameters in the request
-          -->
-        <lst name="defaults">
-            <str name="echoParams">explicit</str>
-            <str name="wt">json</str>
-            <str name="json.nl">map</str>
-            <str name="df">text</str>
-        </lst>
-        <lst name="appends">
-            <str name="fq">bundle:pop_sample_phenotype</str>
-            <str name="fq">has_abundance_data_b:true</str>
-            <str name="fq">has_geodata:true</str>
-        </lst>
-        <lst name="invariants">
-            <int name="rows">100</int>
-            <str name="group">true</str>
-            <str name="group.field">phenotype_value_type_s</str>
-            <str name="group.limit">100</str>
-            <str name="fl">accession, bundle_name, sample_type url, collection_protocol, geolocations, geo_coords,
-                species_category, collection_protocols, collection_date, collection_date_range, projects, protocols,
-                phenotype_value_f,
-                phenotype_value_type_s, phenotype_value_unit_s, insecticide_s, sample_size_i, concentration_f,
-                concentration_unit_s, duration_f, duration_unit_s
-            </str>
-        </lst>
-    </requestHandler>
-
-
     <!--A request handler to serve basic stats for violin plots (limited to IR assays)-->
     <requestHandler name="/irViolinStats" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
@@ -1497,15 +1469,15 @@
             <str name="fq">-sample_size_i:0</str>
         </lst>
         <lst name="invariants">
+            <!-- DKDK 8459 add signposts_ss for Table  -->
             <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
-                species_category, collection_protocols, collection_date, collection_date_range, projects, sample_size_i, sex_s, dev_stages_ss
+                species_category, collection_protocols, collection_date, collection_date_range, projects, sample_size_i, sex_s, dev_stages_ss, signposts_ss
             </str>
             <str name="q.op">OR</str>
         </lst>
-
     </requestHandler>
 
-    <requestHandler name="/pathTable" class="solr.SearchHandler">
+   <requestHandler name="/pathTable" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
              will be overridden by parameters in the request
           -->
@@ -1525,7 +1497,7 @@
         <lst name="invariants">
             <str name="fl">accession, bundle_name, sample_type, url, geolocations, geo_coords, protocols
                 species_category, collection_protocols, collection_date, collection_date_range, projects, phenotype_value_f,
-		phenotype_value_type_s, phenotype_value_unit_s, sample_size_i, infection_status_s, infection_source_s, assay_id_s, sex_s, dev_stages_ss
+		phenotype_value_type_s, phenotype_value_unit_s, sample_size_i, infection_status_s, infection_source_s,assay_id_s, sex_s, dev_stages_ss
             </str>
             <str name="q.op">OR</str>
         </lst>
@@ -1584,6 +1556,7 @@
         </lst>
 
     </requestHandler>
+
 
     <requestHandler name="/genoTable" class="solr.SearchHandler">
         <!-- default values for query parameters can be specified, these
