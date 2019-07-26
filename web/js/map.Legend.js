@@ -345,8 +345,8 @@ L.Control.MapLegend = L.Control.extend({
         }
 
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
-            //DKDK VB-8459 add signposts menu; VB-8536 Species in Pathogen to Vector Species
-            // (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
+            //DKDK VB-8459 VB-8650 add signposts menu; VB-8536 Species in Pathogen to Vector Species
+            (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Locus">Locus</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
@@ -354,7 +354,8 @@ L.Control.MapLegend = L.Control.extend({
             (viewMode === 'meal' ? '<li><a href="#" value="Blood meal host">Blood meal host</a></li> ' : '') +
             //DKDK VB-8536 Species in Pathogen to Vector Species
             '<li><a href="#" value="' + pathSpecies + '">' + pathSpecies + '</a></li>' +
-            (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
+            //DKDK VB-8650 block this as it goes first
+            // (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
             '<li><a href="#" value="Sample type">Sample type</a></li>' +
             '<li><a href="#" value="Collection protocol">Collection protocol</a></li>' +
             (viewMode === 'abnd' ? '<li><a href="#" value="Attractant">Attractant</a></li> ' : '') +
@@ -369,14 +370,6 @@ L.Control.MapLegend = L.Control.extend({
     _generateLegendHtml: function (palette, numOfItems) {
         var options = this.options;
         var inHtml = ''; // store HTML here
-
-        // //DKDK VB-8459 change text for
-        // var glbSummarizeByText;
-        // if (glbSummarizeBy == 'Signposts') {
-        //     glbSummarizeByText = 'Available data types';
-        // } else {
-        //     glbSummarizeByText = glbSummarizeBy;
-        // }
 
         var dropdownsHTML =
             '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize workers and facet data by...">' +
@@ -401,19 +394,50 @@ L.Control.MapLegend = L.Control.extend({
         inHtml += '<div style="border: 0; margin-bottom: 5px;">' + dropdownsHTML + '</div>';
 
         inHtml += _.map(palette.slice(0, 20), function (item) {
-            var label = (item.name ? item.name.capitalizeFirstLetter() + '<br>' : '+');
+            //DKDK VB-8650
+            // var label = (item.name ? item.name.capitalizeFirstLetter() + '<br>' : '+');
+            var label = (item.name ? item.name.capitalizeFirstLetter() : '+');
 
             if (options.summarizeBy === 'Species') {
                 var label = '<em>' + label + '</em>';
             }
 
-            return '<div class="active-legend" type="' + type + '"value="' + item.name + '">' +
+            //DKDK VB-8650
+            var insertExternalLink = '';
+            var insertExternalLinkLegend = 'active-legend';
+            var insertExternalLinkName = '';
+            if (glbSummarizeBy == "Available data types") {
+                if (item.name == "Abundance") {
+                    // insertExternalLink = ' <div style="font-size: 0.5rem;"><a href="?view=abnd"><i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true"></i></a></div> ';
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="abnd"></i> ';
+                    insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'abnd';
+                } else if (item.name == "Pathogen") {
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="path"></i> ';
+                    insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'path';
+                } else if (item.name == "Blood meal host") {
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="meal"></i> ';
+                    insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'meal';
+                }
+                // } else {
+                //     insertExternalLink = '';
+                //     insertExternalLinkLegend = 'active-legend';
+                // }
+            }
+            // console.log('insertExternalLink',insertExternalLink)
+            // console.log('label',label)
+            // return '<div class="active-legend" type="' + type + '"value="' + item.name + '">' +
+            return '<div class="' + insertExternalLinkLegend + '" type="' + type + '"value="' + item.name + '" name="' + insertExternalLinkName + '">' +
                         '<div class="summ-by-value detailedTip">' +
-                            '<i style="border-color:' + item.color + '"></i>' +
-                            label +
+                            // '<i style="border-color:' + item.color + '"></i>' +
+                            '<i style="border-color:' + item.color + '" class="summ-by-value-item"></i>' +
+                            label + insertExternalLink +
                         '</div>' +
                         '<div class="legend-count">' + item.count + '</div>' +
                     '</div>';
+
 
         }).join('')
         inHtml += '</div>';
