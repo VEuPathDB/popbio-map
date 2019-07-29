@@ -119,13 +119,13 @@ BODY {
     text-align: right;
     font-weight: 600;
     /*DKDK VB-8650*/
-    width: 23%;
+    width: 22%;
 }
 
 .summ-by-value {
     float: left;
     /*DKDK VB-8650 */
-    width: 77%;
+    width: 78%;
 }
 
 .legend-others {
