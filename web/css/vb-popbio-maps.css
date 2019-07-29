@@ -118,12 +118,14 @@ BODY {
     min-width: 50px;
     text-align: right;
     font-weight: 600;
-    width: 30%;
+    /*DKDK VB-8650*/
+    width: 23%;
 }
 
 .summ-by-value {
     float: left;
-    width: 70%;
+    /*DKDK VB-8650 */
+    width: 77%;
 }
 
 .legend-others {

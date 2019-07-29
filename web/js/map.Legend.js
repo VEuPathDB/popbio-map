@@ -406,20 +406,34 @@ L.Control.MapLegend = L.Control.extend({
             var insertExternalLink = '';
             var insertExternalLinkLegend = 'active-legend';
             var insertExternalLinkName = '';
+            var insertExternalLinkTitle = '';
+            var insertExternalLinkClass = 'detailedTip';
             if (glbSummarizeBy == "Available data types") {
                 if (item.name == "Abundance") {
                     // insertExternalLink = ' <div style="font-size: 0.5rem;"><a href="?view=abnd"><i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true"></i></a></div> ';
                     insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="abnd"></i> ';
                     insertExternalLinkLegend = 'insertExternalLinkLegend';
                     insertExternalLinkName = 'abnd';
+                    insertExternalLinkTitle = 'Switch to ' + item.name + " view";
+                    insertExternalLinkClass = '';
                 } else if (item.name == "Pathogen") {
                     insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="path"></i> ';
                     insertExternalLinkLegend = 'insertExternalLinkLegend';
                     insertExternalLinkName = 'path';
+                    insertExternalLinkTitle = 'Switch to ' + item.name + " view";
+                    insertExternalLinkClass = '';
                 } else if (item.name == "Blood meal host") {
                     insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="meal"></i> ';
                     insertExternalLinkLegend = 'insertExternalLinkLegend';
                     insertExternalLinkName = 'meal';
+                    insertExternalLinkTitle = 'Switch to ' + item.name + " view";
+                    insertExternalLinkClass = '';
+                } else if (item.name == "Insecticide res. phenotype" || item.name == "Insecticide res. genotype") {
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="ir"></i> ';
+                    insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'ir';
+                    insertExternalLinkTitle = 'Switch to Insecticide Resistance view';
+                    insertExternalLinkClass = '';
                 }
                 // } else {
                 //     insertExternalLink = '';
@@ -429,8 +443,8 @@ L.Control.MapLegend = L.Control.extend({
             // console.log('insertExternalLink',insertExternalLink)
             // console.log('label',label)
             // return '<div class="active-legend" type="' + type + '"value="' + item.name + '">' +
-            return '<div class="' + insertExternalLinkLegend + '" type="' + type + '"value="' + item.name + '" name="' + insertExternalLinkName + '">' +
-                        '<div class="summ-by-value detailedTip">' +
+            return '<div class="' + insertExternalLinkLegend + '" type="' + type + '"value="' + item.name + '" name="' + insertExternalLinkName + '" title="' + insertExternalLinkTitle + '">' +
+                        '<div class="summ-by-value ' + insertExternalLinkClass + '">' +
                             // '<i style="border-color:' + item.color + '"></i>' +
                             '<i style="border-color:' + item.color + '" class="summ-by-value-item"></i>' +
                             label + insertExternalLink +
