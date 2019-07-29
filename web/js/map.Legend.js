@@ -428,11 +428,17 @@ L.Control.MapLegend = L.Control.extend({
                     insertExternalLinkName = 'meal';
                     insertExternalLinkTitle = 'Switch to ' + item.name + " view";
                     insertExternalLinkClass = '';
-                } else if (item.name == "Insecticide res. phenotype" || item.name == "Insecticide res. genotype") {
+                } else if (item.name == "Insecticide res. phenotype") {
                     insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="ir"></i> ';
                     insertExternalLinkLegend = 'insertExternalLinkLegend';
                     insertExternalLinkName = 'ir';
                     insertExternalLinkTitle = 'Switch to Insecticide Resistance view';
+                    insertExternalLinkClass = '';
+                } else if (item.name == "Insecticide res. genotype") {
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true" name="geno"></i> ';
+                    insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'geno';
+                    insertExternalLinkTitle = 'Switch to Genotypes view';
                     insertExternalLinkClass = '';
                 }
                 // } else {
