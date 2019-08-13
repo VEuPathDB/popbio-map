@@ -179,6 +179,17 @@ module.exports = {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             quoted: true
+        },
+        //DKDK VB-8663 add geolocation_provenance_s & geolocation_precision_s for Export
+        {
+            name: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            quoted: true
+        },
+        {
+            name: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
+            quoted: true
         }
     ],
     smpl: [
@@ -293,6 +304,17 @@ module.exports = {
         {
             name: 'exp_signposts_ss',
             label: 'Available data types',
+            quoted: true
+        },
+        //DKDK VB-8663 add geolocation_provenance_s & geolocation_precision_s for Export
+        {
+            name: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            quoted: true
+        },
+        {
+            name: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
             quoted: true
         }
     ],
@@ -412,6 +434,17 @@ module.exports = {
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
+            quoted: true
+        },
+        //DKDK VB-8663 add geolocation_provenance_s & geolocation_precision_s for Export
+        {
+            name: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            quoted: true
+        },
+        {
+            name: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
             quoted: true
         }
     ],
@@ -571,6 +604,17 @@ module.exports = {
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
+            quoted: true
+        },
+        //DKDK VB-8663 add geolocation_provenance_s & geolocation_precision_s for Export
+        {
+            name: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            quoted: true
+        },
+        {
+            name: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
             quoted: true
         }
     ],
@@ -732,6 +776,17 @@ module.exports = {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             quoted: true
+        },
+        //DKDK VB-8663 add geolocation_provenance_s & geolocation_precision_s for Export
+        {
+            name: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            quoted: true
+        },
+        {
+            name: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
+            quoted: true
         }
     ],
     meal: [
@@ -880,6 +935,17 @@ module.exports = {
         {
             name: 'exp_dev_stages_ss',
             label: 'Developmental stage',
+            quoted: true
+        },
+        //DKDK VB-8663 add geolocation_provenance_s & geolocation_precision_s for Export
+        {
+            name: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            quoted: true
+        },
+        {
+            name: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
             quoted: true
         }
     ],

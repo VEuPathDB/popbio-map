@@ -1109,12 +1109,32 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p>
-                    <i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+<!--                 <p>
+                    {{if geolocationProvenance}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="Geolocation provenance: {{html:geolocationProvenance}}" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{else}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="No data" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{/if}}
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
-                 </p>
+                 </p> -->
+
+                <p style="color: {{attr:bgColor}};">
+                    {{if geolocationProvenance}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="Geolocation provenance: {{html:geolocationProvenance}}" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{else}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="No data" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{/if}}
+                </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                            {{html:geolocation}}
+                        </span>
+                    </li>
+                </ul>
+
             </div>
         </div>
         <div class="row">
@@ -1316,11 +1336,27 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+<!--                 <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
+                </p> -->
+
+                <p style="color: {{attr:bgColor}};">
+                    {{if geolocationProvenance}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="Geolocation provenance: {{html:geolocationProvenance}}" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{else}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="No data" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{/if}}
                 </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                            {{html:geolocation}}
+                        </span>
+                    </li>
+                </ul>
+
             </div>
         </div>
         <div class="row">
@@ -1508,11 +1544,27 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p><i class="fa  fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+<!--                 <p><i class="fa  fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
+                </p> -->
+
+                <p style="color: {{attr:bgColor}};">
+                    {{if geolocationProvenance}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="Geolocation provenance: {{html:geolocationProvenance}}" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{else}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="No data" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{/if}}
                 </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                            {{html:geolocation}}
+                        </span>
+                    </li>
+                </ul>
+
             </div>
         </div>
         <div class="row">
@@ -1716,11 +1768,27 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p><i class="fa  fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+<!--                 <p><i class="fa  fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
+                </p> -->
+
+                <p style="color: {{attr:bgColor}};">
+                    {{if geolocationProvenance}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="Geolocation provenance: {{html:geolocationProvenance}}" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{else}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="No data" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{/if}}
                 </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                            {{html:geolocation}}
+                        </span>
+                    </li>
+                </ul>
+
             </div>
         </div>
         <div class="row">
@@ -1905,11 +1973,27 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+<!--                 <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
+                </p> -->
+
+                <p style="color: {{attr:bgColor}};">
+                    {{if geolocationProvenance}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="Geolocation provenance: {{html:geolocationProvenance}}" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{else}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="No data" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{/if}}
                 </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                            {{html:geolocation}}
+                        </span>
+                    </li>
+                </ul>
+
             </div>
         </div>
         <div class="row">
@@ -2107,11 +2191,27 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+<!--                 <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
+                </p> -->
+
+                <p style="color: {{attr:bgColor}};">
+                    {{if geolocationProvenance}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="Geolocation provenance: {{html:geolocationProvenance}}" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{else}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="No data" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{/if}}
                 </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                            {{html:geolocation}}
+                        </span>
+                    </li>
+                </ul>
+
             </div>
         </div>
         <div class="row">
@@ -2301,11 +2401,27 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
+<!--                 <p><i class="fa fa-fw fa-map-marker-alt" title="Coordinates: {{html:geoCoords}}" style="color: {{attr:bgColor}};"></i>
                     <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
                         {{html:geolocation}}
                     </span>
+                </p> -->
+
+                <p style="color: {{attr:bgColor}};">
+                    {{if geolocationProvenance}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="Geolocation provenance: {{html:geolocationProvenance}}" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{else}}
+                        <i class="fa fa-fw fa-map-marker-alt" title="No data" style="color: {{attr:bgColor}};"></i><b> Location</b>
+                    {{/if}}
                 </p>
+                <ul>
+                    <li>
+                        <span class="active-term" type="{{attr:geolocationType}}" value="{{attr:geolocation}}">
+                            {{html:geolocation}}
+                        </span>
+                    </li>
+                </ul>
+
             </div>
         </div>
         <div class="row">

@@ -428,6 +428,13 @@
     <field name="exp_signposts_ss" type="string" indexed="false" stored="false" multiValued="true" docValues="true"/>
     <copyField source="signposts_ss" dest="exp_signposts_ss"/>
 
+    <!-- DKDK VB-8663 add geolocation_provenance_s & geolocation_precision_s for Export  -->
+    <field name="exp_geolocation_provenance_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="geolocation_provenance_s" dest="exp_geolocation_provenance_s"/>
+    <field name="exp_geolocation_precision_s" type="string" indexed="false" stored="false" multiValued="false" docValues="true"/>
+    <copyField source="geolocation_precision_s" dest="exp_geolocation_precision_s"/>
+
+
     <!-- =================================== -->
     <!-- FUNCGEN: site = "funcgen" -->
     <!-- =================================== -->

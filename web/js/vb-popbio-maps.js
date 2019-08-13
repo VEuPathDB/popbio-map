@@ -805,6 +805,17 @@ function updateExportFields(viewMode) {
             value: 'exp_signposts_ss',
             label: 'Available data types',
             icon: mapTypeToIcon('Available data types')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            icon: mapTypeToIcon('Geolocation provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
+            icon: mapTypeToIcon('Geolocation precision')
         }
     ];
     var irFields = [
@@ -926,6 +937,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            icon: mapTypeToIcon('Geolocation provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
+            icon: mapTypeToIcon('Geolocation precision')
         }
     ];
     var abndFields = [
@@ -1018,6 +1040,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            icon: mapTypeToIcon('Geolocation provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
+            icon: mapTypeToIcon('Geolocation precision')
         }
     ];
     var genoFields = [
@@ -1152,6 +1185,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            icon: mapTypeToIcon('Geolocation provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
+            icon: mapTypeToIcon('Geolocation precision')
         }
     ];
 
@@ -1267,6 +1311,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            icon: mapTypeToIcon('Geolocation provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
+            icon: mapTypeToIcon('Geolocation precision')
         }
     ];
 
@@ -1377,6 +1432,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Geolocation provenance',
+            icon: mapTypeToIcon('Geolocation provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Geolocation precision',
+            icon: mapTypeToIcon('Geolocation precision')
         }
     ];
 
@@ -2530,7 +2596,10 @@ function tableHtml(divid, results) {
                     durationUnit: element.duration_unit_s,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 template = $.templates("#irRowTemplate");
@@ -2563,7 +2632,10 @@ function tableHtml(divid, results) {
                     collectionDuration: element.collection_duration_days_i,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 //DKDK VB-8161 rounding to 2 decimal places
@@ -2602,7 +2674,10 @@ function tableHtml(divid, results) {
                     mutatedProteinUnit: element.genotype_mutated_protein_unit_s,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 row.alleleCount = (element.sample_size_i * element.genotype_mutated_protein_value_f / 50).roundDecimals(0);
@@ -2638,7 +2713,10 @@ function tableHtml(divid, results) {
                     pathogen: element.infection_source_s,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 template = $.templates("#pathRowTemplate");
@@ -2672,7 +2750,10 @@ function tableHtml(divid, results) {
                     bloodMealHost: element.blood_meal_source_s,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 template = $.templates("#mealRowTemplate");
@@ -2702,7 +2783,10 @@ function tableHtml(divid, results) {
                     sampleSize: element.sample_size_i,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss for smpl view (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 //DKDK VB-8459 add signposts_ss here for sample table
@@ -2713,6 +2797,10 @@ function tableHtml(divid, results) {
                 template = $.templates("#smplRowTemplate");
                 break;
         }
+
+        // //DKDK VB-8663 check
+        // console.log("geolocation_provenance_s",element.geolocation_provenance_s);
+        // console.log("element",element);
 
         var htmlOutput = template.render(row);
         $(divid).append(htmlOutput);
@@ -3297,6 +3385,11 @@ function mapTypeToIcon(type) {
         //DKDK VB-8459 signposts
         case 'Available data types':
             return 'fa fa-map-signs';
+        //DKDK VB-8663 GPS qualifier fields
+        case 'Geolocation provenance':
+            return 'fas fa-map-marker-alt';
+        case 'Geolocation precision':
+            return 'fas fa-map-marker-alt';
         default :
             return 'fas fa-search';
 
