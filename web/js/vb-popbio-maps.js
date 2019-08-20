@@ -3387,9 +3387,9 @@ function mapTypeToIcon(type) {
             return 'fa fa-map-signs';
         //DKDK VB-8663 GPS qualifier fields
         case 'Geolocation provenance':
-            return 'fas fa-map-marker-alt';
+            return 'fas fa-sign-in-alt';
         case 'Geolocation precision':
-            return 'fas fa-map-marker-alt';
+            return 'fas fa-search-location';
         default :
             return 'fas fa-search';
 
