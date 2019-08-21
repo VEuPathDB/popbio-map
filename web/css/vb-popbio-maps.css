@@ -97,7 +97,7 @@ BODY {
     color         : #555555;
     margin-bottom : 5px !important;
     border-radius : 0 !important;
-    width     : 280px;
+    width         : 280px;
     min-height    : 300px;
     /*max-width     : 230px;
     position: absolute;
@@ -119,13 +119,19 @@ BODY {
     text-align: right;
     font-weight: 600;
     /*DKDK VB-8650*/
-    width: 22%;
+    width: 21%;
 }
 
 .summ-by-value {
     float: left;
     /*DKDK VB-8650 */
-    width: 78%;
+    /*width: 79%;*/
+}
+
+/*DKDK VB-8650 add below class to handle active-legend and external link separately*/
+.active-legend-area {
+    float: left;
+    width: 79%;
 }
 
 .legend-others {
@@ -1192,7 +1198,30 @@ div.error div, div.warning div, div.info div, div.hint div {
     cursor: ew-resize;
 }
 
-/* DKDK VB-8650 */
-.insertExternalLinkLegend .insertExternalLink {
+/* DKDK VB-8650 related CSS */
+/*.insertExternalLinkLegend .insertExternalLink {
     float: initial;
 }
+*/
+.insertExternalLink {
+    /*float: initial;*/
+    /*float: left;*/
+    position: relative;
+    margin: 0.2em 0 0 0.5em;
+    font-size: 0.9em;
+}
+
+.active-others {
+    float: left;
+}
+
+.insertExternalLinkText {
+    /*float: initial;*/
+    /*float: left;*/
+    /*float: none;*/
+    position: relative;
+    margin: 0em -0.5em 0 0em;
+    font-size: 0.9em;
+}
+
+
