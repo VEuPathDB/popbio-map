@@ -494,7 +494,7 @@ L.Control.MapLegend = L.Control.extend({
         //DKDK VB-8650 add help text
         if (viewMode === 'smpl' && glbSummarizeBy == "Available data types") {
             inHtml += '<p style="font-size: 1.0em;">: Clicking this external link icon <i class="insertExternalLinkText fas fa-external-link-alt fa-xs" aria-hidden="true"></i>' +
-                    'will switch the current view to corresponding view </p>';
+                    'will switch the current view to the corresponding view </p>';
         }
 
         // Adding a wrapper div to make vertical-align work correctly
