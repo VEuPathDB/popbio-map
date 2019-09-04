@@ -1,3 +1,6 @@
+// Will store the last abndGeoclust request that was made
+var ajaxReq = null;
+
 function bindEvents() {
     "use strict"
 
@@ -2094,17 +2097,33 @@ function loadSolr(parameters) {
     };
     var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
 
-    $.getJSON(url, {
-        cache: true,
-        headers: {
-            'Cache-Control': 'max-age=2592000'
-        }
-    }, buildMap)
+    // Store the request after it's been sent
+    ajaxReq = $.ajax({
+        dataType: 'json',
+        url: url,
+        data: {
+            cache: true,
+            headers: {
+                'Cache-Control': 'max-age=2592000'
+            }
+        },
+        beforeSend: function() {
+            // If another request is currently being processed, abort it
+            if (ajaxReq !== null && ajaxReq.readyState < 4) {
+                ajaxReq.abort();
+            }
+        },
+        success: buildMap,
+    })
     .done(function () {
         $(document).trigger("jsonLoaded");
     })
-    .fail(function () {
-        console.log("Failed to load json");
+    .fail(function (jqXHR, textStatus) {
+        // Log an error unless we purposefully aborted
+        if (textStatus !== "abort") {
+            console.log("Failed to load json");
+        }
+
         map.spin(false);
     });
 }
