@@ -361,6 +361,9 @@ L.Control.MapLegend = L.Control.extend({
             '<li><a href="#" value="Project">Project</a></li>' +
             '<li><a href="#" value="Protocol">Protocol</a></li>' +
             (viewMode === 'ir' ? '<li><a href="#" value="Insecticide">Insecticide</a></li>' : '') +
+            //DKDK VB-8663 add GPS qualifier
+            (viewMode === 'abnd' ? '<li><a href="#" value="Location provenance">Location provenance</a></li> ' : '') +
+            (viewMode === 'abnd' ? '<li><a href="#" value="Location precision">Location precision</a></li> ' : '') +
             '</ul>';
     },
 

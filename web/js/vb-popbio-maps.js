@@ -809,13 +809,13 @@ function updateExportFields(viewMode) {
         //DKDK VB-8663 GPS qualifier fields
         {
             value: 'exp_geolocation_provenance_s',
-            label: 'Geolocation provenance',
-            icon: mapTypeToIcon('Geolocation provenance')
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
         },
         {
             value: 'exp_geolocation_precision_s',
-            label: 'Geolocation precision',
-            icon: mapTypeToIcon('Geolocation precision')
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
     var irFields = [
@@ -941,13 +941,13 @@ function updateExportFields(viewMode) {
         //DKDK VB-8663 GPS qualifier fields
         {
             value: 'exp_geolocation_provenance_s',
-            label: 'Geolocation provenance',
-            icon: mapTypeToIcon('Geolocation provenance')
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
         },
         {
             value: 'exp_geolocation_precision_s',
-            label: 'Geolocation precision',
-            icon: mapTypeToIcon('Geolocation precision')
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
     var abndFields = [
@@ -1044,13 +1044,13 @@ function updateExportFields(viewMode) {
         //DKDK VB-8663 GPS qualifier fields
         {
             value: 'exp_geolocation_provenance_s',
-            label: 'Geolocation provenance',
-            icon: mapTypeToIcon('Geolocation provenance')
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
         },
         {
             value: 'exp_geolocation_precision_s',
-            label: 'Geolocation precision',
-            icon: mapTypeToIcon('Geolocation precision')
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
     var genoFields = [
@@ -1189,13 +1189,13 @@ function updateExportFields(viewMode) {
         //DKDK VB-8663 GPS qualifier fields
         {
             value: 'exp_geolocation_provenance_s',
-            label: 'Geolocation provenance',
-            icon: mapTypeToIcon('Geolocation provenance')
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
         },
         {
             value: 'exp_geolocation_precision_s',
-            label: 'Geolocation precision',
-            icon: mapTypeToIcon('Geolocation precision')
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
 
@@ -1315,13 +1315,13 @@ function updateExportFields(viewMode) {
         //DKDK VB-8663 GPS qualifier fields
         {
             value: 'exp_geolocation_provenance_s',
-            label: 'Geolocation provenance',
-            icon: mapTypeToIcon('Geolocation provenance')
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
         },
         {
             value: 'exp_geolocation_precision_s',
-            label: 'Geolocation precision',
-            icon: mapTypeToIcon('Geolocation precision')
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
 
@@ -1436,13 +1436,13 @@ function updateExportFields(viewMode) {
         //DKDK VB-8663 GPS qualifier fields
         {
             value: 'exp_geolocation_provenance_s',
-            label: 'Geolocation provenance',
-            icon: mapTypeToIcon('Geolocation provenance')
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
         },
         {
             value: 'exp_geolocation_precision_s',
-            label: 'Geolocation precision',
-            icon: mapTypeToIcon('Geolocation precision')
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
 
@@ -3082,6 +3082,7 @@ function borderColor(type, element) {
     return objWithBorderColors;
 }
 
+// for search, shared link
 function mapTypeToField(type) {
     switch (type) {
         case "Taxonomy":
@@ -3141,6 +3142,12 @@ function mapTypeToField(type) {
         //DKDK VB-8459
         case "Available data types":
             return "signposts_ss";
+        //DKDK VB-8663 add Location provenance and Location precision
+        case "Location provenance":
+            return "geolocation_provenance_cvterms";
+        case "Location precision":
+            return "geolocation_precision_cvterms";
+
         default :
             return type.toLowerCase()
 
@@ -3148,6 +3155,8 @@ function mapTypeToField(type) {
 
 }
 
+
+// for generating legend list
 function mapSummarizeByToField(type) {
     var fields = {};
     switch (type) {
@@ -3217,6 +3226,19 @@ function mapSummarizeByToField(type) {
             fields.summarize = "signposts_ss";
             fields.type = "Available data types";
             fields.field = "signposts_ss";
+            break;
+        //DKDK VB-8663 GPS qualifier provenance precision legend item!
+        case "Location provenance":
+            fields.summarize = "geolocation_provenance_s";
+            // fields.summarize = "geolocation_provenance_cvterms";
+            fields.type = "Location provenance";
+            fields.field = "geolocation_provenance_s";
+            break;
+        case "Location precision":
+            fields.summarize = "geolocation_precision_s";
+            // fields.summarize = "geolocation_precision_cvterms";
+            fields.type = "Location precision";
+            fields.field = "geolocation_precision_s";
             break;
         default :
             fields.summarize = "species_category";
@@ -3301,6 +3323,11 @@ function mapTypeToLabel(type) {
             //DKDK VB-8459 signposts
             case 'Available data types':
                 return 'label label-info label-signposts';
+            //DKDK VB-8663 add Location provenance and Location precision
+            case "Location provenance":
+                return 'label label-primary label-location-provenance';  // dark blue
+            case "Location precision":
+                return 'label label-primary label-location-precision';  // dark blue
             default :
                 return 'label label-warning label-default';
         }
@@ -3386,9 +3413,9 @@ function mapTypeToIcon(type) {
         case 'Available data types':
             return 'fa fa-map-signs';
         //DKDK VB-8663 GPS qualifier fields
-        case 'Geolocation provenance':
+        case 'Location provenance':
             return 'fas fa-sign-in-alt';
-        case 'Geolocation precision':
+        case 'Location precision':
             return 'fas fa-search-location';
         default :
             return 'fas fa-search';

@@ -741,7 +741,7 @@
 
 
     //Might change to private function, but making it public for now until I know
-    //that it is not needed anywhere else
+    //that it is not needed anywhere else - autocomplete
     PopulationBiologyMap.methods.applyParameters = function () {
         // parse the URL parameters and update views and search terms
         var hasParameters = false;
@@ -790,6 +790,9 @@
                     case "signposts_ss":
                     //DKDK VB-8541 add sex for a GET parameter like sex=male
                     case "sex":
+                    //DKDK VB-8663 add Location provenance and Location precision
+                    case "location_provenance":
+                    case "location_precision":
                         // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
@@ -1136,6 +1139,11 @@
             //DKDK VB-8459 signposts shared link
             case "Available data types":
                 return "signposts_ss";
+            //DKDK VB-8663 add Location provenance and Location precision
+            case "Location provenance":
+                return "location_provenance";
+            case "Location precision":
+                return "location_precision";
             default:
                 return "text"
                 break;
@@ -1207,6 +1215,11 @@
             //DKDK VB-8459 signposts shared link
             case "signposts_ss":
                 return "Available data types";
+            //DKDK VB-8663 add Location provenance and Location precision
+            case "location_provenance":
+                return "Location provenance";
+            case "location_precision":
+                return "Location precision";
             default:
                 return "Anywhere";
         }
