@@ -382,7 +382,7 @@ L.Control.MapLegend = L.Control.extend({
         // }
 
         var dropdownsHTML =
-            '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize workers and facet data by...">' +
+            '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize markers and facet data by...">' +
             '<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">' +
             glbSummarizeBy + ' ' +
             '<span class="caret"></span>' +
