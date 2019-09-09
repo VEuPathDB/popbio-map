@@ -1225,7 +1225,8 @@
             </div>
         </div>
 
-        <!-- DKDK VB-8459 displaying signposts_ss -->
+        <!-- DKDK VB-8459 displaying signposts_ss VB-8652 only displaying when avaiable data types in legend is selected -->
+        {{if signposts}}
         <div class="row">
             <div class="col-md-12">
                 <p style="color: {{attr:bgColor}};" title="Available data types">
@@ -1257,6 +1258,7 @@
                 </ul>
             </div>
         </div>
+        {{/if}}
 
     </div>
 

@@ -345,8 +345,8 @@ L.Control.MapLegend = L.Control.extend({
         }
 
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
-            //DKDK VB-8459 add signposts menu; VB-8536 Species in Pathogen to Vector Species
-            // (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
+            //DKDK VB-8459 VB-8650 add signposts menu; VB-8536 Species in Pathogen to Vector Species
+            (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Locus">Locus</a></li>' : '') +
             (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
             (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
@@ -354,7 +354,8 @@ L.Control.MapLegend = L.Control.extend({
             (viewMode === 'meal' ? '<li><a href="#" value="Blood meal host">Blood meal host</a></li> ' : '') +
             //DKDK VB-8536 Species in Pathogen to Vector Species
             '<li><a href="#" value="' + pathSpecies + '">' + pathSpecies + '</a></li>' +
-            (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
+            //DKDK VB-8650 block this as it goes first
+            // (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
             '<li><a href="#" value="Sample type">Sample type</a></li>' +
             '<li><a href="#" value="Collection protocol">Collection protocol</a></li>' +
             (viewMode === 'abnd' ? '<li><a href="#" value="Attractant">Attractant</a></li> ' : '') +
@@ -369,14 +370,6 @@ L.Control.MapLegend = L.Control.extend({
     _generateLegendHtml: function (palette, numOfItems) {
         var options = this.options;
         var inHtml = ''; // store HTML here
-
-        // //DKDK VB-8459 change text for
-        // var glbSummarizeByText;
-        // if (glbSummarizeBy == 'Signposts') {
-        //     glbSummarizeByText = 'Available data types';
-        // } else {
-        //     glbSummarizeByText = glbSummarizeBy;
-        // }
 
         var dropdownsHTML =
             '<div class="btn-group dropdown" id="summByDropdown" role="group" title="Colorize workers and facet data by...">' +
@@ -401,24 +394,73 @@ L.Control.MapLegend = L.Control.extend({
         inHtml += '<div style="border: 0; margin-bottom: 5px;">' + dropdownsHTML + '</div>';
 
         inHtml += _.map(palette.slice(0, 20), function (item) {
-            var label = (item.name ? item.name.capitalizeFirstLetter() + '<br>' : '+');
+            //DKDK VB-8650
+            // var label = (item.name ? item.name.capitalizeFirstLetter() + '<br>' : '+');
+            var label = (item.name ? item.name.capitalizeFirstLetter() : '+');
 
             if (options.summarizeBy === 'Species') {
                 var label = '<em>' + label + '</em>';
             }
 
-            return '<div class="active-legend" type="' + type + '"value="' + item.name + '">' +
-                        '<div class="summ-by-value detailedTip">' +
-                            '<i style="border-color:' + item.color + '"></i>' +
-                            label +
+            //DKDK VB-8650
+            var insertExternalLink = '';
+            var insertExternalLinkLegend = 'active-legend';
+            var insertExternalLinkName = '';
+            var insertExternalLinkTitle = '';
+            var insertExternalLinkClass = 'detailedTip';
+            if (glbSummarizeBy == "Available data types") {
+                if (item.name == "Abundance") {
+                    // insertExternalLink = ' <div style="font-size: 0.5rem;"><a href="?view=abnd"><i class="insertExternalLink fas fa-external-link-alt fa-xs" aria-hidden="true"></i></a></div> ';
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt" name="abnd" title="' + 'Switch to ' + item.name + ' view' + '"></i> ';
+                    // insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'abnd';
+                    insertExternalLinkTitle = 'Search with ' + item.name;
+                    insertExternalLinkClass = '';
+                } else if (item.name == "Pathogen") {
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt" name="path" title="' + 'Switch to ' + item.name + ' view' + '"></i> ';
+                    // insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'path';
+                    insertExternalLinkTitle = 'Search with ' + item.name;
+                    insertExternalLinkClass = '';
+                } else if (item.name == "Blood meal host") {
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt" name="meal" title="' + 'Switch to ' + item.name + ' view' + '"></i> ';
+                    // insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'meal';
+                    insertExternalLinkTitle = 'Search with ' + item.name;
+                    insertExternalLinkClass = '';
+                } else if (item.name == "Insecticide res. phenotype") {
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt" name="ir" title="' + 'Switch to Insecticide Resistance view' +'"></i> ';
+                    // insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'ir';
+                    insertExternalLinkTitle = 'Search with ' + item.name;
+                    insertExternalLinkClass = '';
+                } else if (item.name == "Insecticide res. genotype") {
+                    insertExternalLink = ' <i class="insertExternalLink fas fa-external-link-alt" name="geno" title="' + 'Switch to Genotypes view' +'"></i> ';
+                    // insertExternalLinkLegend = 'insertExternalLinkLegend';
+                    insertExternalLinkName = 'geno';
+                    insertExternalLinkTitle = 'Search with ' + item.name;
+                    insertExternalLinkClass = '';
+                }
+            }
+
+                return  '<div class="active-legend-area">' +
+                            '<div class="' + insertExternalLinkLegend + '" type="' + type + '"value="' + item.name + '" name="' + insertExternalLinkName + '" title="' + insertExternalLinkTitle + '">' +
+                                '<div class="summ-by-value ' + insertExternalLinkClass + '">' +
+                                    // '<i style="border-color:' + item.color + '"></i>' +
+                                    '<i style="border-color:' + item.color + '" class="summ-by-value-item"></i>' +
+                                    label +
+                                '</div>' +
+                            '</div>' +
+                            // '<div>' + insertExternalLink + '</div>' +
+                            '<div style="float: initial;">' + insertExternalLink + '</div>' +
                         '</div>' +
-                        '<div class="legend-count">' + item.count + '</div>' +
-                    '</div>';
+                        '<div class="legend-count">' + item.count + '</div>';
 
         }).join('')
         inHtml += '</div>';
 
         var othersBg = "radial-gradient(" + this._colorLuminance("#FFFFFF", -0.7) + ", " + this._colorLuminance("#FFFFFF", -this.lum) + ")";
+
         inHtml += '<div class="active-others" data-toggle="modal" data-target="#Table-Legend-Modal" type="' + type + '">' +
                         '<i style="background:' + othersBg + ';"></i> ' + 'Complete List<br>' +
                   '</div>';
@@ -449,6 +491,12 @@ L.Control.MapLegend = L.Control.extend({
                 'More info</span></p>';
         }
 
+        //DKDK VB-8650 add help text
+        if (viewMode === 'smpl' && glbSummarizeBy == "Available data types") {
+            inHtml += '<p style="font-size: 1.0em;">: Clicking this external link icon <i class="insertExternalLinkText fas fa-external-link-alt fa-xs" aria-hidden="true"></i>' +
+                    'will switch the current view to the corresponding view </p>';
+        }
+
         // Adding a wrapper div to make vertical-align work correctly
         inHtml = '<div class="legend-contents">' + inHtml + '</div>';
 
@@ -462,6 +510,11 @@ L.Control.MapLegend = L.Control.extend({
         if (L.DomUtil.hasClass(this._legendDiv, "active")) {
             legend.remove();
             legend.addTo(map);
+        }
+
+        //DKDK VB-8650 override CSS for better handling text-overflow
+        if (glbSummarizeBy !== "Available data types") {
+            $("div.summ-by-value").css("float","none");
         }
     },
 
