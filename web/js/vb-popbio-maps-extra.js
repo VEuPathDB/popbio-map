@@ -296,7 +296,7 @@
         });
 
         $('#SelectView').change(function () {
-            viewMode = $('#SelectView').val()
+            viewMode = $('#SelectView').val();
 
             // VB-7622 default with ?view=geno at URL (e.g., selecting the menu from Popbio page or using Share Link) is set to Allele (active-legend) at initializeMap()
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
@@ -304,8 +304,8 @@
             if (viewMode === "path") glbSummarizeBy = "Pathogen";
             if (viewMode === "meal") glbSummarizeBy = "Blood meal host";
             //DKDK VB-8459 with new Signposts, also need to set default value of legend here beyond initializeMap()
-            // if (viewMode === "smpl") glbSummarizeBy = "Available data types";
-            if (viewMode === "smpl") glbSummarizeBy = "Species";
+            if (viewMode === "smpl") glbSummarizeBy = "Available data types";
+            // if (viewMode === "smpl") glbSummarizeBy = "Species";
             if (viewMode === "ir"  ) glbSummarizeBy = "Species";
             if (viewMode === "abnd") glbSummarizeBy = "Species";
             //DKDK VB-8459 I am not so sure if below criteria should be used: I doubt it.
@@ -741,7 +741,7 @@
 
 
     //Might change to private function, but making it public for now until I know
-    //that it is not needed anywhere else
+    //that it is not needed anywhere else - autocomplete
     PopulationBiologyMap.methods.applyParameters = function () {
         // parse the URL parameters and update views and search terms
         var hasParameters = false;
@@ -790,6 +790,9 @@
                     case "signposts_ss":
                     //DKDK VB-8541 add sex for a GET parameter like sex=male
                     case "sex":
+                    //DKDK VB-8663 add Location provenance and Location precision
+                    case "location_provenance":
+                    case "location_precision":
                         // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
@@ -1136,6 +1139,11 @@
             //DKDK VB-8459 signposts shared link
             case "Available data types":
                 return "signposts_ss";
+            //DKDK VB-8663 add Location provenance and Location precision
+            case "Location provenance":
+                return "location_provenance";
+            case "Location precision":
+                return "location_precision";
             default:
                 return "text"
                 break;
@@ -1207,6 +1215,11 @@
             //DKDK VB-8459 signposts shared link
             case "signposts_ss":
                 return "Available data types";
+            //DKDK VB-8663 add Location provenance and Location precision
+            case "location_provenance":
+                return "Location provenance";
+            case "location_precision":
+                return "Location precision";
             default:
                 return "Anywhere";
         }
@@ -1270,83 +1283,98 @@
         });
     }
 
+    //DKDK VB-8650 accept two arguments for handling both shared link and legend link
+    function generateLinkForInternalUse(newExternalLinkViewmode,newExternalLinksummarizedBy) {
+        // var view_param = "view=" + viewMode;
+        var view_param = "view=" + newExternalLinkViewmode;
+        var zoom_param = "&zoom_level=" + map.getZoom();
+        var center = map.getCenter();
+        var center_param = "&center=" + center.lat.toString() + "," + center.lng.toString();
+        var highlighted_id = $(".highlight-marker").attr("id");
+        if (newExternalLinksummarizedBy == '') {
+            var summarize_by = "&summarizeBy=" + $('.legend #summByDropdown button').text().trim();
+        } else {
+            var summarize_by = "&summarizeBy=" + newExternalLinksummarizedBy;
+        }
+        var grid = "&grid=" + $('#grid-toggle').prop('checked');
+        var shared_link = "&shared_link=true";
+        var marker_param = '';
+        var panel_param = "";
+        var url = window.location.origin + window.location.pathname + "?";
+        var search_items = $('#search_ac').tagsinput('items');
+        var limitTerms = "&limitTerms=" + $('#limit-terms-toggle-input').prop('checked');
+        var rescale = PopulationBiologyMap.data.rescale;
+        var chartResolution = "";
+        var navDates = "";
+        var rescaleParam = "";
+
+        //Using an object to store search terms that will be used to generate link
+        var search_terms = {};
+        var query_parameters = '';
+
+        //Retrieve all the terms that were entered in the search box and organize them by type
+        search_items.forEach(function(search_item) {
+            if (search_terms[search_item.type] == undefined) {
+                search_terms[search_item.type] = [];
+            }
+            // VB-7318 add ! for NOT boolean case - and add condition not to repeat to add !!! whenever pressing share link (pre-existing value preserves string!)
+            if ((search_item.notBoolean) && (search_item.value.startsWith('!!!') != 1)) {
+                search_item.value = '!!!' + search_item.value;
+            }
+
+            search_terms[search_item.type].push(search_item.value);
+        });
+
+        //Go through the search terms and add them to the correct query parameter
+        $.each(search_terms, function(index, values) {
+            if (values.length > 1) {
+                values.forEach(function(value) {
+                    // VB-7490 ~ Replace spaces for serialization purposes.
+                    query_parameters = query_parameters + mapTypeToURLParam(index) + "[]=" + value + "&";
+                });
+            } else {
+                query_parameters = query_parameters + mapTypeToURLParam(index) + "=" + values[0] + "&";
+            }
+        });
+
+        //Set the selected marker and panel that was being viewed
+        if (highlighted_id != undefined) {
+            marker_param = "&markerID=" + highlighted_id;
+            activePanel = $(".sidebar-pane.active").attr("id");
+            panel_param = "&panelID=" + activePanel;
+        }
+
+        if (Highcharts.charts.length && activePanel === "swarm-plots") {
+            navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
+            navDates = "&navDates=" + navigatorExtremes.min + "," + navigatorExtremes.max;
+            resolution = $("#resolution-selector .btn-primary").val();
+            chartResolution = "&resolution=" + resolution;
+        }
+
+        if (rescale) {
+            rescaleParam = "&optimizeColors=true";
+            $("#rescale_colors").click();
+        }
+
+        query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms + rescaleParam + navDates + chartResolution;
+
+        url = url + encodeURI(query_parameters);
+
+        // //Add URL to attribute used to copy to clipboard
+        // $("#generate-link").attr("data-clipboard-text", url);
+        return url;
+    };
+
+
     //Tasks that need to be done or events defined  when the page loads
     PopulationBiologyMap.extra.init = function() {
         new Clipboard('#generate-link');
-        // PopulationBiologyMap.methods.applyParameters();
+        //DKDK VB-8650 make this a function instead of using this twice for some cases
         $("#generate-link").click(function () {
-            var view_param = "view=" + viewMode;
-            var zoom_param = "&zoom_level=" + map.getZoom();
-            var center = map.getCenter();
-            var center_param = "&center=" + center.lat.toString() + "," + center.lng.toString();
-            var highlighted_id = $(".highlight-marker").attr("id");
-            var summarize_by = "&summarizeBy=" + $('.legend #summByDropdown button').text().trim();
-            var grid = "&grid=" + $('#grid-toggle').prop('checked');
-            var shared_link = "&shared_link=true";
-            var marker_param = '';
-            var panel_param = "";
-            var url = window.location.origin + window.location.pathname + "?";
-            var search_items = $('#search_ac').tagsinput('items');
-            var limitTerms = "&limitTerms=" + $('#limit-terms-toggle-input').prop('checked');
-            var rescale = PopulationBiologyMap.data.rescale;
-            var chartResolution = "";
-            var navDates = "";
-            var rescaleParam = "";
-
-            //Using an object to store search terms that will be used to generate link
-            var search_terms = {};
-            var query_parameters = '';
-
-            //Retrieve all the terms that were entered in the search box and organize them by type
-            search_items.forEach(function(search_item) {
-                if (search_terms[search_item.type] == undefined) {
-                    search_terms[search_item.type] = [];
-                }
-                // VB-7318 add ! for NOT boolean case - and add condition not to repeat to add !!! whenever pressing share link (pre-existing value preserves string!)
-                if ((search_item.notBoolean) && (search_item.value.startsWith('!!!') != 1)) {
-                    search_item.value = '!!!' + search_item.value;
-                }
-
-                search_terms[search_item.type].push(search_item.value);
-            });
-
-            //Go through the search terms and add them to the correct query parameter
-            $.each(search_terms, function(index, values) {
-                if (values.length > 1) {
-                    values.forEach(function(value) {
-                        // VB-7490 ~ Replace spaces for serialization purposes.
-                        query_parameters = query_parameters + mapTypeToURLParam(index) + "[]=" + value + "&";
-                    });
-                } else {
-                    query_parameters = query_parameters + mapTypeToURLParam(index) + "=" + values[0] + "&";
-                }
-            });
-
-            //Set the selected marker and panel that was being viewed
-            if (highlighted_id != undefined) {
-                marker_param = "&markerID=" + highlighted_id;
-                activePanel = $(".sidebar-pane.active").attr("id");
-                panel_param = "&panelID=" + activePanel;
-            }
-
-            if (Highcharts.charts.length && activePanel === "swarm-plots") {
-                navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
-                navDates = "&navDates=" + navigatorExtremes.min + "," + navigatorExtremes.max;
-                resolution = $("#resolution-selector .btn-primary").val();
-                chartResolution = "&resolution=" + resolution;
-            }
-
-            if (rescale) {
-                rescaleParam = "&optimizeColors=true";
-                $("#rescale_colors").click();
-            }
-
-            query_parameters = query_parameters + view_param + zoom_param + center_param + summarize_by + marker_param + panel_param + grid + shared_link + limitTerms + rescaleParam + navDates + chartResolution;
-
-            url = url + encodeURI(query_parameters);
+            var urlFunctionBased = generateLinkForInternalUse(viewMode,'');
 
             //Add URL to attribute used to copy to clipboard
-            $("#generate-link").attr("data-clipboard-text", url);
+            $("#generate-link").attr("data-clipboard-text", urlFunctionBased);
         });
 
         //Disable the panel from opening if it was disabled
@@ -1546,6 +1574,23 @@
                 stickyHover = false;
 
             }
+        })
+        //DKDK VB-8650
+        .on("click", ".insertExternalLinkLegend, .insertExternalLink", function (e) {
+            var newExternalLinkViewmode = $(this).attr('name');
+            // console.log('newExternalLinkViewmode',newExternalLinkViewmode);
+            // var newExternalLinksummarizedBy = '';
+            // if (newExternalLinkViewmode == "abnd") {
+            //     newExternalLinksummarizedBy = "Species";
+            // } else if (newExternalLinkViewmode == "path") {
+            //     newExternalLinksummarizedBy = "Pathogen";
+            // } else if (newExternalLinkViewmode == 'meal') {
+            //     newExternalLinksummarizedBy = "Blood meal host";
+            // }
+            // var newExternalLink = generateLinkForInternalUse(newExternalLinkViewmode,newExternalLinksummarizedBy);
+            // window.location.replace(newExternalLink);
+            // selectViewChange(newExternalLinkViewmode);
+            $('#SelectView').val(newExternalLinkViewmode).change();
         })
         // VB-7318 add NOT boolean for active legend
         // .on("click", '.active-legend', function () {

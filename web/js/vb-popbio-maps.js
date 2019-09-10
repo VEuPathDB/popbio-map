@@ -1,3 +1,6 @@
+// Will store the last abndGeoclust request that was made
+var ajaxReq = null;
+
 function bindEvents() {
     "use strict"
 
@@ -668,9 +671,9 @@ function initializeMap(parameters) {
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
     if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
     if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal host";
-    //DKDK VB-8459 signposts as default: perhaps default glbSummarizeBy is Species without specification
-    // if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
-    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Species";
+    //DKDK VB-8459 VB-8650 signposts as default: perhaps default glbSummarizeBy is Species without specification
+    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
+    // if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Species";
 
     // Now generate the legend
     // hardcoded species_category
@@ -805,6 +808,17 @@ function updateExportFields(viewMode) {
             value: 'exp_signposts_ss',
             label: 'Available data types',
             icon: mapTypeToIcon('Available data types')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
     var irFields = [
@@ -926,6 +940,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
     var abndFields = [
@@ -1018,6 +1043,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
     var genoFields = [
@@ -1152,6 +1188,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
 
@@ -1267,6 +1314,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
 
@@ -1377,6 +1435,17 @@ function updateExportFields(viewMode) {
             value: 'exp_dev_stages_ss',
             label: 'Developmental stage',
             icon: mapTypeToIcon('Developmental stage')
+        },
+        //DKDK VB-8663 GPS qualifier fields
+        {
+            value: 'exp_geolocation_provenance_s',
+            label: 'Location provenance',
+            icon: mapTypeToIcon('Location provenance')
+        },
+        {
+            value: 'exp_geolocation_precision_s',
+            label: 'Location precision',
+            icon: mapTypeToIcon('Location precision')
         }
     ];
 
@@ -1533,7 +1602,8 @@ function loadSolr(parameters) {
                 if (inCount > 0) {
                     fullElStats.push({
                         "label": inKey,
-                        "value": inCount,
+                        //DKDK VB-8646
+                        "value": inCount.roundDecimals(0),
                         "color": (legend.options.palette[inKey] ? legend.options.palette[inKey] : "#000000")
                     });
                 }
@@ -1548,6 +1618,10 @@ function loadSolr(parameters) {
                     "value": geoCount - tagsTotalCount,
                     "color": (legend.options.palette['Unknown'])
                 });
+            }
+            //DKDK VB-8646 set geoCount to be default roundDecimals for marker/donut display
+            if (viewMode === 'geno') {
+                geoCount = el.alleleCount.roundDecimals(0);
             }
 
             fullStatistics[key] = fullElStats;
@@ -2084,17 +2158,33 @@ function loadSolr(parameters) {
     };
     var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
 
-    $.getJSON(url, {
-        cache: true,
-        headers: {
-            'Cache-Control': 'max-age=2592000'
-        }
-    }, buildMap)
+    // Store the request after it's been sent
+    ajaxReq = $.ajax({
+        dataType: 'json',
+        url: url,
+        data: {
+            cache: true,
+            headers: {
+                'Cache-Control': 'max-age=2592000'
+            }
+        },
+        beforeSend: function() {
+            // If another request is currently being processed, abort it
+            if (ajaxReq !== null && ajaxReq.readyState < 4) {
+                ajaxReq.abort();
+            }
+        },
+        success: buildMap,
+    })
     .done(function () {
         $(document).trigger("jsonLoaded");
     })
-    .fail(function () {
-        console.log("Failed to load json");
+    .fail(function (jqXHR, textStatus) {
+        // Log an error unless we purposefully aborted
+        if (textStatus !== "abort") {
+            console.log("Failed to load json");
+        }
+
         map.spin(false);
     });
 }
@@ -2520,7 +2610,10 @@ function tableHtml(divid, results) {
                     durationUnit: element.duration_unit_s,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 template = $.templates("#irRowTemplate");
@@ -2553,7 +2646,10 @@ function tableHtml(divid, results) {
                     collectionDuration: element.collection_duration_days_i,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 //DKDK VB-8161 rounding to 2 decimal places
@@ -2592,7 +2688,10 @@ function tableHtml(divid, results) {
                     mutatedProteinUnit: element.genotype_mutated_protein_unit_s,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 row.alleleCount = (element.sample_size_i * element.genotype_mutated_protein_value_f / 50).roundDecimals(0);
@@ -2628,7 +2727,10 @@ function tableHtml(divid, results) {
                     pathogen: element.infection_source_s,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 template = $.templates("#pathRowTemplate");
@@ -2662,7 +2764,10 @@ function tableHtml(divid, results) {
                     bloodMealHost: element.blood_meal_source_s,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 template = $.templates("#mealRowTemplate");
@@ -2692,7 +2797,10 @@ function tableHtml(divid, results) {
                     sampleSize: element.sample_size_i,
                     //DKDK VB-8114 displaying sex_s and dev_stage_ss for smpl view (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss
+                    devstages: element.dev_stages_ss,
+                    //DKDK VB-8663 GPS qualifier fields
+                    geolocationProvenance: element.geolocation_provenance_s,
+                    geolocationPrecision: element.geolocation_precision_s
                 };
 
                 //DKDK VB-8459 add signposts_ss here for sample table
@@ -2703,6 +2811,10 @@ function tableHtml(divid, results) {
                 template = $.templates("#smplRowTemplate");
                 break;
         }
+
+        // //DKDK VB-8663 check
+        // console.log("geolocation_provenance_s",element.geolocation_provenance_s);
+        // console.log("element",element);
 
         var htmlOutput = template.render(row);
         $(divid).append(htmlOutput);
@@ -2750,8 +2862,9 @@ function filterMarkers(items, flyTo) {
             if (element.ranges) {
                 //Go through the object date range
                 for (var key in  element.ranges) {
-                    var endDate = dateConvert(element.ranges[key].endDate, format);
-                    var startDate = dateConvert(element.ranges[key].startDate, format);
+                    //DKDK VB-8640 date - need to add utc option when calling dateConvert
+                    var endDate = dateConvert(element.ranges[key].endDate, format, 'utc');
+                    var startDate = dateConvert(element.ranges[key].startDate, format, 'utc');
 
                     terms[element.type].push({
                         "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']'
@@ -2896,7 +3009,25 @@ function getSolrQueryFromTerm(obj, field, termQueries) {
     var queryString;
     var fqString;
 
+    //DKDK VB-8591 change query for Seasonal search like Date
     if ( obj === "Date" ) {
+        $.each(termQueries, function (index, query) {
+          if (query.notBoolean) {
+            solrNotQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
+          }
+          else {
+            solrQuery.push("{!field f=" + field + " op=Within v='" + query.value + "'}");
+          }
+        });
+
+        if (solrQuery.length !== 0) {
+            queryString = "(" + solrQuery.join(" OR ") + ")";
+        }
+
+        if (solrNotQuery.length !== 0) {
+            fqString = solrNotQuery.join("&fq=");
+        }
+    } else if ( obj === "Seasonal" ) {
         $.each(termQueries, function (index, query) {
           if (query.notBoolean) {
             solrNotQuery.push("!{!field f=" + field + " op=Within v='" + query.value + "'}");
@@ -2932,6 +3063,11 @@ function getSolrQueryFromTerm(obj, field, termQueries) {
         }
     }
 
+    //DKDK VB-8591 add fq for Seasonal search
+    if ( obj === "Seasonal") {
+        fqString = "collection_date_resolution_s:(day OR month)";
+    }
+
     return {q: queryString, fq: fqString};
 }
 
@@ -2960,6 +3096,7 @@ function borderColor(type, element) {
     return objWithBorderColors;
 }
 
+// for search, shared link
 function mapTypeToField(type) {
     switch (type) {
         case "Taxonomy":
@@ -3019,6 +3156,12 @@ function mapTypeToField(type) {
         //DKDK VB-8459
         case "Available data types":
             return "signposts_ss";
+        //DKDK VB-8663 add Location provenance and Location precision
+        case "Location provenance":
+            return "geolocation_provenance_cvterms";
+        case "Location precision":
+            return "geolocation_precision_cvterms";
+
         default :
             return type.toLowerCase()
 
@@ -3026,6 +3169,8 @@ function mapTypeToField(type) {
 
 }
 
+
+// for generating legend list
 function mapSummarizeByToField(type) {
     var fields = {};
     switch (type) {
@@ -3095,6 +3240,19 @@ function mapSummarizeByToField(type) {
             fields.summarize = "signposts_ss";
             fields.type = "Available data types";
             fields.field = "signposts_ss";
+            break;
+        //DKDK VB-8663 GPS qualifier provenance precision legend item!
+        case "Location provenance":
+            fields.summarize = "geolocation_provenance_s";
+            // fields.summarize = "geolocation_provenance_cvterms";
+            fields.type = "Location provenance";
+            fields.field = "geolocation_provenance_s";
+            break;
+        case "Location precision":
+            fields.summarize = "geolocation_precision_s";
+            // fields.summarize = "geolocation_precision_cvterms";
+            fields.type = "Location precision";
+            fields.field = "geolocation_precision_s";
             break;
         default :
             fields.summarize = "species_category";
@@ -3179,6 +3337,11 @@ function mapTypeToLabel(type) {
             //DKDK VB-8459 signposts
             case 'Available data types':
                 return 'label label-info label-signposts';
+            //DKDK VB-8663 add Location provenance and Location precision
+            case "Location provenance":
+                return 'label label-primary label-location-provenance';  // dark blue
+            case "Location precision":
+                return 'label label-primary label-location-precision';  // dark blue
             default :
                 return 'label label-warning label-default';
         }
@@ -3263,6 +3426,11 @@ function mapTypeToIcon(type) {
         //DKDK VB-8459 signposts
         case 'Available data types':
             return 'fa fa-map-signs';
+        //DKDK VB-8663 GPS qualifier fields
+        case 'Location provenance':
+            return 'fas fa-sign-in-alt';
+        case 'Location precision':
+            return 'fas fa-search-location';
         default :
             return 'fas fa-search';
 
@@ -3405,6 +3573,11 @@ String.prototype.capitalizeFirstLetter = function () {
 };
 Number.prototype.roundDecimals = function (decimals) {
     return Number(Math.round(this.valueOf() + 'e' + decimals) + 'e-' + decimals);
+};
+
+//DKDK VB-8646
+Number.prototype.floorDecimals = function () {
+    return Number(Math.floor(this.valueOf()));
 };
 
 function constructSeasonal(selectedMonths) {
