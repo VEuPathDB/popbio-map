@@ -696,6 +696,8 @@
 
 
                 </div>
+                <br/>
+                <a id="data-dict-button" href="/sites/default/files/ftp/downloads/PopBio-Map-Data-Dictionary-2019-09.pdf" class="btn btn-lg btn-block" target="_blank"><i class="fa fa-book" aria-hidden="true"></i> Data Dictionary</a>
                 <div id="export-error" style="margin-top: 30px; display: none;">
 
                 </div>
@@ -1254,7 +1256,8 @@
             </div>
         </div>
 
-        <!-- DKDK VB-8459 displaying signposts_ss -->
+        <!-- DKDK VB-8459 displaying signposts_ss VB-8652 only displaying when avaiable data types in legend is selected -->
+        {{if signposts}}
         <div class="row">
             <div class="col-md-12">
                 <p style="color: {{attr:bgColor}};" title="Available data types">
@@ -1286,6 +1289,7 @@
                 </ul>
             </div>
         </div>
+        {{/if}}
 
     </div>
 

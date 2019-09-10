@@ -1,3 +1,6 @@
+// Will store the last abndGeoclust request that was made
+var ajaxReq = null;
+
 function bindEvents() {
     "use strict"
 
@@ -668,9 +671,9 @@ function initializeMap(parameters) {
     if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
     if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
     if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal host";
-    //DKDK VB-8459 signposts as default: perhaps default glbSummarizeBy is Species without specification
-    // if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
-    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Species";
+    //DKDK VB-8459 VB-8650 signposts as default: perhaps default glbSummarizeBy is Species without specification
+    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
+    // if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Species";
 
     // Now generate the legend
     // hardcoded species_category
@@ -2160,17 +2163,33 @@ function loadSolr(parameters) {
     };
     var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
 
-    $.getJSON(url, {
-        cache: true,
-        headers: {
-            'Cache-Control': 'max-age=2592000'
-        }
-    }, buildMap)
+    // Store the request after it's been sent
+    ajaxReq = $.ajax({
+        dataType: 'json',
+        url: url,
+        data: {
+            cache: true,
+            headers: {
+                'Cache-Control': 'max-age=2592000'
+            }
+        },
+        beforeSend: function() {
+            // If another request is currently being processed, abort it
+            if (ajaxReq !== null && ajaxReq.readyState < 4) {
+                ajaxReq.abort();
+            }
+        },
+        success: buildMap,
+    })
     .done(function () {
         $(document).trigger("jsonLoaded");
     })
-    .fail(function () {
-        console.log("Failed to load json");
+    .fail(function (jqXHR, textStatus) {
+        // Log an error unless we purposefully aborted
+        if (textStatus !== "abort") {
+            console.log("Failed to load json");
+        }
+
         map.spin(false);
     });
 }

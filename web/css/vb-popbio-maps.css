@@ -97,7 +97,7 @@ BODY {
     color         : #555555;
     margin-bottom : 5px !important;
     border-radius : 0 !important;
-    width     : 280px;
+    width         : 280px;
     min-height    : 300px;
     /*max-width     : 230px;
     position: absolute;
@@ -118,12 +118,20 @@ BODY {
     min-width: 50px;
     text-align: right;
     font-weight: 600;
-    width: 30%;
+    /*DKDK VB-8650*/
+    width: 21%;
 }
 
 .summ-by-value {
     float: left;
-    width: 70%;
+    /*DKDK VB-8650 */
+    /*width: 79%;*/
+}
+
+/*DKDK VB-8650 add below class to handle active-legend and external link separately*/
+.active-legend-area {
+    float: left;
+    width: 79%;
 }
 
 .legend-others {
@@ -480,8 +488,8 @@ html {
     border-radius    : 0px;
     box-shadow       : none;
 }
-/* x-jsrender active terms*/
-.active-term, .active-legend, .active-others {
+/* x-jsrender active terms DKDK VB-8650 */
+.active-term, .active-legend, .active-others, .insertExternalLinkLegend {
     border-bottom : 1px dotted;
     cursor        : pointer;
     /*text-transform: capitalize;*/
@@ -653,11 +661,14 @@ div.error div, div.warning div, div.info div, div.hint div {
     text-overflow:ellipsis;
 }
 
-.active-legend {
+/* DKDK VB-8650 */
+.active-legend, .insertExternalLinkLegend {
     line-height: 17px;
 }
 
-.active-legend i, #Other-Terms-List i{
+/* DKDK VB-8650 */
+/* .active-legend i, #Other-Terms-List i{ */
+.active-legend .summ-by-value .summ-by-value-item, .insertExternalLinkLegend .summ-by-value .summ-by-value-item, #Other-Terms-List i{
     -moz-border-radius: 100%;
     -webkit-border-radius: 100%;
     border-radius: 100%;
@@ -1171,7 +1182,7 @@ div.error div, div.warning div, div.info div, div.hint div {
 }
 
 /* DKDK VB-8112 disabling cursor change on pie chart legend */
-.nvd3 .nv-legend .nv-series {    
+.nvd3 .nv-legend .nv-series {
     cursor: default !important;
 }
 
@@ -1186,3 +1197,31 @@ div.error div, div.warning div, div.info div, div.hint div {
     position: absolute;
     cursor: ew-resize;
 }
+
+/* DKDK VB-8650 related CSS */
+/*.insertExternalLinkLegend .insertExternalLink {
+    float: initial;
+}
+*/
+.insertExternalLink {
+    /*float: initial;*/
+    /*float: left;*/
+    position: relative;
+    margin: 0.2em 0 0 0.5em;
+    font-size: 0.9em;
+}
+
+.active-others {
+    float: left;
+}
+
+.insertExternalLinkText {
+    /*float: initial;*/
+    /*float: left;*/
+    /*float: none;*/
+    position: relative;
+    margin: 0em -0.5em 0 0em;
+    font-size: 0.9em;
+}
+
+
