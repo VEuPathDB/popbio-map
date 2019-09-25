@@ -2878,7 +2878,10 @@ function filterMarkers(items, flyTo, selectViewValue) {
 
             //DKDK here date should be the format of mm/dd/year, not dd/mm/year
             var abndStartDate = new Date('01/01/2017');
-            var abndEndDateRaw = new Date().toJSON().slice(0,10).split('-');
+            var today = new Date();
+            // today -1 day
+            today.setDate(today.getDate()-1);
+            var abndEndDateRaw = today.toJSON().slice(0,10).split('-');
             var abndEndDate = new Date(abndEndDateRaw[1] + '/' + abndEndDateRaw[2] + '/' + abndEndDateRaw[0]);
             var abndDateValue = abndStartDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + abndEndDate.toLocaleDateString('en-GB', {timezone: 'utc'});
 
@@ -2981,10 +2984,15 @@ function filterMarkers(items, flyTo, selectViewValue) {
             console.log('items startDate ', startDate);
             console.log('items endDate ', endDate);
             console.log('selectViewValue ', selectViewValue);
+
+            // today -1 day
+            var today = new Date();
+            today.setDate(today.getDate()-1);
+
             // if (startDate != '2017-01-01' && endDate != new Date().toJSON().slice(0,10)) {
-            if (viewMode != 'abnd' && selectViewValue === true && startDate === '2017-01-01' && endDate === new Date().toJSON().slice(0,10)) {
+            if (viewMode != 'abnd' && selectViewValue === true && startDate === '2017-01-01' && endDate === today.toJSON().slice(0,10)) {
                 console.log('am I here???');
-                var removeDateTag = '01/01/2017-' + new Date().toJSON().slice(0,10).split('-').reverse().join('/');
+                var removeDateTag = '01/01/2017-' + today.toJSON().slice(0,10).split('-').reverse().join('/');
                 $('#search_ac').tagsinput('remove', removeDateTag);
             } else {
                 terms["Date"].push({
