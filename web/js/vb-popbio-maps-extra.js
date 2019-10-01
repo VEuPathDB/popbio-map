@@ -298,6 +298,10 @@
         $('#SelectView').change(function () {
             viewMode = $('#SelectView').val();
 
+            //DKDK VB-8707
+            console.log('selectview change');
+
+
             // VB-7622 default with ?view=geno at URL (e.g., selecting the menu from Popbio page or using Share Link) is set to Allele (active-legend) at initializeMap()
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
@@ -416,9 +420,14 @@
             setTimeout(function () {
                 resetPlots()
             }, delay);
+
             $.getJSON(url, function (data) {
-                legend._populateLegend(data, glbSummarizeBy, true)
+                //DKDK VB-8707 add selectViewValue in the end: 4th parameter
+                // legend._populateLegend(data, glbSummarizeBy, true)
+                legend._populateLegend(data, glbSummarizeBy, true, true)
             });
+
+
             acSuggestions.initialize(true);
             acOtherResults.initialize(true);
         });

@@ -1658,7 +1658,16 @@ function loadSolr(parameters) {
         // update bounding box containing all markers
         markersBounds = [[minLat, minLon], [maxLat, maxLon]];
 
-        if (flyTo) {
+        // DKDK VB-8707
+        // if (flyTo) {
+        // if (flyTo && viewMode != 'abnd') {
+        if ((typeof parameters.needBounds === 'undefined' || parameters.needBounds === null)) {
+            var needBounds = true;
+        } else {
+            var needBounds = parameters.needBounds;
+        }
+        console.log('needBounds ', needBounds);
+        if (flyTo && needBounds) {
             map.setMinZoom(map.getZoom());
             var maxZoom = map.getZoom() < 4 ? 6 : map.getZoom();
             map.fitBounds(markersBounds, {duration: 1, maxZoom: maxZoom});
@@ -2156,7 +2165,17 @@ function loadSolr(parameters) {
         geomax: geohashLevel(map.options.maxZoom, "geohash"),
         term: mapSummarizeByToField(glbSummarizeBy).summarize
     };
+
     var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
+
+    // //DKDK VB-8707 change query
+    // // switchViewValue
+    // if ((typeof parameters.switchViewValue != 'undefined' || parameters.switchViewValue != null)) {
+    //     // url += '&datepicker=01/01/2017-' + new Date().toJSON().slice(0,10).split('-').reverse().join('/');
+    // }
+
+    //DKDK VB-8707 change url for abnd to have datepicker
+    console.log('url at loadSolr ',url);
 
     // Store the request after it's been sent
     ajaxReq = $.ajax({
@@ -2835,11 +2854,82 @@ function tableHtml(divid, results) {
     });
 }
 
-function filterMarkers(items, flyTo) {
+function filterMarkers(items, flyTo, selectViewValue) {
     "use strict";
+
     if (items.length === 0) {
         qryUrl = 'q=*:*';
-        loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo});
+        //DKDK VB-8707 add option for not using fitbounds
+        console.log('filterMarkers viewMode', viewMode);
+        if (viewMode === 'abnd' && selectViewValue === true) {
+
+            //DKDK add date to ac
+            // var startDate = '01/01/2017';
+            // var endDate = new Date().toJSON().slice(0,10).split('-').reverse().join('/');
+            // var dateText = startDate + '-' + endDate;
+            // var dateRangeValue = retrieveDatepickerDates(dateText);
+            // startDate = dateRangeValue[0];
+            // endDate = dateRangeValue[1];
+
+            //DKDK here date should be the format of mm/dd/year, not dd/mm/year
+            var abndStartDate = new Date('01/01/2017');
+            var today = new Date();
+            // today -1 day
+            today.setDate(today.getDate()-1);
+            var abndEndDateRaw = today.toJSON().slice(0,10).split('-');
+            var abndEndDate = new Date(abndEndDateRaw[1] + '/' + abndEndDateRaw[2] + '/' + abndEndDateRaw[0]);
+            var abndDateValue = abndStartDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + abndEndDate.toLocaleDateString('en-GB', {timezone: 'utc'});
+
+            //Specify that this date was added through the datepicker
+            $('#search_ac').tagsinput('add', {
+                value: abndDateValue,
+                startDate: abndStartDate,
+                endDate: abndEndDate,
+                notBoolean: false,
+                // activeTerm: true,
+                type: 'Datepicker',
+                field: 'collection_date_range',
+                // field: 'do nothing',
+            });
+
+            // $('#search_ac').tagsinput('remove', checkSeasonal());
+
+            // var dateText = startDate + '-' + endDate;
+            // var dateRangeValue = retrieveDatepickerDates(dateText);
+            // startDate = dateRangeValue[0];
+            // endDate = dateRangeValue[1];
+            // addDatepickerItem(startDate, endDate, valueForNot);
+            console.log('abndStartDate ', abndStartDate);
+            console.log('abndEndDateRaw Raw', abndEndDateRaw);
+            console.log('abndEndDate ', abndEndDate);
+
+
+            // DKDK below was used for other location(s)
+            // startDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + endDate.toLocaleDateString('en-GB', {timezone: 'utc'})
+
+            // //DKDK use this for adding date
+            // // var dateValue = startDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + endDate.toLocaleDateString('en-GB', {timezone: 'utc'});
+            // $('#search_ac').tagsinput('add', {
+            //     // value: startDate + '-' + endDate,
+            //     value: dateValue,
+            //     startDate: startDate,
+            //     endDate: endDate,
+            //     notBoolean: false,
+            //     type: 'Datepicker',
+            //     field: 'collection_date_range',
+            // });
+
+            // //DKDK above tagsinput do nothing so change qryUrl to have date range
+            // qryUrl = "q=(({!field f=collection_date_range op=Within v='[2017-01-01 TO " + new Date().toJSON().slice(0,10) + "]'}))";
+            // // // qryUrl = 'q=((%7B!field%20f=collection_date_range%20op=Within%20v=%27%5B2017-01-01%20TO%202019-09-18%5D%27%7D))';
+            // qryUrl = encodeURI(qryUrl);
+
+
+            // loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false, switchViewValue: true});
+            // loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false});
+        } else {
+            loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo});
+        }
         return;
     }
 
@@ -2847,6 +2937,9 @@ function filterMarkers(items, flyTo) {
     gtag('event', 'search_popbio', {'event_category': 'Popbio', 'event_label': 'Popbio search'});
 
     var terms = {};
+
+    //DKDK VB-8707
+    console.log('show items ', items);
 
     items.forEach(function (element) {
 
@@ -2882,10 +2975,25 @@ function filterMarkers(items, flyTo) {
             var startDate = dateConvert(element.startDate, format);
             var endDate = dateConvert(element.endDate, format);
 
-            terms["Date"].push({
-                "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']', "notBoolean": element.notBoolean
-            });
+            //DKDK VB-8707 not adding date for the case of 2017/01/01 to now
+            console.log('items startDate ', startDate);
+            console.log('items endDate ', endDate);
+            console.log('selectViewValue ', selectViewValue);
 
+            // today -1 day
+            var today = new Date();
+            today.setDate(today.getDate()-1);
+
+            // if (startDate != '2017-01-01' && endDate != new Date().toJSON().slice(0,10)) {
+            if (viewMode != 'abnd' && selectViewValue === true && startDate === '2017-01-01' && endDate === today.toJSON().slice(0,10)) {
+                console.log('am I here???');
+                var removeDateTag = '01/01/2017-' + today.toJSON().slice(0,10).split('-').reverse().join('/');
+                $('#search_ac').tagsinput('remove', removeDateTag);
+            } else {
+                terms["Date"].push({
+                    "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']', "notBoolean": element.notBoolean
+                });
+            }
             return
         }
 
@@ -3000,6 +3108,7 @@ function filterMarkers(items, flyTo) {
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
+    //DKDK VB-8707 add parameter here? nope
     loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo})
 }
 
