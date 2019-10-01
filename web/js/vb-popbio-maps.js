@@ -1574,8 +1574,7 @@ function loadSolr(parameters) {
             } else if (viewMode === 'geno') {
                 //Using this to return a number
                 //el.alleleCount = Math.round(el.alleleCount * 10) / 10;
-                //DKDK VB-8646
-                var geoCount = el.alleleCount;
+                var geoCount = el.alleleCount.roundDecimals(0);
             } else {
                 var geoCount = el.count;
             }
@@ -1594,8 +1593,7 @@ function loadSolr(parameters) {
                     var inCount = inEl.sumSmp;
                 } else if (viewMode === 'geno') {
                     //Using this to return a number
-                    //DKDK VB-8646
-                    var inCount = inEl.alleleCount;
+                    var inCount = inEl.alleleCount.roundDecimals(0);
                 } else {
                     var inCount = inEl.count;
                 }
@@ -1614,13 +1612,10 @@ function loadSolr(parameters) {
                 tagsTotalCount += inCount;
             });
 
-            //DKDK VB-8646
-            var remainder = geoCount - tagsTotalCount;
-            remainder = remainder.floorDecimals();
-            if (remainder > 0) {
+            if (geoCount - tagsTotalCount > 0) {
                 fullElStats.push({
                     "label": 'Unknown',
-                    "value": remainder,
+                    "value": geoCount - tagsTotalCount,
                     "color": (legend.options.palette['Unknown'])
                 });
             }
