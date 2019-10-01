@@ -698,10 +698,15 @@ L.Control.MapLegend = L.Control.extend({
         this.options.palette = this.generatePalette(sortedItems);
     },
 
-    _populateLegend: function (result, fieldName, flyTo) {
+    //DKDK VB-8707 add selectViewValue in the end
+    _populateLegend: function (result, fieldName, flyTo, selectViewValue) {
         var options = this.options;
         //var geohashLevel = "geohash_2";
         if (typeof (flyTo) === 'undefined') flyTo = options.flyTo;
+
+        //DKDK VB-8707 add selectViewValue in the end
+        if (typeof (selectViewValue) === 'undefined' || selectViewValue === null) selectViewValue = false;
+
         if (!fieldName) {
             fieldName = options.summarizeBy;
         } else {
@@ -788,7 +793,9 @@ L.Control.MapLegend = L.Control.extend({
         }
 
         // moved this here to avoid querying SOLR before the palette is done building
-        filterMarkers($("#search_ac").tagsinput('items'), flyTo)
+        //DKDK VB-8707 add selectViewValue in the end
+        // filterMarkers($("#search_ac").tagsinput('items'), flyTo)
+        filterMarkers($("#search_ac").tagsinput('items'), flyTo, selectViewValue)
     },
 
     _generateTableHtml: function (palette) {
