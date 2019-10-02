@@ -2195,15 +2195,30 @@ function loadSolr(parameters) {
         },
         success: buildMap,
     })
-    .done(function () {
+    .done(function (data, textStatus, jqXHR) {
         $(document).trigger("jsonLoaded");
+        console.log(textStatus);
+        console.log(jqXHR.status);
     })
     .fail(function (jqXHR, textStatus) {
-        // Log an error unless we purposefully aborted
-        if (textStatus !== "abort") {
-            console.log("Failed to load json");
+        if (textStatus === "error") {
+            switch (jqXHR.status) {
+                case 400:
+                    var message = "The server couldn't handle the request. This could be due to a query that is too large; if you've added a large number of filters, please remove some.";
+                    break;
+                case 0:
+                    var message = "We couldn't contact the server. This could be due to a bad Internet connection; please check your connection and try again.";
+                    break;
+                default:
+                    var message = 'An error has occurred. Please try again.';
+            }
+
+            $('#error-modal-text').html(message);
+            $('#errorModal').modal('show');
         }
 
+        console.log(textStatus);
+        console.log(jqXHR.status);
         map.spin(false);
     });
 }
