@@ -1232,3 +1232,9 @@ div.error div, div.warning div, div.info div, div.hint div {
     margin: 0;
 }
 
+#errorModal #retry-button {
+    background-color: transparent;
+    border-color: #fff;
+    border-width: 2px;
+    border-radius: 5px;
+}
