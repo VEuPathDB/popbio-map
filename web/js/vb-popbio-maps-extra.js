@@ -431,6 +431,20 @@
             acSuggestions.initialize(true);
             acOtherResults.initialize(true);
         });
+
+        // //DKDK VB-8707 checkbox change
+        // $('input:checkbox#abndCheckboxFilter').change(function() {
+        //     var isChecked = $(this).is(":checked");
+        //     if(!isChecked) {
+        //         console.log("checkbox is checked!!!");
+        //         loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: false});
+        //         // $(this).attr("checked", returnVal);
+        //     } else if (isChecked) {
+        //         console.log("checkbox is unchecked!!!");
+        //         loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: true});
+        //         // $(this).attr("checked", returnVal);
+        //     }
+        // });
     }
 
     // Handle updating legend
