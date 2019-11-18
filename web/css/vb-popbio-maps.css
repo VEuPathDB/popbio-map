@@ -1224,4 +1224,17 @@ div.error div, div.warning div, div.info div, div.hint div {
     font-size: 0.9em;
 }
 
+#errorModal .alert {
+    margin: 0;
+}
 
+#errorModal .close {
+    margin: 0;
+}
+
+#errorModal #retry-button {
+    background-color: transparent;
+    border-color: #fff;
+    border-width: 2px;
+    border-radius: 5px;
+}
