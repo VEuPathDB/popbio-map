@@ -179,7 +179,8 @@ BODY {
 
 .mapboxbottom .overlaybottom {
     position   : absolute;
-    bottom     : 3px;
+    /*DKDK VB-8707 change bottom from 3 to 25 px*/
+    bottom     : 25px;
     left       : 40%;
     width      : 30%;
     min-width  : 200px;

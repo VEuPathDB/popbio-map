@@ -543,6 +543,17 @@ function bindEvents() {
             field: 'phenotype_rescaled_value_f'
         });
     });
+
+    //DKDK VB-8707 checkbox change
+    $(document).on("change", "input[id='abndCheckboxFilter']", function() {
+        var isChecked = $(this).is(":checked");
+        if(!isChecked) {
+            loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: false, checkboxClicked: true});
+        } else if (isChecked) {
+            loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: true, checkboxClicked: true});
+        }
+    });
+
 }
 
 /*
@@ -1510,6 +1521,11 @@ function loadSolr(parameters) {
     var clear = parameters.clear;
     var zoomLevel = parameters.zoomLevel;
     var flyTo = parameters.flyTo;
+    //DKDK VB-8707 check hideZeros & set zoomLevelCriterion
+    var zoomLevelCriterion = 10;
+    var hideZeros = parameters.hideZeros;
+    var checkboxClicked = parameters.checkboxClicked;
+
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
@@ -1533,8 +1549,28 @@ function loadSolr(parameters) {
             if (result.facets.sumSmp === undefined) {
                 result.facets.sumSmp = 0;
             }
-
-            $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>');
+            //DKDK VB-8707 add control for showing/hiding zeros: default = hiding
+            var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
+            var abndIntialText = result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>';
+            var abndIsCheckedValue = "checked";
+            var abndCheckboxTooltip = "To improve map responsiveness in this view, zero-count data is automatically excluded at this zoom level. You may override this via the checkbox.";
+            var abndCheckboxText = ': <span title="' + abndCheckboxTooltip + '"><b>Hide zeros</b> <input type="checkbox" ' + 'title="' + abndCheckboxTooltip + '" id="abndCheckboxFilter" ';
+            var abndTextSuffix = "></span>";
+            //DKDK shortening1
+            if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
+                abndIsCheckedValue = "";
+                abndCheckboxText = "";
+                abndTextSuffix = "";
+            } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && $('#abndCheckboxFilter').length) {    //DKDK pure map action without checkbox change
+                if (!hideIsChecked) {
+                    abndIsCheckedValue = "";
+                }
+            } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
+                if (!hideZeros) {
+                    abndIsCheckedValue = "";
+                }
+            }
+            $("#markersCount").html(abndIntialText + abndCheckboxText + abndIsCheckedValue + abndTextSuffix);
         } else if (viewMode === "geno") {
 
             if (result.facets.alleleCount === undefined) {
@@ -1659,14 +1695,12 @@ function loadSolr(parameters) {
         markersBounds = [[minLat, minLon], [maxLat, maxLon]];
 
         // DKDK VB-8707
-        // if (flyTo) {
-        // if (flyTo && viewMode != 'abnd') {
         if ((typeof parameters.needBounds === 'undefined' || parameters.needBounds === null)) {
             var needBounds = true;
         } else {
             var needBounds = parameters.needBounds;
         }
-        console.log('needBounds ', needBounds);
+        // console.log('needBounds ', needBounds);
         if (flyTo && needBounds) {
             map.setMinZoom(map.getZoom());
             var maxZoom = map.getZoom() < 4 ? 6 : map.getZoom();
@@ -2167,16 +2201,30 @@ function loadSolr(parameters) {
         term: mapSummarizeByToField(glbSummarizeBy).summarize
     };
 
-    var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
+    //DKDK VB-8707 set filter and zoomLevel? need to check pre-existing filter?
+    var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
+    var abndFilterQuery = "-sample_size_i:0";
+    //DKDK shortening1
+    if (viewMode == "abnd") {
+        if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
+            abndFilterQuery = "";
+        } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && $('#abndCheckboxFilter').length) {    //DKDK pure map action without checkbox change
+            if (!hideIsChecked) {
+                abndFilterQuery = "";
+            }
+        } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
+            if (!hideZeros) {
+                abndFilterQuery = "";
+            }
+        }
+    }
+    var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?&fq=" + abndFilterQuery;
 
     // //DKDK VB-8707 change query
     // // switchViewValue
     // if ((typeof parameters.switchViewValue != 'undefined' || parameters.switchViewValue != null)) {
     //     // url += '&datepicker=01/01/2017-' + new Date().toJSON().slice(0,10).split('-').reverse().join('/');
     // }
-
-    //DKDK VB-8707 change url for abnd to have datepicker
-    console.log('url at loadSolr ',url);
 
     // Store the request after it's been sent
     ajaxReq = $.ajax({
@@ -2875,73 +2923,9 @@ function filterMarkers(items, flyTo, selectViewValue) {
 
     if (items.length === 0) {
         qryUrl = 'q=*:*';
-        //DKDK VB-8707 add option for not using fitbounds
-        console.log('filterMarkers viewMode', viewMode);
+        //DKDK VB-8707 new one: disable date addinng feature, but need to use loadSolr with needBounds = false
         if (viewMode === 'abnd' && selectViewValue === true) {
-
-            //DKDK add date to ac
-            // var startDate = '01/01/2017';
-            // var endDate = new Date().toJSON().slice(0,10).split('-').reverse().join('/');
-            // var dateText = startDate + '-' + endDate;
-            // var dateRangeValue = retrieveDatepickerDates(dateText);
-            // startDate = dateRangeValue[0];
-            // endDate = dateRangeValue[1];
-
-            //DKDK here date should be the format of mm/dd/year, not dd/mm/year
-            var abndStartDate = new Date('01/01/2017');
-            var today = new Date();
-            // today -1 day
-            today.setDate(today.getDate()-1);
-            var abndEndDateRaw = today.toJSON().slice(0,10).split('-');
-            var abndEndDate = new Date(abndEndDateRaw[1] + '/' + abndEndDateRaw[2] + '/' + abndEndDateRaw[0]);
-            var abndDateValue = abndStartDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + abndEndDate.toLocaleDateString('en-GB', {timezone: 'utc'});
-
-            //Specify that this date was added through the datepicker
-            $('#search_ac').tagsinput('add', {
-                value: abndDateValue,
-                startDate: abndStartDate,
-                endDate: abndEndDate,
-                notBoolean: false,
-                // activeTerm: true,
-                type: 'Datepicker',
-                field: 'collection_date_range',
-                // field: 'do nothing',
-            });
-
-            // $('#search_ac').tagsinput('remove', checkSeasonal());
-
-            // var dateText = startDate + '-' + endDate;
-            // var dateRangeValue = retrieveDatepickerDates(dateText);
-            // startDate = dateRangeValue[0];
-            // endDate = dateRangeValue[1];
-            // addDatepickerItem(startDate, endDate, valueForNot);
-            console.log('abndStartDate ', abndStartDate);
-            console.log('abndEndDateRaw Raw', abndEndDateRaw);
-            console.log('abndEndDate ', abndEndDate);
-
-
-            // DKDK below was used for other location(s)
-            // startDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + endDate.toLocaleDateString('en-GB', {timezone: 'utc'})
-
-            // //DKDK use this for adding date
-            // // var dateValue = startDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + endDate.toLocaleDateString('en-GB', {timezone: 'utc'});
-            // $('#search_ac').tagsinput('add', {
-            //     // value: startDate + '-' + endDate,
-            //     value: dateValue,
-            //     startDate: startDate,
-            //     endDate: endDate,
-            //     notBoolean: false,
-            //     type: 'Datepicker',
-            //     field: 'collection_date_range',
-            // });
-
-            // //DKDK above tagsinput do nothing so change qryUrl to have date range
-            // qryUrl = "q=(({!field f=collection_date_range op=Within v='[2017-01-01 TO " + new Date().toJSON().slice(0,10) + "]'}))";
-            // // // qryUrl = 'q=((%7B!field%20f=collection_date_range%20op=Within%20v=%27%5B2017-01-01%20TO%202019-09-18%5D%27%7D))';
-            // qryUrl = encodeURI(qryUrl);
-
-
-            // loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false, switchViewValue: true});
+            loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false, switchViewValue: true});
             // loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false});
         } else {
             loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo});
