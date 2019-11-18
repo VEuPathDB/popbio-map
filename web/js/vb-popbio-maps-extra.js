@@ -298,6 +298,10 @@
         $('#SelectView').change(function () {
             viewMode = $('#SelectView').val();
 
+            //DKDK VB-8707
+            console.log('selectview change');
+
+
             // VB-7622 default with ?view=geno at URL (e.g., selecting the menu from Popbio page or using Share Link) is set to Allele (active-legend) at initializeMap()
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
             if (viewMode === "geno") glbSummarizeBy = "Allele";
@@ -416,12 +420,31 @@
             setTimeout(function () {
                 resetPlots()
             }, delay);
+
             $.getJSON(url, function (data) {
-                legend._populateLegend(data, glbSummarizeBy, true)
+                //DKDK VB-8707 add selectViewValue in the end: 4th parameter
+                // legend._populateLegend(data, glbSummarizeBy, true)
+                legend._populateLegend(data, glbSummarizeBy, true, true)
             });
+
+
             acSuggestions.initialize(true);
             acOtherResults.initialize(true);
         });
+
+        // //DKDK VB-8707 checkbox change
+        // $('input:checkbox#abndCheckboxFilter').change(function() {
+        //     var isChecked = $(this).is(":checked");
+        //     if(!isChecked) {
+        //         console.log("checkbox is checked!!!");
+        //         loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: false});
+        //         // $(this).attr("checked", returnVal);
+        //     } else if (isChecked) {
+        //         console.log("checkbox is unchecked!!!");
+        //         loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: true});
+        //         // $(this).attr("checked", returnVal);
+        //     }
+        // });
     }
 
     // Handle updating legend

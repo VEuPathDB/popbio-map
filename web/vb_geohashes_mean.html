@@ -1063,6 +1063,21 @@
     </div>
 </div>
 
+<div id="errorModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body alert alert-danger" style="font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.7">
+                <div style="display: flex; align-items: stretch;">
+                    <div style="flex-grow: 1; margin-right: 10px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></div>
+                    <div id="error-modal-text" style="flex-grow: 1000">An error has occurred. Please try again.</div>
+                    <div style="flex-grow: 1; margin-left: 10px;"><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+                </div>
+                <div style="margin-top: 10px; text-align: right"><button id="retry-button" type="button" class="btn" data-dismiss="modal" onclick="map.fire('moveend')">Retry</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- jsrender template for sample info in the table slider (samples view)-->
 
 <script type="text/x-jsrender" id="smplRowTemplate">

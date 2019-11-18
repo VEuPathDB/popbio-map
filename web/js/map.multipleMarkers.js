@@ -84,6 +84,10 @@ L.Map.SelectMarkers = L.Class.extend({
     },
 
     _onMouseDown: function (e) {
+
+        //DKDK VB-8709 easy way to disable ctrl+mouse dragging for selecting area event
+        return false;
+
         if (!e.ctrlKey || ((e.which !== 1) && (e.button !== 1))) {
             return false;
         }

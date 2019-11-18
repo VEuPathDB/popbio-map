@@ -543,6 +543,17 @@ function bindEvents() {
             field: 'phenotype_rescaled_value_f'
         });
     });
+
+    //DKDK VB-8707 checkbox change
+    $(document).on("change", "input[id='abndCheckboxFilter']", function() {
+        var isChecked = $(this).is(":checked");
+        if(!isChecked) {
+            loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: false, checkboxClicked: true});
+        } else if (isChecked) {
+            loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: true, checkboxClicked: true});
+        }
+    });
+
 }
 
 /*
@@ -1510,6 +1521,11 @@ function loadSolr(parameters) {
     var clear = parameters.clear;
     var zoomLevel = parameters.zoomLevel;
     var flyTo = parameters.flyTo;
+    //DKDK VB-8707 check hideZeros & set zoomLevelCriterion
+    var zoomLevelCriterion = 10;
+    var hideZeros = parameters.hideZeros;
+    var checkboxClicked = parameters.checkboxClicked;
+
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
 
@@ -1533,8 +1549,28 @@ function loadSolr(parameters) {
             if (result.facets.sumSmp === undefined) {
                 result.facets.sumSmp = 0;
             }
-
-            $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>');
+            //DKDK VB-8707 add control for showing/hiding zeros: default = hiding
+            var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
+            var abndIntialText = result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>';
+            var abndIsCheckedValue = "checked";
+            var abndCheckboxTooltip = "To improve map responsiveness in this view, zero-count data is automatically excluded at this zoom level. You may override this via the checkbox.";
+            var abndCheckboxText = ': <span title="' + abndCheckboxTooltip + '"><b>Hide zeros</b> <input type="checkbox" ' + 'title="' + abndCheckboxTooltip + '" id="abndCheckboxFilter" ';
+            var abndTextSuffix = "></span>";
+            //DKDK shortening1
+            if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
+                abndIsCheckedValue = "";
+                abndCheckboxText = "";
+                abndTextSuffix = "";
+            } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && $('#abndCheckboxFilter').length) {    //DKDK pure map action without checkbox change
+                if (!hideIsChecked) {
+                    abndIsCheckedValue = "";
+                }
+            } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
+                if (!hideZeros) {
+                    abndIsCheckedValue = "";
+                }
+            }
+            $("#markersCount").html(abndIntialText + abndCheckboxText + abndIsCheckedValue + abndTextSuffix);
         } else if (viewMode === "geno") {
 
             if (result.facets.alleleCount === undefined) {
@@ -1658,7 +1694,14 @@ function loadSolr(parameters) {
         // update bounding box containing all markers
         markersBounds = [[minLat, minLon], [maxLat, maxLon]];
 
-        if (flyTo) {
+        // DKDK VB-8707
+        if ((typeof parameters.needBounds === 'undefined' || parameters.needBounds === null)) {
+            var needBounds = true;
+        } else {
+            var needBounds = parameters.needBounds;
+        }
+        // console.log('needBounds ', needBounds);
+        if (flyTo && needBounds) {
             map.setMinZoom(map.getZoom());
             var maxZoom = map.getZoom() < 4 ? 6 : map.getZoom();
             map.fitBounds(markersBounds, {duration: 1, maxZoom: maxZoom});
@@ -1731,10 +1774,11 @@ function loadSolr(parameters) {
                     $("#export-message").hide();
 
                     if (marker.originalEvent.ctrlKey) {
-                        if (marker.target instanceof L.Marker) {
-                            markers.toggleMarker(marker.target, assetLayerGroup)
-                            if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
-                        }
+                        //DKDK VB-8709 disable ctrl+click for multiple selection of markers
+                        // if (marker.target instanceof L.Marker) {
+                        //     markers.toggleMarker(marker.target, assetLayerGroup)
+                        //     if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
+                        // }
                     } else {
                         var panel = $('.sidebar-pane.active');
                         var panelId = panel.attr('id');
@@ -2156,7 +2200,31 @@ function loadSolr(parameters) {
         geomax: geohashLevel(map.options.maxZoom, "geohash"),
         term: mapSummarizeByToField(glbSummarizeBy).summarize
     };
-    var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
+
+    //DKDK VB-8707 set filter and zoomLevel? need to check pre-existing filter?
+    var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
+    var abndFilterQuery = "-sample_size_i:0";
+    //DKDK shortening1
+    if (viewMode == "abnd") {
+        if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
+            abndFilterQuery = "";
+        } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && $('#abndCheckboxFilter').length) {    //DKDK pure map action without checkbox change
+            if (!hideIsChecked) {
+                abndFilterQuery = "";
+            }
+        } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
+            if (!hideZeros) {
+                abndFilterQuery = "";
+            }
+        }
+    }
+    var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?&fq=" + abndFilterQuery;
+
+    // //DKDK VB-8707 change query
+    // // switchViewValue
+    // if ((typeof parameters.switchViewValue != 'undefined' || parameters.switchViewValue != null)) {
+    //     // url += '&datepicker=01/01/2017-' + new Date().toJSON().slice(0,10).split('-').reverse().join('/');
+    // }
 
     // Store the request after it's been sent
     ajaxReq = $.ajax({
@@ -2176,15 +2244,30 @@ function loadSolr(parameters) {
         },
         success: buildMap,
     })
-    .done(function () {
+    .done(function (data, textStatus, jqXHR) {
         $(document).trigger("jsonLoaded");
+        console.log(textStatus);
+        console.log(jqXHR.status);
     })
     .fail(function (jqXHR, textStatus) {
-        // Log an error unless we purposefully aborted
-        if (textStatus !== "abort") {
-            console.log("Failed to load json");
+        if (textStatus === "error") {
+            switch (jqXHR.status) {
+                case 400:
+                    var message = "The server couldn't handle the request. This could be due to a query that is too large; if you've added a large number of filters, please remove some.";
+                    break;
+                case 0:
+                    var message = "We couldn't contact the server. This could be due to a bad Internet connection; please check your connection and try again.";
+                    break;
+                default:
+                    var message = 'An error has occurred. Please try again.';
+            }
+
+            $('#error-modal-text').html(message);
+            $('#errorModal').modal('show');
         }
 
+        console.log(textStatus);
+        console.log(jqXHR.status);
         map.spin(false);
     });
 }
@@ -2835,11 +2918,18 @@ function tableHtml(divid, results) {
     });
 }
 
-function filterMarkers(items, flyTo) {
+function filterMarkers(items, flyTo, selectViewValue) {
     "use strict";
+
     if (items.length === 0) {
         qryUrl = 'q=*:*';
-        loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo});
+        //DKDK VB-8707 new one: disable date addinng feature, but need to use loadSolr with needBounds = false
+        if (viewMode === 'abnd' && selectViewValue === true) {
+            loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false, switchViewValue: true});
+            // loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false});
+        } else {
+            loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo});
+        }
         return;
     }
 
@@ -2847,6 +2937,9 @@ function filterMarkers(items, flyTo) {
     gtag('event', 'search_popbio', {'event_category': 'Popbio', 'event_label': 'Popbio search'});
 
     var terms = {};
+
+    //DKDK VB-8707
+    console.log('show items ', items);
 
     items.forEach(function (element) {
 
@@ -2882,10 +2975,25 @@ function filterMarkers(items, flyTo) {
             var startDate = dateConvert(element.startDate, format);
             var endDate = dateConvert(element.endDate, format);
 
-            terms["Date"].push({
-                "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']', "notBoolean": element.notBoolean
-            });
+            //DKDK VB-8707 not adding date for the case of 2017/01/01 to now
+            console.log('items startDate ', startDate);
+            console.log('items endDate ', endDate);
+            console.log('selectViewValue ', selectViewValue);
 
+            // today -1 day
+            var today = new Date();
+            today.setDate(today.getDate()-1);
+
+            // if (startDate != '2017-01-01' && endDate != new Date().toJSON().slice(0,10)) {
+            if (viewMode != 'abnd' && selectViewValue === true && startDate === '2017-01-01' && endDate === today.toJSON().slice(0,10)) {
+                console.log('am I here???');
+                var removeDateTag = '01/01/2017-' + today.toJSON().slice(0,10).split('-').reverse().join('/');
+                $('#search_ac').tagsinput('remove', removeDateTag);
+            } else {
+                terms["Date"].push({
+                    "field": element.field, "value": '[' + startDate + ' TO ' + endDate + ']', "notBoolean": element.notBoolean
+                });
+            }
             return
         }
 
@@ -3000,6 +3108,7 @@ function filterMarkers(items, flyTo) {
 
     // url encode the query string
     qryUrl = encodeURI(qryUrl);
+    //DKDK VB-8707 add parameter here? nope
     loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo})
 }
 
