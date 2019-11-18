@@ -545,19 +545,12 @@ function bindEvents() {
     });
 
     //DKDK VB-8707 checkbox change
-    // $('input:checkbox#abndCheckboxFilter').change(function() {
     $(document).on("change", "input[id='abndCheckboxFilter']", function() {
-    // $('input:checkbox#abndCheckboxFilter').on('click', function() {
         var isChecked = $(this).is(":checked");
-        console.log("isChecked...", isChecked);
         if(!isChecked) {
-            console.log("checkbox is checked!!!");
             loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: false, checkboxClicked: true});
-            // $(this).attr("checked", false);
         } else if (isChecked) {
-            console.log("checkbox is unchecked!!!");
             loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: true, checkboxClicked: true});
-            // $(this).attr("checked", true);
         }
     });
 
@@ -1530,21 +1523,8 @@ function loadSolr(parameters) {
     var flyTo = parameters.flyTo;
     //DKDK VB-8707 check hideZeros & set zoomLevelCriterion
     var zoomLevelCriterion = 10;
-    // if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null)) {
-    //     var hideZeros = true;
-    // } else {
-    //     var hideZeros = parameters.hideZeros;
-    // }
     var hideZeros = parameters.hideZeros;
-    //DKDK VB-8707 check whether loadSolr is called from checkbox change
-    // if ((typeof parameters.checkboxClicked === 'undefined' || parameters.checkboxClicked === null)) {
-    //     var checkboxClicked = false;
-    // } else {
-    //     var checkboxClicked = parameters.checkboxClicked;
-    // }
     var checkboxClicked = parameters.checkboxClicked;
-    console.log("hideZeros on top of loadSolr function = ", hideZeros);
-    // console.log("isCheckedValue on top of loadSolr function = ", isCheckedValue);
 
     // detect the zoom level and request the appropriate facets
     var geoLevel = geohashLevel(zoomLevel, "geohash");
@@ -1570,36 +1550,12 @@ function loadSolr(parameters) {
                 result.facets.sumSmp = 0;
             }
             //DKDK VB-8707 add control for showing/hiding zeros: default = hiding
-            // $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>');
-            //1. need to check status of checkbox; 2. zoomlevelcriteron
             var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
-            //DKDK bottom texts are dynamically generated. Thus, for the initial map loading, it does not exist!
-            // var checkCheckboxExist = $('#abndCheckboxFilter').length;
-            //isCheckedValue...
-            // var isCheckedValue = "";
-            console.log("hideIsChecked...", hideIsChecked);
             var abndIntialText = result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>';
             var abndIsCheckedValue = "checked";
-            var abndCheckboxText = ': <b>Hide zeros</b> <input type="checkbox" id="abndCheckboxFilter" ';
-            var abndTextSuffix = ">";
-            //DKDK working version
-            // if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
-            //     $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>');
-            // } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && !$('#abndCheckboxFilter').length) {    //DKDK the very first map loading: checkbox DOM does not exist in this case
-            //     $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>' + ': hide zeros <input type="checkbox" id="abndCheckboxFilter" checked>');
-            // } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null)) {    //DKDK pure map action without checkbox change
-            //     if (hideIsChecked) {
-            //         $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>' + ': hide zeros <input type="checkbox" id="abndCheckboxFilter" checked>');
-            //     } else {
-            //         $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>' + ': hide zeros <input type="checkbox" id="abndCheckboxFilter">');
-            //     }
-            // } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
-            //     if (hideZeros) {
-            //         $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>' + ': hide zeros <input type="checkbox" id="abndCheckboxFilter" checked>');
-            //     } else {
-            //         $("#markersCount").html(result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>' + ': hide zeros <input type="checkbox" id="abndCheckboxFilter">');
-            //     }
-            // }
+            var abndCheckboxTooltip = "To improve map responsiveness in this view, zero-count data is automatically excluded at this zoom level. You may override this via the checkbox.";
+            var abndCheckboxText = ': <span title="' + abndCheckboxTooltip + '"><b>Hide zeros</b> <input type="checkbox" ' + 'title="' + abndCheckboxTooltip + '" id="abndCheckboxFilter" ';
+            var abndTextSuffix = "></span>";
             //DKDK shortening1
             if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
                 abndIsCheckedValue = "";
@@ -1739,14 +1695,12 @@ function loadSolr(parameters) {
         markersBounds = [[minLat, minLon], [maxLat, maxLon]];
 
         // DKDK VB-8707
-        // if (flyTo) {
-        // if (flyTo && viewMode != 'abnd') {
         if ((typeof parameters.needBounds === 'undefined' || parameters.needBounds === null)) {
             var needBounds = true;
         } else {
             var needBounds = parameters.needBounds;
         }
-        console.log('needBounds ', needBounds);
+        // console.log('needBounds ', needBounds);
         if (flyTo && needBounds) {
             map.setMinZoom(map.getZoom());
             var maxZoom = map.getZoom() < 4 ? 6 : map.getZoom();
@@ -2247,32 +2201,8 @@ function loadSolr(parameters) {
     };
 
     //DKDK VB-8707 set filter and zoomLevel? need to check pre-existing filter?
-    console.log("hideZeros", hideZeros);
     var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
     var abndFilterQuery = "-sample_size_i:0";
-    // if (viewMode == "abnd" && zoomLevel < zoomLevelCriterion && hideZeros == true) {
-    //     var abndFilterQuery = "-sample_size_i:0";
-    // }
-    //DKDK working
-    // if (viewMode == "abnd") {
-    //     if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
-    //         abndFilterQuery = "";
-    //     } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && !$('#abndCheckboxFilter').length) {    //DKDK the very first map loading: checkbox DOM does not exist in this case
-    //         //keep value
-    //     } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null)) {    //DKDK pure map action without checkbox change
-    //         if (hideIsChecked) {
-    //             //keep value
-    //         } else {
-    //             abndFilterQuery = "";
-    //         }
-    //     } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
-    //         if (hideZeros) {
-    //             //keep value
-    //         } else {
-    //             abndFilterQuery = "";
-    //         }
-    //     }
-    // }
     //DKDK shortening1
     if (viewMode == "abnd") {
         if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
@@ -2287,8 +2217,6 @@ function loadSolr(parameters) {
             }
         }
     }
-    // var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?";
-    console.log("zoomLevel = ", zoomLevel);
     var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?&fq=" + abndFilterQuery;
 
     // //DKDK VB-8707 change query
@@ -2296,9 +2224,6 @@ function loadSolr(parameters) {
     // if ((typeof parameters.switchViewValue != 'undefined' || parameters.switchViewValue != null)) {
     //     // url += '&datepicker=01/01/2017-' + new Date().toJSON().slice(0,10).split('-').reverse().join('/');
     // }
-
-    //DKDK VB-8707 change url for abnd to have datepicker
-    console.log('url at loadSolr ',url);
 
     // Store the request after it's been sent
     ajaxReq = $.ajax({
@@ -2982,73 +2907,8 @@ function filterMarkers(items, flyTo, selectViewValue) {
 
     if (items.length === 0) {
         qryUrl = 'q=*:*';
-        //DKDK VB-8707 add option for not using fitbounds
-        console.log('filterMarkers viewMode', viewMode);
         //DKDK VB-8707 new one: disable date addinng feature, but need to use loadSolr with needBounds = false
         if (viewMode === 'abnd' && selectViewValue === true) {
-
-            // //DKDK add date to ac
-            // // var startDate = '01/01/2017';
-            // // var endDate = new Date().toJSON().slice(0,10).split('-').reverse().join('/');
-            // // var dateText = startDate + '-' + endDate;
-            // // var dateRangeValue = retrieveDatepickerDates(dateText);
-            // // startDate = dateRangeValue[0];
-            // // endDate = dateRangeValue[1];
-
-            // //DKDK here date should be the format of mm/dd/year, not dd/mm/year
-            // var abndStartDate = new Date('01/01/2017');
-            // var today = new Date();
-            // // today -1 day
-            // today.setDate(today.getDate()-1);
-            // var abndEndDateRaw = today.toJSON().slice(0,10).split('-');
-            // var abndEndDate = new Date(abndEndDateRaw[1] + '/' + abndEndDateRaw[2] + '/' + abndEndDateRaw[0]);
-            // var abndDateValue = abndStartDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + abndEndDate.toLocaleDateString('en-GB', {timezone: 'utc'});
-
-            // //Specify that this date was added through the datepicker
-            // $('#search_ac').tagsinput('add', {
-            //     value: abndDateValue,
-            //     startDate: abndStartDate,
-            //     endDate: abndEndDate,
-            //     notBoolean: false,
-            //     // activeTerm: true,
-            //     type: 'Datepicker',
-            //     field: 'collection_date_range',
-            //     // field: 'do nothing',
-            // });
-
-            // // $('#search_ac').tagsinput('remove', checkSeasonal());
-
-            // // var dateText = startDate + '-' + endDate;
-            // // var dateRangeValue = retrieveDatepickerDates(dateText);
-            // // startDate = dateRangeValue[0];
-            // // endDate = dateRangeValue[1];
-            // // addDatepickerItem(startDate, endDate, valueForNot);
-            // console.log('abndStartDate ', abndStartDate);
-            // console.log('abndEndDateRaw Raw', abndEndDateRaw);
-            // console.log('abndEndDate ', abndEndDate);
-
-
-            // // DKDK below was used for other location(s)
-            // // startDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + endDate.toLocaleDateString('en-GB', {timezone: 'utc'})
-
-            // // //DKDK use this for adding date
-            // // // var dateValue = startDate.toLocaleDateString('en-GB', {timezone: 'utc'}) + '-' + endDate.toLocaleDateString('en-GB', {timezone: 'utc'});
-            // // $('#search_ac').tagsinput('add', {
-            // //     // value: startDate + '-' + endDate,
-            // //     value: dateValue,
-            // //     startDate: startDate,
-            // //     endDate: endDate,
-            // //     notBoolean: false,
-            // //     type: 'Datepicker',
-            // //     field: 'collection_date_range',
-            // // });
-
-            // // //DKDK above tagsinput do nothing so change qryUrl to have date range
-            // // qryUrl = "q=(({!field f=collection_date_range op=Within v='[2017-01-01 TO " + new Date().toJSON().slice(0,10) + "]'}))";
-            // // // // qryUrl = 'q=((%7B!field%20f=collection_date_range%20op=Within%20v=%27%5B2017-01-01%20TO%202019-09-18%5D%27%7D))';
-            // // qryUrl = encodeURI(qryUrl);
-
-
             loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false, switchViewValue: true});
             // loadSolr({clear: 1, zoomLevel: map.getZoom(), flyTo: flyTo, needBounds: false});
         } else {
