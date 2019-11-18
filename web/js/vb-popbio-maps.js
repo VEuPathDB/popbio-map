@@ -1740,10 +1740,11 @@ function loadSolr(parameters) {
                     $("#export-message").hide();
 
                     if (marker.originalEvent.ctrlKey) {
-                        if (marker.target instanceof L.Marker) {
-                            markers.toggleMarker(marker.target, assetLayerGroup)
-                            if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
-                        }
+                        //DKDK VB-8709 disable ctrl+click for multiple selection of markers
+                        // if (marker.target instanceof L.Marker) {
+                        //     markers.toggleMarker(marker.target, assetLayerGroup)
+                        //     if (urlParams.grid === "true" || $('#grid-toggle').prop('checked')) addGeohashes(map, true);
+                        // }
                     } else {
                         var panel = $('.sidebar-pane.active');
                         var panelId = panel.attr('id');
