@@ -3,5 +3,5 @@
 
 FROM nginx
 
-COPY . /usr/share/nginx/html/web
+COPY . /usr/share/nginx/html/
 
