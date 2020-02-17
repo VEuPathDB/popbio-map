@@ -206,9 +206,10 @@
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
-            <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="VectorBase main menu"><a id="#vectorbase" role="tab">
+            <!-- DKDK change this & added css properties for vectorbase-icon at vb-popbio-maps.css -->
+            <a href="https://vectorbase.org" class="sidebar-icon" id="vectorbase-icon" data-tooltip="tooltip" data-placement="right" title="VectorBase home" target="" role="">
                 <img src="/sites/default/files/ftp/images/dot_ked_100_trans.png" height=20 width=20 />
-            </a></li>
+            </a>
             <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="Summary statistics"><a id="#graphs" role="tab">
                 <span class="fa-stack fa-stack-sm">
                     <i class="fab fa-chrome fa-stack-2x"></i>
@@ -218,7 +219,7 @@
             <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="View-specific data visualizations"><a id="#swarm-plots" role="tab"><i class="fa fa-chart-area"></i></a></li>
             <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="List details"><a id="#marker-table" role="tab"><i class="fa fa-table"></i></a></li>
             <li class="sidebar-icon" data-tooltip="tooltip" data-placement="right" title="Download data"><a id="#export" role="tab"><i class="fa fa-download"></i></a></li>
-            <!--<li class="sidebar-icon">-->
+            <!--<li class="sidebar-icon">
                 <!-- add GA -->
                 <!-- <a class="sidebar-icon" id="generate-link" title="Share view" onclick="ga('send', 'event', 'Popbio', 'shareview', 'Share view');"> -->
                 <!-- DKDK VB-8113 shared link popup -->
@@ -227,6 +228,7 @@
                 </a>
             <!--</li>-->
             <li class="sidebar-icon flash"><a id="#help" role="tab"><i class="fa fa-question"></i></a></li>
+
         </ul>
 
         <!-- Tab panes -->
@@ -236,6 +238,8 @@
                 <line x1="25" y1="5" x2="5" y2="25" />
             </svg>
 
+        <div class="sidebar-pane deactive" id="vectorbase"></div>
+<!-- DKDK block this
             <div class="sidebar-pane" id="vectorbase">
                 <h3>VectorBase Main Menu</h3>
 
@@ -265,7 +269,8 @@
                     <div></div>
                     <a href="/contact">Contact</a>
                 </div>
-            </div>
+            </div> -->
+
             <div class="sidebar-pane active" id="graphs">
                 <h3>Summary view for selected samples</h3>
 
@@ -736,15 +741,14 @@
                  id="advanced-options">
 
                 <div class="table-responsive">
+<!-- DKDK block this function
                     <h4>Advanced search</h4>
                     <table class="table table-condensed">
                         <tbody>
-                        <!--<thead>-->
                         <tr class="active">
                             <th colspan="3">Normalised Insecticide Resistance</th>
                             <th></th>
                         </tr>
-                        <!--</thead>-->
                         <tr>
                             <td class="col-md-2" style="vertical-align: bottom; text-align: left;">
                                 Low
@@ -787,6 +791,7 @@
                         </tr>
                         </tbody>
                     </table>
+ -->
                     <h4>Configuration options</h4>
                     <table class="table table-condensed">
                         <tr class="active">
@@ -1184,6 +1189,7 @@
                         {{/if}}
                         {{>#data.name}}
                         </span>
+<!-- DKDK block info project icon
                         <span style="padding-left: 5px;">
                             <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
@@ -1194,6 +1200,7 @@
                             {{/if}}
                             ></i>
                         </span>
+ -->
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                         </a>
@@ -1410,6 +1417,7 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
+<!-- DKDK block info project icon
                         <span style="padding-left: 5px;">
                             <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
@@ -1420,6 +1428,7 @@
                             {{/if}}
                             ></i>
                         </span>
+ -->
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                         </a>
@@ -1620,8 +1629,9 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
+<!-- DKDK block info project icon
                         <span style="padding-left: 5px;">
-                            <i class="fa  fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
+                            <i class="fa fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1630,6 +1640,7 @@
                             {{/if}}
                             ></i>
                         </span>
+ -->
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa  fa-external-link-alt " aria-hidden="true"></i>
                         </a>
@@ -1846,8 +1857,9 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
+<!-- DKDK block info project icon
                         <span style="padding-left: 5px;">
-                            <i class="fa  fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
+                            <i class="fa fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
                             {{if #data.brdColor}}
                                 data-bgColor={{attr:#data.brdColor}}
@@ -1856,6 +1868,7 @@
                             {{/if}}
                             ></i>
                         </span>
+ -->
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa  fa-external-link-alt" aria-hidden="true"></i>
                         </a>
@@ -2053,6 +2066,7 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
+<!-- DKDK block info project icon
                         <span style="padding-left: 5px;">
                             <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
@@ -2063,6 +2077,7 @@
                             {{/if}}
                             ></i>
                         </span>
+ -->
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                         </a>
@@ -2273,6 +2288,7 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
+<!-- DKDK block info project icon
                         <span style="padding-left: 5px;">
                             <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
@@ -2283,6 +2299,7 @@
                             {{/if}}
                             ></i>
                         </span>
+ -->
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                         </a>
@@ -2485,6 +2502,7 @@
                         {{/if}}
                             {{>#data.name}}
                             </span>
+<!-- DKDK block info project icon
                         <span style="padding-left: 5px;">
                             <i class="fa fa-fw fa-info-circle active-hover" type="Project" value="{{attr:#data.name}}"
                             aria-hidden="true"
@@ -2495,6 +2513,7 @@
                             {{/if}}
                             ></i>
                         </span>
+ -->
                         <a href="/popbio/project/?id={{>#data.name}}" target="_blank">
                             <i class="fa fa-fw fa-external-link-alt" aria-hidden="true"></i>
                         </a>
@@ -2823,7 +2842,6 @@
         $('#sidebar').fadeIn();
         $('.sidebar-pane').data('has-graph', false);
 
-
         var windowHeight = $(window).height();
         $('#map_container').height(windowHeight - 166 - 55);
         previousWindowHeight = windowHeight;
@@ -2863,6 +2881,7 @@
         if (urlParams.shared_link === "true") {
             $(".sidebar-icon.flash").removeClass("flash");
         }
+
     });
 
 </script>
