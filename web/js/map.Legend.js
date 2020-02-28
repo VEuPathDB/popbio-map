@@ -484,14 +484,20 @@ L.Control.MapLegend = L.Control.extend({
             $.each(options.colorsArr, function (index, value) {
                 inHtml += '<i style="margin: 0; color: ' + value + '; background: ' + value + ' ;"></i>';
             });
-
+// DKDK remove external link at legend
+            // inHtml += '</div></div>' +
+            //     '<div class="max-value" style="border: 0;">High</div></div>' +
+            //     '<p>' +
+            //     'Values have been rescaled globally and only give a relative indication of' +
+            //     ' resistance/susceptibility. ' +
+            //     '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
+            //     'More info</span></p>';
             inHtml += '</div></div>' +
                 '<div class="max-value" style="border: 0;">High</div></div>' +
                 '<p>' +
                 'Values have been rescaled globally and only give a relative indication of' +
                 ' resistance/susceptibility. ' +
-                '<span class="active-others" data-toggle="modal" data-target="#ir-normalisation-help">' +
-                'More info</span></p>';
+                '</p>';
         }
 
         //DKDK VB-8650 add help text
