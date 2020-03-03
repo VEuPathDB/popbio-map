@@ -8,7 +8,7 @@ node ('centos8') {
 
     stage('checkout') {
         checkout([$class: 'GitSCM',
-            branches: [[name: '*/master']],
+            branches: [[name: env.BRANCH_NAME ]],
             doGenerateSubmoduleConfigurations: false,
             extensions: [
                 [$class: 'SubmoduleOption',
