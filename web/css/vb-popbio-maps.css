@@ -1021,6 +1021,20 @@ div.error div, div.warning div, div.info div, div.hint div {
     text-align: center;
 }
 
+/*DKDK add vectorbase-icon*/
+#vectorbase-icon {
+    height: 40px;
+    font-size: 12pt;
+    overflow: hidden;
+    transition: all 80ms;
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    color: inherit;
+    text-decoration: none;
+    text-align: center;
+}
+
 #generate-link:hover {
     color: #000;
     background-color: #eee;
