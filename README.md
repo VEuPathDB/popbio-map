@@ -9,7 +9,7 @@ VectorBase is a Bioinformatics Resource Center (BRC) focused on invertebrate vec
 For more info visit [VectorBase](https://www.vectorbase.org)
 
 ### Population Biology in VectorBase
-The VectorBase PopBio resource is a database and associated tools for visualisation, search and analysis of a wide range of population data, including genotypes, insecticide resistance and other phenotypes, and field collection metadata. 
+The VectorBase PopBio resource is a database and associated tools for visualisation, search and analysis of a wide range of population data, including genotypes, insecticide resistance and other phenotypes, and field collection metadata.
 Current data includes:
 
 * 13k+ Anopheles gambiae complex samples with inversion and microsatellite genotypes.
@@ -26,3 +26,7 @@ Directory Structure
 -------------------
 
 
+### Solr configurations for mapveu (vb_popbio and vb_ta Solr cores)
+This is now maintained at https://github.com/VEuPathDB/SolrDeployment/tree/master/configsets
+- https://github.com/VEuPathDB/SolrDeployment/tree/master/configsets/vb_popbio/conf
+- https://github.com/VEuPathDB/SolrDeployment/tree/master/configsets/vb_ta/conf
