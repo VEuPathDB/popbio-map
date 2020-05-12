@@ -8,7 +8,7 @@ node ('centos8') {
 
     stage('checkout') {
         checkout([$class: 'GitSCM',
-            branches: [[name: '*/master']],
+            branches: [[name: env.BRANCH_NAME ]],
             doGenerateSubmoduleConfigurations: false,
             extensions: [
                 [$class: 'SubmoduleOption',
@@ -29,7 +29,10 @@ node ('centos8') {
     stage('build') {
       withCredentials([usernameColonPassword(credentialsId: '0f11d4d1-6557-423c-b5ae-693cc87f7b4b', variable: 'HUB_LOGIN')]) {
 
-
+        // set tag to branch if it isn't master
+        if (env.BRANCH_NAME != 'master') {
+           tag = "${env.BRANCH_NAME}"
+         }
 
         // build the image
         sh 'podman build --format=docker -t popbio-map .'
