@@ -118,11 +118,6 @@ function bindEvents() {
         var notBoolean = false;
         var query = qryUrl;
 
-
-        if (viewMode === 'abnd') {
-            zeroFilter = '&zeroFilter=' + ($('#checkbox-export-zeroes').is(":checked") ? '' : '-sample_size_i:0');
-        }
-
         // clear the error area
         $('#export-error').fadeOut();
 
@@ -545,14 +540,14 @@ function bindEvents() {
     });
 
     //DKDK VB-8707 checkbox change
-    $(document).on("change", "input[id='abndCheckboxFilter']", function() {
-        var isChecked = $(this).is(":checked");
-        if(!isChecked) {
-            loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: false, checkboxClicked: true});
-        } else if (isChecked) {
-            loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: true, checkboxClicked: true});
-        }
-    });
+//    $(document).on("change", "input[id='abndCheckboxFilter']", function() {
+//        var isChecked = $(this).is(":checked");
+//        if(!isChecked) {
+//            loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: false, checkboxClicked: true});
+//        } else if (isChecked) {
+//            loadSolr({clear: 1, zoomLevel: map.getZoom(), hideZeros: true, checkboxClicked: true});
+//        }
+//    });
 
 }
 
@@ -734,236 +729,6 @@ function initializeMap(parameters) {
 // these fields do not contain the obligatory Citations field
 // which is always appended
 function updateExportFields(viewMode) {
-    var smplFields = [
-        {
-            value: 'exp_sample_id_s',
-            label: 'Sample ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_bundle_name_s',
-            label: 'Record type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_species_s',
-            label: 'Species',
-            icon: mapTypeToIcon('Taxonomy')
-        },
-        {
-            value: 'exp_sample_type_s',
-            label: 'Sample type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_label_s',
-            label: 'Label',
-            icon: mapTypeToIcon('Description')
-        },
-        {
-            value: 'exp_collection_assay_id_s',
-            label: 'Collection ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_collection_date_range_ss',
-            label: 'Collection date range',
-            icon: mapTypeToIcon('Date')
-        },
-        {
-            value: 'exp_collection_protocols_ss',
-            label: 'Collection protocol',
-            icon: mapTypeToIcon('Collection protocol')
-        },
-        {
-            value: 'exp_projects_ss',
-            label: 'Project',
-            icon: mapTypeToIcon('Project')
-        },
-        {
-            value: 'exp_geo_coords_s',
-            label: 'Coordinates (lat, long)',
-            icon: mapTypeToIcon('Coordinates')
-        },
-        {
-            value: 'exp_geolocations_ss',
-            label: 'Locations',
-            icon: mapTypeToIcon('Location')
-        },
-        {
-            value: 'exp_protocols_ss',
-            label: 'Protocol',
-            icon: mapTypeToIcon('Protocol')
-        },
-        {
-            value: 'exp_tags_ss',
-            label: 'Tag',
-            icon: mapTypeToIcon('Tag')
-        },
-        {
-            value: 'exp_attractants_ss',
-            label: 'Attractants',
-            icon: mapTypeToIcon('Attractants')
-        },
-        {
-            value: 'exp_sex_s',
-            label: 'Sex',
-            icon: mapTypeToIcon('Sex')
-        },
-        {
-            value: 'exp_dev_stages_ss',
-            label: 'Developmental stage',
-            icon: mapTypeToIcon('Developmental stage')
-        },
-        {
-            value: 'exp_signposts_ss',
-            label: 'Available data types',
-            icon: mapTypeToIcon('Available data types')
-        },
-        //DKDK VB-8663 GPS qualifier fields
-        {
-            value: 'exp_geolocation_provenance_s',
-            label: 'Location provenance',
-            icon: mapTypeToIcon('Location provenance')
-        },
-        {
-            value: 'exp_geolocation_precision_s',
-            label: 'Location precision',
-            icon: mapTypeToIcon('Location precision')
-        }
-    ];
-    var irFields = [
-        {
-            value: 'exp_sample_id_s',
-            label: 'Sample ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_assay_id_s',
-            label: 'Assay ID',
-            icon: mapTypeToIcon('Assay ID')
-        },
-        {
-            value: 'exp_bundle_name_s',
-            label: 'Record type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_species_s',
-            label: 'Species',
-            icon: mapTypeToIcon('Taxonomy')
-        },
-        {
-            value: 'exp_sample_type_s',
-            label: 'Sample type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_label_s',
-            label: 'Label',
-            icon: mapTypeToIcon('Description')
-        },
-        {
-            value: 'exp_collection_assay_id_s',
-            label: 'Collection ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_collection_date_range_ss',
-            label: 'Collection date range',
-            icon: mapTypeToIcon('Date')
-        },
-        {
-            value: 'exp_collection_protocols_ss',
-            label: 'Collection protocol',
-            icon: mapTypeToIcon('Collection protocol')
-        },
-        {
-            value: 'exp_projects_ss',
-            label: 'Project',
-            icon: mapTypeToIcon('Project')
-        },
-        {
-            value: 'exp_geo_coords_s',
-            label: 'Coordinates (lat, long)',
-            icon: mapTypeToIcon('Coordinates')
-        },
-        {
-            value: 'exp_geolocations_ss',
-            label: 'Locations',
-            icon: mapTypeToIcon('Location')
-        },
-        {
-            value: 'exp_phenotype_type_s',
-            label: 'Phenotype type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        //DK VB-8517 add sample_size_i field for path, meal, and IR
-        {
-            value: 'exp_sample_size_i',
-            label: 'Sample size',
-            icon: mapTypeToIcon('Count')
-        },
-        {
-            value: 'exp_insecticide_s',
-            label: 'Insecticide',
-            icon: mapTypeToIcon('Insecticide')
-        },
-        {
-            value: 'exp_protocols_ss',
-            label: 'Protocol',
-            icon: mapTypeToIcon('Protocol')
-        },
-        {
-            value: 'exp_concentration_f,exp_concentration_unit_s',
-            label: 'Concentration',
-            subtext: 'value, unit',
-            icon: mapTypeToIcon('Concentration')
-        },
-        {
-            value: 'exp_duration_f,exp_duration_unit_s',
-            label: 'Duration',
-            subtext: 'value, unit',
-            icon: mapTypeToIcon('Duration')
-        },
-        {
-            value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
-            label: 'Phenotype value',
-            subtext: 'value, unit, type',
-            icon: mapTypeToIcon('Phenotype')
-        },
-        {
-            value: 'exp_tags_ss',
-            label: 'Tag',
-            icon: mapTypeToIcon('Tag')
-        },
-        {
-            value: 'exp_attractants_ss',
-            label: 'Attractants',
-            icon: mapTypeToIcon('Attractants')
-        },
-        {
-            value: 'exp_sex_s',
-            label: 'Sex',
-            icon: mapTypeToIcon('Sex')
-        },
-        {
-            value: 'exp_dev_stages_ss',
-            label: 'Developmental stage',
-            icon: mapTypeToIcon('Developmental stage')
-        },
-        //DKDK VB-8663 GPS qualifier fields
-        {
-            value: 'exp_geolocation_provenance_s',
-            label: 'Location provenance',
-            icon: mapTypeToIcon('Location provenance')
-        },
-        {
-            value: 'exp_geolocation_precision_s',
-            label: 'Location precision',
-            icon: mapTypeToIcon('Location precision')
-        }
-    ];
     var abndFields = [
         {
             value: 'exp_sample_id_s',
@@ -1067,410 +832,13 @@ function updateExportFields(viewMode) {
             icon: mapTypeToIcon('Location precision')
         }
     ];
-    var genoFields = [
-        {
-            value: 'exp_sample_id_s',
-            label: 'Sample ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_description_s',
-            label: 'Description',
-            icon: mapTypeToIcon('Description')
-        },
-        {
-            value: 'exp_bundle_name_s',
-            label: 'Record type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_species_s',
-            label: 'Species',
-            icon: mapTypeToIcon('Taxonomy')
-        },
-        {
-            value: 'exp_sample_type_s',
-            label: 'Sample type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_label_s',
-            label: 'Label',
-            icon: mapTypeToIcon('Description')
-        },
-        {
-            value: 'exp_collection_assay_id_s',
-            label: 'Collection ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_collection_date_range_ss',
-            label: 'Collection date range',
-            icon: mapTypeToIcon('Date')
-        },
-        {
-            value: 'exp_collection_protocols_ss',
-            label: 'Collection protocol',
-            icon: mapTypeToIcon('Collection protocol')
-        },
-        {
-            value: 'exp_projects_ss',
-            label: 'Project',
-            icon: mapTypeToIcon('Project')
-        },
-        {
-            value: 'exp_geo_coords_s',
-            label: 'Coordinates (lat, long)',
-            icon: mapTypeToIcon('Coordinates')
-        },
-        {
-            value: 'exp_geolocations_ss',
-            label: 'Locations',
-            icon: mapTypeToIcon('Location')
-        },
-        {
-            value: 'exp_protocols_ss',
-            label: 'Protocol',
-            icon: mapTypeToIcon('Protocol')
-        },
-        {
-            value: 'exp_sample_size_i',
-            label: 'Specimens collected',
-            icon: mapTypeToIcon('Count')
-        },
-        {
-            value: 'exp_assay_id_s',
-            label: 'Assay ID',
-            icon: mapTypeToIcon('Assay ID')
-        },
-        {
-            value: 'exp_phenotypes_ss',
-            label: 'Phenotypes',
-            icon: mapTypeToIcon('Phenotypes')
-        },
-        {
-            value: 'exp_genotype_type_s',
-            label: 'Genotype Type',
-            icon: mapTypeToIcon('Genotype Type')
-        },
-        {
-            value: 'exp_genotype_name_s',
-            label: 'Genotype Name',
-            icon: mapTypeToIcon('Genotype Name')
-        },
-        {
-            value: 'exp_locus_name_s',
-            label: 'Locus',
-            icon: mapTypeToIcon('Locus')
-        },
-        /* Not needed for now
-        {
-            value: 'exp_genotype_inverted_allele_count_i',
-            label: 'Inverted Allele Count',
-            icon: mapTypeToIcon('Inverted Allele Count')
-        },
-        {
-            value: 'exp_genotype_microsatellite_length_i',
-            label: 'Microsatellite Length',
-            icon: mapTypeToIcon('Microsatellite Length')
-        },
-        */
-        {
-            value: 'exp_genotype_mutated_protein_value_f',
-            label: 'Mutated Protein Value',
-            icon: mapTypeToIcon('Mutated Protein Value')
-        },
-        {
-            value: 'exp_tags_ss',
-            label: 'Tag',
-            icon: mapTypeToIcon('Tag')
-        },
-        {
-            value: 'exp_attractants_ss',
-            label: 'Attractants',
-            icon: mapTypeToIcon('Attractants')
-        },
-        {
-            value: 'exp_sex_s',
-            label: 'Sex',
-            icon: mapTypeToIcon('Sex')
-        },
-        {
-            value: 'exp_dev_stages_ss',
-            label: 'Developmental stage',
-            icon: mapTypeToIcon('Developmental stage')
-        },
-        //DKDK VB-8663 GPS qualifier fields
-        {
-            value: 'exp_geolocation_provenance_s',
-            label: 'Location provenance',
-            icon: mapTypeToIcon('Location provenance')
-        },
-        {
-            value: 'exp_geolocation_precision_s',
-            label: 'Location precision',
-            icon: mapTypeToIcon('Location precision')
-        }
-    ];
-
-    var pathFields = [
-        {
-            value: 'exp_sample_id_s',
-            label: 'Sample ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_assay_id_s',
-            label: 'Assay ID',
-            icon: mapTypeToIcon('Assay ID')
-        },
-        {
-            value: 'exp_bundle_name_s',
-            label: 'Record type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_species_s',
-            label: 'Species',
-            icon: mapTypeToIcon('Taxonomy')
-        },
-        {
-            value: 'exp_sample_type_s',
-            label: 'Sample type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_label_s',
-            label: 'Label',
-            icon: mapTypeToIcon('Description')
-        },
-        {
-            value: 'exp_collection_assay_id_s',
-            label: 'Collection ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_collection_date_range_ss',
-            label: 'Collection date range',
-            icon: mapTypeToIcon('Date')
-        },
-        {
-            value: 'exp_collection_protocols_ss',
-            label: 'Collection protocol',
-            icon: mapTypeToIcon('Collection protocol')
-        },
-        {
-            value: 'exp_projects_ss',
-            label: 'Project',
-            icon: mapTypeToIcon('Project')
-        },
-        {
-            value: 'exp_geo_coords_s',
-            label: 'Coordinates (lat, long)',
-            icon: mapTypeToIcon('Coordinates')
-        },
-        {
-            value: 'exp_geolocations_ss',
-            label: 'Locations',
-            icon: mapTypeToIcon('Location')
-        },
-        {
-            value: 'exp_phenotype_type_s',
-            label: 'Phenotype type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_protocols_ss',
-            label: 'Protocol',
-            icon: mapTypeToIcon('Protocol')
-        },
-        //DK VB-8517 add sample_size_i field for path, meal, and IR
-        {
-            value: 'exp_sample_size_i',
-            label: 'Sample size',
-            icon: mapTypeToIcon('Count')
-        },
-        {
-            value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
-            label: 'Phenotype value',
-            subtext: 'value, unit, type',
-            icon: mapTypeToIcon('Phenotype')
-        },
-        {
-            value: 'exp_infection_source_s',
-            label: 'Pathogen',
-            icon: mapTypeToIcon('Pathogen')
-        },
-        {
-            value: 'exp_infection_status_s',
-            label: 'Infection status',
-            icon: mapTypeToIcon('Infection status')
-        },
-        {
-            value: 'exp_tags_ss',
-            label: 'Tag',
-            icon: mapTypeToIcon('Tag')
-        },
-        {
-            value: 'exp_attractants_ss',
-            label: 'Attractants',
-            icon: mapTypeToIcon('Attractants')
-        },
-        {
-            value: 'exp_sex_s',
-            label: 'Sex',
-            icon: mapTypeToIcon('Sex')
-        },
-        {
-            value: 'exp_dev_stages_ss',
-            label: 'Developmental stage',
-            icon: mapTypeToIcon('Developmental stage')
-        },
-        //DKDK VB-8663 GPS qualifier fields
-        {
-            value: 'exp_geolocation_provenance_s',
-            label: 'Location provenance',
-            icon: mapTypeToIcon('Location provenance')
-        },
-        {
-            value: 'exp_geolocation_precision_s',
-            label: 'Location precision',
-            icon: mapTypeToIcon('Location precision')
-        }
-    ];
-
-    var mealFields = [
-        {
-            value: 'exp_sample_id_s',
-            label: 'Sample ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_assay_id_s',
-            label: 'Assay ID',
-            icon: mapTypeToIcon('Assay ID')
-        },
-        {
-            value: 'exp_bundle_name_s',
-            label: 'Record type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_species_s',
-            label: 'Species',
-            icon: mapTypeToIcon('Taxonomy')
-        },
-        {
-            value: 'exp_sample_type_s',
-            label: 'Sample type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_label_s',
-            label: 'Label',
-            icon: mapTypeToIcon('Description')
-        },
-        {
-            value: 'exp_collection_assay_id_s',
-            label: 'Collection ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_collection_date_range_ss',
-            label: 'Collection date range',
-            icon: mapTypeToIcon('Date')
-        },
-        {
-            value: 'exp_collection_protocols_ss',
-            label: 'Collection protocol',
-            icon: mapTypeToIcon('Collection protocol')
-        },
-        {
-            value: 'exp_projects_ss',
-            label: 'Project',
-            icon: mapTypeToIcon('Project')
-        },
-        {
-            value: 'exp_geo_coords_s',
-            label: 'Coordinates (lat, long)',
-            icon: mapTypeToIcon('Coordinates')
-        },
-        {
-            value: 'exp_geolocations_ss',
-            label: 'Locations',
-            icon: mapTypeToIcon('Location')
-        },
-        {
-            value: 'exp_phenotype_type_s',
-            label: 'Phenotype type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_protocols_ss',
-            label: 'Protocol',
-            icon: mapTypeToIcon('Protocol')
-        },
-        //DK VB-8517 add sample_size_i field for path, meal, and IR
-        {
-            value: 'exp_sample_size_i',
-            label: 'Sample size',
-            icon: mapTypeToIcon('Count')
-        },
-        {
-            value: 'exp_phenotype_value_f,exp_phenotype_value_unit_s,exp_phenotype_value_type_s',
-            label: 'Phenotype value',
-            subtext: 'value, unit, type',
-            icon: mapTypeToIcon('Phenotype')
-        },
-        {
-            value: 'exp_blood_meal_source_s',
-            label: 'Blood meal host',
-            icon: mapTypeToIcon('Blood meal host')
-        },
-        {
-            value: 'exp_tags_ss',
-            label: 'Tag',
-            icon: mapTypeToIcon('Tag')
-        },
-        {
-            value: 'exp_attractants_ss',
-            label: 'Attractants',
-            icon: mapTypeToIcon('Attractants')
-        },
-        {
-            value: 'exp_sex_s',
-            label: 'Sex',
-            icon: mapTypeToIcon('Sex')
-        },
-        {
-            value: 'exp_dev_stages_ss',
-            label: 'Developmental stage',
-            icon: mapTypeToIcon('Developmental stage')
-        },
-        //DKDK VB-8663 GPS qualifier fields
-        {
-            value: 'exp_geolocation_provenance_s',
-            label: 'Location provenance',
-            icon: mapTypeToIcon('Location provenance')
-        },
-        {
-            value: 'exp_geolocation_precision_s',
-            label: 'Location precision',
-            icon: mapTypeToIcon('Location precision')
-        }
-    ];
 
     // empty the dropdown
     $('#select-export-fields').empty();
 
     //Set fields that can be downloaded for the view
-    var simpleFields = smplFields;
-    // Need to update this code since it is just repetivie
-    if (viewMode === 'abnd') simpleFields = abndFields;
-    if (viewMode === 'geno') simpleFields = genoFields;
-    if (viewMode === 'ir') simpleFields = irFields;
-    if (viewMode === 'path') simpleFields = pathFields;
-    if (viewMode === 'meal') simpleFields = mealFields;
+    var simpleFields = abndFields;
+
     $.each(simpleFields, function (index, obj) {
         if (!obj.subtext) {
             $('#select-export-fields')
@@ -1495,13 +863,13 @@ function updateExportFields(viewMode) {
         }
     })
 
-    var checkboxDiv = $('#div-export-zeroes');
-    if (viewMode === 'abnd') {
-        checkboxDiv.show();
-    } else {
-        checkboxDiv.hide();
-    }
-
+//    var checkboxDiv = $('#div-export-zeroes');
+//    if (viewMode === 'abnd') {
+//        checkboxDiv.show();
+//    } else {
+//        checkboxDiv.hide();
+//    }
+//
     $('#select-export-fields')
         .selectpicker('refresh')
         .selectpicker('selectAll');
@@ -1542,45 +910,12 @@ function loadSolr(parameters) {
         // we are going to use these statistics to calculate the mean position of the
         // landmarks in each geohash
         // display the number of results
-        if (viewMode === "ir" || viewMode === "path" || viewMode === "meal") {
-            $("#markersCount").html(result.response.numFound + ' visible assays summarized by ' + glbSummarizeBy + '</u>');
-        } else if (viewMode === "abnd") {
 
-            if (result.facets.sumSmp === undefined) {
-                result.facets.sumSmp = 0;
-            }
-            //DKDK VB-8707 add control for showing/hiding zeros: default = hiding
-            var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
-            var abndIntialText = result.facets.sumSmp + ' visible individuals summarized by ' + glbSummarizeBy + '</u>';
-            var abndIsCheckedValue = "checked";
-            var abndCheckboxTooltip = "To improve map responsiveness in this view, zero-count data is automatically excluded at this zoom level. You may override this via the checkbox.";
-            var abndCheckboxText = ': <span title="' + abndCheckboxTooltip + '"><b>Hide zeros</b> <input type="checkbox" ' + 'title="' + abndCheckboxTooltip + '" id="abndCheckboxFilter" ';
-            var abndTextSuffix = "></span>";
-            //DKDK shortening1
-            if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
-                abndIsCheckedValue = "";
-                abndCheckboxText = "";
-                abndTextSuffix = "";
-            } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && $('#abndCheckboxFilter').length) {    //DKDK pure map action without checkbox change
-                if (!hideIsChecked) {
-                    abndIsCheckedValue = "";
-                }
-            } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
-                if (!hideZeros) {
-                    abndIsCheckedValue = "";
-                }
-            }
-            $("#markersCount").html(abndIntialText + abndCheckboxText + abndIsCheckedValue + abndTextSuffix);
-        } else if (viewMode === "geno") {
-
-            if (result.facets.alleleCount === undefined) {
-                result.facets.alleleCount = 0;
-            }
-
-            $("#markersCount").html(result.facets.alleleCount.roundDecimals(0) + ' visible genotypes summarized by ' + glbSummarizeBy + '</u>');
-        } else {
-            $("#markersCount").html(result.response.numFound + ' visible samples summarized by ' + glbSummarizeBy + '</u>');
+        if (result.facets.sumSmp === undefined) {
+            result.facets.sumSmp = 0;
         }
+
+        $("#markersCount").html(result.facets.sumSmp + ' visible cases summarized by ' + glbSummarizeBy + '</u>');
         // detect empty results set
         if (result.response.numFound === 0) {
             if (clear) {
@@ -1604,16 +939,7 @@ function loadSolr(parameters) {
             // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be
             // processed later at the same time exclude them from [terms] so as to not display them twice
 
-            //Will remove if not necessary, but just for testing
-            if (viewMode === 'abnd') { // || viewMode === 'geno') {
-                var geoCount = el.sumSmp;
-            } else if (viewMode === 'geno') {
-                //Using this to return a number
-                //el.alleleCount = Math.round(el.alleleCount * 10) / 10;
-                var geoCount = el.alleleCount.roundDecimals(0);
-            } else {
-                var geoCount = el.count;
-            }
+            var geoCount = el.sumSmp;
 
             var key = el.val,
                 elStats = [],
@@ -1625,15 +951,7 @@ function loadSolr(parameters) {
                 var inKey = inEl.val;
 
                 // store normalised abundance for abundance mode, else store samples/assay counts
-                if (viewMode === 'abnd') { // || viewMode ==='geno') {
-                    var inCount = inEl.sumSmp;
-                } else if (viewMode === 'geno') {
-                    //Using this to return a number
-                    var inCount = inEl.alleleCount.roundDecimals(0);
-                } else {
-                    var inCount = inEl.count;
-                }
-                //var inCount = viewMode === 'abnd' ? inEl.sumSmp : inEl.count;
+                var inCount = inEl.sumSmp;
 
                 if (inCount > 0) {
                     fullElStats.push({
@@ -1666,12 +984,6 @@ function loadSolr(parameters) {
             arr.term = key;
             // arr.cumulativeCount = tagsTotalCount
             arr.count = geoCount;
-            if (viewMode === 'abnd') {
-                // arr.normAbnd = geoAvgAbnd.roundDecimals(1);
-                // arr.avgDuration = el.avgDur.roundDecimals(1);
-                // arr.avgSampleSize = el.avgSmp.roundDecimals(1);
-                // arr.abndSum = geoAbndSum;
-            }
             arr.latLng = [el.ltAvg, el.lnAvg];
             arr.bounds = [[el.ltMin, el.lnMin], [el.ltMax, el.lnMax]];
             arr.atomic = el.atomicCount === 1;
@@ -1734,7 +1046,7 @@ function loadSolr(parameters) {
                 var markerText = record.count;
 
                 //if ((viewMode === 'abnd' || viewMode === 'geno') && record.count > 999) {
-                if (viewMode === 'abnd' && record.count > 999) {
+                if (record.count > 999) {
                     markerText = Math.round(record.count/1000)+"k";
                 }
                 return new L.Icon.Canvas({
@@ -2051,29 +1363,9 @@ function loadSolr(parameters) {
 
                 //DKDK VB-8116 hover over marker
                 var markerNewTooltipLabel = '';
-                if (viewMode == 'smpl') {
-                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' record';
-                    else markerNewTooltipLabel = ' records';
-                }
-                if (viewMode == 'ir') {
-                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' insecticide resistance assay';
-                    else markerNewTooltipLabel = ' insecticide resistance assays';
-                }
-                if (viewMode == 'geno') {
-                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' insecticide resistance allele genotype';
-                    else markerNewTooltipLabel = ' insecticide resistance allele genotypes';
-                }
                 if (viewMode == 'abnd') {
                     if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' specimen collected';
                     else markerNewTooltipLabel = ' specimens collected';
-                }
-                if (viewMode == 'path') {
-                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' pathogen status assay';
-                    else markerNewTooltipLabel = ' pathogen status assays';
-                }
-                if (viewMode == 'meal') {
-                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' blood meal assay';
-                    else markerNewTooltipLabel = ' blood meal assays';
                 }
                 marker.bindTooltip(marker.options.icon.options.count + markerNewTooltipLabel, {
                         // permanent: false,
@@ -2202,23 +1494,23 @@ function loadSolr(parameters) {
     };
 
     //DKDK VB-8707 set filter and zoomLevel? need to check pre-existing filter?
-    var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
-    var abndFilterQuery = "-sample_size_i:0";
-    //DKDK shortening1
-    if (viewMode == "abnd") {
-        if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
-            abndFilterQuery = "";
-        } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && $('#abndCheckboxFilter').length) {    //DKDK pure map action without checkbox change
-            if (!hideIsChecked) {
-                abndFilterQuery = "";
-            }
-        } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
-            if (!hideZeros) {
-                abndFilterQuery = "";
-            }
-        }
-    }
-    var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?&fq=" + abndFilterQuery;
+//    var hideIsChecked = $('#abndCheckboxFilter').is(":checked");
+//    var abndFilterQuery = "-sample_size_i:0";
+//    //DKDK shortening1
+//    if (viewMode == "abnd") {
+//        if (zoomLevel >= zoomLevelCriterion) {  //DKDK always shows zeros above certain zoomLevel (semantic zoom)
+//            abndFilterQuery = "";
+//        } else if ((typeof parameters.hideZeros === 'undefined' || parameters.hideZeros === null) && $('#abndCheckboxFilter').length) {    //DKDK pure map action without checkbox change
+//            if (!hideIsChecked) {
+//                abndFilterQuery = "";
+//            }
+//        } else if (checkboxClicked) {   //DKDK the case that loadSolr is initiated by checkbox change
+//            if (!hideZeros) {
+//                abndFilterQuery = "";
+//            }
+//        }
+//    }
+    var url = solrPopbioUrl + viewMode + 'Geoclust?' + qryUrl + '&' + $.param(qryParams) + "&json.wrf=?&callback=?&fq="; // + abndFilterQuery;
 
     // //DKDK VB-8707 change query
     // // switchViewValue
@@ -2659,48 +1951,6 @@ function tableHtml(divid, results) {
         var row, template;
 
         switch (viewMode) {
-            case "ir":
-                row = {
-                    accession: element.accession,
-                    accessionType: 'Assay ID',
-                    bundleName: 'Assay',
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
-                    geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
-                    bgColor: bgColor,
-                    textColor: getContrastYIQ(bgColor),
-                    collectionDate: collectionDates,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Project',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocol',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocol',
-                    phenotypeValue: element.phenotype_value_f,
-                    phenotypeValueType: element.phenotype_value_type_s,
-                    phenotypeValueUnit: element.phenotype_value_unit_s,
-                    insecticide: element.insecticide_s,
-                    insecticideType: 'Insecticide',
-                    sampleSize: element.sample_size_i,
-                    concentration: element.concentration_f,
-                    concentrationUnit: element.concentration_unit_s,
-                    duration: element.duration_f,
-                    durationUnit: element.duration_unit_s,
-                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
-                    sex: element.sex_s,
-                    devstages: element.dev_stages_ss,
-                    //DKDK VB-8663 GPS qualifier fields
-                    geolocationProvenance: element.geolocation_provenance_s,
-                    geolocationPrecision: element.geolocation_precision_s
-                };
-
-                template = $.templates("#irRowTemplate");
-                break;
             case "abnd":
                 row = {
                     accession: element.accession,
@@ -2741,157 +1991,6 @@ function tableHtml(divid, results) {
                     row.smplAvgAbnd = row.smplAvgAbnd.toFixed(2);
                 }
                 template = $.templates("#abndRowTemplate");
-                break;
-            case "geno":
-                row = {
-                    accession: element.accession,
-                    accessionType: 'Assay ID',
-                    bundleName: 'Assay',
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
-                    geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
-                    bgColor: bgColor,
-                    textColor: getContrastYIQ(bgColor),
-                    collectionDate: collectionDates,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Project',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocol',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocol',
-                    sampleSize: element.sample_size_i,
-                    label: element.label,
-                    genotypeName: element.genotype_name_s,
-                    mutatedProteinValue: element.genotype_mutated_protein_value_f,
-                    mutatedProteinUnit: element.genotype_mutated_protein_unit_s,
-                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
-                    sex: element.sex_s,
-                    devstages: element.dev_stages_ss,
-                    //DKDK VB-8663 GPS qualifier fields
-                    geolocationProvenance: element.geolocation_provenance_s,
-                    geolocationPrecision: element.geolocation_precision_s
-                };
-
-                row.alleleCount = (element.sample_size_i * element.genotype_mutated_protein_value_f / 50).roundDecimals(0);
-                template = $.templates("#genoRowTemplate");
-                break;
-            case "path":
-                row = {
-                    accession: element.assay_id_s,
-                    accessionType: 'Assay ID',
-                    bundleName: 'Assay',
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
-                    geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
-                    bgColor: bgColor,
-                    textColor: getContrastYIQ(bgColor),
-                    collectionDate: collectionDates,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Project',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocol',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocol',
-                    phenotypeValue: element.phenotype_value_f,
-                    phenotypeValueType: element.phenotype_value_type_s,
-                    phenotypeValueUnit: element.phenotype_value_unit_s,
-                    sampleSize: element.sample_size_i,
-                    infectionStatus: element.infection_status_s,
-                    pathogen: element.infection_source_s,
-                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
-                    sex: element.sex_s,
-                    devstages: element.dev_stages_ss,
-                    //DKDK VB-8663 GPS qualifier fields
-                    geolocationProvenance: element.geolocation_provenance_s,
-                    geolocationPrecision: element.geolocation_precision_s
-                };
-
-                template = $.templates("#pathRowTemplate");
-                break;
-             case "meal":
-                row = {
-                    accession: element.assay_id_s,
-                    accessionType: 'Assay ID',
-                    bundleName: 'Assay',
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
-                    geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
-                    bgColor: bgColor,
-                    textColor: getContrastYIQ(bgColor),
-                    collectionDate: collectionDates,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Project',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocol',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocol',
-                    phenotypeValue: element.phenotype_value_f,
-                    phenotypeValueType: element.phenotype_value_type_s,
-                    phenotypeValueUnit: element.phenotype_value_unit_s,
-                    sampleSize: element.sample_size_i,
-                    bloodMealHost: element.blood_meal_source_s,
-                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
-                    sex: element.sex_s,
-                    devstages: element.dev_stages_ss,
-                    //DKDK VB-8663 GPS qualifier fields
-                    geolocationProvenance: element.geolocation_provenance_s,
-                    geolocationPrecision: element.geolocation_precision_s
-                };
-
-                template = $.templates("#mealRowTemplate");
-                break;
-            default:
-                row = {
-                    accession: element.accession,
-                    accessionType: 'Sample ID',
-                    bundleName: element.bundle_name,
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
-                    geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
-                    bgColor: bgColor,
-                    textColor: getContrastYIQ(bgColor),
-                    collectionDate: collectionDates,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Project',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocol',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocol',
-                    sampleSize: element.sample_size_i,
-                    //DKDK VB-8114 displaying sex_s and dev_stage_ss for smpl view (add comma)
-                    sex: element.sex_s,
-                    devstages: element.dev_stages_ss,
-                    //DKDK VB-8663 GPS qualifier fields
-                    geolocationProvenance: element.geolocation_provenance_s,
-                    geolocationPrecision: element.geolocation_precision_s
-                };
-
-                //DKDK VB-8459 add signposts_ss here for sample table
-                if (glbSummarizeBy === 'Available data types') {
-                    row.signposts = element.signposts_ss;
-                }
-
-                template = $.templates("#smplRowTemplate");
                 break;
         }
 

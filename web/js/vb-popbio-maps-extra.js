@@ -304,106 +304,11 @@
 
             // VB-7622 default with ?view=geno at URL (e.g., selecting the menu from Popbio page or using Share Link) is set to Allele (active-legend) at initializeMap()
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
-            if (viewMode === "geno") glbSummarizeBy = "Allele";
-            if (viewMode === "path") glbSummarizeBy = "Pathogen";
-            if (viewMode === "meal") glbSummarizeBy = "Blood meal host";
-            //DKDK VB-8459 with new Signposts, also need to set default value of legend here beyond initializeMap()
-            if (viewMode === "smpl") glbSummarizeBy = "Available data types";
-            // if (viewMode === "smpl") glbSummarizeBy = "Species";
-            if (viewMode === "ir"  ) glbSummarizeBy = "Species";
             if (viewMode === "abnd") glbSummarizeBy = "Species";
             //DKDK VB-8459 I am not so sure if below criteria should be used: I doubt it.
 
-            if (viewMode !== "ir") {
-                // $('#SelectView').val('smpl');
-                if (glbSummarizeBy === "Insecticide") {
-                    if (viewMode === "geno") {
-                        glbSummarizeBy = "Allele";
-                    } else if  (viewMode === "path") {
-                        glbSummarizeBy = "Pathogen";
-                    } else if  (viewMode === "meal") {
-                        glbSummarizeBy = "Blood meal host";
-                    } else {
-                        glbSummarizeBy = "Species";
-                    }
-                }
-            }
-
-            // Might not be needed will remove once done testing
-            if (viewMode !== "geno") {
-                // $('#SelectView').val('smpl');
-                if (glbSummarizeBy === "Allele" || glbSummarizeBy === "Locus") {
-                    if (viewMode === "path") {
-                        glbSummarizeBy = "Pathogen";
-                    } else if (viewMode === "meal") {
-                        glbSummarizeBy = "Blood meal host";
-                    } else {
-                        glbSummarizeBy = "Species";
-                    }
-                }
-            }
-
-            if (viewMode !== "path") {
-                // $('#SelectView').val('smpl');
-                if (glbSummarizeBy === "Pathogen" || glbSummarizeBy === "Infection status") {
-                    if (viewMode === "geno") {
-                        glbSummarizeBy = "Allele";
-                    } else {
-                        glbSummarizeBy = "Species";
-                    }
-                }
-            }
-
-            if (viewMode !== "meal") {
-                // $('#SelectView').val('smpl');
-                if (glbSummarizeBy === "Blood meal host") {
-                    if (viewMode === "geno") {
-                        glbSummarizeBy = "Allele";
-                    } else {
-                        glbSummarizeBy = "Species";
-                    }
-                }
-            }
-
-            if (viewMode !== "abnd") {
-                if (glbSummarizeBy === "Attractant") {
-                    if (viewMode === "path") {
-                        glbSummarizeBy = "Pathogen";
-                    } else if (viewMode === "meal") {
-                        glbSummarizeBy = "Blood meal host";
-                    } else if (viewMode === "geno") {
-                        glbSummarizeBy = "Allele";
-                    } else {
-                        glbSummarizeBy = "Species";
-                    }
-                }
-            }
-
-            // Add and remove the disabled class for the sidebar
-            if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path" && viewMode !== "meal") {
-                // Get the current sidebar that is active
-                var active_sidebar = $(".sidebar-icon.active a").attr("id");
-
-                // Check if the previous active panel was the plots and switch to the pie panel
-                if (active_sidebar === "#swarm-plots") {
-                    $(".sidebar-pane.active").removeClass("active");
-                    $(".sidebar-icon.active").removeClass("active");
-                    $('[id="#graphs"]').parent().addClass("active");
-                    $("#graphs").addClass("active");
-                }
-
-                $('#\\#swarm-plots').addClass('disabled');
-                $("#\\#swarm-plots").parent("li").attr("data-original-title", "Disabled on this view");
-            } else {
-                $('#\\#swarm-plots').removeClass('disabled');
-                $("#\\#swarm-plots").parent("li").attr("data-original-title", "View-specific data visualizations");
-            }
-
-            if (viewMode !== 'abnd') {
-                // Hiding the notices from the abundance graph
-                $("#projects-notice").hide();
-                $("#plots-control-panel").hide();
-            }
+            $('#\\#swarm-plots').removeClass('disabled');
+            $("#\\#swarm-plots").parent("li").attr("data-original-title", "View-specific data visualizations");
 
             // update the export fields dropdown
             updateExportFields(viewMode);
@@ -1035,15 +940,7 @@
         // update the export fields dropdown
         updateExportFields(viewMode);
 
-        // Add and remove the disabled class for the sidebar
-        if (viewMode !== "ir" && viewMode !== "abnd" && viewMode !== "path" && viewMode !== "meal") {
-            $('#\\#swarm-plots').addClass('disabled');
-            $("#\\#swarm-plots").parent("li").attr("title", "Disabled on this view");
-
-            //$("#\\#swarm-plots").tooltip({placement: "right", title: "Disabled On This View"});
-        } else {
-            $('#\\#swarm-plots').removeClass('disabled');
-        }
+        $('#\\#swarm-plots').removeClass('disabled');
 
         // Check if a center parameter was passed with a projectID, assayID, sampleID, or collectionID, if not, find the center to ensure marker will be visible
         // NOTE: Code might need to get improved if there is a case when a link has two of either projectID, assayID, and sampleID
