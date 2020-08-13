@@ -42,7 +42,7 @@ L.Control.MapLegend = L.Control.extend({
     options: {
         position: 'bottomright',
         numberOfColors: 20,  // still not using this :(
-        summarizeBy: 'Species',
+        summarizeBy: 'Geographic resolution',
         sortBy: 'count',
         lum: 0.7,
         trafficlight: {
@@ -337,34 +337,11 @@ L.Control.MapLegend = L.Control.extend({
     },
 
     _generateViewSelect: function (viewMode) {
-        //DKDK VB-8536 Species in Pathogen to Vector Species
-        if (viewMode === 'path') {
-            var pathSpecies = "Vector Species";
-        } else {
-            var pathSpecies = "Species";
-        }
-
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
-            //DKDK VB-8459 VB-8650 add signposts menu; VB-8536 Species in Pathogen to Vector Species
-            (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
-            (viewMode === 'geno' ? '<li><a href="#" value="Locus">Locus</a></li>' : '') +
-            (viewMode === 'geno' ? '<li><a href="#" value="Allele">Allele</a></li>' : '') +
-            (viewMode === 'path' ? '<li><a href="#" value="Pathogen">Pathogen</a></li> ' : '') +
-            (viewMode === 'path' ? '<li><a href="#" value="Infection status">Infection status</a></li> ' : '') +
-            (viewMode === 'meal' ? '<li><a href="#" value="Blood meal host">Blood meal host</a></li> ' : '') +
-            //DKDK VB-8536 Species in Pathogen to Vector Species
-            '<li><a href="#" value="' + pathSpecies + '">' + pathSpecies + '</a></li>' +
-            //DKDK VB-8650 block this as it goes first
-            // (viewMode === 'smpl' ? '<li><a href="#" value="Available data types">Available data types</a></li>' : '') +
-            '<li><a href="#" value="Sample type">Sample type</a></li>' +
-            '<li><a href="#" value="Collection protocol">Collection protocol</a></li>' +
-            (viewMode === 'abnd' ? '<li><a href="#" value="Attractant">Attractant</a></li> ' : '') +
-            '<li><a href="#" value="Project">Project</a></li>' +
-            '<li><a href="#" value="Protocol">Protocol</a></li>' +
-            (viewMode === 'ir' ? '<li><a href="#" value="Insecticide">Insecticide</a></li>' : '') +
-            //DKDK VB-8663 add GPS qualifier
-            (viewMode === 'abnd' ? '<li><a href="#" value="Location provenance">Location provenance</a></li> ' : '') +
-            (viewMode === 'abnd' ? '<li><a href="#" value="Location precision">Location precision</a></li> ' : '') +
+            '<li><a href="#" value="Geographic resolution">Geographic resolution</a></li>' +
+            '<li><a href="#" value="Sex">Sex</a></li>' +
+            '<li><a href="#" value="Age processed">Age (processed ranges)</a></li>' +
+            '<li><a href="#" value="Has date">Has date</a></li>' +
             '</ul>';
     },
 
@@ -400,10 +377,6 @@ L.Control.MapLegend = L.Control.extend({
             //DKDK VB-8650
             // var label = (item.name ? item.name.capitalizeFirstLetter() + '<br>' : '+');
             var label = (item.name ? item.name.capitalizeFirstLetter() : '+');
-
-            if (options.summarizeBy === 'Species') {
-                var label = '<em>' + label + '</em>';
-            }
 
             //DKDK VB-8650
             var insertExternalLink = '';
@@ -716,12 +689,6 @@ L.Control.MapLegend = L.Control.extend({
         var facets = result.facets;
         var facetResults = facets.geo.buckets;
 
-        // save max and min abundance
-        if (viewMode === 'abnd') {
-            var minAbnd = 0;
-            var maxAbnd = 0;
-        }
-
         var items = [];
 
         // parse results
@@ -729,11 +696,6 @@ L.Control.MapLegend = L.Control.extend({
             var geoTerms = el.terms.buckets;
             var i = 1;
             var count = el.count;
-            if (viewMode === 'abnd') {
-                if (maxAbnd < el.maxAbnd) {
-                    maxAbnd = el.maxAbnd
-                }
-            }
 
             geoTerms.forEach(function (inEl) {
                 var ratio = inEl.count / count;

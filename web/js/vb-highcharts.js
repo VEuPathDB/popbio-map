@@ -42,13 +42,13 @@
         abnd : {
             //Will be used to support different type of data that gets graphed
             dataType: "timeplot",
-            graphTitle: "Population abundance",
-            quantityLabel: "Abundance",
+            graphTitle: "Covid cases",
+            quantityLabel: "Cases",
             yAxis: [{
-                value: ["sum_abundance", "num_collections"],
-                operator: '/',
-                decimalPlaces: 1,
-                title: "Average individuals (per night per trap)",
+                value: "count", // ["sum_abundance", "num_collections"],
+                // operator: '/',
+                decimalPlaces: 0,
+                title: "Number of cases",
                 chartType: "column",
                 offset: 20
             }],
@@ -64,99 +64,6 @@
                         legendItemClick: function () {
                             return false;
                         }
-                    }
-                }
-            },
-            collectionKey: "facets.term.buckets"
-        },
-        path: {
-            //Will be used to support different type of data that gets graphed
-            dataType: "timeplot",
-            graphTitle: "Pathogen infection data",
-            quantityLabel: "Number of assays",
-            yAxis: [{
-                value: "count",
-                title: "Total number of assays",
-                chartType: "column",
-                transparent: true,
-                offset: 15
-            },
-            {
-                value: "infected.count",
-                //DKDK VB-8390 infected* text (added * in the end of title)
-                title: "Number of infected assays*",
-                chartType: "line",
-                offset: 0,
-                tooltip: {
-                    data: [{
-                        key: "pathogen",
-                        value: "infected.pathogen.buckets",
-                        label: "Pathogen(s)",
-                        type: "variable"
-                    }]
-                } //Will contain the configuration to set the tooltip of the graph
-            }],
-            plotOptions: {
-                column: {
-                    stacking: 'normal',
-                    groupPadding: 0.01,
-                    events: {
-                        //DKDK VB-8112 disable legend click at highstock
-                        // legendItemClick: setExternalActionFlag
-                        legendItemClick: function () {
-                            return false;
-                        }                    }
-                },
-                line: {
-                    events: {
-                        //DKDK VB-8112 disable legend click at highstock
-                        // legendItemClick: setExternalActionFlag
-                        legendItemClick: function () {
-                            return false;
-                        }
-                    },
-                    marker: {
-                        enabled: true,
-                        radius: 5
-                    }
-                }
-            },
-            collectionKey: "facets.term.buckets"
-        },
-        meal: {
-            //Will be used to support different type of data that gets graphed
-            dataType: "timeplot",
-            graphTitle: "Blood meal host data",
-            quantityLabel: "Number of samples",
-            yAxis: [{
-                value: "count",
-                title: "Number of samples",
-                chartType: "column",
-                transparent: true,
-                offset: 15
-            }],
-            plotOptions: {
-                column: {
-                    stacking: 'normal',
-                    groupPadding: 0.01,
-                    events: {
-                        //DKDK VB-8112 disable legend click at highstock
-                        // legendItemClick: setExternalActionFlag
-                        legendItemClick: function () {
-                            return false;
-                        }                    }
-                },
-                line: {
-                    events: {
-                        //DKDK VB-8112 disable legend click at highstock
-                        // legendItemClick: setExternalActionFlag
-                        legendItemClick: function () {
-                            return false;
-                        }
-                    },
-                    marker: {
-                        enabled: true,
-                        radius: 5
                     }
                 }
             },

@@ -673,13 +673,7 @@ function initializeMap(parameters) {
         addGeohashes(map, true);
     }
 
-    //Default glbSummarizeBy is Species set in the html file, updating it for Genotype, Pathogen, and Blood Meal views here
-    if (viewMode === "geno" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Allele";
-    if (viewMode === "path" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Pathogen";
-    if (viewMode === "meal" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Blood meal host";
-    //DKDK VB-8459 VB-8650 signposts as default: perhaps default glbSummarizeBy is Species without specification
-    if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Available data types";
-    // if (viewMode === "smpl" && urlParams.summarizeBy === undefined) glbSummarizeBy = "Species";
+    if (urlParams.summarizeBy === undefined) glbSummarizeBy = "Geographic resolution";
 
     // Now generate the legend
     // hardcoded species_category
@@ -911,11 +905,11 @@ function loadSolr(parameters) {
         // landmarks in each geohash
         // display the number of results
 
-        if (result.facets.sumSmp === undefined) {
-            result.facets.sumSmp = 0;
+        if (result.facets.count === undefined) {
+            result.facets.count = 0;
         }
 
-        $("#markersCount").html(result.facets.sumSmp + ' visible cases summarized by ' + glbSummarizeBy + '</u>');
+        $("#markersCount").html(result.facets.count + ' visible cases summarized by ' + glbSummarizeBy + '</u>');
         // detect empty results set
         if (result.response.numFound === 0) {
             if (clear) {
@@ -939,7 +933,7 @@ function loadSolr(parameters) {
             // Depending on zoom level and the number of clusters in the geohash add the to smallClusters to be
             // processed later at the same time exclude them from [terms] so as to not display them twice
 
-            var geoCount = el.sumSmp;
+            var geoCount = el.count;
 
             var key = el.val,
                 elStats = [],
@@ -951,7 +945,7 @@ function loadSolr(parameters) {
                 var inKey = inEl.val;
 
                 // store normalised abundance for abundance mode, else store samples/assay counts
-                var inCount = inEl.sumSmp;
+                var inCount = inEl.count;
 
                 if (inCount > 0) {
                     fullElStats.push({
@@ -1364,8 +1358,8 @@ function loadSolr(parameters) {
                 //DKDK VB-8116 hover over marker
                 var markerNewTooltipLabel = '';
                 if (viewMode == 'abnd') {
-                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' specimen collected';
-                    else markerNewTooltipLabel = ' specimens collected';
+                    if (marker.options.icon.options.count == 1) markerNewTooltipLabel = ' cases';
+                    else markerNewTooltipLabel = ' cases';
                 }
                 marker.bindTooltip(marker.options.icon.options.count + markerNewTooltipLabel, {
                         // permanent: false,
@@ -1736,11 +1730,6 @@ function updatePieChart(population, stats) {
                 .width(380)
                 .padding(20);
 
-            if (legend.options.summarizeBy === 'Species') {
-                chart.legend.applyClass('nv-legend-text-italics');
-                chart.tooltip.applyClass('nv-legend-text-italics');
-            }
-
             //DKDK VB-8112 disable donut legend (nvd3)
             chart.legend.updateState(false);
 
@@ -1985,11 +1974,6 @@ function tableHtml(divid, results) {
                     geolocationPrecision: element.geolocation_precision_s
                 };
 
-                //DKDK VB-8161 rounding to 2 decimal places
-                row.smplAvgAbnd = row.sampleSize / row.collectionDuration;
-                if (Number.isInteger(row.smplAvgAbnd) == false) {
-                    row.smplAvgAbnd = row.smplAvgAbnd.toFixed(2);
-                }
                 template = $.templates("#abndRowTemplate");
                 break;
         }
@@ -2307,69 +2291,16 @@ function borderColor(type, element) {
 // for search, shared link
 function mapTypeToField(type) {
     switch (type) {
-        case "Taxonomy":
-            return "species_cvterms";
-        case "Title":
-            return "label";
-        case "Sample type":
-            return "sample_type";
-        case "Geography":
-            return "geolocations_cvterms";
-        case "Collection protocol":
-            return "collection_protocols_cvterms";
-        case "Attractant":
-            return "attractants_cvterms";
-        case "Protocol":
-            return "protocols_cvterms";
-        case "Collection ID":
-            return "collection_assay_id_s";
-        case "Insecticide":
-            return "insecticide_cvterms";
-        case "Allele":
-            return "genotype_name_s";
-        case "Locus":
-            return "locus_name_s";
-        case "Collection date":
-            return "collection_date_range";
-        case "Normalised IR":
-            return "phenotype_rescaled_value_f";
-        case "Project":
-            return "projects";
-        case "Author":
-            return "project_authors_txt";
-        case "Project title":
-            return "project_titles_txt";
-        case "Sample ID":
-            return "exp_sample_id_s";
-        case "Assay ID":
-            return "assay_id_s";
-        case "Seasonal":
-            return "collection_season";
-        case "Date":
-            return "collection_date_range";
-        case "Pathogen":
-            return "infection_source_cvterms";
-        case "Blood meal host":
-            return "blood_meal_source_s";
-        case "Infection status":
-            return "infection_status_s";
+        case "Geographic resolution":
+            return "geo_resolution_s";
         case "Sex":
             return "sex_s";
-        case "Developmental stage":
-            return "dev_stages_cvterms";
-        case "License":
-            return "licenses_cvterms";
-        case "Tag":
-            return "tags_cvterms";
-        //DKDK VB-8459
-        case "Available data types":
-            return "signposts_ss";
-        //DKDK VB-8663 add Location provenance and Location precision
-        case "Location provenance":
-            return "geolocation_provenance_cvterms";
-        case "Location precision":
-            return "geolocation_precision_cvterms";
-
+        case "Age processed":
+            return "age_ranges_s";
+        case "Age raw":
+            return "age_orig_s";
+        case "Has date":
+            return "has_date_b";
         default :
             return type.toLowerCase()
 
@@ -2382,90 +2313,35 @@ function mapTypeToField(type) {
 function mapSummarizeByToField(type) {
     var fields = {};
     switch (type) {
-        case "Species":
-            fields.summarize = "species_category";
-            fields.type = "Taxonomy";
-            fields.field = "species_category";
+        case "Geographic resolution":
+            fields.summarize = "geo_resolution_s";
+            fields.type = "Geographic resolution";
+            fields.field = "geo_resolution_s";
             break;
-        case "Sample type":
-            fields.summarize = "sample_type";
-            fields.type = "Sample type";
-            fields.field = "sample_type";
+        case "Sex":
+            fields.summarize = "sex_s";
+            fields.type = "Sex";
+            fields.field = "sex_s";
             break;
-        case "Collection protocol":
-            fields.summarize = "collection_protocols_category";
-            fields.type = "Collection protocol";
-            fields.field = "collection_protocols";
+        case "Age raw":
+            fields.summarize = "age_orig_s";
+            fields.type = "Age raw";
+            fields.field = "age_orig_s";
             break;
-        case "Attractant":
-            fields.summarize = "attractants_ss"; // may have to copyField to attractants_category
-            fields.type = "Attractant";
-            fields.field = "attractants_ss";
+        case "Age processed":
+            fields.summarize = "age_ranges_s";
+            fields.type = "Age processed";
+            fields.field = "age_ranges_s";
             break;
-        case "Protocol":
-            fields.summarize = "protocols_category";
-            fields.type = "Protocol";
-            fields.field = "protocols";
-            break;
-        case "Insecticide":
-            fields.summarize = "insecticide_s";
-            fields.type = "Insecticide";
-            fields.field = "insecticide_s";
-            break;
-        case "Allele":
-            fields.summarize = "genotype_name_s";
-            fields.type = "Allele";
-            fields.field = "genotype_name_s";
-            break;
-        case "Locus":
-            fields.summarize = "locus_name_s";
-            fields.type = "Locus";
-            fields.field = "locus_name_s";
-            break;
-        case "Project":
-            fields.summarize = "projects_category";
-            // VB-7318 fields.type = Project -> Projects to fix avtive-legend
-            fields.type = "Project";
-            fields.field = "projects";
-            break;
-        case "Pathogen":
-            fields.summarize = "infection_source_s";
-            fields.type = "Pathogen";
-            fields.field = "infection_source_s";
-            break;
-        case "Infection status":
-            fields.summarize = "infection_status_s";
-            fields.type = "Infection status";
-            fields.field = "infection_status_s";
-            break;
-        case "Blood meal host":
-            fields.summarize = "blood_meal_source_s";
-            fields.type = "Blood meal host";
-            fields.field = "blood_meal_source_s";
-            break;
-        //DKDK VB-8459
-        case "Available data types":
-            fields.summarize = "signposts_ss";
-            fields.type = "Available data types";
-            fields.field = "signposts_ss";
-            break;
-        //DKDK VB-8663 GPS qualifier provenance precision legend item!
-        case "Location provenance":
-            fields.summarize = "geolocation_provenance_s";
-            // fields.summarize = "geolocation_provenance_cvterms";
-            fields.type = "Location provenance";
-            fields.field = "geolocation_provenance_s";
-            break;
-        case "Location precision":
-            fields.summarize = "geolocation_precision_s";
-            // fields.summarize = "geolocation_precision_cvterms";
-            fields.type = "Location precision";
-            fields.field = "geolocation_precision_s";
+        case "Has date":
+            fields.summarize = "has_date_b";
+            fields.type = "Has date";
+            fields.field = "has_date_b";
             break;
         default :
-            fields.summarize = "species_category";
-            fields.type = "Taxonomy";
-            fields.field = "species_category";
+            fields.summarize = "geo_resolution_s";
+            fields.type = "Geographic resolution";
+            fields.field = "geo_resolution_s";
             break;
     }
     return fields;
@@ -2477,79 +2353,22 @@ function mapSummarizeByToField(type) {
 // needs some rational overhaul
 function mapTypeToLabel(type) {
         switch (type) {
-            case 'Taxonomy'   :
-                return 'label label-primary label-taxonomy';   // dark blue
-            case 'Geography':
+            case 'Geographic resolution':
                 return 'label label-primary label-geography';  // dark blue
-            case 'Title'  :
+            case 'Age raw'  :
                 return 'label label-success label-title';    // green
-            case 'Description':
-                return 'label label-success label-description';   // green
-            case 'Project'   :
-                return 'label label-success label-project';   // green
-            case 'Project title'   :
-                return 'label label-success label-project-title';   // green
-            case 'Anywhere'   :
-                return 'label label-default label-anywhere';   // grey
-            case 'PubMed' :
-                return 'label label-success label-pubmed';
-            case 'Insecticide' :
-                return 'label label-success label-insecticide';
-            //Color of the text
-            case 'Allele' :
-                return 'label label-success label-allele';
-            case 'Locus' :
-                return 'label label-success label-locus';
-            case 'Collection protocol' :
-                return 'label label-success label-collection-protocol';
-            case 'Attractant' :
-                return 'label label-success label-attractant';
-            case 'Date' :
-                return 'label label-info label-date'
-            case 'Datepicker' :
-                return 'label label-info label-date'
-            case 'Seasonal' :
-                return 'label label-info label-seasonal'
-            case 'Norm-IR' :
-                return 'label label-secondary label-norm-ir';
-            case 'Collection ID' :
-                return 'label label-warning label-collection-id';
-            case 'Sample ID' :
-                return 'label label-success label-sample-id';
-            case 'Assay ID' :
-                return 'label label-success label-assay-id';
-            case 'Sample' :
-                return 'label label-warning label-sample';
-            case 'Sample type' :
-                return 'label label-warning label-sample-type';
-            case 'Protocol' :
-                return 'label label-warning label-protocol';
-            case 'Author' :
-                return 'label label-success label-author';
-            case 'Coordinates':
-                return 'label label-success label-coordinates';
-            case 'Pathogen':
-                return 'label label-success label-allele';
-            case 'Blood meal host':
-                return 'label label-success label-blood-meal-host';
-            case 'Infection status':
-                return 'label label-success label-geography';
+            case 'Age processed'  :
+                return 'label label-success label-title';    // green
             case 'Sex':
                 return 'label label-info label-sex';
-            case 'Developmental stage':
-                return 'label label-warning label-dev-stage';
-            case 'License':
-                return 'label label-info label-license';
-            case 'Tag':
-                return 'label label-info label-tag';
-            //DKDK VB-8459 signposts
-            case 'Available data types':
-                return 'label label-info label-signposts';
-            //DKDK VB-8663 add Location provenance and Location precision
-            case "Location provenance":
-                return 'label label-primary label-location-provenance';  // dark blue
-            case "Location precision":
-                return 'label label-primary label-location-precision';  // dark blue
+            case 'Has date':
+                return 'label label-info label-date';
+            case 'Date' :
+                return 'label label-info label-date';
+            case 'Datepicker' :
+                return 'label label-info label-date';
+            case 'Seasonal' :
+                return 'label label-info label-seasonal';
             default :
                 return 'label label-warning label-default';
         }
@@ -2557,10 +2376,28 @@ function mapTypeToLabel(type) {
 
 function mapTypeToIcon(type) {
     switch (type) {
+        case 'Geographic resolution':
+            return 'fas fa-map-marker-alt';
+        case 'Has date' :
+            return 'far fa-calendar-check';
+        case 'Sex':
+            return 'fas fa-venus-mars';
+        case 'Age raw' :
+            return 'fas fa-user';
+        case 'Age processed' :
+            return 'fas fa-user';
+
+        case 'Date' :
+            return 'far fa-calendar-alt';
+        case 'Datepicker' :
+            return 'far fa-calendar-alt';
+        case 'Seasonal' :
+            return 'far fa-calendar-check';
+
+
+
         case 'Taxonomy'   :
             return 'fas fa-sitemap';
-        case 'Geography':
-            return 'fas fa-map-marker-alt';
         case 'Title'  : // think about renaming this to External ID
             return 'fas fa-sign';
         case 'Description':
@@ -2579,12 +2416,6 @@ function mapTypeToIcon(type) {
             return 'fas fa-shopping-cart';
         case 'Attractant' :
             return 'fas fa-magnet';
-        case 'Date' :
-            return 'far fa-calendar-alt';
-        case 'Datepicker' :
-            return 'far fa-calendar-alt';
-        case 'Seasonal' :
-            return 'far fa-calendar-check';
         case 'Norm-IR' :
             return 'fas fa-bolt';
         case 'Collection ID' :
@@ -2621,8 +2452,6 @@ function mapTypeToIcon(type) {
             return 'fas fa-thermometer-half';
         case 'Infection status':
             return 'fas fa-bullseye';
-        case 'Sex':
-            return 'fas fa-venus-mars';
         case 'Developmental stage':
             return 'fas fa-sync';
         case 'Tag':

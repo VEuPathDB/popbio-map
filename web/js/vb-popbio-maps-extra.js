@@ -304,7 +304,7 @@
 
             // VB-7622 default with ?view=geno at URL (e.g., selecting the menu from Popbio page or using Share Link) is set to Allele (active-legend) at initializeMap()
             // Thus, for consistency, add below to cope with the case when selecting Genotypes view through pull-down menu
-            if (viewMode === "abnd") glbSummarizeBy = "Species";
+            if (viewMode === "abnd") glbSummarizeBy = "Geographic resolution";
             //DKDK VB-8459 I am not so sure if below criteria should be used: I doubt it.
 
             $('#\\#swarm-plots').removeClass('disabled');
@@ -691,36 +691,10 @@
                         $('#SelectView').selectpicker('val', view);
                         viewMode = view;
                         break;
-                    case "collectionID":
-                    case "projectID":
-                    case "sampleID":
-                    case "assayID":
-                    case "species":
-                    case "collection_protocol":
-                    case "attractant":
-                    case "protocols_cvterms":
-                    case "sample_type":
-                    case "insecticide":
-                    case "allele":
-                    case "locus":
-                    case "geography":
-                    case "project_title":
-                    case "author":
-                    case "title":
-                    case "pathogen":
-                    case "infection_status":
-                    case "blood_meal_host":
-                    case "pubmed":
-                    case "tag":
-                    case "devstage":
-                    case "license":
-                    //DKDK VB-8459 signposts shared link
-                    case "signposts_ss":
-                    //DKDK VB-8541 add sex for a GET parameter like sex=male
+                    case "geo_resolution":
+                    case "age_proc":
                     case "sex":
-                    //DKDK VB-8663 add Location provenance and Location precision
-                    case "location_provenance":
-                    case "location_precision":
+                    case "has_date":
                         // have we passed multiple IDs??
                         var param = urlParams[key];
                         if (Array.isArray(param)) {
@@ -776,26 +750,6 @@
                                 value: urlParams[key],
                                 type: 'Anywhere',
                                 field: mapTypeToField('Anywhere'),
-                            });
-                        }
-                        break;
-                    case "norm-ir":
-                        var param = urlParams[key];
-                        if (Array.isArray(param)) {
-                            param.forEach(function (element) {
-                                $('#search_ac').tagsinput('add', {
-                                    value: element,
-                                    normIrValues: element,
-                                    type: 'Norm-IR',
-                                    field: 'phenotype_rescaled_value_f'
-                                });
-                            })
-                        } else {
-                            $('#search_ac').tagsinput('add', {
-                                value: param,
-                                normIrValues: param,
-                                type: 'Norm-IR',
-                                field: 'phenotype_rescaled_value_f'
                             });
                         }
                         break;
@@ -942,128 +896,28 @@
 
         $('#\\#swarm-plots').removeClass('disabled');
 
-        // Check if a center parameter was passed with a projectID, assayID, sampleID, or collectionID, if not, find the center to ensure marker will be visible
-        // NOTE: Code might need to get improved if there is a case when a link has two of either projectID, assayID, and sampleID
-        // but no center query parameter.
-        if ((urlParams["projectID"] || urlParams["assayID"] || urlParams["sampleID"] || urlParams["collectionID"]) && !urlParams["center"]) {
-            var coordinatesUrl = solrPopbioUrl + "projectsCoordinates?";
-            var key;
-            var filter;
-            var queryUrl;
-
-            if (urlParams["projectID"]) {
-                filter = "projects=";
-                key = "projectID";
-            } else if (urlParams["collectionID"]) {
-                filter = "collection_assay_id=";
-                key = "collectionID";
-            } else {
-                filter = "accession=";
-
-                if (urlParams["assayID"]) {
-                    key = "assayID";
-                } else {
-                    key = "sampleID";
-                }
-            }
-
-            if (Array.isArray(urlParams[key])) {
-                filter += "(" + urlParams[key].join(" OR ") + ")";
-            } else {
-                filter += urlParams[key];
-            }
-
-            queryUrl = coordinatesUrl + filter;
-
-            //Get the avarge coordinates of the projects and use that as the center of the map view
-            $.ajax({
-                type: "GET",
-                url: queryUrl,
-                dataType: "json",
-                async: false,
-                success: function(json) {
-                    var ltAvg = json.facets.ltAvg;
-                    var lnAvg = json.facets.lnAvg;
-                    PopulationBiologyMap.data.center = [ltAvg, lnAvg];
-                },
-                error: function() {
-                    console.log("Unable to retrieve center coordinate");
-                }
-            });
-        }
-
         return hasParameters;
     }
 
     //Private function to map the field types to the URL query parameters that we accept
     function mapTypeToURLParam(type) {
         switch (type) {
-            case "Project":
-                return "projectID";
-            case "Sample ID":
-                return "sampleID";
-            case "Collection ID":
-                return "collectionID";
-            case "Assay ID":
-                return "assayID";
-            case "Anywhere":
-                return "text";
-            case "Collection protocol":
-                return "collection_protocol";
-            case "Attractant":
-                return "attractant";
-            case "Taxonomy":
-                return "species";
-            case "Protocol":
-                return "protocols_cvterms";
+            case "Sex":
+                return "sex";
+            case "Geographic resolution":
+                return "geo_resolution";
+            case "Age processed":
+                return "age_proc";
+            case "Age raw":
+                return "age_raw";
+            case "Has date":
+                return "has_date";
             case "Seasonal":
                 return "collection_season";
             case "Date":
                 return "date";
-            case "Sample type":
-                return "sample_type";
-            case "Insecticide":
-                return "insecticide";
-            case "Allele":
-                return "allele";
-            case "Locus":
-                return "locus";
-            case "Geography":
-                return "geography";
-            case "Project title":
-                return "project_title";
-            case "Author":
-                return "author";
-            case "Title":
-                return "title";
-            case "Norm-IR":
-                return "norm-ir";
-            case "PubMed":
-                return "pubmed";
             case "Datepicker":
                 return "datepicker";
-            case "Pathogen":
-                return "pathogen";
-            case "Infection status":
-                return "infection_status";
-            case "Blood meal host":
-                return "blood_meal_host";
-            case "Sex":
-                return "sex";
-            case "Developmental stage":
-                return "devstage";
-            case "Tag":
-                return "tag";
-            case "License":
-                return "license";
-            //DKDK VB-8459 signposts shared link
-            case "Available data types":
-                return "signposts_ss";
-            //DKDK VB-8663 add Location provenance and Location precision
-            case "Location provenance":
-                return "location_provenance";
-            case "Location precision":
-                return "location_precision";
             default:
                 return "text"
                 break;
@@ -1073,73 +927,23 @@
     //Private function to map the field types to the URL query parameters that we accept
     function URLParamToMapType(param_name) {
         switch (param_name) {
-            // VB-7318 Project to Projects? VB-7622 revert to Project
-            case "projectID":
-                return "Project";
-            case "sampleID":
-                return "Sample ID";
-            case "assayID":
-                return "Assay ID";
-            case "collectionID":
-                return "Collection ID";
-            case "text":
-                return "Anywhere";
-            case "collection_protocol":
-                return "Collection protocol";
-            case "attractant":
-                return "Attractant";
-            case "species":
-                return "Taxonomy";
-            case "protocols_cvterms":
-                return "Protocol";
+            case "sex":
+                return "Sex";
+            case "geo_resolution":
+                return "Geographic resolution";
+            case "age_proc":
+                return "Age processed";
+            case "age_raw":
+                return "Age raw";
+            case "has_date":
+                return "Has date";
             case "collection_season":
                 return "Seasonal";
             case "date":
                 return "Date";
-            case "sample_type":
-                return "Sample type";
-            case "insecticide":
-                return "Insecticide";
-            case "allele":
-                return "Allele";
-            case "locus":
-                return "Locus";
-            case "geography":
-                return "Geography";
-            case "project_title":
-                return "Project title";
-            case "author":
-                return "Author";
-            case "title":
-                return "Title";
-            case "norm-ir":
-                return "Norm-IR";
-            case "pubmed":
-                return "PubMed";
             case "datepicker":
                 return "Datepicker";
-            case "pathogen":
-                return "Pathogen";
-            case "infection_status":
-                return "Infection status";
-            case "blood_meal_host":
-                return "Blood meal host";
-            case "sex":
-                return "Sex";
-            case "devstage":
-                return "Developmental stage";
-            case "tag":
-                return "Tag";
-            case "license":
-                return "License";
-            //DKDK VB-8459 signposts shared link
-            case "signposts_ss":
-                return "Available data types";
-            //DKDK VB-8663 add Location provenance and Location precision
-            case "location_provenance":
-                return "Location provenance";
-            case "location_precision":
-                return "Location precision";
+
             default:
                 return "Anywhere";
         }
