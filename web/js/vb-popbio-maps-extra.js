@@ -674,7 +674,7 @@
         // parse the URL parameters and update views and search terms
         var hasParameters = false;
         if (typeof urlParams.view === 'undefined' || urlParams.view === null) {
-            $('#SelectView').selectpicker('val', 'smpl');
+            $('#SelectView').selectpicker('val', 'abnd');
             // $('#view-mode').val('smpl');
         }
 

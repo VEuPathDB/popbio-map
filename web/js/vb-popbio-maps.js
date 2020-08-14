@@ -126,7 +126,7 @@ function bindEvents() {
 
         if ($('#select-export-fields').val()) {
             fieldsStr += $('#select-export-fields').val().join();
-            fieldsStr += ',exp_citations_ss,exp_licenses_ss'; // mandatory citations field + license (DKDK)
+                //            fieldsStr += ',exp_citations_ss,exp_licenses_ss'; // mandatory citations field + license (DKDK)
             //DKDK VB-7133 add exp_sample_name_s for ir and path
             if (viewMode === "ir" || viewMode === "path") {
                 fieldsStr += ',exp_sample_name_s';
@@ -158,12 +158,12 @@ function bindEvents() {
         switch (selectedOption) {
             // data matching search
             case "1":
-                url += viewMode + 'Export?' + query + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                url += viewMode + 'Export?' + query + fieldsStr + '&sort=exp_accession_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data visible on screen
             case "2":
-                url += viewMode + 'Export?' + query + viewBox + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                url += viewMode + 'Export?' + query + viewBox + fieldsStr + '&sort=exp_accession_s+asc' + zeroFilter;
                 this.href = url;
                 break;
             // data for selected marker
@@ -186,7 +186,7 @@ function bindEvents() {
                         .html('');
 
                     // build the url and download the data
-                    url += viewMode + 'Export?' + query + geohashFq + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                    url += viewMode + 'Export?' + query + geohashFq + fieldsStr + '&sort=exp_accession_s+asc' + zeroFilter;
                     this.href = url;
                 } else { // no marker is selected
                     // inform the user that there are no selected markers
@@ -198,7 +198,7 @@ function bindEvents() {
                 break;
             //download all data
             case "4":
-                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_id_s+asc' + zeroFilter;
+                url += viewMode + 'Export?q=*:*' + fieldsStr + '&sort=exp_accession_s+asc' + zeroFilter;
                 this.href = url;
                 break
             default:
@@ -725,105 +725,41 @@ function initializeMap(parameters) {
 function updateExportFields(viewMode) {
     var abndFields = [
         {
-            value: 'exp_sample_id_s',
-            label: 'Sample ID',
-            icon: mapTypeToIcon('Collection ID')
-        },
-        {
-            value: 'exp_bundle_name_s',
-            label: 'Record type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_species_s',
-            label: 'Species',
-            icon: mapTypeToIcon('Taxonomy')
-        },
-        {
-            value: 'exp_sample_type_s',
-            label: 'Sample type',
-            icon: mapTypeToIcon('Sample type')
-        },
-        {
-            value: 'exp_label_s',
-            label: 'Label',
-            icon: mapTypeToIcon('Description')
-        },
-        {
-            value: 'exp_collection_assay_id_s',
-            label: 'Collection ID',
-            icon: mapTypeToIcon('Collection ID')
+            value: 'exp_accession_s',
+            label: 'Case ID',
+            icon: mapTypeToIcon('Case ID')
         },
         {
             value: 'exp_collection_date_range_ss',
-            label: 'Collection date range',
+            label: 'Date',
             icon: mapTypeToIcon('Date')
-        },
-        {
-            value: 'exp_collection_protocols_ss',
-            label: 'Collection protocol',
-            icon: mapTypeToIcon('Collection protocol')
-        },
-        {
-            value: 'exp_projects_ss',
-            label: 'Project',
-            icon: mapTypeToIcon('Project')
-        },
-        {
-            value: 'exp_geo_coords_s',
-            label: 'Coordinates (lat, long)',
-            icon: mapTypeToIcon('Coordinates')
-        },
-        {
-            value: 'exp_geolocations_ss',
-            label: 'Locations',
-            icon: mapTypeToIcon('Location')
-        },
-        {
-            value: 'exp_protocols_ss',
-            label: 'Protocol',
-            icon: mapTypeToIcon('Protocol')
-        },
-        {
-            value: 'exp_sample_size_i',
-            label: 'Specimens collected',
-            icon: mapTypeToIcon('Count')
-        },
-        {
-            value: 'exp_collection_duration_days_i',
-            label: 'Collection duration (days)',
-            icon: mapTypeToIcon('Duration')
-        },
-        {
-            value: 'exp_tags_ss',
-            label: 'Tag',
-            icon: mapTypeToIcon('Tag')
-        },
-        {
-            value: 'exp_attractants_ss',
-            label: 'Attractants',
-            icon: mapTypeToIcon('Attractants')
         },
         {
             value: 'exp_sex_s',
             label: 'Sex',
             icon: mapTypeToIcon('Sex')
         },
+
         {
-            value: 'exp_dev_stages_ss',
-            label: 'Developmental stage',
-            icon: mapTypeToIcon('Developmental stage')
+            value: 'exp_geo_resolution_s',
+            label: 'Geographic resolution',
+            icon: mapTypeToIcon('Geographic resolution')
         },
-        //DKDK VB-8663 GPS qualifier fields
+
         {
-            value: 'exp_geolocation_provenance_s',
-            label: 'Location provenance',
-            icon: mapTypeToIcon('Location provenance')
+            value: 'exp_age_orig_s',
+            label: 'Age raw',
+            icon: mapTypeToIcon('Age raw')
         },
         {
-            value: 'exp_geolocation_precision_s',
-            label: 'Location precision',
-            icon: mapTypeToIcon('Location precision')
+            value: 'exp_age_ranges_s',
+            label: 'Age processed',
+            icon: mapTypeToIcon('Age processed')
+        },
+        {
+            value: 'exp_geo_coords_s',
+            label: 'Coordinates (lat, long)',
+            icon: mapTypeToIcon('Coordinates')
         }
     ];
 
@@ -1944,34 +1880,14 @@ function tableHtml(divid, results) {
                 row = {
                     accession: element.accession,
                     accessionType: 'Sample ID',
-                    bundleName: element.bundle_name,
-                    url: element.url,
-                    sampleType: element.sample_type,
-                    sampleTypeType: 'Sample type',
                     geoCoords: element.geo_coords,
-                    geolocation: element.geolocations[0],
-                    geolocationType: 'Geography',
-                    species: species,
-                    speciesType: 'Taxonomy',
                     bgColor: bgColor,
                     textColor: getContrastYIQ(bgColor),
                     collectionDate: collectionDates,
-                    projects: borderColor('Project', element.projects),
-                    projectsType: 'Project',
-                    collectionProtocols: borderColor('Collection protocol', element.collection_protocols),
-                    collectionProtocolsType: 'Collection protocol',
-                    attractants: borderColor('Attractant', element.attractants_ss),
-                    attractantsType: 'Attractant',
-                    protocols: borderColor('Protocol', element.protocols),
-                    protocolsType: 'Protocol',
-                    sampleSize: element.sample_size_i,
-                    collectionDuration: element.collection_duration_days_i,
-                    //DKDK VB-8114 displaying sex_s and dev_stage_ss (add comma)
                     sex: element.sex_s,
-                    devstages: element.dev_stages_ss,
-                    //DKDK VB-8663 GPS qualifier fields
-                    geolocationProvenance: element.geolocation_provenance_s,
-                    geolocationPrecision: element.geolocation_precision_s
+                    ageOrig: element.age_orig_s,
+                    ageProcessed: element.age_ranges_s,
+                    geoResolution: element.geo_resolution_s
                 };
 
                 template = $.templates("#abndRowTemplate");
@@ -2394,6 +2310,8 @@ function mapTypeToIcon(type) {
         case 'Seasonal' :
             return 'far fa-calendar-check';
 
+        case 'Case ID' :
+            return 'fas fa-id-card';
 
 
         case 'Taxonomy'   :
