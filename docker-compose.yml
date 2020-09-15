@@ -1,0 +1,86 @@
+version: '3.5'
+
+volumes:
+  solrdata:         # Store solr cores' data and configs
+  logs:
+
+services:
+  solr:
+    image: veupathdb/solr:${SOLR_TAG:-latest}
+    environment:
+      - SOLR_JAVA_MEM=${SOLR_JAVA_MEM:- -Xms129m -Xmx129m}
+    volumes:
+      - solrdata:/var/solr
+    entrypoint:
+      - bash
+      - "-c" 
+      - "precreate-core vb_ta /opt/solr/server/solr/configsets/vb_ta;
+         precreate-core vb_popbio /opt/solr/server/solr/configsets/vb_popbio;
+         exec solr -f"
+
+    networks:
+      - internal
+      - traefik
+
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${ROUTER:-mapveu-dev}.rule=Host(`solr-${DOMAIN:-mapveu-dev.local.apidb.org}`)"
+      - "traefik.http.routers.${ROUTER:-mapveu-dev}.tls=true"
+      - "traefik.http.routers.${ROUTER:-mapveu-dev}.entrypoints=local"
+
+  web:
+    image: veupathdb/popbio-map:${WEB_TAG:-latest}
+
+    networks:
+      - internal
+      - traefik
+
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.map-${ROUTER:-mapveu-dev}.rule=Host(`${DOMAIN:-mapveu-dev.local.apidb.org}`)"
+      - "traefik.http.routers.map-${ROUTER:-mapveu-dev}.tls=true"
+      - "traefik.http.routers.map-${ROUTER:-mapveu-dev}.entrypoints=local"
+
+  proxy:
+    image: veupathdb/solr-proxy:latest
+    environment:
+      - SOLR_HOST=${SOLR_HOST:-solr}
+      - SOLR_PORT=${SOLR_PORT:-8983}
+      - LISTEN_PORT=${LISTEN_PORT:-8000}
+
+    volumes:
+      - logs:/home/node/logs
+    networks:
+      - internal
+      - traefik
+
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.http.services.secproxy-${ROUTER:-mapveu-dev}.loadbalancer.server.port=9090"
+      - "traefik.http.services.csvproxy-${ROUTER:-mapveu-dev}.loadbalancer.server.port=8000"
+
+      - "traefik.http.routers.secproxy-${ROUTER:-mapveu-dev}.service=secproxy-${ROUTER:-mapveu-dev}"
+      - "traefik.http.routers.secproxy-${ROUTER:-mapveu-dev}.rule=Host(`${DOMAIN:-mapveu-dev.local.apidb.org}`)&&PathPrefix(`/web/asolr`)"
+
+      - "traefik.http.middlewares.strip-asolr.stripprefix.prefixes=/web/asolr"
+      - "traefik.http.middlewares.strip-asolr.stripprefix.forceslash=false"
+      - "traefik.http.routers.secproxy-${ROUTER:-mapveu-dev}.middlewares=strip-asolr"
+
+      - "traefik.http.routers.secproxy-${ROUTER:-mapveu-dev}.tls=true"
+      - "traefik.http.routers.secproxy-${ROUTER:-mapveu-dev}.entrypoints=local"
+
+      - "traefik.http.routers.csvproxy-${ROUTER:-mapveu-dev}.service=csvproxy-${ROUTER:-mapveu-dev}"
+      - "traefik.http.routers.csvproxy-${ROUTER:-mapveu-dev}.rule=Host(`${DOMAIN:-mapveu-dev.local.apidb.org}`)&&PathPrefix(`/web/esolr`)"
+      - "traefik.http.routers.csvproxy-${ROUTER:-mapveu-dev}.tls=true"
+      - "traefik.http.routers.csvproxy-${ROUTER:-mapveu-dev}.entrypoints=local"
+
+      - "traefik.http.middlewares.strip-esolr.stripprefix.prefixes=/web/esolr"
+      - "traefik.http.middlewares.strip-esolr.stripprefix.forceslash=false"
+      - "traefik.http.routers.csvproxy-${ROUTER:-mapveu-dev}.middlewares=strip-esolr"
+
+networks:
+  internal: # internal network
+    external: false
+  traefik: # external network 
+    external: true
+
