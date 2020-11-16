@@ -9,7 +9,9 @@ services:
     image: veupathdb/solr:${SOLR_TAG:-latest}
     environment:
       - SOLR_JAVA_MEM=${SOLR_JAVA_MEM:--Xms129m -Xmx129m}
-      - REPO_ENV=${REPO_ENV:-dev}
+      - REPO_ENV=${SOLR_REPO_ENV:-dev}
+      - REPO_KEY=${SOLR_REPO_KEY}
+      - REPO_HOST=${SOLR_REPO_HOST}
     volumes:
       - solrdata:/var/solr
     entrypoint:
