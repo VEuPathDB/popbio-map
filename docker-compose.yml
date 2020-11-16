@@ -28,6 +28,7 @@ services:
       - "traefik.http.routers.${ROUTER:-mapveu-dev}.rule=Host(`solr-${DOMAIN:-mapveu-dev.local.apidb.org}`)"
       - "traefik.http.routers.${ROUTER:-mapveu-dev}.tls=true"
       - "traefik.http.routers.${ROUTER:-mapveu-dev}.entrypoints=local"
+      - "com.centurylinklabs.watchtower.enable=${SOLR_WATCHTOWER:-false}"
 
   web:
     image: veupathdb/popbio-map:${WEB_TAG:-latest}
@@ -41,6 +42,7 @@ services:
       - "traefik.http.routers.map-${ROUTER:-mapveu-dev}.rule=Host(`${DOMAIN:-mapveu-dev.local.apidb.org}`)"
       - "traefik.http.routers.map-${ROUTER:-mapveu-dev}.tls=true"
       - "traefik.http.routers.map-${ROUTER:-mapveu-dev}.entrypoints=local"
+      - "com.centurylinklabs.watchtower.enable=${WEB_WATCHTOWER:-false}"
 
   proxy:
     image: veupathdb/solr-proxy:${PROXY_TAG:-latest}
@@ -78,6 +80,7 @@ services:
       - "traefik.http.middlewares.strip-esolr.stripprefix.prefixes=/web/esolr"
       - "traefik.http.middlewares.strip-esolr.stripprefix.forceslash=false"
       - "traefik.http.routers.csvproxy-${ROUTER:-mapveu-dev}.middlewares=strip-esolr"
+      - "com.centurylinklabs.watchtower.enable=${PROXY_WATCHTOWER:-false}"
 
 networks:
   internal: # internal network
