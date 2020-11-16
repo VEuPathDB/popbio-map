@@ -8,12 +8,13 @@ services:
   solr:
     image: veupathdb/solr:${SOLR_TAG:-latest}
     environment:
-      - SOLR_JAVA_MEM=${SOLR_JAVA_MEM:- -Xms129m -Xmx129m}
+      - SOLR_JAVA_MEM=${SOLR_JAVA_MEM:--Xms129m -Xmx129m}
+      - REPO_ENV=${REPO_ENV:-dev}
     volumes:
       - solrdata:/var/solr
     entrypoint:
       - bash
-      - "-c" 
+      - "-c"
       - "precreate-core vb_ta /opt/solr/server/solr/configsets/vb_ta;
          precreate-core vb_popbio /opt/solr/server/solr/configsets/vb_popbio;
          exec solr -f"
@@ -42,7 +43,7 @@ services:
       - "traefik.http.routers.map-${ROUTER:-mapveu-dev}.entrypoints=local"
 
   proxy:
-    image: veupathdb/solr-proxy:latest
+    image: veupathdb/solr-proxy:${PROXY_TAG:-latest}
     environment:
       - SOLR_HOST=${SOLR_HOST:-solr}
       - SOLR_PORT=${SOLR_PORT:-8983}
@@ -81,6 +82,6 @@ services:
 networks:
   internal: # internal network
     external: false
-  traefik: # external network 
+  traefik: # external network
     external: true
 
