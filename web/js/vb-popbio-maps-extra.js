@@ -906,6 +906,12 @@
                 return "sex";
             case "Geographic resolution":
                 return "geo_resolution";
+            case "Case confirmation type":
+                return "case_confirmation";
+            case "Occupation":
+                return "occupation";
+            case "Outcome":
+                return "outcome";
             case "Age processed":
                 return "age_proc";
             case "Age raw":
@@ -931,6 +937,12 @@
                 return "Sex";
             case "geo_resolution":
                 return "Geographic resolution";
+            case "case_confirmation":
+                return "Case confirmation type";
+            case "occupation":
+                return "Occupation";
+            case "outcome":
+                return "Outcome";
             case "age_proc":
                 return "Age processed";
             case "age_raw":

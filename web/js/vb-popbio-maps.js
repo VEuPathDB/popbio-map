@@ -756,6 +756,25 @@ function updateExportFields(viewMode) {
             label: 'Age processed',
             icon: mapTypeToIcon('Age processed')
         },
+
+        {
+            value: 'exp_case_confirmation_s',
+            label: 'Case confirmation type',
+            icon: mapTypeToIcon('Case confirmation type')
+        },
+
+        {
+            value: 'exp_outcome_s',
+            label: 'Outcome',
+            icon: mapTypeToIcon('Outcome')
+        },
+
+        {
+            value: 'exp_occupation_s',
+            label: 'Occupation',
+            icon: mapTypeToIcon('Occupation')
+        },
+
         {
             value: 'exp_geo_coords_s',
             label: 'Coordinates (lat, long)',
@@ -2209,6 +2228,12 @@ function mapTypeToField(type) {
     switch (type) {
         case "Geographic resolution":
             return "geo_resolution_s";
+        case "Case confirmation type":
+            return "case_confirmation_s";
+        case "Occupation":
+            return "occupation_s";
+        case "Outcome":
+            return "outcome_s";
         case "Sex":
             return "sex_s";
         case "Age processed":
@@ -2233,6 +2258,21 @@ function mapSummarizeByToField(type) {
             fields.summarize = "geo_resolution_s";
             fields.type = "Geographic resolution";
             fields.field = "geo_resolution_s";
+            break;
+        case "Case confirmation type":
+            fields.summarize = "case_confirmation_s";
+            fields.type = "Case confirmation type";
+            fields.field = "case_confirmation_s";
+            break;
+        case "Occupation":
+            fields.summarize = "occupation_s";
+            fields.type = "Occupation";
+            fields.field = "occupation_s";
+            break;
+        case "Outcome":
+            fields.summarize = "outcome_s";
+            fields.type = "Outcome";
+            fields.field = "outcome_s";
             break;
         case "Sex":
             fields.summarize = "sex_s";
@@ -2271,10 +2311,16 @@ function mapTypeToLabel(type) {
         switch (type) {
             case 'Geographic resolution':
                 return 'label label-primary label-geography';  // dark blue
+            case 'Case confirmation type':
+                return 'label label-info label-confirmation';
+            case 'Occupation':
+                return 'label label-info label-occupation';
+            case 'Outcome':
+                return 'label label-danger label-outcome';
             case 'Age raw'  :
-                return 'label label-success label-title';    // green
+                return 'label label-success label-age';    // green
             case 'Age processed'  :
-                return 'label label-success label-title';    // green
+                return 'label label-success label-age';    // green
             case 'Sex':
                 return 'label label-info label-sex';
             case 'Has date':
@@ -2294,6 +2340,12 @@ function mapTypeToIcon(type) {
     switch (type) {
         case 'Geographic resolution':
             return 'fas fa-map-marker-alt';
+        case 'Case confirmation type':
+            return 'fas fa-check-square';
+        case 'Occupation':
+            return 'fas fa-briefcase';
+        case 'Outcome':
+            return 'fas fa-ambulance';
         case 'Has date' :
             return 'far fa-calendar-check';
         case 'Sex':

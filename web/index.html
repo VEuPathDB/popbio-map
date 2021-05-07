@@ -1084,9 +1084,12 @@
 
         <div class="col-md-12" >
             <h3 style="background-color: {{attr:bgColor}}; color: {{attr:textColor}};">
-                Covid-19 case: {{html:accession}}
+                Covid-19 case: {{html:case_confirmation}}
             </h3>
         </div>
+        <div class="row">
+	  ID: {{:accession}}
+	</div>
         <div class="row">
             <div class="col-md-6">
                 <p style="color: {{attr:bgColor}};" title="Date">
@@ -1134,6 +1137,23 @@
                 <ul>
                   <li> {{:ageOrig}} (raw/provided)</li>
                   <li> {{:ageProcessed}} (processed)</li>
+                </ul>
+            </div>
+        </div>
+
+	<div class="row">
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Occupation">
+                    <i class="far fa-fw fas fa-venus-mars"></i><b>Occupation</b>
+                </p>
+                <ul><li> {{:occupation}} </li></ul>
+            </div>
+            <div class="col-md-6">
+                <p style="color: {{attr:bgColor}};" title="Outcome">
+                    <i class="far fa-fw fas fa-user"></i><b>Outcome</b>
+                </p>
+                <ul>
+                  <li> {{:outcome}} </li>
                 </ul>
             </div>
         </div>

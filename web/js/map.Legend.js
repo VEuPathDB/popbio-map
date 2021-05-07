@@ -340,8 +340,11 @@ L.Control.MapLegend = L.Control.extend({
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
             '<li><a href="#" value="Geographic resolution">Geographic resolution</a></li>' +
             '<li><a href="#" value="Sex">Sex</a></li>' +
+            '<li><a href="#" value="Occupation">Occupation</a></li>' +
             '<li><a href="#" value="Age processed">Age (processed ranges)</a></li>' +
             '<li><a href="#" value="Has date">Has date</a></li>' +
+            '<li><a href="#" value="Case confirmation type">Case confirmation type</a></li>' +
+            '<li><a href="#" value="Outcome">Outcome</a></li>' +
             '</ul>';
     },
 
