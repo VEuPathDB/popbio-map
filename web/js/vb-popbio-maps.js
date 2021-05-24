@@ -2331,7 +2331,7 @@ function mapTypeToLabel(type) {
             case 'Outcome':
                 return 'label label-danger label-outcome';
             case 'Country':
-                return 'label label-danger label-country';
+                return 'label label-primary label-country';
             case 'Age raw'  :
                 return 'label label-success label-age';    // green
             case 'Age processed'  :
@@ -2362,7 +2362,7 @@ function mapTypeToIcon(type) {
         case 'Outcome':
             return 'fas fa-ambulance';
         case 'Country':
-            return 'fas fa-ambulance';
+            return 'fas fa-flag';
         case 'Has date' :
             return 'far fa-calendar-check';
         case 'Sex':
