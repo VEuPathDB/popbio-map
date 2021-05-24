@@ -1080,7 +1080,7 @@
             panel_param = "&panelID=" + activePanel;
         }
 
-        if (Highcharts.charts.length && activePanel === "swarm-plots") {
+        if (Highcharts.charts.length && activePanel != undefined && activePanel === "swarm-plots") {
             navigatorExtremes = Highcharts.charts[0].xAxis[0].getExtremes();
             navDates = "&navDates=" + navigatorExtremes.min + "," + navigatorExtremes.max;
             resolution = $("#resolution-selector .btn-primary").val();
