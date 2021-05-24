@@ -339,6 +339,7 @@ L.Control.MapLegend = L.Control.extend({
     _generateViewSelect: function (viewMode) {
         return '<ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="summByDropdown">' +
             '<li><a href="#" value="Geographic resolution">Geographic resolution</a></li>' +
+            '<li><a href="#" value="Country">Country</a></li>' +
             '<li><a href="#" value="Sex">Sex</a></li>' +
             '<li><a href="#" value="Occupation">Occupation</a></li>' +
             '<li><a href="#" value="Age processed">Age (processed ranges)</a></li>' +

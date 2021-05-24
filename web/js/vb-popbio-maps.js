@@ -770,6 +770,12 @@ function updateExportFields(viewMode) {
         },
 
         {
+            value: 'exp_country_s',
+            label: 'Country',
+            icon: mapTypeToIcon('Country')
+        },
+
+        {
             value: 'exp_occupation_s',
             label: 'Occupation',
             icon: mapTypeToIcon('Occupation')
@@ -2234,6 +2240,8 @@ function mapTypeToField(type) {
             return "occupation_s";
         case "Outcome":
             return "outcome_s";
+        case "Country":
+            return "country_s";
         case "Sex":
             return "sex_s";
         case "Age processed":
@@ -2273,6 +2281,11 @@ function mapSummarizeByToField(type) {
             fields.summarize = "outcome_s";
             fields.type = "Outcome";
             fields.field = "outcome_s";
+            break;
+        case "Country":
+            fields.summarize = "country_s";
+            fields.type = "Country";
+            fields.field = "country_s";
             break;
         case "Sex":
             fields.summarize = "sex_s";
@@ -2317,6 +2330,8 @@ function mapTypeToLabel(type) {
                 return 'label label-info label-occupation';
             case 'Outcome':
                 return 'label label-danger label-outcome';
+            case 'Country':
+                return 'label label-danger label-country';
             case 'Age raw'  :
                 return 'label label-success label-age';    // green
             case 'Age processed'  :
@@ -2345,6 +2360,8 @@ function mapTypeToIcon(type) {
         case 'Occupation':
             return 'fas fa-briefcase';
         case 'Outcome':
+            return 'fas fa-ambulance';
+        case 'Country':
             return 'fas fa-ambulance';
         case 'Has date' :
             return 'far fa-calendar-check';

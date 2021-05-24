@@ -912,6 +912,8 @@
                 return "occupation";
             case "Outcome":
                 return "outcome";
+            case "Country":
+                return "country";
             case "Age processed":
                 return "age_proc";
             case "Age raw":
@@ -943,6 +945,8 @@
                 return "Occupation";
             case "outcome":
                 return "Outcome";
+            case "country":
+                return "Country";
             case "age_proc":
                 return "Age processed";
             case "age_raw":
