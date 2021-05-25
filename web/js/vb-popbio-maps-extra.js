@@ -694,6 +694,10 @@
                     case "geo_resolution":
                     case "age_proc":
                     case "sex":
+                    case "outcome":
+                    case "country":
+                    case "case_confirmation":
+                    case "occupation":
                     case "has_date":
                         // have we passed multiple IDs??
                         var param = urlParams[key];
