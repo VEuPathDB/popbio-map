@@ -12,6 +12,8 @@ services:
       - REPO_ENV=${SOLR_REPO_ENV:-dev}
       - REPO_KEY=${SOLR_REPO_KEY}
       - REPO_HOST=${SOLR_REPO_HOST}
+     # mitigation for cve-2021-44228
+      - SOLR_OPTS=$SOLR_OPTS -Dlog4j2.formatMsgNoLookups=true
     volumes:
       - solrdata:/var/solr
     entrypoint:
